@@ -1,4 +1,5 @@
 package view;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -12,17 +13,16 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class Main extends Application implements EventHandler<KeyEvent> {
-        final int WIDTH = 600;
-        final int HEIGHT = 400;
+    final int WIDTH = 600;
+    final int HEIGHT = 400;
 
-        double ballRadius = 40;
-        double ballX = 100;
-        double ballY = 200;
-        double xSpeed = 4;
-        double ySpeed = 4;
+    double ballRadius = 40;
+    double ballX = 100;
+    double ballY = 200;
+    double xSpeed = 4;
+    double ySpeed = 4;
 
     public static void main(String[] args) {
-
         launch(args);
     }
 
@@ -54,7 +54,7 @@ public class Main extends Application implements EventHandler<KeyEvent> {
         stage.setScene(scene);
         stage.show();
 
-        AnimationTimer animator = new AnimationTimer(){
+        AnimationTimer animator = new AnimationTimer() {
 
             @Override
             public void handle(long arg0) {
@@ -63,8 +63,7 @@ public class Main extends Application implements EventHandler<KeyEvent> {
                 ballX += xSpeed;
                 ballY += ySpeed;
 
-                if (ballX + ballRadius >= WIDTH)
-                {
+                if (ballX + ballRadius >= WIDTH) {
                     ballX = WIDTH - ballRadius;
                     xSpeed *= -1;
                 } else if (ballX - ballRadius < 0) {
@@ -72,8 +71,7 @@ public class Main extends Application implements EventHandler<KeyEvent> {
                     xSpeed *= -1;
                 }
 
-                if (ballY + ballRadius >= HEIGHT)
-                {
+                if (ballY + ballRadius >= HEIGHT) {
                     ballY = HEIGHT - ballRadius;
                     ySpeed *= -1;
                 } else if (ballY - ballRadius < 0) {
@@ -94,17 +92,16 @@ public class Main extends Application implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent arg0) {
 
-        if (arg0.getCode() == KeyCode.LEFT )
-        {
+        if (arg0.getCode() == KeyCode.LEFT) {
             xSpeed = -4;
             ySpeed = 0;
-        } else if(arg0.getCode() == KeyCode.RIGHT) {
+        } else if (arg0.getCode() == KeyCode.RIGHT) {
             xSpeed = 4;
             ySpeed = 0;
-        } else if(arg0.getCode() == KeyCode.UP) {
-xSpeed = 0;
+        } else if (arg0.getCode() == KeyCode.UP) {
+            xSpeed = 0;
             ySpeed = -4;
-        } else if(arg0.getCode() == KeyCode.DOWN){
+        } else if (arg0.getCode() == KeyCode.DOWN) {
             ySpeed = 4;
             xSpeed = 0;
         }
