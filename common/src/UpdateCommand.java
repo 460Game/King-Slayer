@@ -3,11 +3,10 @@
 import java.util.Map;
 
 public class UpdateCommand<T extends WorldObject>  {
-    private WorldObjectReference<T> toUpdate;
-    private WorldObjectData<T> data;
+    private WorldObject.WorldObjectData<T> data;
 
-    public void execute(Map<WorldObjectReference, WorldObject> map) {
-        map.get(toUpdate).set(data);
+    public void execute(Map<WorldObject.WorldObjectData.WorldObjectReference, WorldObject> map) {
+        map.get(data.id).set(data);
     }
 
     public void send(Model m) {

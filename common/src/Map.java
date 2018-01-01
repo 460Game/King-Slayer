@@ -6,8 +6,13 @@ public class Map {
 
     private Tile[][] grid = new Tile[GRID_X_SIZE][GRID_Y_SIZE];
 
+
+    public Tile get(int x, int y) {
+        return grid[x][y];
+    }
+
     public Map(Model model) {
-        //dump map of all "grass"
+        //test map of all "grass"
         for(int i = 0; i < GRID_X_SIZE; i++) {
             for(int j = 0; j < GRID_Y_SIZE; j++) {
                 grid[i][j] = new Grass(i, j, model);

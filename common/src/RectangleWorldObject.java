@@ -1,22 +1,24 @@
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class RectangleWorldObject<T extends RectangleWorldObjectData> extends PositionWorldObject<T> {
+public abstract class RectangleWorldObject<T extends RectangleWorldObject.RectangleWorldObjectData> extends PositionWorldObject<T> {
 
-    double w;
-    double h;
+    public static class RectangleWorldObjectData <T extends RectangleWorldObject> extends PositionWorldObjectData<T> {
+        double w;
+        double h;
+    }
 
     @Override
     public void set(T t) {
         super.set(t);
-        this.w = t.w;
-        this.h = t.h;
+        data.w = t.w;
+        data.h = t.h;
     }
 
     RectangleWorldObject(double x, double y, double w, double h, Model model) {
         super(x, y, model);
-        this.w = w;
-        this.h = h;
+        data.w = w;
+        data.h = h;
     }
 
     @Override
@@ -30,9 +32,13 @@ public abstract class RectangleWorldObject<T extends RectangleWorldObjectData> e
     }
 
     @Override
-    Set<Tile> getTiles(Model model) {
+    Set<Tile> getTiles(Map map) {
         Set<Tile> set = new HashSet<>();
-    //TODO
+        for(int i = (int)(data.x - data.w); i <= Math.ceil(data.x + data.w); i++){
+            for(int j = (int)(data.y - data.h); j <= Math.ceil(data.y + data.h); j++){
+                set.add(map.get(i,j));
+            }
+        }
         return set;
     }
 }

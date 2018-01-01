@@ -7,15 +7,17 @@ import java.util.Set;
 
 public abstract class Model {
 
-    private Map<WorldObjectReference, WorldObject> objectMap = new HashMap<>();
+    private Map<WorldObject.WorldObjectData.WorldObjectReference, WorldObject> objectMap = new HashMap<>();
 
     private Set<Model> updateListeners = new HashSet<>();
     private Set<Model> actionListeners = new HashSet<>();
 
-    public void update() {
+    public void updateAll() {
         for(WorldObject u : objectMap.values())
-            u.update(this);
+            this.reqUpdate(u);
     }
+
+    public abstract void reqUpdate(WorldObject u);
     
     public void receiveUpdateCommand(UpdateCommand cmd) {
         cmd.execute(objectMap);

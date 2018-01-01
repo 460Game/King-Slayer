@@ -1,34 +1,34 @@
 import java.util.Set;
 
-public abstract class PositionWorldObject<T extends PositionWorldObjectData> extends WorldObject<T> {
+public abstract class PositionWorldObject<T extends PositionWorldObject.PositionWorldObjectData> extends WorldObject<T> {
+
+    public static class PositionWorldObjectData<T extends PositionWorldObject> extends WorldObjectData<T> {
+        double x;
+        double y;
+    }
 
     public abstract boolean isRound();
     public abstract boolean isRect();
 
-    PositionWorldObject(double x, double y, Model model) {
-        this.x = x;
-        this.y = y;
-        this.tiles = getTiles(model);
+    PositionWorldObject(double x, double y, GameModel model) {
+        this.tiles = getTiles(model.map);
     }
-
-    double x;
-    double y;
 
     @Override
     public void set(T t) {
-        this.x = t.x;
-        this.y = t.y;
+        data.x = t.x;
+        data.y = t.y;
     }
 
     @Override
-    public void update(Model model) {
-        double old_x = x;
-        double old_y = y;
+    public void update(GameModel model) {
+        double old_x = data.x;
+        double old_y = data.y;
         super.update(model);
-        if(old_x != x || old_y != y) {
+        if(old_x != data.x || old_y != data.y) {
 
-            //TODO we want to transparently keep this tile datastructure up to date without too much expense
-            Set<Tile> newTiles = getTiles(model);
+            //TODO we want to transparently keep this tile data structure up to date without too much expense
+            Set<Tile> newTiles = getTiles(model.map);
 
             //get the diff
 
@@ -46,26 +46,30 @@ public abstract class PositionWorldObject<T extends PositionWorldObjectData> ext
      * called for both directions
      * for now it is required that after this call they will not be colliding
      */
-    abstract void collision(PositionWorldObject other);
+    abstract void collision(PositionWorldObject<?> other);
 
-    abstract Set<Tile> getTiles(Model model);
+    abstract Set<Tile> getTiles(Map map);
 
     //set of tiles it is on
     private Set<Tile> tiles;
+
+    static double dist(PositionWorldObject<?> a, PositionWorldObject<?> b) {
+        return Math.sqrt( (a.data.x - b.data.x) + (a.data.y - b.data.y));
+    }
 
     /**
      * should return true exactly if the two objects are colldiding
      * type dependent- ew!
      */
-    static boolean testCollision(PositionWorldObject a, PositionWorldObject b)  {
+    static boolean testCollision(PositionWorldObject<?> a, PositionWorldObject<?> b)  {
         if(a.isRect() && b.isRect()) {
-
+//TODO
         } else if(a.isRound() && b.isRound()) {
-
+            return dist(a,b) <=  ((CircleWorldObject.CircleWorldObjectData)a.data).r + ((CircleWorldObject.CircleWorldObjectData)b.data).r;
         } else if(a.isRect() && b.isRound()) {
-
+//TODO
         } else if(a.isRound() && b.isRect()) {
-
+//TODO
         }
         throw new RuntimeException("all Position WorldObjects must either be circle or rectangle objects!");
     }

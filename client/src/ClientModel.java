@@ -3,6 +3,6 @@
  *
  * nothing special,
  */
-public class ClientModel extends Model {
+public class ClientModel extends GameModel {
 
 }

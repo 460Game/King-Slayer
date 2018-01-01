@@ -1,3 +1,3 @@
 
-public class ServerModel extends Model {
+public class ServerModel extends GameModel {
 }

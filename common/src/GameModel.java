@@ -4,11 +4,14 @@
  */
 public abstract class GameModel extends Model {
 
-    Map map;
+    Map map = new Map(this);
 
-    @Override
     public void update() {
-        super.update();
+        super.updateAll();
         map.update();
+    }
+
+    public void reqUpdate(WorldObject u) {
+        u.update(this);
     }
 }
