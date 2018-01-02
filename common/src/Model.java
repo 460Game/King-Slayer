@@ -1,5 +1,7 @@
 
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

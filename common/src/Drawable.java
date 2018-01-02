@@ -1,14 +1,11 @@
-import com.sun.javafx.geom.Shape;
 import javafx.collections.ObservableList;
-import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
 
 /*
 temp proof of concenpt
  */
 public interface Drawable {
 
-    public void drawInit(ObservableList<Node> l);
-
-    public void drawUpdate();
+    public void draw(GraphicsContext gc);
 }

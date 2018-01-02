@@ -1,3 +1,6 @@
+import java.util.HashSet;
+import java.util.Set;
+
 public class Map {
 
 
@@ -25,4 +28,15 @@ public class Map {
             for(Tile tile : arr)
                 tile.update();
     }
+
+    public Set<WorldObject> inBox(int x, int y, int w, int h) {
+        Set<WorldObject> objects = new HashSet<>();
+        for(int i = 0; i < GRID_X_SIZE; i++) {
+            for(int j = 0; j < GRID_Y_SIZE; j++) { //TODO make this actualy only return in the box not everything
+                objects.addAll(grid[i][j].getContains());
+            }
+        }
+        return objects;
+    }
+
 }

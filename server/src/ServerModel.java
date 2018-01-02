@@ -1,3 +1,4 @@
 
-public class ServerModel extends GameModel {
+public abstract class ServerModel extends GameModel {
+    //TODO
 }

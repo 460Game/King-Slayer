@@ -1,11 +1,11 @@
 
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Tile implements Drawable {
 
-    private Set<PositionWorldObject> contains = new HashSet<>();
+    private Set<CollidingWorldObject> contains = new HashSet<>();
 
     //x,y coordiante of top left of this part of the grid
     private int x, y;
@@ -13,10 +13,14 @@ public abstract class Tile implements Drawable {
     //is passible if it is passible tile
     public abstract boolean isPassable();
 
+    public Set<CollidingWorldObject> getContains() {
+        return Collections.synchronizedSet(contains);
+    }
+
     public void update() {
-        for(PositionWorldObject a : contains) {
-            for (PositionWorldObject b : contains) {
-                if (a != b && PositionWorldObject.testCollision(a, b)) {
+        for(CollidingWorldObject a : contains) {
+            for (CollidingWorldObject b : contains) {
+                if (a != b && CollidingWorldObject.testCollision(a, b)) {
                     a.collision(b);
                     b.collision(a); //todo would get doubled called if collision isnt resolved first time it is found
                 }
@@ -24,11 +28,11 @@ public abstract class Tile implements Drawable {
         }
     }
 
-    public void add(PositionWorldObject o) {
+    public void add(CollidingWorldObject o) {
         contains.add(o);
     }
 
-    public void remove(PositionWorldObject o) {
+    public void remove(CollidingWorldObject o) {
         contains.remove(o);
     }
 
