@@ -53,16 +53,6 @@ public abstract class CollidingWorldObject<T extends CollidingWorldObject.Positi
     static boolean testCollision(CollidingWorldObject<?> a, CollidingWorldObject<?> b)  {
         if(Util.setsDisjoint(a.tiles, b.tiles))
             return false;
-        return a.data.shape.testCollision(b.data.shape);
-
-        if(a.isRect() && b.isRect()) {
-//TODO
-        } else if(a.isRound() && b.isRound()) {
-        } else if(a.isRect() && b.isRound()) {
-//TODO
-        } else if(a.isRound() && b.isRect()) {
-//TODO
-        }
-        throw new RuntimeException("all Position WorldObjects must either be circle or rectangle objects!");
+        return a.data.shape.testCollision(b.data.shape);throw new RuntimeException("all Position WorldObjects must either be circle or rectangle objects!");
     }
 }
