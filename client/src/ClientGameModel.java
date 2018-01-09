@@ -1,5 +1,5 @@
 /**
- * clients model
+ * clients clientModel
  *
  * nothing special,
  */

@@ -46,6 +46,20 @@ public class CirlceShape extends Shape {
         throw new RuntimeException("Dont know how to collide circle with this other thing");
     }
 
+    @Override
+    public void shift(double x, double y) {
+        memo = null;
+        this.x += x;
+        this.y += y;
+    }
+
+    @Override
+    public void setPos(double x, double y) {
+        memo = null;
+        this.x = x;
+        this.y = y;
+    }
+
     CirlceShape(double x, double y, double r) {
         this.x = x;
         this.y = y;

@@ -18,16 +18,18 @@ public class Grass extends Tile {
 
     double x,y,w,h;
 
-    public Grass(int x, int y, Model model) {
-        super(x, y, model);
-        x = 1;
-        y = 1;
-        w = 10;
-        h = 10;
+    public Grass(int x, int y) {
+        super(x, y);
+        this.x = x*10;
+        this.y = y*10;
+        this.w = 10;
+        this.h = 10;
     }
 
     @Override
     public void draw(GraphicsContext gc) {
+        gc.setFill(Color.GREEN);
+        gc.fillRect(x,y,w,h);
         gc.strokeRect(x,y,w,h);
     }
 }

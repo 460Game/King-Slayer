@@ -15,7 +15,7 @@ public class RectShape extends Shape {
     public Set<Tile> getTiles(Map map) {
         if(memo != null)
             return memo;
-        //TODO support moving the shape
+
         memo = new HashSet<>();
         for(int i = (int)(x - w); i <= Math.ceil(x + w); i++){
             for(int j = (int)(y - h); j <= Math.ceil(y + h); j++){
@@ -43,6 +43,20 @@ public class RectShape extends Shape {
         }
 
         throw new RuntimeException("Dont know how to collide circle with this other thing");
+    }
+
+    @Override
+    public void shift(double x, double y) {
+        memo = null;
+        this.x += x;
+        this.y += y;
+    }
+
+    @Override
+    public void setPos(double x, double y) {
+        memo = null;
+        this.x = x;
+        this.y = y;
     }
 
     RectShape(double x, double y, double w, double h) {

@@ -14,4 +14,8 @@ public abstract class Shape implements Drawable {
     public abstract Set<Tile> getTiles(Map map);
 
     public abstract boolean testCollision(Shape shape);
+
+    public abstract void shift(double x, double y);
+
+    public abstract void setPos(double x, double y);
 }

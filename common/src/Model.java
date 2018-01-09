@@ -19,6 +19,8 @@ public abstract class Model {
             this.reqUpdate(u);
     }
 
+    public abstract void draw(GraphicsContext gc);
+
     public abstract void reqUpdate(WorldObject u);
     
     public void receiveUpdateCommand(UpdateCommand cmd) {
@@ -64,4 +66,9 @@ public abstract class Model {
      * @return
      */
     abstract WorldClock getTimer();
+
+    public void drawAll(GraphicsContext gc) {
+        for(WorldObject u : objectMap.values())
+            u.draw(gc);
+    }
 }

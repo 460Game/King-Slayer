@@ -1,12 +1,38 @@
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.*;
-import javafx.scene.paint.*;
 import javafx.scene.canvas.*;
 import javafx.stage.Stage;
 
 public class LocalTest extends Application {
 
-    GameModel model = new GameModel() {
+    GameModel serverModel = new GameModel() {
+
+        Map map = new Map();
+
+        @Override
+        public Map getGameMap() {
+            return map;
+        }
+
+        @Override
+        WorldClock getTimer() {
+            return new WorldClock() {
+                @Override
+                public long nanoTime() {
+                    return System.nanoTime();
+                }
+            };
+        }
+    };
+
+    GameModel clientModel = new GameModel() {
+
+        @Override
+        public Map getGameMap() {
+            return serverModel.getGameMap();
+        }
+
         @Override
         WorldClock getTimer() {
             return new WorldClock() {
@@ -26,17 +52,35 @@ public class LocalTest extends Application {
     }
 
     public void start(Stage primaryStage) {
+
+        serverModel.addUpdateListeners(clientModel);
+        clientModel.addActionListeners(serverModel);
+
+
         primaryStage.setTitle("Drawing Operations Test");
         Group root = new Group();
-        Canvas canvas = new Canvas(300, 250);
+        Canvas canvas = new Canvas(1000, 1000);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        for(WorldObject o : model.map.inBox(0,0,0,0)) {
-            o.draw(gc);
-        }
+        AnimationTimer animator = new AnimationTimer()
+        {
+            @Override
+            public void handle(long arg0)
+            {
+                // update
+                serverModel.update();
+                clientModel.update();
 
+                clientModel.draw(gc);
+
+            }
+        };
         root.getChildren().add(canvas);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+
+        //  serverModel.sendsInit();
+
+        animator.start();
     }
 }

@@ -36,7 +36,7 @@ public abstract class Tile implements Drawable {
         contains.remove(o);
     }
 
-    public Tile(int x, int y, Model model) {
+    public Tile(int x, int y) {
         this.x = x;
         this.y = y;
         if(!isPassable()) {
