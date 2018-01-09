@@ -27,7 +27,7 @@ public class Grass extends Tile {
     }
 
     @Override
-    public void draw(GraphicsContext gc, double x, double y) {
-        gc.fillRect(x, y, w, h);
+    public void draw(GraphicsContext gc) {
+        gc.strokeRect(x,y,w,h);
     }
 }

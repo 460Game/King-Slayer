@@ -30,7 +30,8 @@ public class RectShape extends Shape {
         if(shape instanceof CirlceShape) {
             //circle cricle
             CirlceShape circle = (CirlceShape) shape;
-            return Util.dist(this.x, circle.x, this.y , circle.y) <= this.r + circle.r;
+            return false; //TODO this
+           // return Util.dist(this.x, this.y, circle.x , circle.y) <= this.r + circle.r;
         } else if(shape instanceof RectShape) {
             //rectangle rectangle
             RectShape rect = (RectShape) shape;
@@ -41,7 +42,7 @@ public class RectShape extends Shape {
             return compositeShape.testCollision(this);
         }
 
-        throw new RuntimeException("Dont know how to collide circle with this other thing")
+        throw new RuntimeException("Dont know how to collide circle with this other thing");
     }
 
     RectShape(double x, double y, double w, double h) {

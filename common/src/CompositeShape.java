@@ -1,3 +1,5 @@
+import javafx.scene.canvas.GraphicsContext;
+
 import java.util.Set;
 
 public class CompositeShape extends Shape {
@@ -15,5 +17,11 @@ public class CompositeShape extends Shape {
     @Override
     public boolean testCollision(Shape shape) {
         return a.testCollision(shape) || b.testCollision(shape);
+    }
+
+    @Override
+    public void draw(GraphicsContext gc) {
+        a.draw(gc);
+        b.draw(gc);
     }
 }

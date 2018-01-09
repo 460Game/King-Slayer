@@ -16,12 +16,6 @@ public class LocalTest extends Application {
                 }
             };
         }
-
-        public void draw(GraphicsContext gc) {
-            for(WorldObject o : model.map.inBox(0,0,0,0)) {
-                o.draw(gc, 0, 0);
-            }
-        }
     };
 
     /**
@@ -37,7 +31,10 @@ public class LocalTest extends Application {
         Canvas canvas = new Canvas(300, 250);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        model.draw(gc);
+        for(WorldObject o : model.map.inBox(0,0,0,0)) {
+            o.draw(gc);
+        }
+
         root.getChildren().add(canvas);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

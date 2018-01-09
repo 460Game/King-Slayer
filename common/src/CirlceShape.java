@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class CirlceShape extends Shape {
 
-    private double x,y,r;
+    double x,y,r;
 
     transient Set<Tile> memo = null;
 
@@ -43,7 +43,7 @@ public class CirlceShape extends Shape {
             return compositeShape.testCollision(this);
         }
 
-        throw new RuntimeException("Dont know how to collide circle with this other thing")
+        throw new RuntimeException("Dont know how to collide circle with this other thing");
     }
 
     CirlceShape(double x, double y, double r) {
