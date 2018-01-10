@@ -40,7 +40,7 @@ public class LocalTest extends Application {
         primaryStage.setTitle("King Slayer");
       //  primaryStage.setFullScreen(true);
         Group root = new Group();
-        Canvas canvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT * 0.8);
+        Canvas canvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
 

@@ -8,7 +8,7 @@ public abstract class Tile implements Drawable {
     private Set<CollidingWorldObject> contains = new HashSet<>();
 
     //x,y coordiante of top left of this part of the grid
-    private int x, y;
+    public int x, y;
 
     //is passible if it is passible tile
     public abstract boolean isPassable();
