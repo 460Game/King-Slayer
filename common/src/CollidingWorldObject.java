@@ -15,7 +15,6 @@ public abstract class CollidingWorldObject<T extends CollidingWorldObject.Positi
 
     CollidingWorldObject(Shape shape, GameModel model) {
         this.data.shape = shape;
-        this.tiles = data.shape.getTiles(model.map);
     }
 
     @Override
@@ -31,7 +30,6 @@ public abstract class CollidingWorldObject<T extends CollidingWorldObject.Positi
     @Override
     public void update(GameModel model) {
         super.update(model);
-        this.tiles = data.shape.getTiles(model.map);
     }
 
     /**
@@ -42,8 +40,6 @@ public abstract class CollidingWorldObject<T extends CollidingWorldObject.Positi
     void collision(CollidingWorldObject<?> other) {
         //Do nothing
     }
-    //set of tiles it is on
-    private Set<Tile> tiles;
 
 
     /**
@@ -51,8 +47,10 @@ public abstract class CollidingWorldObject<T extends CollidingWorldObject.Positi
      * type dependent- ew!
      */
     static boolean testCollision(CollidingWorldObject<?> a, CollidingWorldObject<?> b)  {
-        if(Util.setsDisjoint(a.tiles, b.tiles))
-            return false;
+      //  if(Util.setsDisjoint(a.data.shape.getTiles(), b.data.shape.getTiles()))
+       //TODO this is a mess
+
+        //     return false;
         return a.data.shape.testCollision(b.data.shape);
     }
 }

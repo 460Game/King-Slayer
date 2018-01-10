@@ -6,7 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public abstract class GameModel extends Model {
 
-    Map map = new Map(this);
+    Map map = getGameMap();
 
     public abstract Map getGameMap();
 

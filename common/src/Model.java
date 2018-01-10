@@ -9,7 +9,7 @@ import java.util.Set;
 
 public abstract class Model {
 
-    private Map<WorldObject.WorldObjectData.WorldObjectReference, WorldObject> objectMap = new HashMap<>();
+    private Map<WorldObject, WorldObject> objectMap = new HashMap<>();
 
     private Set<Model> updateListeners = new HashSet<>();
     private Set<Model> actionListeners = new HashSet<>();

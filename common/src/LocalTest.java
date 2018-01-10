@@ -6,31 +6,11 @@ import javafx.stage.Stage;
 
 public class LocalTest extends Application {
 
-    GameModel serverModel = new GameModel() {
-
-        Map map = new Map();
+    GameModel model = new GameModel() {
 
         @Override
         public Map getGameMap() {
-            return map;
-        }
-
-        @Override
-        WorldClock getTimer() {
-            return new WorldClock() {
-                @Override
-                public long nanoTime() {
-                    return System.nanoTime();
-                }
-            };
-        }
-    };
-
-    GameModel clientModel = new GameModel() {
-
-        @Override
-        public Map getGameMap() {
-            return serverModel.getGameMap();
+            return new Map();
         }
 
         @Override
@@ -51,15 +31,17 @@ public class LocalTest extends Application {
         launch(args);
     }
 
+    final static int SCREEN_WIDTH = 1000;
+    final static int SCREEN_HEIGHT = 1000;
+
     public void start(Stage primaryStage) {
 
-        serverModel.addUpdateListeners(clientModel);
-        clientModel.addActionListeners(serverModel);
-
-
-        primaryStage.setTitle("Drawing Operations Test");
+        primaryStage.setResizable(false);
+        primaryStage.setTitle("King Slayer");
+      //  primaryStage.setFullScreen(true);
         Group root = new Group();
-        Canvas canvas = new Canvas(1000, 1000);
+        Canvas canvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT * 0.8);
+
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         AnimationTimer animator = new AnimationTimer()
@@ -68,16 +50,16 @@ public class LocalTest extends Application {
             public void handle(long arg0)
             {
                 // update
-                serverModel.update();
-                clientModel.update();
+                model.update();
 
-                clientModel.draw(gc);
-
+                model.draw(gc);
             }
         };
         root.getChildren().add(canvas);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+
+   //     model.receiveUpdateCommand(new UpdateCommand(new Player(new CirlceShape(50,50,10), model)));
 
         //  serverModel.sendsInit();
 

@@ -3,6 +3,6 @@
  *
  * nothing special,
  */
-public abstract  class ClientGameModel extends GameModel {
+public class ClientGameModel extends GameModel {
 
 }

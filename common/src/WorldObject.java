@@ -1,25 +1,21 @@
+import java.io.Serializable;
 import java.util.UUID;
 
 /*
 a world object
 paramterized with the data type that it should accept for its set method
  */
-public abstract class WorldObject<T extends WorldObject.WorldObjectData> implements Drawable {
+public abstract class WorldObject<T extends WorldObject.WorldObjectData> implements Drawable, Serializable {
 
+    /*
+    this exists so we can overwrite the state of an object without overwritting references to it
+     */
     public static class WorldObjectData<T extends WorldObject> {
-
-        public class WorldObjectReference<T> {
-            private UUID id = UUID.randomUUID();
-
-            @Override
-            public boolean equals(Object obj) {
-                assert(obj instanceof WorldObjectReference);
-                return id.equals(((WorldObjectReference) obj).id);
-            }
-        }
-
-        WorldObjectReference<T> id;
+        long last_update;
+        UUID uuid = UUID.randomUUID();
     }
+
+    T data;
 
     /**
      * the most important method!
@@ -27,17 +23,31 @@ public abstract class WorldObject<T extends WorldObject.WorldObjectData> impleme
      */
     public abstract void update(long time, GameModel model);
 
-    private long last_update;
-
     public void update(GameModel model) {
         long current_time = model.nanoTime();
-        update(last_update - current_time, model);
-        last_update = current_time;
+        update(this.data.last_update - current_time, model);
+        data.last_update = current_time;
     }
-
-    T data;
 
     public void set(T t) {
         this.data = t;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null)
+            return false;
+        if (getClass() != o.getClass())
+            return false;
+        return this.data.uuid.equals(((WorldObject) o).data.uuid);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return data.uuid.hashCode();
+    }
+
 }
