@@ -1,4 +1,6 @@
 package Command;
+
+import Model.Model;
 /*
 basicly says that something wants to do something
 

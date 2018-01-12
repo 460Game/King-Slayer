@@ -10,6 +10,11 @@ public class TileMetal extends TileTest {
     }
 
     @Override
+    public boolean isPassable() {
+        return false;
+    }
+
+    @Override
     public Paint getColor() {
         return Color.SKYBLUE;
     }

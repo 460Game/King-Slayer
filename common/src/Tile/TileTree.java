@@ -10,6 +10,11 @@ public class TileTree extends TileTest {
     }
 
     @Override
+    public boolean isPassable() {
+        return false;
+    }
+
+    @Override
     public Paint getColor() {
         return Color.GREEN;
     }

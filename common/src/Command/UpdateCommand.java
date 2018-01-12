@@ -1,5 +1,8 @@
 package Command;
 
+import Entity.WorldObject;
+import Model.Model;
+
 import java.util.Map;
 
 public class UpdateCommand<T extends WorldObject.WorldObjectData>  {

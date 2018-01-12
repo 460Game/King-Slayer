@@ -1,5 +1,8 @@
 package Entity;
 
+import Model.GameModel;
+import client.Drawable;
+
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -17,7 +20,7 @@ public abstract class WorldObject<T extends WorldObject.WorldObjectData> impleme
         UUID uuid = UUID.randomUUID();
     }
 
-    T data;
+    public T data;
 
     /**
      * the most important method!

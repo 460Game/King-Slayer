@@ -1,10 +1,12 @@
 package Shape;
 
+import Model.GameMap;
 import Tile.Tile;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.HashSet;
 import java.util.Set;
+import Util.Util;
 
 public class CirlceShape extends Shape {
 
