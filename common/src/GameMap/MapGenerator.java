@@ -1,3 +1,7 @@
+package GameMap;
+
+import Tile.Tile;
+
 import java.util.*;
 import java.util.function.BiFunction;
 
@@ -34,23 +38,23 @@ public class MapGenerator {
     }
 
     public static enum TS {
-        river(TileWater::new),
-        edgeWater(TileWater::new),
-        tresure(TileTresure::new),
-        metal(TileMetal::new),
-        stone(TileStone::new),
-        tree(TileTree::new),
-        wall(TileWall::new),
-        room(TilePassable::new),
-        grass(TileGrass::new),
-        barrier(TileBarrier::new),
+        river(Tile.TileWater::new),
+        edgeWater(Tile.TileWater::new),
+        tresure(Tile.TileTresure::new),
+        metal(Tile.TileMetal::new),
+        stone(Tile.TileStone::new),
+        tree(Tile.TileTree::new),
+        wall(Tile.TileWall::new),
+        room(Tile.TilePassable::new),
+        grass(Tile.TileGrass::new),
+        barrier(Tile.TileBarrier::new),
         unset((i, j) -> {
             //throw new RuntimeException("invalid tile generated");
-            return new TileWall(i, j);
+            return new Tile.TileWall(i, j);
         }),
-        start(TileStart::new),
-        bridge(TileBridge::new),
-        road(TilePassable::new);
+        start(Tile.TileStart::new),
+        bridge(Tile.TileBridge::new),
+        road(Tile.TilePassable::new);
 
         private BiFunction<Integer, Integer, Tile> make;
 

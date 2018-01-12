@@ -1,3 +1,5 @@
+import GameMap.GameMap;
+import Tile.Tile;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Set;

@@ -1,11 +1,13 @@
 
 
+import Entity.WorldObject;
+
 import java.util.Map;
 
 public class UpdateCommand<T extends WorldObject.WorldObjectData>  {
     private WorldObject<T> object;
 
-    public void execute(Map<WorldObject, WorldObject> map) {
+    public void execute(Map<WorldObject, aWorldObject> map) {
         map.putIfAbsent(object, object);
         map.get(object).set(object.data);
     }

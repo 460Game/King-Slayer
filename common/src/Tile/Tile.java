@@ -1,3 +1,4 @@
+package Tile;
 
 import java.util.Collections;
 import java.util.HashSet;

@@ -1,3 +1,6 @@
+import GameMap.GameMap;
+import Tile.Tile;
+
 import java.util.Set;
 
 /**

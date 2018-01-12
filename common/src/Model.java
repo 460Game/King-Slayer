@@ -1,5 +1,6 @@
 
 
+import Entity.WorldObject;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.HashMap;
