@@ -10,7 +10,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../kryonet-2.21/jars/debug/onejar/kryonet-2.21-all.jar!/" />
+          <root url="jar://$MODULE_DIR$/../kryonet-2.21-all.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

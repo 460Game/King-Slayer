@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!kryonet-2.21-all.jar
 *.war
 *.ear
 *.zip
