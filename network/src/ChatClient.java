@@ -38,7 +38,7 @@ public class ChatClient {
     public long sumTime = 0;
     long startTime = 0;
     long endTime = 0;
-
+    boolean alreadyPingBack = false;
     public ChatClient () {
         client = new Client();
     }
@@ -66,11 +66,12 @@ public class ChatClient {
                     return;
                 }
 
-                if (object instanceof ChatCommon.ChatMsg) {
+                if (object instanceof ChatCommon.ChatMsg && !alreadyPingBack) {
 //                    endTime = System.nanoTime();
 //                    Log.info("Time: " + (endTime - startTime));
                     ChatCommon.ChatMsg chatMessage = (ChatCommon.ChatMsg) object;
                     chatFrame.addMessage(chatMessage.msg);
+                    alreadyPingBack = true;
                     client.sendTCP(new ChatCommon.ChatMsg("Ping back"));
                     return;
                 }
@@ -252,7 +253,7 @@ public class ChatClient {
     public void testTime() {
 //        for (int i = 0;)
         startTime = System.nanoTime();
-        client.sendTCP(new ChatCommon.ChatMsg("test"));
+        client.sendTCP(new ChatCommon.ChatMsg("this is a test"));
 //        endTime = System.nanoTime();
 //        sumTime += (endTime - startTime);
     }
