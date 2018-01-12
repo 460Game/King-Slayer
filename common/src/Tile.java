@@ -44,4 +44,11 @@ public abstract class Tile implements Drawable {
         }
     }
 
+
+    @Override public boolean equals(Object other) {
+        Tile o = (Tile) other; //TODO do this properly
+        return this.x == o.x && this.y == o.y;
+    }
+
+
 }

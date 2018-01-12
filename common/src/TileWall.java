@@ -3,6 +3,11 @@ import javafx.scene.paint.Paint;
 
 public class TileWall extends TileTest {
 
+    @Override
+    public boolean isPassable() {
+        return false;
+    }
+
     public TileWall(int x, int y) {
         super(x, y);
     }
