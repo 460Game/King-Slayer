@@ -1,4 +1,4 @@
-import Model.WorldClock;
+package Model;
 
 /**
  * magical client/server synrnonzied clock
@@ -7,10 +7,6 @@ import Model.WorldClock;
  *
  * should only be used for deltas not absolutes
  */
-public class ServerClock implements WorldClock {
-
-    @Override
-    public long nanoTime() {
-       return System.nanoTime();
-    }
+public interface WorldClock {
+    public abstract long nanoTime();
 }
