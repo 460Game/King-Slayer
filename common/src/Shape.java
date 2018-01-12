@@ -8,10 +8,10 @@ public abstract class Shape implements Drawable {
     /**
      * this should return the set of all tiles this shape overlaps with
      * 
-     * @param map
+     * @param gameMap
      * @return
      */
-    public abstract Set<Tile> getTiles(Map map);
+    public abstract Set<Tile> getTiles(GameMap gameMap);
 
     public abstract boolean testCollision(Shape shape);
 

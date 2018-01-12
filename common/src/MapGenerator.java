@@ -3,8 +3,8 @@ import java.util.function.BiFunction;
 
 public class MapGenerator {
 
-    private final int MAP_W = Map.GRID_X_SIZE;
-    private final int MAP_H = Map.GRID_Y_SIZE;
+    private final int MAP_W = GameMap.GRID_X_SIZE;
+    private final int MAP_H = GameMap.GRID_Y_SIZE;
     private final int DIST_MAX;
     private final int FEATURE_SIZE = 4;
     private final int edgeWidth = 4;
@@ -42,7 +42,8 @@ public class MapGenerator {
         tree(TileTree::new),
         wall(TileWall::new),
         room(TilePassable::new),
-        grass(TilePassable::new),
+        grass(TileGrass::new),
+        barrier(TileBarrier::new),
         unset((i, j) -> {
             //throw new RuntimeException("invalid tile generated");
             return new TileWall(i, j);
@@ -88,7 +89,7 @@ public class MapGenerator {
     }
 
     public void makeMap(long seed) {
-        System.out.println("Generating map with seed " + seed);
+        System.out.println("Generating gameMap with seed " + seed);
         this.random = new Random(seed);
 
         //Pick
@@ -172,7 +173,8 @@ public class MapGenerator {
                     //set MAP_W of everything within 4 to 0
                     for (int x = i - FEATURE_SIZE / 2; x <= i + FEATURE_SIZE / 2; x++)
                         for (int y = j - FEATURE_SIZE / 2; y <= j + FEATURE_SIZE / 2; y++)
-                            grid[x][y] = TS.room;
+                            if(grid[x][y] != TS.edgeWater)
+                                grid[x][y] = TS.room;
 
                     for (int x = i - FEATURE_SIZE; x <= i + FEATURE_SIZE; x++)
                         for (int y = j - FEATURE_SIZE; y <= j + FEATURE_SIZE; y++)
@@ -219,11 +221,6 @@ public class MapGenerator {
 
             }
 
-        // while(not all connected) {
-        //    for each pair, find shortest path between
-        //        increase priority of each MAP_W on that path
-        //       randomly pick a MAP_W
-
 
         Loc t;
 
@@ -237,6 +234,7 @@ public class MapGenerator {
             for (int x = t.x - 1; x <= t.x + 1; x++)
                 for (int y = t.y - 1; y <= t.y + 1; y++)
                     if (random.nextDouble() < 0.6)
+                        if(grid[x][y] != TS.edgeWater)
                         grid[x][y] = TS.metal;
         }
 
@@ -245,6 +243,7 @@ public class MapGenerator {
             for (int x = t.x - 1; x <= t.x + 1; x++)
                 for (int y = t.y - 1; y <= t.y + 1; y++)
                     if (random.nextDouble() < 0.3)
+                        if(grid[x][y] != TS.edgeWater)
                         grid[x][y] = TS.stone;
         }
 
@@ -253,34 +252,40 @@ public class MapGenerator {
             for (int x = t.x - 2; x <= t.x + 2; x++)
                 for (int y = t.y - 2; y <= t.y + 2; y++)
                     if (random.nextDouble() < 0.3)
+                        if(grid[x][y] != TS.edgeWater)
                         grid[x][y] = TS.tresure;
         }
-/*
+
 
         for (int x = 0; x < MAP_W; x++) {
             for (int y = 0; y < MAP_H; y++) {
-                if (grid[x][y] == null) {
                     Set<Loc> set = new HashSet<>();
-                    flood(set, grid[x][y], x,y);
-                    if(set.size() > 50) {
+                    flood(set, TS.unset, x,y);
+                    if(set.size() > 100) {
 
                         //gen forest
                         for(Loc t2 : set) {
-                            grid[t2.x][t2.y] = TS.tree;
+                            if(random.nextDouble() < 0.4)
+                                 grid[t2.x][t2.y] = TS.tree;
+                            else
+                                grid[t2.x][t2.y] = TS.grass;
                         }
 
-                    } else {
+                    } else if(set.size() > 5){
 
                         //gen walls
                         for(Loc t2 : set) {
                             grid[t2.x][t2.y] = TS.wall;
                         }
+                    } else {
+                        for(Loc t2 : set) {
+                            grid[t2.x][t2.y] = TS.barrier;
+                        }
                     }
-                }
-                grid[x][y] = TS.tree;
+
             }
         }
-*/
+
     }
 
     /**
@@ -303,7 +308,7 @@ public class MapGenerator {
      * @param y   the tiles y
      */
     private void flood(Set<Loc> set, TS type, int x, int y) {
-        if (grid[x][y] == type && !set.contains(new Loc(x, y))) {
+        if (x >= 0 && y >= 0 && x < this.MAP_W && y < MAP_H && grid[x][y] == type && !set.contains(new Loc(x, y))) {
             set.add(new Loc(x, y));
             flood(set, type, x + 1, y);
             flood(set, type, x - 1, y);

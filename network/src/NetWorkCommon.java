@@ -8,7 +8,7 @@ public class NetWorkCommon {
     public static void register (EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
 
-        kryo.register(Map.class);
+        kryo.register(GameMap.class);
         kryo.register(UpdateCommand.class);
         kryo.register(ActionCommand.class);
         kryo.register(CirlceShape.class);

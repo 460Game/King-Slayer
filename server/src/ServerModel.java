@@ -9,7 +9,7 @@ import java.util.Map;
 public abstract class ServerModel extends GameModel {
 
     /**
-     * Game map
+     * Game gameMap
      */
     Map<WorldObject, WorldObject> map;
 

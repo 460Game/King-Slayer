@@ -10,7 +10,7 @@ public class CirlceShape extends Shape {
     transient Set<Tile> memo = null;
 
     @Override
-    public Set<Tile> getTiles(Map map) {
+    public Set<Tile> getTiles(GameMap gameMap) {
         if(memo != null )
             return memo;
         memo = new HashSet<>();
@@ -21,7 +21,7 @@ public class CirlceShape extends Shape {
         for(int i = (int)(x - r); i <= Math.ceil(x + r); i++){
             for(int j = (int)(y - r); j <= Math.ceil(y + r); j++){
                 if((i+0.5-x)*(i+0.5-x) + (j+0.5-y)*(j+0.5-y) <= (r+0.70710678118)*(r+0.70710678118))
-                    memo.add(map.get(i,j));
+                    memo.add(gameMap.get(i,j));
             }
         }
 

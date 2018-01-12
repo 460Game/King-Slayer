@@ -12,14 +12,14 @@ public class RectShape extends Shape {
      transient Set<Tile> memo = null;
 
     @Override
-    public Set<Tile> getTiles(Map map) {
+    public Set<Tile> getTiles(GameMap gameMap) {
         if(memo != null)
             return memo;
 
         memo = new HashSet<>();
         for(int i = (int)(x - w); i <= Math.ceil(x + w); i++){
             for(int j = (int)(y - h); j <= Math.ceil(y + h); j++){
-                memo.add(map.get(i,j));
+                memo.add(gameMap.get(i,j));
             }
         }
         return memo;

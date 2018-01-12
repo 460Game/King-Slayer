@@ -2,11 +2,11 @@ import javafx.scene.canvas.GraphicsContext;
 
 import java.util.*;
 
-public class Map {
+public class GameMap {
 
 
-    public static int GRID_X_SIZE = 100;
-    public static int GRID_Y_SIZE = 150;
+    public static int GRID_X_SIZE = 150;
+    public static int GRID_Y_SIZE = 100;
 
     private Tile[][] grid = new Tile[GRID_X_SIZE][GRID_Y_SIZE];
 
@@ -15,11 +15,11 @@ public class Map {
         return grid[x][y];
     }
 
-    public Map() {
+    public GameMap() {
 
         MapGenerator generator = new MapGenerator();
-
-        generator.makeMap(243614137484947419L); //Optional: add a seed here
+//243614137484947419L
+        generator.makeMap(); //Optional: add a seed here
 
         for(int i = 0; i < GRID_X_SIZE; i++)
             for(int j = 0; j < GRID_Y_SIZE; j++)

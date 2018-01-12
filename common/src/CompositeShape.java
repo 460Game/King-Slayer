@@ -10,9 +10,9 @@ public class CompositeShape extends Shape {
     Shape b;
 
     @Override
-    public Set<Tile> getTiles(Map map) {
-        Set<Tile> set = a.getTiles(map);
-        set.addAll(b.getTiles(map));
+    public Set<Tile> getTiles(GameMap gameMap) {
+        Set<Tile> set = a.getTiles(gameMap);
+        set.addAll(b.getTiles(gameMap));
         return set;
     }
 

@@ -6,13 +6,13 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public abstract class GameModel extends Model {
 
-    Map map = getGameMap();
+    GameMap gameMap = getGameMap();
 
-    public abstract Map getGameMap();
+    public abstract GameMap getGameMap();
 
     public void update() {
         super.updateAll();
-        map.update();
+        gameMap.update();
     }
 
     @Override
@@ -20,7 +20,7 @@ public abstract class GameModel extends Model {
 
         super.drawAll(gc);
 
-        this.map.draw(gc);
+        this.gameMap.draw(gc);
     }
 
     public void reqUpdate(WorldObject u) {

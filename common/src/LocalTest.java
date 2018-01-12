@@ -12,8 +12,8 @@ public class LocalTest extends Application {
     GameModel model = new GameModel() {
 
         @Override
-        public Map getGameMap() {
-            return new Map();
+        public GameMap getGameMap() {
+            return new GameMap();
         }
 
         @Override
@@ -46,7 +46,7 @@ public class LocalTest extends Application {
         Canvas canvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
-    gc.transform(new Affine(Transform.shear(0.3,0.3, SCREEN_WIDTH/2, 0)));
+   // gc.transform(new Affine(Transform.shear(0.3,0.3, SCREEN_WIDTH/2, 0)));
 
         AnimationTimer animator = new AnimationTimer()
         {
@@ -79,6 +79,9 @@ public class LocalTest extends Application {
             }
             if(e.getCode() == KeyCode.Q) {
                 gc.transform(new Affine(Transform.scale(0.9,0.9, canvas.getWidth()/2, canvas.getHeight()/2)));
+            }
+            if(e.getCode() == KeyCode.SPACE) {
+                model.gameMap = new GameMap();
             }
         });
         primaryStage.setScene(scene);
