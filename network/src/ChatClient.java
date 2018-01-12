@@ -67,12 +67,12 @@ public class ChatClient {
                 }
 
                 if (object instanceof ChatCommon.ChatMsg && !alreadyPingBack) {
-//                    endTime = System.nanoTime();
-//                    Log.info("Time: " + (endTime - startTime));
+                    endTime = System.nanoTime();
+                    Log.info("Time: " + (endTime - startTime));
                     ChatCommon.ChatMsg chatMessage = (ChatCommon.ChatMsg) object;
                     chatFrame.addMessage(chatMessage.msg);
-                    alreadyPingBack = true;
-                    client.sendTCP(new ChatCommon.ChatMsg("Ping back"));
+//                    alreadyPingBack = true;
+//                    client.sendTCP(new ChatCommon.ChatMsg("Ping back"));
                     return;
                 }
             }
@@ -258,11 +258,15 @@ public class ChatClient {
 //        sumTime += (endTime - startTime);
     }
 
-    public static void main (String[] args) {
+    public static void main (String[] args) throws InterruptedException {
         Log.set(Log.LEVEL_DEBUG);
         ChatClient chatClient = new ChatClient();
         chatClient.start();
-//        chatClient.testTime();
+        chatClient.testTime();
+        Thread.sleep(1000);
+        chatClient.testTime();
+        Thread.sleep(1000);
+        chatClient.testTime();
 //        for (int i = 0; i < 1000; i++) {
 //            chatClient.testTime();
 //            Log.info("Average time: " + (chatClient.sumTime / 1000000));
