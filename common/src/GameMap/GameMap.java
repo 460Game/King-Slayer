@@ -1,3 +1,7 @@
+package GameMap;
+
+import Entity.WorldObject;
+import Tile.Tile;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.*;

@@ -1,3 +1,5 @@
+import Entity.WorldObject;
+import GameMap.GameMap;
 import javafx.scene.canvas.GraphicsContext;
 
 /**

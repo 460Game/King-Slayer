@@ -1,6 +1,6 @@
-import javafx.scene.canvas.GraphicsContext;
+package Entity;
 
-import java.util.Set;
+import javafx.scene.canvas.GraphicsContext;
 
 public abstract class CollidingWorldObject<T extends CollidingWorldObject.PositionWorldObjectData> extends WorldObject<T> {
 

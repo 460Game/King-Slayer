@@ -1,5 +1,6 @@
 import java.io.IOException;
 
+import Entity.WorldObject;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;

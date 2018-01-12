@@ -1,14 +1,16 @@
+package Tile;
+
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
-public class TileTresure extends TilePassable {
+public class TilePassable extends TileTest {
 
-    public TileTresure(int x, int y) {
+    public TilePassable(int x, int y) {
         super(x, y);
     }
 
     @Override
     public Paint getColor() {
-        return Color.GOLD;
+        return Color.WHITE;
     }
 }

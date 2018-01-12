@@ -1,3 +1,4 @@
+import Entity.WorldObject;
 import javafx.scene.canvas.GraphicsContext;
 
 public class TeamModel extends Model {
