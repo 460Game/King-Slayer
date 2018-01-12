@@ -5,6 +5,20 @@
  *
  * should only be used for deltas not absolutes
  */
-public interface WorldClock {
-    public abstract long nanoTime();
+public class WorldClock {
+    public long serverStartTime;
+    public long startTime;
+    public long curTime;
+    public WorldClock () {
+        serverStartTime = 0;
+        startTime = System.nanoTime();
+    }
+    public long nanoTime() {
+        return serverStartTime + (System.nanoTime() - startTime);
+    }
+    public void sycronizeTime(long serverStartTime, long startTime, long curTime) {
+        this.serverStartTime = serverStartTime;
+        this.startTime = startTime;
+        this.curTime = curTime;
+    }
 }

@@ -14,17 +14,26 @@ public abstract class Model {
     private Set<Model> updateListeners = new HashSet<>();
     private Set<Model> actionListeners = new HashSet<>();
 
+    private WorldClock timer = new WorldClock() {
+        @Override
+        public long nanoTime() {
+            return System.nanoTime();
+        }
+    };
+
     public void updateAll() {
         for(WorldObject u : objectMap.values())
             this.reqUpdate(u);
     }
-
+    public Map<WorldObject, WorldObject> getMap () {
+        return objectMap;
+    }
     public abstract void draw(GraphicsContext gc);
 
     public abstract void reqUpdate(WorldObject u);
     
     public void receiveUpdateCommand(UpdateCommand cmd) {
-        cmd.execute(objectMap);
+        cmd.execute(this);
 
         for(Model l : updateListeners)
             l.receiveUpdateCommand(cmd);
@@ -49,7 +58,7 @@ public abstract class Model {
     how you get time depends on if client or server
      */
 
-    private static WorldClock timer = null;
+
 
     public long nanoTime() {
         if(timer == null)
