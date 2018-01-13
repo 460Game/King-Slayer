@@ -1,5 +1,6 @@
+package Model;
+
 import Entity.WorldObject;
-import GameMap.GameMap;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -8,7 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public abstract class GameModel extends Model {
 
-    GameMap gameMap = getGameMap();
+    public GameMap gameMap = getGameMap();
 
     public abstract GameMap getGameMap();
 

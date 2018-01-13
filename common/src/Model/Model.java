@@ -1,5 +1,7 @@
+package Model;
 
-
+import Command.ActionCommand;
+import Command.UpdateCommand;
 import Entity.WorldObject;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -75,7 +77,7 @@ public abstract class Model {
      * get the local systems timer
      * @return
      */
-    abstract WorldClock getTimer();
+    public abstract WorldClock getTimer();
 
     public void drawAll(GraphicsContext gc) {
         for(WorldObject u : objectMap.values())

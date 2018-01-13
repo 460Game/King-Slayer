@@ -1,6 +1,8 @@
 package Entity;
 
+import Model.GameModel;
 import javafx.scene.canvas.GraphicsContext;
+import Shape.*;
 
 public abstract class CollidingWorldObject<T extends CollidingWorldObject.PositionWorldObjectData> extends WorldObject<T> {
 
@@ -37,7 +39,7 @@ public abstract class CollidingWorldObject<T extends CollidingWorldObject.Positi
      * called for both directions
      * for now it is required that after this call they will not be colliding
      */
-    void collision(CollidingWorldObject<?> other) {
+    public void collision(CollidingWorldObject<?> other) {
         //Do nothing
     }
 
@@ -46,8 +48,8 @@ public abstract class CollidingWorldObject<T extends CollidingWorldObject.Positi
      * should return true exactly if the two objects are colldiding
      * type dependent- ew!
      */
-    static boolean testCollision(CollidingWorldObject<?> a, CollidingWorldObject<?> b)  {
-      //  if(Util.setsDisjoint(a.data.shape.getTiles(), b.data.shape.getTiles()))
+    public static boolean testCollision(CollidingWorldObject<?> a, CollidingWorldObject<?> b)  {
+      //  if(Util.Util.setsDisjoint(a.data.shape.getTiles(), b.data.shape.getTiles()))
        //TODO this is a mess
 
         //     return false;

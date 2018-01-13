@@ -1,8 +1,9 @@
-package GameMap;
+package Model;
 
 import Entity.WorldObject;
 import Tile.Tile;
 import javafx.scene.canvas.GraphicsContext;
+import server.MapGenerator;
 
 import java.util.*;
 

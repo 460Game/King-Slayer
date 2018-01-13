@@ -1,4 +1,6 @@
 import Entity.WorldObject;
+import Model.Model;
+import Model.WorldClock;
 import javafx.scene.canvas.GraphicsContext;
 
 public class TeamModel extends Model {

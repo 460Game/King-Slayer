@@ -1,3 +1,5 @@
+import Model.WorldClock;
+
 /**
  * magical client/server synrnonzied clock
  * uses system time right now

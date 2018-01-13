@@ -1,3 +1,5 @@
+package Model;
+
 /**
  * magical client/server synrnonzied clock
  * uses system time right now

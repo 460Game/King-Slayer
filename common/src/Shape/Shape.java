@@ -1,5 +1,8 @@
-import GameMap.GameMap;
+package Shape;
+
+import Model.GameMap;
 import Tile.Tile;
+import client.Drawable;
 
 import java.util.Set;
 

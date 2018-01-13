@@ -1,4 +1,6 @@
-import GameMap.GameMap;
+package Shape;
+
+import Model.GameMap;
 import Tile.Tile;
 import javafx.scene.canvas.GraphicsContext;
 

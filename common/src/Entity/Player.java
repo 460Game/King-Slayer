@@ -1,4 +1,7 @@
-import Entity.CollidingWorldObject;
+package Entity;
+
+import Model.GameModel;
+import Shape.*;
 
 public class Player extends CollidingWorldObject<Player.PlayerData> {
 

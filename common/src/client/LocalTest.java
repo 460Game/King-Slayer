@@ -1,4 +1,8 @@
-import GameMap.GameMap;
+package client;
+
+import Model.GameMap;
+import Model.GameModel;
+import Model.WorldClock;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.*;
@@ -18,7 +22,7 @@ public class LocalTest extends Application {
         }
 
         @Override
-        WorldClock getTimer() {
+        public WorldClock getTimer() {
             return new WorldClock() {
                 @Override
                 public long nanoTime() {
@@ -88,7 +92,7 @@ public class LocalTest extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-   //     model.receiveUpdateCommand(new UpdateCommand(new Player(new CirlceShape(50,50,10), model)));
+   //     model.receiveUpdateCommand(new Command.UpdateCommand(new Entity.Player(new Shape.Shape.CirlceShape(50,50,10), model)));
 
         //  serverModel.sendsInit();
 

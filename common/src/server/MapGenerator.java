@@ -1,9 +1,11 @@
-package GameMap;
+package server;
 
-import Tile.Tile;
+import Model.GameMap;
+import Util.Util;
 
 import java.util.*;
 import java.util.function.BiFunction;
+import Tile.*;
 
 public class MapGenerator {
 
@@ -22,7 +24,7 @@ public class MapGenerator {
     private Random random;
     private TS[][] grid;
 
-    MapGenerator() {
+    public MapGenerator() {
         this.DIST_MAX = (int) Math.sqrt(MAP_W * MAP_W + MAP_H * MAP_H);
 
         this.grid = new TS[this.MAP_W][this.MAP_H];
@@ -38,23 +40,23 @@ public class MapGenerator {
     }
 
     public static enum TS {
-        river(Tile.TileWater::new),
-        edgeWater(Tile.TileWater::new),
-        tresure(Tile.TileTresure::new),
-        metal(Tile.TileMetal::new),
-        stone(Tile.TileStone::new),
-        tree(Tile.TileTree::new),
-        wall(Tile.TileWall::new),
-        room(Tile.TilePassable::new),
-        grass(Tile.TileGrass::new),
-        barrier(Tile.TileBarrier::new),
+        river(TileWater::new),
+        edgeWater(TileWater::new),
+        tresure(TileTresure::new),
+        metal(TileMetal::new),
+        stone(TileStone::new),
+        tree(TileTree::new),
+        wall(TileWall::new),
+        room(TilePassable::new),
+        grass(TileGrass::new),
+        barrier(TileBarrier::new),
         unset((i, j) -> {
             //throw new RuntimeException("invalid tile generated");
-            return new Tile.TileWall(i, j);
+            return new TileWall(i, j);
         }),
-        start(Tile.TileStart::new),
-        bridge(Tile.TileBridge::new),
-        road(Tile.TilePassable::new);
+        start(TileStart::new),
+        bridge(TileBridge::new),
+        road(TilePassable::new);
 
         private BiFunction<Integer, Integer, Tile> make;
 

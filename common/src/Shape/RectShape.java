@@ -1,4 +1,6 @@
-import GameMap.GameMap;
+package Shape;
+
+import Model.GameMap;
 import Tile.Tile;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -18,7 +20,7 @@ public class RectShape extends Shape {
         if(memo != null)
             return memo;
 
-        memo = new HashSet<>();
+        memo =  new HashSet<>();
         for(int i = (int)(x - w); i <= Math.ceil(x + w); i++){
             for(int j = (int)(y - h); j <= Math.ceil(y + h); j++){
                 memo.add(gameMap.get(i,j));
@@ -33,7 +35,7 @@ public class RectShape extends Shape {
             //circle cricle
             CirlceShape circle = (CirlceShape) shape;
             return false; //TODO this
-           // return Util.dist(this.x, this.y, circle.x , circle.y) <= this.r + circle.r;
+           // return Util.Util.dist(this.x, this.y, circle.x , circle.y) <= this.r + circle.r;
         } else if(shape instanceof RectShape) {
             //rectangle rectangle
             RectShape rect = (RectShape) shape;
