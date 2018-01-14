@@ -2,6 +2,7 @@ package game.model;
 
 import game.message.Message;
 import game.model.Game.GameModel;
+import game.model.Game.Grid.GridCell;
 import game.model.Game.Tile.Tile;
 import javafx.scene.canvas.GraphicsContext;
 

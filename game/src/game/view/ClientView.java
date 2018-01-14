@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 
 public class ClientView {
 
-    final static int SCREEN_WIDTH = 1500;
+    final static int SCREEN_WIDTH = 1000;
     final static int SCREEN_HEIGHT = 1000;
 
     private GameModel model;

@@ -3,7 +3,7 @@ package Util;
 import java.util.Set;
 
 public class Util {
-    static <T> boolean setsIntersect(Set<T> a, Set<T> b) {
+    public static <T> boolean setsIntersect(Set<T> a, Set<T> b) {
         for(T t : a) {
             if(b.contains(t))
                 return true;

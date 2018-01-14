@@ -1,16 +1,23 @@
 package game.model.Game.WorldObject;
 
-import game.model.Drawable;
 import game.model.Game.GameModel;
 import game.model.Game.Grid.GridCell;
+import game.model.Game.WorldObject.Shape.Shape;
+import javafx.scene.canvas.GraphicsContext;
 
+import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-public abstract class Entity implements UpdatableTime, Drawable {
-    public abstract void collision(Entity b);
+public abstract class Entity {
+
+    public abstract void collision(GameModel model, Entity collidesWith);
 
     private UUID uuid = UUID.randomUUID();
     private long last_update;
+
+    public abstract Shape getShape();
 
     public UUID getUuid() {
         return uuid;
@@ -20,14 +27,27 @@ public abstract class Entity implements UpdatableTime, Drawable {
         last_update = model.nanoTime();
     }
 
-    @Override
-    public long getLastUpdate() {
-        return last_update;
-    }
+    public abstract void update(long time, GameModel model);
 
-    @Override
-    public void setLastUpdate(long t) {
-        last_update = t;
+    public void update(GameModel model) {
+
+        //note that getCells returns a new instance every time
+     //   Collection<GridCell> beforeSet = getShape().getCells(model);
+    //    Collection<GridCell> toRemove = getShape().getCells(model);
+
+        long current_time = model.nanoTime();
+        update(current_time - last_update, model);
+        last_update = current_time;
+
+        Collection<GridCell> afterSet = getShape().getCells(model);
+
+     //   toRemove.removeAll(afterSet); //to remove
+      //  afterSet.removeAll(beforeSet); //to add
+
+        for(GridCell cell : model.getAllCells())
+            cell.remove(this);
+        for(GridCell cell : afterSet)
+            cell.add(this);
     }
 
     @Override
@@ -35,20 +55,66 @@ public abstract class Entity implements UpdatableTime, Drawable {
         return uuid.hashCode();
     }
 
+    public abstract void draw(GraphicsContext gc);
+
     @Override
     public boolean equals(Object o) {
-        // self check
         if (this == o)
             return true;
-        // null check
         if (o == null)
             return false;
-        // type check and cast
         if (getClass() != o.getClass())
             return false;
         Entity entity = (Entity) o;
-        // field comparison
         return this.uuid.equals(entity.uuid);
     }
 
+    public double getX() {
+       return this.getShape().getX();
+    }
+
+    public double getY() {
+        return this.getShape().getY();
+    }
+
+    /**
+     * this should return the set of all tiles this shape overlaps with
+     * returns a new set every time
+     * @param gameMap
+     * @return
+     */
+    public Collection<GridCell> getCells(GameModel gameMap) {
+        return getShape().getCells(gameMap);
+    }
+
+    /**
+     * given that they are on same cell, do they collide?
+     * @param
+     * @return
+     */
+    public boolean testCollision(Entity other) {
+        return this.getShape().testCollision(other.getShape());
+    }
+
+    /**
+     * shift the shape by the delta
+     * @param dx
+     * @param dy
+     */
+    public void shift(double dx, double dy) {
+        this.getShape().shift(dx,dy);
+    }
+
+    public void setPos(double x, double y) {
+        this.getShape().setPos(x,y);
+    }
+
+
+    public void rotate(double r) {
+        this.getShape().rotate(r);
+    }
+
+    public void setAngle(double r) {
+        this.getShape().setAngle(r);
+    }
 }

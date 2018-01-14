@@ -1,12 +1,9 @@
 package game.model.Game.Grid;
 
-import game.model.Drawable;
 import game.model.Game.GameModel;
 import game.model.Game.Tile.Tile;
-import game.model.Game.Tile.unknownTile;
 import game.model.Game.WorldObject.Blocker;
 import game.model.Game.WorldObject.Entity;
-import game.model.Game.WorldObject.Updatable;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Collections;
@@ -14,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class GridCell implements Drawable, Updatable {
+public class GridCell {
 
     private Set<Entity> contains = new HashSet<>();
 
@@ -32,16 +29,6 @@ public class GridCell implements Drawable, Updatable {
         return Collections.synchronizedSet(contains);
     }
 
-    public void update() {
-        for(Entity a : contains) {
-            for (Entity b : contains) {
-                if (a != b) {
-                    a.collision(b);
-                }
-            }
-        }
-    }
-
     public void add(Entity o) {
         contains.add(o);
     }
@@ -54,26 +41,19 @@ public class GridCell implements Drawable, Updatable {
         this.x = x;
         this.y = y;
         this.type = type;
-        if(!isPassable()) {
+        if(!isPassable())
             add(new Blocker(model, x,y));
-        }
     }
 
     public void drawBackground(GraphicsContext gc) {
         type.draw(gc, x, y);
     }
 
-
-    @Override
-    public void draw(GraphicsContext gc) {
-        for(Entity e : contains)
-            e.draw(gc);
-    }
-
-    @Override
-    public void update(GameModel model) {
-        for(Entity e : contains)
-            e.update(model);
+    public void collideContents(GameModel model) {
+        for(Entity a : contains)
+            for (Entity b : contains)
+                if (a != b ) // && a.getShape().testCollision(b.getShape()))
+                    a.collision(model, b);
     }
 
     public Tile getTile() {

@@ -1,40 +1,47 @@
 package game.model.Game.WorldObject;
 
 import game.model.Game.GameModel;
+import game.model.Game.WorldObject.Shape.CircleShape;
+import game.model.Game.WorldObject.Shape.Shape;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 public class TestPlayer extends Entity {
 
-    double dx = 0;
-    double dy = 0;
-    double x = 0;
-    double y = 0;
+    private CircleShape shape;
 
-    public TestPlayer(GameModel model, int x, int y) {
+    private double dx = 0;
+    private double dy = 0;
+
+    public TestPlayer(GameModel model, double x, double y) {
         super(model);
-        this.x = x;
-        this.y = y;
+        this.shape = new CircleShape(x, y, 0.5);
     }
 
     @Override
-    public void collision(Entity b) {
-        dx = 0;
-        dy = 0;
+    public void collision(GameModel model, Entity collidesWith) {
+        double xdiff = this.getX() - collidesWith.getX();
+        double ydiff = this.getY() - collidesWith.getY();
+
+        while (this.shape.testCollision(collidesWith.getShape()))
+            this.shape.shift(0.1 * xdiff, 0.1 * ydiff);
+    }
+
+    @Override
+    public Shape getShape() {
+        return shape;
     }
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.setFill(Color.RED);
-        gc.fillOval(x*10,y*10, 10, 10);
+
+        this.shape.draw(gc);
     }
 
     @Override
     public void update(long time, GameModel model) {
-        x += dx * time * 1e-9 * 10;
-        y += dy * time * 1e-9 * 10;
-        System.out.println("Player location: " + x + ", " + y);
+        this.shape.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10);
+
     }
 
     public void up() {
