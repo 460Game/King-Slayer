@@ -3,20 +3,38 @@
   <component name="ChangeListManager">
     <list default="true" id="e64a6390-b796-45d8-a46b-3ef54585f01a" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/game/game.iml" afterPath="$PROJECT_DIR$/game/game.iml" />
-      <change beforePath="$PROJECT_DIR$/game/src/Util/Util.java" afterPath="$PROJECT_DIR$/game/src/Util/Util.java" />
-      <change beforePath="$PROJECT_DIR$/game/src/game/SingleplayerController.java" afterPath="$PROJECT_DIR$/game/src/game/SingleplayerController.java" />
-      <change beforePath="$PROJECT_DIR$/game/src/game/message/playerMoveMessage/PlayerDown.java" afterPath="$PROJECT_DIR$/game/src/game/message/playerMoveMessage/PlayerDown.java" />
-      <change beforePath="$PROJECT_DIR$/game/src/game/message/playerMoveMessage/PlayerLeft.java" afterPath="$PROJECT_DIR$/game/src/game/message/playerMoveMessage/PlayerLeft.java" />
-      <change beforePath="$PROJECT_DIR$/game/src/game/message/playerMoveMessage/PlayerRight.java" afterPath="$PROJECT_DIR$/game/src/game/message/playerMoveMessage/PlayerRight.java" />
-      <change beforePath="$PROJECT_DIR$/game/src/game/message/playerMoveMessage/PlayerStopHorz.java" afterPath="$PROJECT_DIR$/game/src/game/message/playerMoveMessage/PlayerStopHorz.java" />
-      <change beforePath="$PROJECT_DIR$/game/src/game/message/playerMoveMessage/PlayerStopVert.java" afterPath="$PROJECT_DIR$/game/src/game/message/playerMoveMessage/PlayerStopVert.java" />
-      <change beforePath="$PROJECT_DIR$/game/src/game/message/playerMoveMessage/PlayerUp.java" afterPath="$PROJECT_DIR$/game/src/game/message/playerMoveMessage/PlayerUp.java" />
-      <change beforePath="$PROJECT_DIR$/game/src/game/model/Game/GameModel.java" afterPath="$PROJECT_DIR$/game/src/game/model/Game/GameModel.java" />
-      <change beforePath="$PROJECT_DIR$/game/src/game/model/Game/WorldObject/Blocker.java" afterPath="$PROJECT_DIR$/game/src/game/model/Game/WorldObject/Blocker.java" />
-      <change beforePath="$PROJECT_DIR$/game/src/game/model/Game/WorldObject/Entity.java" afterPath="$PROJECT_DIR$/game/src/game/model/Game/WorldObject/Entity.java" />
-      <change beforePath="$PROJECT_DIR$/game/src/game/model/Game/WorldObject/TestPlayer.java" afterPath="$PROJECT_DIR$/game/src/game/model/Game/WorldObject/TestPlayer.java" />
-      <change beforePath="$PROJECT_DIR$/game/src/game/view/ClientView.java" afterPath="$PROJECT_DIR$/game/src/game/view/ClientView.java" />
+      <change beforePath="$PROJECT_DIR$/common/OLD DO NOT USE.iml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Command/ActionMessage.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Command/Message.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Command/UpdateMessage.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Entity/CollidingWorldObject.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Entity/Player.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Entity/WorldObject.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Model/GameMap.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Model/GameModel.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Model/Model.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Model/WorldClock.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Shape/CirlceShape.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Shape/CompositeShape.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Shape/RectShape.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Shape/Shape.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Tile/Tile.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Tile/TileBarrier.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Tile/TileBridge.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Tile/TileGrass.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Tile/TileMetal.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Tile/TilePassable.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Tile/TileStart.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Tile/TileStone.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Tile/TileTest.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Tile/TileTree.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Tile/TileTresure.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Tile/TileWall.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Tile/TileWater.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/Util/Util.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/client/Drawable.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/client/LocalTest.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/common/src/server/MapGenerator.java" afterPath="" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -27,36 +45,6 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/gam$LocalTest.coverage" NAME="LocalTest Coverage Results" MODIFIED="1515657194858" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-  </component>
-  <component name="DockManager">
-    <window id="1">
-      <content type="file-editors">
-        <state>
-          <leaf>
-            <file leaf-file-name="WorldObject.java" pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/common/src/Entity/WorldObject.java">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="367">
-                    <caret line="22" column="17" lean-forward="false" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="17" />
-                    <folding />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-            <file leaf-file-name="CollidingWorldObject.java" pinned="false" current-in-tab="false">
-              <entry file="file://$PROJECT_DIR$/common/src/Entity/CollidingWorldObject.java">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="396">
-                    <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-                    <folding />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
@@ -74,7 +62,7 @@
         <entry file="file://$PROJECT_DIR$/game/src/game/SingleplayerController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="419">
-              <caret line="57" column="0" lean-forward="true" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
+              <caret line="57" column="0" lean-forward="false" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1079#1080#0" expanded="true" />
@@ -92,7 +80,7 @@
         <entry file="file://$PROJECT_DIR$/game/src/game/model/Game/GameModel.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="353">
-              <caret line="134" column="29" lean-forward="true" selection-start-line="134" selection-start-column="29" selection-end-line="134" selection-end-column="29" />
+              <caret line="134" column="29" lean-forward="false" selection-start-line="134" selection-start-column="29" selection-end-line="134" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#782#783#0" expanded="true" />
@@ -136,7 +124,7 @@
         <entry file="file://$PROJECT_DIR$/game/src/game/model/Game/WorldObject/Entity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="199">
-              <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="22" selection-end-column="5" />
+              <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="22" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#685#686#0" expanded="true" />
@@ -170,7 +158,7 @@
         <entry file="file://$PROJECT_DIR$/game/src/game/model/Game/WorldObject/Blocker.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="154">
-              <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="22" selection-end-column="5" />
+              <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="22" selection-end-column="5" />
               <folding>
                 <element signature="e#871#872#0" expanded="true" />
                 <element signature="e#899#900#0" expanded="true" />
@@ -183,7 +171,7 @@
         <entry file="file://$PROJECT_DIR$/game/src/game/model/Game/WorldObject/TestPlayer.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="309">
-              <caret line="72" column="5" lean-forward="true" selection-start-line="72" selection-start-column="5" selection-end-line="72" selection-end-column="5" />
+              <caret line="72" column="5" lean-forward="false" selection-start-line="72" selection-start-column="5" selection-end-line="72" selection-end-column="5" />
               <folding>
                 <element signature="e#1151#1152#0" expanded="true" />
                 <element signature="e#1179#1180#0" expanded="true" />
@@ -214,21 +202,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/common/src/Entity/Player.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="PlayerUp.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game/src/game/message/playerMoveMessage/PlayerUp.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="199">
-              <caret line="10" column="28" lean-forward="true" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
+              <caret line="10" column="28" lean-forward="false" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -385,24 +363,6 @@
               <item name="gam" type="b2602c69:ProjectViewProjectNode" />
               <item name="gam" type="462c0819:PsiDirectoryNode" />
               <item name="client" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="gam" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gam" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="gam" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gam" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="gam" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gam" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Entity" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="gam" type="b2602c69:ProjectViewProjectNode" />
@@ -874,7 +834,14 @@
       <option name="project" value="LOCAL" />
       <updated>1515963110817</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Singleplayer Demo is complete except for serilization">
+      <created>1515965765611</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1515965765611</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -895,7 +862,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Run with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18923241" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18923241" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.4978678" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -969,7 +936,8 @@
     <MESSAGE value="Working in 'game' module, added two player movement on keyboard&#10;Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;common/src/Entity/Player.java&#10;#&#9;common/src/GameMap.java&#10;#&#9;common/src/GameMap/GameMap.java&#10;#&#9;common/src/GameMap/MapGenerator.java&#10;#&#9;common/src/MapGenerator.java&#10;#&#9;common/src/Model/GameMap.java&#10;#&#9;common/src/Model/GameModel.java&#10;#&#9;common/src/Model/Model.java&#10;#&#9;common/src/Shape/CirlceShape.java&#10;#&#9;common/src/Shape/CompositeShape.java&#10;#&#9;common/src/Shape/RectShape.java&#10;#&#9;common/src/Shape/Shape.java&#10;#&#9;common/src/client/LocalTest.java&#10;#&#9;common/src/server/MapGenerator.java&#10;#&#9;network/src/NetWorkCommon.java&#10;#&#9;server/src/ServerModel.java&#10;#&#9;server/src/TeamModel.java" />
     <MESSAGE value="Collisions working for circle-barrier, player can now run into stuff!" />
     <MESSAGE value="Two windows!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Two windows!" />
+    <MESSAGE value="Singleplayer Demo is complete except for serilization" />
+    <option name="LAST_COMMIT_MESSAGE" value="Singleplayer Demo is complete except for serilization" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1260,13 +1228,13 @@
         <state relative-caret-position="396">
           <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1189#1190#0" expanded="true" />
-            <element signature="e#1229#1230#0" expanded="true" />
-            <element signature="e#1933#1934#0" expanded="true" />
-            <element signature="e#1979#1980#0" expanded="true" />
-            <element signature="e#2014#2015#0" expanded="true" />
-            <element signature="e#2064#2065#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#1189#1190#0" expanded="false" />
+            <element signature="e#1229#1230#0" expanded="false" />
+            <element signature="e#1933#1934#0" expanded="false" />
+            <element signature="e#1979#1980#0" expanded="false" />
+            <element signature="e#2014#2015#0" expanded="false" />
+            <element signature="e#2064#2065#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1287,9 +1255,9 @@
         <state relative-caret-position="463">
           <caret line="24" column="17" lean-forward="false" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#232#233#0" expanded="true" />
-            <element signature="e#268#269#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#232#233#0" expanded="false" />
+            <element signature="e#268#269#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1307,7 +1275,7 @@
         <state relative-caret-position="88">
           <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1355,7 +1323,7 @@
     <entry file="file://$PROJECT_DIR$/game/src/game/message/playerMoveMessage/PlayerUp.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="199">
-          <caret line="10" column="28" lean-forward="true" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
+          <caret line="10" column="28" lean-forward="false" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1393,15 +1361,7 @@
     <entry file="file://$PROJECT_DIR$/common/src/Entity/CollidingWorldObject.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
-          <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/Entity/WorldObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="22" column="17" lean-forward="false" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="17" />
+          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1409,7 +1369,7 @@
     <entry file="file://$PROJECT_DIR$/game/src/game/model/Game/WorldObject/Entity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="199">
-          <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="22" selection-end-column="5" />
+          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="22" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#685#686#0" expanded="true" />
@@ -1441,7 +1401,7 @@
     <entry file="file://$PROJECT_DIR$/game/src/game/model/Game/WorldObject/Blocker.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154">
-          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="22" selection-end-column="5" />
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="22" selection-end-column="5" />
           <folding>
             <element signature="e#871#872#0" expanded="true" />
             <element signature="e#899#900#0" expanded="true" />
@@ -1452,7 +1412,7 @@
     <entry file="file://$PROJECT_DIR$/game/src/game/model/Game/WorldObject/TestPlayer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="309">
-          <caret line="72" column="5" lean-forward="true" selection-start-line="72" selection-start-column="5" selection-end-line="72" selection-end-column="5" />
+          <caret line="72" column="5" lean-forward="false" selection-start-line="72" selection-start-column="5" selection-end-line="72" selection-end-column="5" />
           <folding>
             <element signature="e#1151#1152#0" expanded="true" />
             <element signature="e#1179#1180#0" expanded="true" />
@@ -1475,7 +1435,7 @@
     <entry file="file://$PROJECT_DIR$/game/src/game/model/Game/GameModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="353">
-          <caret line="134" column="29" lean-forward="true" selection-start-line="134" selection-start-column="29" selection-end-line="134" selection-end-column="29" />
+          <caret line="134" column="29" lean-forward="false" selection-start-line="134" selection-start-column="29" selection-end-line="134" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#782#783#0" expanded="true" />
@@ -1508,10 +1468,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/common/src/Entity/WorldObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="16" column="7" lean-forward="false" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/game/src/game/SingleplayerController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="419">
-          <caret line="57" column="0" lean-forward="true" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
+          <caret line="57" column="0" lean-forward="false" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1079#1080#0" expanded="true" />
