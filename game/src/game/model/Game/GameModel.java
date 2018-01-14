@@ -1,5 +1,6 @@
 package game.model.Game;
 
+import Util.Util;
 import game.model.Game.Grid.GridCell;
 import game.model.Game.Tile.Tile;
 import game.model.Game.WorldObject.Entity;
@@ -131,9 +132,7 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     public void setEntity(Entity entity) {
         if(entities.containsKey(entity)) {
             Entity e = entities.get(entity);
-            //Deep copy entity into e
-            //TODO tian how do we do this
-            //TODO TODO TODO
+            e.copyOf(entity);
         } else {
             entities.put(entity,entity);
         }

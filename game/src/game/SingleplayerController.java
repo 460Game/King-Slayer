@@ -1,8 +1,10 @@
 package game;
 
+import Util.Util;
 import game.message.Message;
 import game.model.ClientGameModel;
 import game.model.Game.GameModel;
+import game.model.Game.WorldObject.Entity;
 import game.model.Game.WorldObject.TestPlayer;
 import game.model.IModel;
 import game.model.ServerGameModel;
@@ -28,7 +30,8 @@ public class SingleplayerController extends Application {
 
             @Override
             public void processMessage(Message m) {
-                clientModel.processMessage(m);
+                Message copy = Util.KYRO.copy(m); //to simulate going thoruhg network - make a copy
+                clientModel.processMessage(copy);
             }
 
             @Override
@@ -36,7 +39,18 @@ public class SingleplayerController extends Application {
                 return clientModel.nanoTime();
             }
         }));
-        clientModel = new ClientGameModel(serverModel, serverModel.getGenerator());
+        clientModel = new ClientGameModel(new IModel() {
+            @Override
+            public void processMessage(Message m) {
+                Message copy = Util.KYRO.copy(m); //to simulate going thoruhg network - make a copy
+                serverModel.processMessage(copy);
+            }
+
+            @Override
+            public long nanoTime() {
+                return serverModel.nanoTime();
+            }
+        }, serverModel.getGenerator());
 
         clientView1 = new ClientView(clientModel);
         clientView2 = new ClientView(serverModel);

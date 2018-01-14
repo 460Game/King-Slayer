@@ -1,8 +1,12 @@
 package Util;
 
 import java.util.Set;
+import com.esotericsoftware.kryo.Kryo;
 
 public class Util {
+
+    public static Kryo KYRO = new Kryo();
+
     public static <T> boolean setsIntersect(Set<T> a, Set<T> b) {
         for(T t : a) {
             if(b.contains(t))

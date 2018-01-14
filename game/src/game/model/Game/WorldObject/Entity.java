@@ -17,6 +17,12 @@ public abstract class Entity {
     private UUID uuid = UUID.randomUUID();
     private long last_update;
 
+    public void copyOf(Entity other) {
+        this.uuid = other.uuid;
+        this.last_update = other.last_update;
+    }
+
+
     public abstract Shape getShape();
 
     public UUID getUuid() {

@@ -5,9 +5,24 @@ import game.message.SetEntityMessage;
 import game.model.Game.GameModel;
 
 public class PlayerRight extends ActionMessage {
+
+
+    boolean p;
+    public PlayerRight(int i) {
+        super();
+        p = i == 0;
+    }
+
+
+
     @Override
     public void execute(GameModel model) {
-        model.playerA.right();
-        model.processMessage(new SetEntityMessage(model.playerA));
+        if(p) {
+            model.playerA.right();
+            model.processMessage(new SetEntityMessage(model.playerA));
+        } else {
+            model.playerB.right();
+            model.processMessage(new SetEntityMessage(model.playerB));
+        }
     }
 }

@@ -7,14 +7,26 @@ import game.model.Game.WorldObject.Shape.Shape;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import java.util.UUID;
+import java.util.concurrent.BlockingDeque;
+
 public class Blocker extends Entity {
+
+    private CellShape shape;
+
+
+    @Override
+    public void copyOf(Entity other) {
+        assert(other instanceof Blocker);
+        Blocker o = (Blocker)other;
+        this.shape = o.shape;
+    }
 
     public Blocker(GameModel model, int x, int y) {
         super(model);
         this.shape = new CellShape(x,y);
     }
 
-    private CellShape shape;
 
     @Override
     public void collision(GameModel model, Entity collidesWith) {

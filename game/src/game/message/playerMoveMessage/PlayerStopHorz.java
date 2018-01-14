@@ -5,9 +5,24 @@ import game.message.SetEntityMessage;
 import game.model.Game.GameModel;
 
 public class PlayerStopHorz extends ActionMessage {
+
+
+    boolean p;
+    public PlayerStopHorz(int i) {
+        super();
+        p = i == 0;
+    }
+
+
+
     @Override
     public void execute(GameModel model) {
-        model.playerA.stopHorz();
-        model.processMessage(new SetEntityMessage(model.playerA));
+        if(p) {
+            model.playerA.stopHorz();
+            model.processMessage(new SetEntityMessage(model.playerA));
+        } else {
+            model.playerB.stopHorz();
+            model.processMessage(new SetEntityMessage(model.playerB));
+        }
     }
 }

@@ -5,9 +5,24 @@ import game.message.SetEntityMessage;
 import game.model.Game.GameModel;
 
 public class PlayerUp extends ActionMessage {
+
+
+    boolean p;
+    public PlayerUp(int i) {
+        super();
+        p = i == 0;
+    }
+
+
+
     @Override
     public void execute(GameModel model) {
-        model.playerA.up();
-        model.processMessage(new SetEntityMessage(model.playerA));
+        if(p) {
+            model.playerA.up();
+            model.processMessage(new SetEntityMessage(model.playerA));
+        } else {
+            model.playerB.up();
+            model.processMessage(new SetEntityMessage(model.playerB));
+        }
     }
 }

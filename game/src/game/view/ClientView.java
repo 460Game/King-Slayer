@@ -50,48 +50,45 @@ public class ClientView {
         Scene scene = new Scene(root);
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.W)
-                model.processMessage(new PlayerUp());
-     //           model.playerA.up();
+                model.processMessage(new PlayerUp(0));
             if (e.getCode() == KeyCode.S)
-                model.processMessage(new PlayerDown());
-     //           model.playerA.down();
+                model.processMessage(new PlayerDown(0));
             if (e.getCode() == KeyCode.A)
-                model.processMessage(new PlayerLeft());
-     //           model.playerA.left();
+                model.processMessage(new PlayerLeft(0));
             if (e.getCode() == KeyCode.D)
-                model.processMessage(new PlayerRight());
+                model.processMessage(new PlayerRight(0));
      //           model.playerA.right();
-      /*      if (e.getCode() == KeyCode.UP)
-                model.playerB.up();
+            if (e.getCode() == KeyCode.UP)
+                model.processMessage(new PlayerUp(1));
             if (e.getCode() == KeyCode.DOWN)
-                model.playerB.down();
+                model.processMessage(new PlayerDown(1));
             if (e.getCode() == KeyCode.LEFT)
-                model.playerB.left();
+                model.processMessage(new PlayerLeft(1));
             if (e.getCode() == KeyCode.RIGHT)
-                model.playerB.right();*/
+                model.processMessage(new PlayerRight(1));
         });
 
         scene.setOnKeyReleased(e -> {
             if (e.getCode() == KeyCode.W)
-                model.processMessage(new PlayerStopVert());
+                model.processMessage(new PlayerStopVert(0));
            //     model.playerA.stopVert();
             if (e.getCode() == KeyCode.S)
-                model.processMessage(new PlayerStopVert());
+                model.processMessage(new PlayerStopVert(0));
         //        model.playerA.stopVert();
             if (e.getCode() == KeyCode.A)
-                model.processMessage(new PlayerStopHorz());
+                model.processMessage(new PlayerStopHorz(0));
        //         model.playerA.stopHorz();
             if (e.getCode() == KeyCode.D)
-                model.processMessage(new PlayerStopHorz());
+                model.processMessage(new PlayerStopHorz(0));
        //         model.playerA.stopHorz();
-       /*     if (e.getCode() == KeyCode.RIGHT)
-                model.playerB.stopHorz();
+            if (e.getCode() == KeyCode.RIGHT)
+                model.processMessage(new PlayerStopHorz(1));
             if (e.getCode() == KeyCode.LEFT)
-                model.playerB.stopHorz();
+                model.processMessage(new PlayerStopHorz(1));
             if (e.getCode() == KeyCode.UP)
-                model.playerB.stopVert();
+                model.processMessage(new PlayerStopVert(1));
             if (e.getCode() == KeyCode.DOWN)
-                model.playerB.stopVert();*/
+                model.processMessage(new PlayerStopHorz(1));
         });
 
         window.setScene(scene);
