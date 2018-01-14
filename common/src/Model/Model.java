@@ -1,7 +1,7 @@
 package Model;
 
-import Command.ActionCommand;
-import Command.UpdateCommand;
+import Command.ActionMessage;
+import Command.UpdateMessage;
 import Entity.WorldObject;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -26,14 +26,14 @@ public abstract class Model {
 
     public abstract void reqUpdate(WorldObject u);
     
-    public void receiveUpdateCommand(UpdateCommand cmd) {
+    public void receiveUpdateCommand(UpdateMessage cmd) {
         cmd.execute(objectMap);
 
         for(Model l : updateListeners)
             l.receiveUpdateCommand(cmd);
     }
     
-    public void receiveActionCommand(ActionCommand cmd) {
+    public void receiveActionCommand(ActionMessage cmd) {
         cmd.execute(this);
 
         for(Model l : actionListeners)

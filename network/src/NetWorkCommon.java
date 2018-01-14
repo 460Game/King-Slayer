@@ -1,5 +1,5 @@
-import Command.ActionCommand;
-import Command.UpdateCommand;
+import Command.ActionMessage;
+import Command.UpdateMessage;
 import Entity.CollidingWorldObject;
 import Entity.Player;
 import Entity.WorldObject;
@@ -21,8 +21,8 @@ public class NetWorkCommon {
         Kryo kryo = endPoint.getKryo();
 
         kryo.register(GameMap.class);
-        kryo.register(UpdateCommand.class);
-        kryo.register(ActionCommand.class);
+        kryo.register(UpdateMessage.class);
+        kryo.register(ActionMessage.class);
         kryo.register(Shape.CirlceShape.class);
         kryo.register(CollidingWorldObject.class);
         kryo.register(Shape.CompositeShape.class);

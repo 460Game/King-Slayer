@@ -21,7 +21,7 @@ since the players unit has been mutated, the server sends an update message out 
  */
 
 
-public abstract class ActionCommand {
+public abstract class ActionMessage extends Message {
 
     public abstract void execute(Model model);
 

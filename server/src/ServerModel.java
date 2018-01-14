@@ -1,6 +1,6 @@
 import java.io.IOException;
 
-import Command.UpdateCommand;
+import Command.UpdateMessage;
 import Entity.WorldObject;
 import Model.GameModel;
 import Model.WorldClock;
@@ -38,8 +38,8 @@ public abstract class ServerModel extends GameModel {
                 // We know all connections for this server are actually ChatConnections.
                 GameConnection connection = (GameConnection)c;
 
-                if (obj instanceof UpdateCommand) {
-                    UpdateCommand updateMsg = (UpdateCommand) obj;
+                if (obj instanceof UpdateMessage) {
+                    UpdateMessage updateMsg = (UpdateMessage) obj;
                     //if (updateMsg.?? == null) return;
                     updateMsg.execute(map);
 

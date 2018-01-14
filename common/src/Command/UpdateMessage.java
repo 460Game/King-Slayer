@@ -5,7 +5,7 @@ import Model.Model;
 
 import java.util.Map;
 
-public class UpdateCommand<T extends WorldObject.WorldObjectData>  {
+public class UpdateMessage<T extends WorldObject.WorldObjectData> extends Message {
     private WorldObject<T> object;
 
     public void execute(Map<WorldObject, WorldObject> map) {
@@ -17,6 +17,6 @@ public class UpdateCommand<T extends WorldObject.WorldObjectData>  {
         m.receiveUpdateCommand(this);
     }
 
-    public UpdateCommand(WorldObject<T> object) {this.object = object;}
+    public UpdateMessage(WorldObject<T> object) {this.object = object;}
 
 }

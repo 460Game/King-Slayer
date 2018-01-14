@@ -12,6 +12,7 @@ public abstract class CollidingWorldObject<T extends CollidingWorldObject.Positi
     }
 
     public static class PositionWorldObjectData<T extends CollidingWorldObject> extends WorldObjectData<T> {
+
         Shape shape;
     }
 
