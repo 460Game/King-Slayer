@@ -34,8 +34,8 @@ public class CellShape extends Shape {
     }
 
     @Override
-    public boolean testCollision(Shape shape) {
-        return shape.getCellsReference().stream().anyMatch(c -> c.x == gridCell.x && c.y == gridCell.y);
+    public boolean sameCellTestCollision(Shape shape) {
+        return true;
     }
 
     @Override

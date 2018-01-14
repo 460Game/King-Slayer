@@ -18,22 +18,12 @@ public class SingleplayerController extends Application {
     private GameModel serverModel;
     private GameModel clientModel;
 
-    private ClientView clientView;
+    private ClientView clientView1;
+    private ClientView clientView2;
     private AIView aiView;
 
     public SingleplayerController() {
 
-        clientModel = new ClientGameModel(new IModel() {
-            @Override
-            public void processMessage(Message m) {
-                serverModel.processMessage(m);
-            }
-
-            @Override
-            public long nanoTime() {
-                return serverModel.nanoTime();
-            }
-        });
         serverModel = new ServerGameModel(Collections.singleton(new IModel() {
 
             @Override
@@ -46,16 +36,19 @@ public class SingleplayerController extends Application {
                 return clientModel.nanoTime();
             }
         }));
+        clientModel = new ClientGameModel(serverModel, serverModel.getGenerator());
 
-        clientView = new ClientView(clientModel);
-        aiView = new AIView(clientModel);
+        clientView1 = new ClientView(clientModel);
+        clientView2 = new ClientView(serverModel);
+       // aiView = new AIView(serverModel);
 
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        aiView.start();
-        clientView.start(primaryStage);
+//        aiView.start();
+        clientView1.start(primaryStage);
+        clientView2.start(new Stage());
     }
 
     public static void main(String args[]) {

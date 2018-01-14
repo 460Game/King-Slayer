@@ -7,7 +7,7 @@ public class SetEntityMessage implements ToClientMessage {
 
     private Entity entity;
 
-    SetEntityMessage(Entity entity) {
+    public SetEntityMessage(Entity entity) {
         this.entity = entity;
     }
 
@@ -19,6 +19,9 @@ public class SetEntityMessage implements ToClientMessage {
          *
          * if enttity with same UUID already exists in this model, should copy the new one into it
          * if dosnt exist copy the whole thing!
+
+
          */
+        model.setEntity(entity);
     }
 }

@@ -38,6 +38,7 @@ public class MapGenerator {
             for (int j = 0; j < this.mapH; j++)
                 grid[i][j] = TS.unset;
 
+        makeMap();
     }
 
     public Tile makeTile(int i, int j) {

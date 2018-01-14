@@ -41,7 +41,7 @@ public class RectShape extends Shape {
     }
 
     @Override
-    public boolean testCollision(Shape shape) {
+    public boolean sameCellTestCollision(Shape shape) {
 
         //TODO Not implemented yet
 

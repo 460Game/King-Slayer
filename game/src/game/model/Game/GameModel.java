@@ -23,7 +23,7 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     public TestPlayer playerA = null;
     public TestPlayer playerB = null;
 
-    private Collection<Entity> entities;
+    private Map<Entity,Entity> entities;
 
     public int getMapWidth() {
         return GRID_X_SIZE;
@@ -61,14 +61,19 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
         return objects;
     }
 
-    public GameModel(boolean isServer, Collection<IModel> others) {
+    private MapGenerator generator;
+
+    public MapGenerator getGenerator() {
+        return generator;
+    }
+
+    public GameModel(boolean isServer, Collection<IModel> others, MapGenerator generator) {
         super(isServer, others);
 
-        entities = new ArrayList<>();
+        entities = new HashMap<>();
         allCells = new ArrayList<>();
-        MapGenerator generator = new MapGenerator(getMapWidth(), getMapWidth());
 
-        generator.makeMap();
+        this.generator = generator;
 
         for (int i = 0; i < GRID_X_SIZE; i++)
             for (int j = 0; j < GRID_Y_SIZE; j++)
@@ -78,10 +83,12 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
             for (int j = 0; j < GRID_Y_SIZE; j++)
                 allCells.add(grid[i][j]);
 
-        playerA = new TestPlayer(this, generator.getStartingLocations().get(0).x, generator.getStartingLocations().get(0).y);
-        playerB = new TestPlayer(this, generator.getStartingLocations().get(1).x, generator.getStartingLocations().get(1).y);
-        entities.add(playerA);
-        entities.add(playerB);
+        if(isServer) {
+            playerA = new TestPlayer(this, generator.getStartingLocations().get(0).x, generator.getStartingLocations().get(0).y);
+            playerB = new TestPlayer(this, generator.getStartingLocations().get(1).x, generator.getStartingLocations().get(1).y);
+            entities.put(playerA,playerA);
+            entities.put(playerB,playerB);
+        }
     }
 
     @Override
@@ -105,7 +112,7 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
         for (GridCell tile : allCells)
             tile.collideContents(this);
 
-        for (Entity e : entities)
+        for (Entity e : entities.keySet())
             e.update(this);
     }
 
@@ -113,7 +120,7 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     public void draw(GraphicsContext gc) {
         for (GridCell tile : allCells)
             tile.drawBackground(gc);
-        for (Entity e : entities)
+        for (Entity e : entities.values())
             e.draw(gc);
     }
 
@@ -121,4 +128,14 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
         return allCells;
     }
 
+    public void setEntity(Entity entity) {
+        if(entities.containsKey(entity)) {
+            Entity e = entities.get(entity);
+            //Deep copy entity into e
+            //TODO tian how do we do this
+            //TODO TODO TODO
+        } else {
+            entities.put(entity,entity);
+        }
+    }
 }

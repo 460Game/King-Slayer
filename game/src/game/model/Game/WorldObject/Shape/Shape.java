@@ -1,7 +1,9 @@
 package game.model.Game.WorldObject.Shape;
 
+import Util.Util;
 import game.model.Game.GameModel;
 import game.model.Game.Grid.GridCell;
+import game.model.Game.WorldObject.Entity;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Collection;
@@ -13,6 +15,10 @@ import java.util.stream.Collectors;
  */
 public abstract class Shape {
 
+    /**
+     * Gets the center of the shape
+     * @return
+     */
     public abstract double getX();
     public abstract double getY();
 
@@ -33,6 +39,23 @@ public abstract class Shape {
             return model.getCell(x, y);
         }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (o == null)
+                return false;
+            if (getClass() != o.getClass())
+                return false;
+            GridCellReference ref = (GridCellReference) o;
+            return this.x == ref.x && this.y == ref.y;
+        }
+
+        @Override
+        public int hashCode() {
+            return (int) (0.5*(this.x + this.y)*(this.x + this.y + 1) + this.y);
+        }
+
     }
 
     /**
@@ -48,11 +71,20 @@ public abstract class Shape {
     abstract Set<GridCellReference> getCellsReference();
 
     /**
-     * given that they are on same cell, do they collide?
+     * do they collide?
      * @param shape
      * @return
      */
-    public abstract boolean testCollision(Shape shape);
+    public boolean testCollision(Shape shape) {
+        if(Util.setsIntersect(this.getCellsReference(), shape.getCellsReference()))
+            return sameCellTestCollision(shape);
+        return false;
+    }
+
+    /*
+    given they are on the same cell, do they collide?
+     */
+    public abstract boolean sameCellTestCollision(Shape shape);
 
     /**
      * shift the shape by the delta

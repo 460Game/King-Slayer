@@ -7,6 +7,7 @@ import game.model.Game.Tile.Tile;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
 
 public abstract class ProcessorForwarderModel implements IModel {
@@ -18,9 +19,11 @@ public abstract class ProcessorForwarderModel implements IModel {
         if(isServer) {
             this.isServer = true;
             this.clients = others;
+            this.servers = Collections.EMPTY_SET;
         } else {
             this.isClient = true;
             this.servers = others;
+            this.clients = Collections.EMPTY_SET;
         }
     }
 

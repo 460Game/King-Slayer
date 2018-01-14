@@ -6,11 +6,20 @@ public class AIView {
 
     //TODO
 
-    public AIView(GameModel model) {
+    Thread thread;
 
+    public AIView(GameModel model) {
+        thread = new Thread(()-> {
+            model.update();
+            try {
+                Thread.sleep(16);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void start() {
-
+        thread.start();
     }
 }

@@ -38,7 +38,7 @@ public class CircleShape extends Shape {
     }
 
     @Override
-    public boolean testCollision(Shape shape) {
+    public boolean sameCellTestCollision(Shape shape) {
         if(shape instanceof CircleShape) {
             CircleShape circle = (CircleShape) shape;
             return Util.dist(this.x, this.y, circle.x , circle.y) <= this.radius + circle.radius;

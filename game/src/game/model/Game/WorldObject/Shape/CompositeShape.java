@@ -34,7 +34,7 @@ public class CompositeShape extends Shape {
     }
 
     @Override
-    public boolean testCollision(Shape shape) {
+    public boolean sameCellTestCollision(Shape shape) {
         //slightly ugly - because needs to ensure the garentee that cells overlapp for the subshapes as well
         return (Util.setsIntersect(shape.getCellsReference(), a.getCellsReference()) && a.testCollision(shape)) ||
             (Util.setsIntersect(shape.getCellsReference(), b.getCellsReference()) && b.testCollision(shape));
