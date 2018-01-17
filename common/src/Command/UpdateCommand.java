@@ -1,12 +1,14 @@
+package Command;
 
-
+import Entity.WorldObject;
+import Model.Model;
 import java.util.Map;
 
 public class UpdateCommand<T extends WorldObject.WorldObjectData>  {
     private WorldObject<T> object;
 
     public void execute(Model model) {
-        Map<WorldObject, WorldObject> map = model.model;
+        Map<WorldObject, WorldObject> map = model.getMap();
         map.putIfAbsent(object, object);
         map.get(object).set(object.data);
     }
