@@ -4,15 +4,9 @@ import java.io.IOException;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import game.message.ActionMessage;
-import game.model.Game.GameModel;
-import game.model.Game.MapGenerator;
-import game.model.IModel;
 
-import javax.swing.*;
+
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
 
 public class ServerModel {
 
