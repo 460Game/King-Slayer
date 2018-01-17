@@ -20,6 +20,7 @@ public class Blocker extends Entity {
         assert(other instanceof Blocker);
         Blocker o = (Blocker)other;
         this.shape = o.shape;
+        super.copyOf(other);
     }
 
     public Blocker(GameModel model, int x, int y) {

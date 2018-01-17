@@ -16,6 +16,7 @@ public class TestPlayer extends Entity {
         this.shape = o.shape;
         this.dx = o.dx;
         this.dy = o.dy;
+        super.copyOf(other);
     }
 
     private CircleShape shape;
