@@ -8,7 +8,8 @@ import com.esotericsoftware.kryonet.Listener;
 
 import java.util.ArrayList;
 
-public class ServerModel {
+public class LobbyServer {
+
 
     // This holds per connection state.
     public static class GameConnection extends Connection {
@@ -17,11 +18,12 @@ public class ServerModel {
 
     Server server;
     ArrayList<GameConnection> clients;
-    public ServerModel () {
+
+    public LobbyServer() {
         clients = new ArrayList<>();
         server = new Server() {
             protected Connection newConnection() {
-                return new ServerModel.GameConnection();
+                return new LobbyServer.GameConnection();
             }
         };
     }
@@ -36,6 +38,9 @@ public class ServerModel {
                 // We know all connections for this server are actually ChatConnections.
                 GameConnection connection = (GameConnection)c;
                 clients.add(connection);
+                if (clients.size() >= 2) {
+                    startGame();
+                }
             }
 
             //TODO: implement disconnected
@@ -52,8 +57,12 @@ public class ServerModel {
     }
 
     public static void main(String[] args) throws IOException {
-        ServerModel serverModel = new ServerModel();
+        LobbyServer serverModel = new LobbyServer();
         serverModel.start();
+    }
+
+    public void startGame() {
+
     }
 
 }
