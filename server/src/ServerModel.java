@@ -1,8 +1,11 @@
 import java.io.IOException;
 
+import Command.ActionCommand;
 import Command.UpdateCommand;
 import Entity.WorldObject;
+import Model.GameMap;
 import Model.GameModel;
+import Model.Model;
 import Model.WorldClock;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.Connection;
@@ -16,12 +19,12 @@ public class ServerModel extends GameModel {
     Map<WorldObject, WorldObject> map;
     WorldClock clock;
     Server server;
-
+    Model model;
     /**
      * Game gameMap
      */
     @Override
-    WorldClock getTimer() {
+    public WorldClock getTimer() {
         return null;
     }
 
@@ -36,6 +39,7 @@ public class ServerModel extends GameModel {
     public ServerModel () {
         server = new Server();
         clock = new WorldClock();
+        model = this;
     }
 
     /**
@@ -56,20 +60,10 @@ public class ServerModel extends GameModel {
                 // We know all connections for this server are actually ChatConnections.
                 GameConnection connection = (GameConnection)c;
 
-//                if (obj instanceof UpdateCommand) {
-//                    UpdateCommand updateMsg = (UpdateCommand) obj;
-//                    //if (updateMsg.?? == null) return;
-//                    updateMsg.execute(map);
-//
-//                    //Send back
-////                    server.sendToAllTCP(msgWithName);
-//                    return;
-//                }
-
                 if (obj instanceof ActionCommand) {
                     ActionCommand clientActionMsg = (ActionCommand) obj;
                     //if (updateMsg.?? == null) return;
-                    clientActionMsg.execute(this);
+                    clientActionMsg.execute(model);
 
                     //Send back
 //                    server.sendToAllTCP(msgWithName);
