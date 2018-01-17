@@ -3,6 +3,7 @@ package game.network;
 import Util.Util;
 import game.message.Message;
 import game.model.ClientGameModel;
+import game.model.Game.MapGenerator;
 import game.model.IModel;
 import game.view.ClientView;
 
@@ -27,6 +28,7 @@ public class LobbyClient {
     }
     public void startGame() {
         serverModel = client.makeRemoteModel().iterator().next();
+
         //TODO !!!! don't have getGenerator
         clientGameModel = new ClientGameModel(new IModel() {
             @Override

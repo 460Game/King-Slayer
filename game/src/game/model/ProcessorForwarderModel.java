@@ -15,7 +15,7 @@ public abstract class ProcessorForwarderModel implements IModel {
     boolean isClient = false;
     boolean isServer = false;
 
-    public ProcessorForwarderModel(boolean isServer, Collection<IModel> others) {
+    public ProcessorForwarderModel(boolean isServer, Collection<? extends IModel> others) {
         if(isServer) {
             this.isServer = true;
             this.clients = others;
@@ -27,8 +27,8 @@ public abstract class ProcessorForwarderModel implements IModel {
         }
     }
 
-    private Collection<IModel> servers;
-    private Collection<IModel> clients;
+    private Collection<? extends IModel> servers;
+    private Collection<? extends IModel> clients;
 
     public abstract GameModel getGameModel();
 

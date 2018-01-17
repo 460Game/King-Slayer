@@ -60,25 +60,9 @@ public class LobbyServer {
 
     public void startGame() {
         remoteModels = server.makeRemoteModel();
-        serverModel = new ServerGameModel(Collections.singleton(new IModel() {
-
-            //TODO !!!!!!!!!!! is server processing or client processing?
-            @Override
-            public void processMessage(Message m) {
-                Message copy = Util.KYRO.copy(m);
-                //TODO what is in here?
-                for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
-                    remoteModel.startGame();
-                }
-            }
-
-            @Override
-            public long nanoTime() {
-                return 0;
-            }
-        }));
+        serverModel = new ServerGameModel(remoteModels);
         for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
-            remoteModel.processMessage(new NetworkCommon.StartMsg());
+            remoteModel.startGame();
         }
     }
 
