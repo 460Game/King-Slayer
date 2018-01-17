@@ -1,5 +1,7 @@
 package game.network;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -28,37 +30,45 @@ public class LobbyServer {
     public LobbyServer() {
         server = new RemoteConnection(true, this);
 
-//        JFrame frame = new JFrame("Chat Server");
-//        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//        frame.addWindowListener(new WindowAdapter() {
-//            public void windowClosed (WindowEvent evt) {
-//                server.stop();
-//            }
-//        });
-//        frame.getContentPane().add(new JLabel("Close to stop the chat server."));
-//        frame.setSize(320, 200);
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(true);
+        JFrame frame = new JFrame("Chat Server");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosed (WindowEvent evt) {
+                server.stop();
+            }
+        });
+        frame.getContentPane().add(new JLabel("Close to stop the chat server."));
+        frame.setSize(320, 200);
+        frame.setLocationRelativeTo(null);
+        JButton startB = new JButton("start button");
+        startB.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent evt) {
+                startGame();
+            }
+        });
+        frame.add(startB);
+        frame.setVisible(true);
     }
 
     public static void main(String[] args) throws IOException {
-//        LobbyServer serverModel = new LobbyServer();
-//        serverModel.start();
+        LobbyServer lobbyServer = new LobbyServer();
     }
     //TODO implement this
-    public void getMsg(Message msg) {}
+    public void getMsg(Message msg) {
+        serverModel.processMessage(msg);
+    }
 
     public void startGame() {
         remoteModels = server.makeRemoteModel();
         serverModel = new ServerGameModel(Collections.singleton(new IModel() {
 
-            //is server processing or client processing?
+            //TODO !!!!!!!!!!! is server processing or client processing?
             @Override
             public void processMessage(Message m) {
                 Message copy = Util.KYRO.copy(m);
                 //TODO what is in here?
                 for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
-                    remoteModel.processMessage(m);
+                    remoteModel.startGame();
                 }
             }
 
@@ -67,6 +77,9 @@ public class LobbyServer {
                 return 0;
             }
         }));
+        for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
+            remoteModel.processMessage(new NetworkCommon.StartMsg());
+        }
     }
 
 }

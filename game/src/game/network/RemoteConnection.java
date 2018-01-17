@@ -74,7 +74,7 @@ public class RemoteConnection {
             NetworkCommon.register(client);
             client.addListener(new Listener() {
                 public void connected (Connection connection) {
-                    Log.info("Connected");
+                    Log.info("Client " + connection.getID() + " connected");
 //                    NetworkCommon.UserName usrName = new NetworkCommon.UserName("");
 //                    usrName.user_name = name;
 //                    client.sendTCP(usrName);
@@ -156,7 +156,13 @@ public class RemoteConnection {
             if (isServer) return -1;
             return connectId;
         }
+
+        public void startGame() {
+            if (isServer) lobbyServer.startGame();
+            else lobbyClient.startGame();
+        }
     }
+
 
 //    public void send(Message msg) {
 //        if (isServer) {
