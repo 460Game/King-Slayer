@@ -3,14 +3,15 @@ package game.network;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
+import game.message.Message;
 
 public class NetworkCommon {
     static public int port = 54555;
-
+    static public final int REMOTEMODEL = 1;
     // This registers serializes files
     public static void register (EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
-
+        kryo.register(Message.class);
     }
 }
 
