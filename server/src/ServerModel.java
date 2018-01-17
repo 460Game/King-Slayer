@@ -1,55 +1,37 @@
 import java.io.IOException;
 
-import Command.ActionCommand;
-import Command.UpdateCommand;
-import Entity.WorldObject;
-import Model.GameMap;
-import Model.GameModel;
-import Model.Model;
-import Model.WorldClock;
+
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import game.message.ActionMessage;
+import game.model.Game.GameModel;
+import game.model.Game.MapGenerator;
+import game.model.IModel;
 
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
-public class ServerModel extends GameModel {
-
-
-    Map<WorldObject, WorldObject> map;
-    WorldClock clock;
-    Server server;
-    Model model;
-    /**
-     * Game gameMap
-     */
-    @Override
-    public WorldClock getTimer() {
-        return null;
-    }
+public class ServerModel {
 
     // This holds per connection state.
     public static class GameConnection extends Connection {
         public String usrName;
     }
 
-    /**
-     * Constructor
-     */
+    Server server;
+    ArrayList<GameConnection> clients;
     public ServerModel () {
-        server = new Server();
-        clock = new WorldClock();
-        model = this;
+        clients = new ArrayList<>();
+        server = new Server() {
+            protected Connection newConnection() {
+                return new ServerModel.GameConnection();
+            }
+        };
     }
 
-    /**
-     * Get the Gamemap (server model)
-     * @return
-     */
-    @Override
-    public GameMap getGameMap() {
-        return null;
-    }
 
     public void start() throws IOException {
         NetWorkCommon.register(server);
@@ -59,16 +41,7 @@ public class ServerModel extends GameModel {
 
                 // We know all connections for this server are actually ChatConnections.
                 GameConnection connection = (GameConnection)c;
-
-                if (obj instanceof ActionCommand) {
-                    ActionCommand clientActionMsg = (ActionCommand) obj;
-                    //if (updateMsg.?? == null) return;
-                    clientActionMsg.execute(model);
-
-                    //Send back
-//                    server.sendToAllTCP(msgWithName);
-                    return;
-                }
+                clients.add(connection);
             }
 
             //TODO: implement disconnected
