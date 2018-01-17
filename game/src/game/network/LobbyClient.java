@@ -1,6 +1,7 @@
 package game.network;
 
 import Util.Util;
+import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.model.ClientGameModel;
 import game.model.Game.MapGenerator;
@@ -13,18 +14,68 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 public class LobbyClient {
     RemoteConnection client;
     ClientGameModel clientGameModel;
     RemoteConnection.RemoteModel serverModel;
     ClientView clientView;
+    String name;
+    ChatFrame chatFrame;
     public LobbyClient() {
         client = new RemoteConnection(false, this);
+
+
+        // Request the host from the user.
+        String input = (String)JOptionPane.showInputDialog(null, "Host:", "Connect to chat server", JOptionPane.QUESTION_MESSAGE,
+                null, null, "10.124.77.166");
+        if (input == null || input.trim().length() == 0) System.exit(1);
+        final String host = input.trim();
+//        String host = "10.210.77.20";
+        Log.info(host);
+
+        // Request the user's name.
+        input = (String)JOptionPane.showInputDialog(null, "Name:", "Connect to chat server", JOptionPane.QUESTION_MESSAGE, null,
+                null, "Test");
+        if (input == null || input.trim().length() == 0) System.exit(1);
+        name = input.trim();
+
+        // All the ugly Swing stuff is hidden in ChatFrame so it doesn't clutter the KryoNet example code.
+        chatFrame = new ChatFrame(host);
+        // This listener is called when the send button is clicked.
+        chatFrame.setSendListener(new Runnable() {
+            public void run () {
+                //do whatever we what when clicking send
+            }
+        });
+        // This listener is called when the chat window is closed.
+        chatFrame.setCloseListener(new Runnable() {
+            public void run () {
+                client.stop();
+            }
+        });
+        chatFrame.setVisible(true);
+
+        // We'll do the connect on a new thread so the ChatFrame can show a progress bar.
+        // Connecting to localhost is usually so fast you won't see the progress bar.
+        new Thread("Connect") {
+            public void run () {
+                try {
+                    client.connectToServer(5000, host);
+                    // Server communication after connection can go here, or in Listener#connected().
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    System.exit(1);
+                }
+            }
+        }.start();
+
+
     }
 
     public void getMsg(Message msg) {
-
+        clientGameModel.processMessage(msg);
     }
     public void startGame() {
         serverModel = client.makeRemoteModel().iterator().next();
