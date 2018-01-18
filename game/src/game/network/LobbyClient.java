@@ -80,6 +80,8 @@ public class LobbyClient extends Application {
     }
 
     public void getMsg(Message msg) {
+        if (msg == null) Log.error("msg null!");
+        if (clientGameModel == null) Log.error("clientGameModel is null!");
         clientGameModel.processMessage(msg);
     }
 

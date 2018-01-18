@@ -11,6 +11,7 @@ import Util.Util;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.Connection;
 import game.message.Message;
+import game.message.SetTileMessage;
 import game.model.Game.GameModel;
 import game.model.IModel;
 import game.model.ServerGameModel;
@@ -70,6 +71,11 @@ public class LobbyServer extends Application {
         serverModel = new ServerGameModel(remoteModels);
         for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
             remoteModel.startGame();
+        }
+        for(IModel client : remoteModels) {
+            for (int i = 0; i < serverModel.getMapWidth(); i++)
+                for (int j = 0; j < serverModel.getMapWidth(); j++)
+                    client.processMessage(new SetTileMessage(i, j, serverModel.getTile(i, j)));
         }
     }
 
