@@ -1,5 +1,6 @@
 package game.model.Game.WorldObject;
 
+import Util.Util;
 import game.model.Game.GameModel;
 import game.model.Game.Grid.GridCell;
 import game.model.Game.WorldObject.Shape.Shape;
@@ -14,19 +15,19 @@ public abstract class Entity {
 
     public abstract void collision(GameModel model, Entity collidesWith);
 
-    private UUID uuid = UUID.randomUUID();
+    private long id = Util.random.nextLong();
     private long last_update;
 
     public void copyOf(Entity other) {
-        this.uuid = other.uuid;
+        this.id = other.id;
         this.last_update = other.last_update;
     }
 
 
     public abstract Shape getShape();
 
-    public UUID getUuid() {
-        return uuid;
+    public long getId() {
+        return id;
     }
 
     Entity() {
@@ -60,7 +61,7 @@ public abstract class Entity {
 
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+        return (int) (id % Integer.MAX_VALUE);
     }
 
     public abstract void draw(GraphicsContext gc);
@@ -74,7 +75,7 @@ public abstract class Entity {
         if (getClass() != o.getClass())
             return false;
         Entity entity = (Entity) o;
-        return this.uuid.equals(entity.uuid);
+        return this.id == entity.id;
     }
 
     public double getX() {

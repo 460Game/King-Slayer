@@ -7,10 +7,10 @@ import java.util.UUID;
 
 public class RemoveEntityMessage implements ToClientMessage {
 
-    UUID entityID;
+    long entityID;
     RemoveEntityMessage() {}
     RemoveEntityMessage(Entity entity) {
-        this.entityID = entity.getUuid();
+        this.entityID = entity.getId();
     }
 
     @Override

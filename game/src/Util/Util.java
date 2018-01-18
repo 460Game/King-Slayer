@@ -1,11 +1,13 @@
 package Util;
 
+import java.util.Random;
 import java.util.Set;
 import com.esotericsoftware.kryo.Kryo;
 
 public class Util {
 
     public static Kryo KYRO = new Kryo();
+    public static Random random = new Random();
 
     public static <T> boolean setsIntersect(Set<T> a, Set<T> b) {
         for(T t : a) {

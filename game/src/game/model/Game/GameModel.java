@@ -47,7 +47,7 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     }
 
     @Override
-    public void removeByID(UUID entityID) {
+    public void removeByID(long entityID) {
         for (GridCell[] arr : grid)
             for (GridCell tile : arr)
                 tile.removeByID(entityID);

@@ -122,8 +122,8 @@ public class GridCell {
      * cell.
      * @param entityID the id of the entity to be removed
      */
-    public void removeByID(UUID entityID) {
-        contents.removeIf(o -> o.getUuid().equals(entityID));
+    public void removeByID(long entityID) {
+        contents.removeIf(o -> o.getId() == entityID);
     }
 
     /**

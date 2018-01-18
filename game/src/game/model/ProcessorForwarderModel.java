@@ -2,13 +2,9 @@ package game.model;
 
 import game.message.Message;
 import game.model.Game.GameModel;
-import game.model.Game.Grid.GridCell;
-import game.model.Game.Tile.Tile;
-import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.UUID;
 
 public abstract class ProcessorForwarderModel implements IModel {
 
@@ -53,5 +49,5 @@ public abstract class ProcessorForwarderModel implements IModel {
                 model.processMessage(m);
     }
 
-    public abstract void removeByID(UUID entityID);
+    public abstract void removeByID(long entityID);
 }
