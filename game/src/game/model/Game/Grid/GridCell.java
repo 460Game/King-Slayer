@@ -13,58 +13,61 @@ import java.util.UUID;
 
 public class GridCell {
 
-    private Set<Entity> contains = new HashSet<>();
+    private Set<Entity> contents = new HashSet<>();
 
     //x,y coordiante of top left of this part of the grid
-    public int x, y;
+    private int x, y;
 
-    private Tile type;
+    private Tile tile;
 
-    //is passible if it is passible tile
+    /**
+     * @return true if a pathing enemy should try to go through this tile
+     * considerd unpassible if it has a cell shape occupying it
+     */
     public boolean isPassable() {
-        return type.IS_PASSIBLE;
+        return contents.stream().anyMatch(e -> e.getShape().blocksCell(x,y));
     }
 
-    public Set<Entity> getContains() {
-        return Collections.synchronizedSet(contains);
+    public Set<Entity> getContents() {
+        return Collections.synchronizedSet(contents);
     }
 
     public void add(Entity o) {
-        contains.add(o);
+        contents.add(o);
     }
 
     public void remove(Entity o) {
-        contains.remove(o);
+        contents.remove(o);
     }
 
-    public GridCell(GameModel model, int x, int y, Tile type) {
+    public GridCell(GameModel model, int x, int y, Tile tile) {
         this.x = x;
         this.y = y;
-        this.type = type;
+        this.tile = tile;
         if(!isPassable())
             add(new Blocker(model, x,y));
     }
 
     public void drawBackground(GraphicsContext gc) {
-        type.draw(gc, x, y);
+        tile.draw(gc, x, y);
     }
 
     public void collideContents(GameModel model) {
-        for(Entity a : contains)
-            for (Entity b : contains)
+        for(Entity a : contents)
+            for (Entity b : contents)
                 if (a != b ) // && a.getShape().testCollision(b.getShape()))
                     a.collision(model, b);
     }
 
     public Tile getTile() {
-        return type;
+        return tile;
     }
 
-    public void setType(Tile type) {
-        this.type = type;
+    public void setTile(Tile tile) {
+        this.tile = tile;
     }
 
     public void removeByID(UUID entityID) {
-        contains.removeIf(o -> o.getUuid().equals(entityID));
+        contents.removeIf(o -> o.getUuid().equals(entityID));
     }
 }
