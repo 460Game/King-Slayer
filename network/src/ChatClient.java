@@ -89,10 +89,10 @@ public class ChatClient {
 
         // Request the host from the user.
         String input = (String)JOptionPane.showInputDialog(null, "Host:", "Connect to chat server", JOptionPane.QUESTION_MESSAGE,
-                null, null, "10.124.77.166");
+                null, null, "localhost");
         if (input == null || input.trim().length() == 0) System.exit(1);
         final String host = input.trim();
-//        String host = "10.210.77.20";
+
         Log.info(host);
 
         // Request the user's name.
@@ -262,18 +262,6 @@ public class ChatClient {
         Log.set(Log.LEVEL_DEBUG);
         ChatClient chatClient = new ChatClient();
         chatClient.start();
-        chatClient.testTime();
-        Thread.sleep(1000);
-        chatClient.testTime();
-        Thread.sleep(1000);
-        chatClient.testTime();
-//        for (int i = 0; i < 1000; i++) {
-//            chatClient.testTime();
-//            Log.info("Average time: " + (chatClient.sumTime / 1000000));
-//            chatClient.sumTime = 0;
-//        }
-//        System.out.println("Average time: " + (chatClient.sumTime / 1000.00));
-//        Log.info("Average time: " + (chatClient.sumTime / 1000.00 / 1000000));
-//        Log.info("Average time: " + (chatClient.sumTime / 1000000));
+
     }
 }
