@@ -9,6 +9,5 @@ public interface IGameModel extends IModel {
 
     public abstract void setTile(int x, int y, Tile tile);
     public abstract void update();
-    public abstract void draw(GraphicsContext gc);
 
 }
