@@ -13,7 +13,13 @@ public class NetworkCommon {
     public static void register (EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
         kryo.register(Message.class);
+        kryo.register(StartGameMsg.class);
+        kryo.register(RemoteConnection.GameConnection.class);
+    }
 
+    public static class StartGameMsg {
+        public StartGameMsg () {
+        }
     }
 
 }

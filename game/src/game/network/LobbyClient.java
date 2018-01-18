@@ -8,6 +8,7 @@ import game.model.Game.ClientMapGenerator;
 import game.model.Game.MapGenerator;
 import game.model.IModel;
 import game.view.ClientView;
+import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -86,6 +87,7 @@ public class LobbyClient {
         }, new ClientMapGenerator());
 
         clientView = new ClientView(clientGameModel);
+        clientView.start(new Stage());
     }
 
 

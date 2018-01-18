@@ -29,7 +29,7 @@ public class RemoteConnection {
     Client client;
     LobbyServer lobbyServer;
     LobbyClient lobbyClient;
-
+    GameConnection serverConnectionForClient;
     ConcurrentHashMap<Integer, GameConnection> clientList;
 
     public RemoteConnection(boolean isServer, Object lobby) throws IOException {
@@ -61,6 +61,7 @@ public class RemoteConnection {
                     GameConnection connection = (GameConnection)c;
 
                     clientList.putIfAbsent(connection.getID(), connection);
+
                     if (obj instanceof Message) {
                         lobbyServer.getMsg((Message) obj);
                     }
@@ -93,6 +94,9 @@ public class RemoteConnection {
 
                 public void received (Connection connection, Object obj) {
                     Log.info("Client " + client.getID() + "received " + obj.toString());
+                    if (obj instanceof NetworkCommon.StartGameMsg) {
+                        lobbyClient.startGame();
+                    }
                     if (obj instanceof Message) {
                         lobbyClient.getMsg((Message) obj);
                     }
@@ -170,9 +174,9 @@ public class RemoteConnection {
         @Override
         public void processMessage(Message m) {
             if (isServer) { //then the remote is a client
-                clientList.get(connectId).sendTCP(m);
-            } else {
                 server.sendToTCP(connectId, m);
+            } else {
+                client.sendTCP(m);
             }
         }
 
@@ -187,8 +191,15 @@ public class RemoteConnection {
         }
 
         public void startGame() {
-            if (isServer) lobbyServer.startGame();
-            else lobbyClient.startGame();
+            if (isServer) {
+                Log.info("server click start the game");
+                server.sendToAllTCP("Server START GAME!!");
+                server.sendToAllTCP(new NetworkCommon.StartGameMsg());
+            }
+            else {
+                Log.info("client start the game");
+                lobbyClient.startGame();
+            }
         }
     }
 

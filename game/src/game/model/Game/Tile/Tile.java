@@ -25,8 +25,9 @@ public enum Tile {
         this.IS_PASSIBLE = isPassable;
         try {
             this.IMAGE = new Image(Tile.class.getResource(imageName).openStream());
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             e.printStackTrace();
+            System.err.println("Get null: " + imageName);
         }
     }
 
