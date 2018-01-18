@@ -93,6 +93,9 @@ public class CircleShape extends Shape {
         this.radius = radius;
     }
 
+    public CircleShape() {
+    }
+
     @Override
     public void draw(GraphicsContext gc) {
         gc.setFill(Color.RED);

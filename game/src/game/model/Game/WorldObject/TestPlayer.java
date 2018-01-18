@@ -23,6 +23,10 @@ public class TestPlayer extends Entity {
     private double dx = 0;
     private double dy = 0;
 
+    public TestPlayer() {
+        super();
+    }
+
     public TestPlayer(GameModel model, double x, double y) {
         super(model);
         shape = new CircleShape(x, y, 0.5);

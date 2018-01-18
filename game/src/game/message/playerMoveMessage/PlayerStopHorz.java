@@ -8,6 +8,9 @@ public class PlayerStopHorz extends ActionMessage {
 
 
     boolean p;
+    public PlayerStopHorz() {
+        super();
+    }
     public PlayerStopHorz(int i) {
         super();
         p = i == 0;

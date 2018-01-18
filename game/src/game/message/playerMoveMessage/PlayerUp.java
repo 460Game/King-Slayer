@@ -8,6 +8,10 @@ public class PlayerUp extends ActionMessage {
 
 
     boolean p;
+    public PlayerUp() {
+        super();
+        p = false;
+    }
     public PlayerUp(int i) {
         super();
         p = i == 0;

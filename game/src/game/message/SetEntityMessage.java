@@ -7,6 +7,8 @@ public class SetEntityMessage implements ToClientMessage {
 
     private Entity entity;
 
+    public SetEntityMessage() {
+    }
     public SetEntityMessage(Entity entity) {
         this.entity = entity;
     }

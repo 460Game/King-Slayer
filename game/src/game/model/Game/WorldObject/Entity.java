@@ -29,6 +29,8 @@ public abstract class Entity {
         return uuid;
     }
 
+    Entity() {
+    }
     Entity(GameModel model) {
         last_update = model.nanoTime();
     }

@@ -8,6 +8,9 @@ public class PlayerRight extends ActionMessage {
 
 
     boolean p;
+    public PlayerRight() {
+        super();
+    }
     public PlayerRight(int i) {
         super();
         p = i == 0;

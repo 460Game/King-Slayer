@@ -112,6 +112,9 @@ public class RectShape extends Shape {
         this.h = h;
         this.r = r;
     }
+    RectShape() {
+
+    }
 
     @Override
     public void draw(GraphicsContext gc) {

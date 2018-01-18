@@ -7,6 +7,9 @@ import game.model.Game.GameModel;
 public class PlayerStopVert extends ActionMessage {
 
     boolean p;
+    public PlayerStopVert() {
+        super();
+    }
     public PlayerStopVert(int i) {
         super();
         p = i == 0;

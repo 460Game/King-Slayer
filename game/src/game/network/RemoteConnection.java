@@ -176,6 +176,8 @@ public class RemoteConnection {
             if (isServer) { //then the remote is a client
                 server.sendToTCP(connectId, m);
             } else {
+//                Log.info(m.toString());
+                client.sendTCP("client want to send a msg");
                 client.sendTCP(m);
             }
         }

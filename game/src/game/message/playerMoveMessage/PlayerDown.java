@@ -7,6 +7,9 @@ import game.model.Game.GameModel;
 public class PlayerDown extends ActionMessage {
 
     boolean p;
+    public PlayerDown() {
+        super();
+    }
     public PlayerDown(int i) {
         super();
         p = i == 0;

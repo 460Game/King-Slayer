@@ -23,6 +23,10 @@ public class Blocker extends Entity {
         super.copyOf(other);
     }
 
+    public Blocker() {
+        super();
+    }
+
     public Blocker(GameModel model, int x, int y) {
         super(model);
         this.shape = new CellShape(x,y);

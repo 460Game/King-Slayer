@@ -31,20 +31,29 @@ public class LobbyClient extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Log.info("client start!!!!!!");
 
         this.window = primaryStage;
+        Log.info("client start!!!!!!");
+
         // Request the host from the user.
-        String input = (String) JOptionPane.showInputDialog(null, "Host:", "Connect to chat server", JOptionPane.QUESTION_MESSAGE,
-            null, null, "localhost");
-        if (input == null || input.trim().length() == 0) System.exit(1);
-        final String host = input.trim();
+//        String input = (String) JOptionPane.showInputDialog(null, "Host:", "Connect to chat server", JOptionPane.QUESTION_MESSAGE,
+//            null, null, "localhost");
+        Log.info("client start!!!!!!");
+
+//        if (input == null || input.trim().length() == 0) System.exit(1);
+        Log.info("client start!!!!!!");
+
+//        final String host = input.trim();
+        String host = "localhost";
         Log.info(host);
 
         // Request the user's name.
-        input = (String) JOptionPane.showInputDialog(null, "Name:", "Connect to chat server", JOptionPane.QUESTION_MESSAGE, null,
-            null, "Test");
-        if (input == null || input.trim().length() == 0) System.exit(1);
-        name = input.trim();
+//        input = (String) JOptionPane.showInputDialog(null, "Name:", "Connect to chat server", JOptionPane.QUESTION_MESSAGE, null,
+//            null, "Test");
+//        if (input == null || input.trim().length() == 0) System.exit(1);
+//        name = input.trim();
+        name = "Test";
 
         // All the ugly Swing stuff is hidden in ChatFrame so it doesn't clutter the KryoNet example code.
         chatFrame = new ChatFrame(host);
@@ -61,7 +70,7 @@ public class LobbyClient extends Application {
             }
         });
         chatFrame.setVisible(true);
-
+        Log.info("frame should be visible");
         client = new RemoteConnection(false, this);
 
         // We'll do the connect on a new thread so the ChatFrame can show a progress bar.
@@ -81,8 +90,7 @@ public class LobbyClient extends Application {
         clientGameModel = new ClientGameModel(new IModel() {
             @Override
             public void processMessage(Message m) {
-                Message copy = Util.KYRO.copy(m); //to simulate going thoruhg network - make a copy
-                serverModel.processMessage(copy);
+                serverModel.processMessage(m);
             }
 
             @Override

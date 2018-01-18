@@ -17,6 +17,9 @@ public class CellShape extends Shape {
     public CellShape(int x, int y) {
         this.gridCell = new GridCellReference(x, y);
     }
+    public CellShape() {
+
+    }
 
     @Override
     public double getX() {
