@@ -75,7 +75,8 @@ public class ClientView {
                 double gameW = scaleFactor[0] * window.getWidth() / TILE_PIXELS;
                 double gameH = scaleFactor[0] * window.getHeight() / TILE_PIXELS;
 
-                model.drawFG(gcFG, model.playerB.getX() - gameW / 2, model.playerB.getY() - gameH / 2, gameW, gameH);
+//                model.drawFG(gcFG, model.playerB.getX() - gameW / 2, model.playerB.getY() - gameH / 2, gameW, gameH);
+                model.drawFG(gcFG, 0,0,0,0); //TODO
             }
         };
 

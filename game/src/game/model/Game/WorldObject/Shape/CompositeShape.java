@@ -27,6 +27,11 @@ public class CompositeShape extends Shape {
     }
 
     @Override
+    public boolean blocksCell(int x, int y) {
+        return false; //RYAN TODO
+    }
+
+    @Override
     Set<GridCellReference> getCellsReference() {
         Set<GridCellReference> set = a.getCellsReference();
         set.addAll(b.getCellsReference());

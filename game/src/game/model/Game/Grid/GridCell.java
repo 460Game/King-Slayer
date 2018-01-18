@@ -70,4 +70,12 @@ public class GridCell {
     public void removeByID(UUID entityID) {
         contents.removeIf(o -> o.getUuid().equals(entityID));
     }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getX() {
+        return x;
+    }
 }

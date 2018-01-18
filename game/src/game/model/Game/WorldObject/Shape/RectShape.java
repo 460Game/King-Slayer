@@ -26,6 +26,11 @@ public class RectShape extends Shape {
     }
 
     @Override
+    public boolean blocksCell(int x, int y) {
+        return false; //RYAN TODO
+    }
+
+    @Override
     Set<GridCellReference> getCellsReference() {
         if (memo != null)
             return memo;

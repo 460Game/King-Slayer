@@ -33,8 +33,8 @@ public abstract class Shape {
         }
 
         GridCellReference(GridCell cell) {
-            this.x = cell.x;
-            this.y = cell.y;
+            this.x = cell.getX();
+            this.y = cell.getY();
         }
 
         public GridCell getCell(GameModel model) {

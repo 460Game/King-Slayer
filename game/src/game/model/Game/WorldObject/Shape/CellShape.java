@@ -29,6 +29,12 @@ public class CellShape extends Shape {
     }
 
     @Override
+    public boolean blocksCell(int x, int y) {
+        return false;
+        //RYAN TODO
+    }
+
+    @Override
     Set<GridCellReference> getCellsReference() {
         return Collections.singleton(gridCell);
     }

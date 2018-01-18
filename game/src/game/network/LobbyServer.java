@@ -14,6 +14,10 @@ import game.message.Message;
 import game.model.Game.GameModel;
 import game.model.IModel;
 import game.model.ServerGameModel;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 
 import javax.swing.*;
@@ -22,36 +26,39 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-public class LobbyServer {
+public class LobbyServer extends Application {
 
     private GameModel serverModel;
-    RemoteConnection server;
-    Set<RemoteConnection.RemoteModel> remoteModels;
-    public LobbyServer() throws IOException {
+    private RemoteConnection server;
+    private Set<RemoteConnection.RemoteModel> remoteModels;
+
+    @Override
+    public void start(Stage window) throws Exception {
         server = new RemoteConnection(true, this);
 
-        JFrame frame = new JFrame("Chat Server");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.addWindowListener(new WindowAdapter() {
+        window.setTitle("Chat Server");
+
+        //frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        /*frame.addWindowListener(new WindowAdapter() {
             public void windowClosed (WindowEvent evt) {
                 server.stop();
             }
+        });*/
+      //  window.set(320, 200);
+
+        Button startB = new Button("start button");
+        startB.setOnAction(a -> {
+            startGame();
         });
-        frame.getContentPane().add(new JLabel("Close to stop the chat server."));
-        frame.setSize(320, 200);
-        frame.setLocationRelativeTo(null);
-        JButton startB = new JButton("start button");
-        startB.addActionListener(new ActionListener() {
-            public void actionPerformed (ActionEvent evt) {
-                startGame();
-            }
-        });
-        frame.add(startB);
-        frame.setVisible(true);
+
+
+        Scene scene = new Scene(startB, 200, 100);
+        window.setScene(scene);
+        window.show();
     }
 
     public static void main(String[] args) throws IOException {
-        LobbyServer lobbyServer = new LobbyServer();
+        Application.launch();
     }
     //TODO implement this
     public void getMsg(Message msg) {
