@@ -13,6 +13,7 @@ import game.view.ClientView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.util.Collection;
 import java.util.Collections;
 
 public class SingleplayerController extends Application {
@@ -26,7 +27,7 @@ public class SingleplayerController extends Application {
 
     public SingleplayerController() {
 
-        serverModel = new ServerGameModel(Collections.singleton(new IModel() {
+        serverModel = new ServerGameModel(Collections.EMPTY_SET);/*Collections.singleton(new IModel() {
 
             @Override
             public void processMessage(Message m) {
@@ -52,7 +53,7 @@ public class SingleplayerController extends Application {
             }
         }, serverModel.getGenerator());
 
-        clientView1 = new ClientView(clientModel);
+        clientView1 = new ClientView(clientModel);*/
         clientView2 = new ClientView(serverModel);
        // aiView = new AIView(serverModel);
 
@@ -61,7 +62,7 @@ public class SingleplayerController extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 //        aiView.start();
-        clientView1.start(primaryStage);
+      //  clientView1.start(primaryStage);
         clientView2.start(new Stage());
     }
 

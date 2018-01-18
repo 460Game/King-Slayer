@@ -117,14 +117,6 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
             e.update(this);
     }
 
-    @Override
-    public void draw(GraphicsContext gc) {
-        for (GridCell tile : allCells)
-            tile.drawBackground(gc);
-        for (Entity e : entities.values())
-            e.draw(gc);
-    }
-
     public Collection<GridCell> getAllCells() {
         return allCells;
     }
@@ -136,5 +128,24 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
         } else {
             entities.put(entity,entity);
         }
+    }
+
+    public void drawBG(GraphicsContext gc) {
+        for (GridCell tile : allCells)
+            tile.drawBackground(gc);
+    }
+
+    /**
+     *  @param gc
+     * @param x top left x
+     * @param y top lefy y
+     * @param w width in game space
+     * @param h height in game space
+     */
+    public void drawFG(GraphicsContext gc, double x, double y, double w, double h) {
+        //TODO only draw inside box
+
+        for (Entity e : entities.values())
+            e.draw(gc);
     }
 }

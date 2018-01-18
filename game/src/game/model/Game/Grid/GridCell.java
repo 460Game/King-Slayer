@@ -22,7 +22,7 @@ public class GridCell {
 
     //is passible if it is passible tile
     public boolean isPassable() {
-        return type.isPassable();
+        return type.IS_PASSIBLE;
     }
 
     public Set<Entity> getContains() {

@@ -4,6 +4,7 @@ import Util.Util;
 import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.model.ClientGameModel;
+import game.model.Game.ClientMapGenerator;
 import game.model.Game.MapGenerator;
 import game.model.IModel;
 import game.view.ClientView;
@@ -92,7 +93,7 @@ public class LobbyClient {
             public long nanoTime() {
                 return serverModel.nanoTime();
             }
-        }, serverModel.getGenerator());
+        }, new ClientMapGenerator());
 
         clientView = new ClientView(clientGameModel);
     }
