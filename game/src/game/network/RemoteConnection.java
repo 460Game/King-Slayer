@@ -19,6 +19,9 @@ public class RemoteConnection {
     // This holds per connection state.
     public static class GameConnection extends Connection {
         public String usrName;
+        public GameConnection(String name) {
+            usrName = name;
+        }
     }
 
     boolean isServer;
@@ -27,7 +30,7 @@ public class RemoteConnection {
     LobbyServer lobbyServer;
     LobbyClient lobbyClient;
 
-    ConcurrentHashMap<Integer, Client> clientList;
+    ConcurrentHashMap<Integer, GameConnection> clientList;
 
     public RemoteConnection(boolean isServer, Object lobby) throws IOException {
         this.isServer = isServer;
@@ -37,7 +40,7 @@ public class RemoteConnection {
             clientList = new ConcurrentHashMap<>();
             server = new Server() {
                 protected Connection newConnection() {
-                    return new RemoteConnection.GameConnection();
+                    return new RemoteConnection.GameConnection("ServerName");
                 }
             };
         } else {
@@ -54,8 +57,8 @@ public class RemoteConnection {
 
             server.addListener(new Listener() {
                 public void received (Connection c, Object obj) {
-
-                    Client connection = (Client)c;
+                    Log.info("Server received from " + c.getID());
+                    GameConnection connection = (GameConnection)c;
 
                     clientList.putIfAbsent(connection.getID(), connection);
                     if (obj instanceof Message) {
@@ -72,10 +75,13 @@ public class RemoteConnection {
 
             server.bind(NetworkCommon.port);
             server.start();
-
+            Log.info("Server started");
         } else {
-            client.start();
             NetworkCommon.register(client);
+            client.start();
+
+
+
             client.addListener(new Listener() {
                 public void connected (Connection connection) {
                     Log.info("Client " + connection.getID() + " connected");
@@ -85,6 +91,7 @@ public class RemoteConnection {
                 }
 
                 public void received (Connection connection, Object obj) {
+                    Log.info("Client " + client.getID() + "received");
                     if (obj instanceof Message) {
                         lobbyClient.getMsg((Message) obj);
                     }
@@ -123,7 +130,17 @@ public class RemoteConnection {
             return;
         }
         Log.info("Client connect to " + host + " " + port);
-        client.connect(port, host, NetworkCommon.port);
+        new Thread("Connect") {
+            public void run () {
+                try {
+                    client.connect(port, host, NetworkCommon.port);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                // Server communication after connection can go here, or in Listener#connected().
+            }
+        }.start();
+
     }
 
     public void stop() {
