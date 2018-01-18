@@ -28,7 +28,8 @@ public class CompositeShape extends Shape {
 
     @Override
     public boolean blocksCell(int x, int y) {
-        return false; //RYAN TODO
+        return false;
+        // TODO
     }
 
     @Override

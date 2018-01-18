@@ -18,11 +18,11 @@ public enum Tile {
     WALL(false, "wall.png"),
     FOG(true, "fog.png");
 
-    public boolean IS_PASSIBLE;
+    public boolean IS_PASSABLE;
     public Image IMAGE;
 
     Tile(boolean isPassable, String imageName) {
-        this.IS_PASSIBLE = isPassable;
+        this.IS_PASSABLE = isPassable;
         try {
             this.IMAGE = new Image(Tile.class.getResource(imageName).openStream());
         } catch (IOException | NullPointerException e) {

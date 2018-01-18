@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * shouldnt be drawable! purely for testing for now
+ * Shouldn't be drawable! Purely for testing for now.
  */
 public abstract class Shape {
 
@@ -55,14 +55,13 @@ public abstract class Shape {
 
         @Override
         public int hashCode() {
-            return (int) (0.5*(this.x + this.y)*(this.x + this.y + 1) + this.y);
+            return (int) (0.5 * (this.x + this.y) * (this.x + this.y + 1) + this.y);
         }
-
     }
 
     /**
-     * this should return the set of all tiles this shape overlaps with
-     * returns a new set every time
+     * This should return the set of all cells this shape overlaps with.
+     * Returns a new set every time.
      * @param gameMap
      * @return
      */
@@ -83,8 +82,8 @@ public abstract class Shape {
         return false;
     }
 
-    /*
-    given they are on the same cell, do they collide?
+    /**
+     * Given they are on the same cell, do they collide?
      */
     public abstract boolean sameCellTestCollision(Shape shape);
 
