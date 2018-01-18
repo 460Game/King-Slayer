@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 import java.util.HashSet;
 import java.util.Set;
+import static Util.Const.*;
 
 public class RectShape extends Shape {
 
@@ -108,6 +109,6 @@ public class RectShape extends Shape {
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.fillRect(x * 32, y * 32, w * 32, h * 32);
+        gc.fillRect(x * TILE_PIXELS, y * TILE_PIXELS, w * TILE_PIXELS, h * TILE_PIXELS);
     }
 }

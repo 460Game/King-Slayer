@@ -8,6 +8,7 @@ import game.model.Game.WorldObject.TestPlayer;
 import game.model.IModel;
 import game.model.ProcessorForwarderModel;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.util.*;
 
@@ -131,6 +132,8 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     }
 
     public void drawBG(GraphicsContext gc) {
+        gc.setFill(Color.DARKBLUE);
+        gc.fillRect(-10000,-10000,10000000,1000000);
         for (GridCell tile : allCells)
             tile.drawBackground(gc);
     }

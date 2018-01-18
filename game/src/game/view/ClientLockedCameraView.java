@@ -1,7 +1,5 @@
 package game.view;
 
-import static Util.Const.*;
-
 import game.message.playerMoveMessage.*;
 import game.model.Game.GameModel;
 import javafx.animation.AnimationTimer;
@@ -13,7 +11,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.transform.Affine;
 import javafx.stage.Stage;
 
-public class ClientView {
+import static Util.Const.*;
+
+//TODO this file is WIP
+public class ClientLockedCameraView {
 
     private GameModel model;
 
@@ -21,7 +22,7 @@ public class ClientView {
 
     private Stage window;
 
-    public ClientView(GameModel model) {
+    public ClientLockedCameraView(GameModel model) {
         this.model = model;
     }
 

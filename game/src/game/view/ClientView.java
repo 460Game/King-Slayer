@@ -1,5 +1,8 @@
 package game.view;
 
+import static Util.Const.*;
+
+
 import game.message.playerMoveMessage.*;
 import game.model.Game.GameModel;
 import javafx.animation.AnimationTimer;
@@ -12,14 +15,6 @@ import javafx.scene.transform.Affine;
 import javafx.stage.Stage;
 
 public class ClientView {
-
-    final static int TILE_PIXELS = 32;
-
-    final static int CANVAS_WIDTH = GameModel.GRID_X_SIZE * TILE_PIXELS;
-    final static int CANVAS_HEIGHT = GameModel.GRID_Y_SIZE * TILE_PIXELS;
-
-    final static int INIT_SCREEN_WIDTH = 800;
-    final static int INIT_SCREEN_HEIGHT = 600;
 
     private GameModel model;
 
@@ -45,6 +40,23 @@ public class ClientView {
         GraphicsContext gcFG = canvasFG.getGraphicsContext2D();
         GraphicsContext gcBG = canvasBG.getGraphicsContext2D();
 
+       // gcFG.transform(new Affine(Affine.translate(GameModel.GRID_X_SIZE * Const.TILE_PIXELS * 0.5, GameModel.GRID_Y_SIZE * Const.TILE_PIXELS * 0.5)));
+       /// gcBG.transform(new Affine(Affine.translate(GameModel.GRID_X_SIZE * Const.TILE_PIXELS * 0.5, GameModel.GRID_Y_SIZE * Const.TILE_PIXELS * 0.5)));
+
+        window.widthProperty().addListener(l -> {
+            canvasBG.setWidth(window.getWidth());
+            canvasFG.setWidth(window.getWidth());
+            model.drawBG(gcBG);
+        });
+
+        window.heightProperty().addListener(l -> {
+            canvasBG.setHeight(window.getHeight());
+            canvasFG.setHeight(window.getHeight());
+            model.drawBG(gcBG);
+        });
+
+        window.setFullScreen(true);
+
         model.drawBG(gcBG);
 
         root.getChildren().add(canvasBG);
@@ -52,7 +64,7 @@ public class ClientView {
 
         Scene scene = new Scene(root);
 
-        double scaleFactor = 1;
+        double[] scaleFactor = {1.0};
 
         AnimationTimer animator = new AnimationTimer() {
             @Override
@@ -60,20 +72,21 @@ public class ClientView {
                 model.update();
                 gcFG.clearRect(0, 0, 100000000, 10000000);
 
-                double gameW = scaleFactor*window.getWidth()/TILE_PIXELS;
-                double gameH = scaleFactor*window.getHeight()/TILE_PIXELS;
+                double gameW = scaleFactor[0] * window.getWidth() / TILE_PIXELS;
+                double gameH = scaleFactor[0] * window.getHeight() / TILE_PIXELS;
 
-                model.drawFG(gcFG, model.playerB.getX()- gameW/2, model.playerB.getY() - gameH/2, gameW, gameH);
+                model.drawFG(gcFG, model.playerB.getX() - gameW / 2, model.playerB.getY() - gameH / 2, gameW, gameH);
             }
         };
 
         scene.setOnScroll(e -> {
-            System.out.println("Scroll event, delta is " + e.getDeltaY());
-            if(e.getDeltaY() < 0 ) {
+            if (e.getDeltaY() < 0) {
+                scaleFactor[0] *= 0.9;
                 gcFG.transform(new Affine(Affine.scale(0.9, 0.9)));
                 gcBG.transform(new Affine(Affine.scale(0.9, 0.9)));
                 model.drawBG(gcBG);
             } else {
+                scaleFactor[0] *= 1.1;
                 gcFG.transform(new Affine(Affine.scale(1.1, 1.1)));
                 gcBG.transform(new Affine(Affine.scale(1.1, 1.1)));
                 model.drawBG(gcBG);
@@ -81,42 +94,61 @@ public class ClientView {
         });
 
         scene.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.S) {
-                gcFG.transform(new Affine(Affine.translate(0, -100)));
-                gcBG.transform(new Affine(Affine.translate(0, -100)));
-                model.drawBG(gcBG);
+            if (e.getCode() == KeyCode.F11) {
+                window.setFullScreen(true);
             }
-            //   model.processMessage(new PlayerUp(0));
+            if (e.getCode() == KeyCode.S) {
+                     gcFG.transform(new Affine(Affine.translate(0, -200)));
+                     gcBG.transform(new Affine(Affine.translate(0, -200)));
+                 model.drawBG(gcBG);
+              //  model.processMessage(new PlayerUp(0));
+            }
+            //
             if (e.getCode() == KeyCode.W) {
 
-                gcFG.transform(new Affine(Affine.translate(0, 100)));
-                gcBG.transform(new Affine(Affine.translate(0, 100)));
-                model.drawBG(gcBG);
+                      gcFG.transform(new Affine(Affine.translate(0, 200)));
+                      gcBG.transform(new Affine(Affine.translate(0, 200)));
+                 model.drawBG(gcBG);
+               // model.processMessage(new PlayerDown(0));
             }
-            //   model.processMessage(new PlayerDown(0));
+            //
             if (e.getCode() == KeyCode.D) {
 
-                gcFG.transform(new Affine(Affine.translate(-100, 0)));
-                gcBG.transform(new Affine(Affine.translate(-100, 0)));
-                model.drawBG(gcBG);
+                    gcFG.transform(new Affine(Affine.translate(-200, 0)));
+                    gcBG.transform(new Affine(Affine.translate(-200, 0)));
+                  model.drawBG(gcBG);
+               // model.processMessage(new PlayerLeft(0));
             }
-            //  model.processMessage(new PlayerLeft(0));
+            //
             if (e.getCode() == KeyCode.A) {
 
-                gcFG.transform(new Affine(Affine.translate(100, 0)));
-                gcBG.transform(new Affine(Affine.translate(100, 0)));
-                model.drawBG(gcBG);
+                    gcFG.transform(new Affine(Affine.translate(200, 0)));
+                     gcBG.transform(new Affine(Affine.translate(200, 0)));
+                 model.drawBG(gcBG);
+              //  model.processMessage(new PlayerRight(0));
             }
-            //   model.processMessage(new PlayerRight(0));
+            //
             //           model.playerA.right();
-            if (e.getCode() == KeyCode.UP)
+            if (e.getCode() == KeyCode.UP) {
+
+                model.processMessage(new PlayerUp(0));
                 model.processMessage(new PlayerUp(1));
-            if (e.getCode() == KeyCode.DOWN)
+            }
+            if (e.getCode() == KeyCode.DOWN) {
+
+                model.processMessage(new PlayerDown(0));
                 model.processMessage(new PlayerDown(1));
-            if (e.getCode() == KeyCode.LEFT)
+            }
+            if (e.getCode() == KeyCode.LEFT) {
+
+                model.processMessage(new PlayerLeft(0));
                 model.processMessage(new PlayerLeft(1));
-            if (e.getCode() == KeyCode.RIGHT)
+            }
+            if (e.getCode() == KeyCode.RIGHT){
+
+                model.processMessage(new PlayerRight(0));
                 model.processMessage(new PlayerRight(1));
+            }
         });
 
         scene.setOnKeyReleased(e -> {
@@ -124,7 +156,7 @@ public class ClientView {
                 model.processMessage(new PlayerStopVert(0));
             //     model.playerA.stopVert();
             if (e.getCode() == KeyCode.S)
-                model.processMessage(new PlayerStopVert(0));
+                model.processMessasdsdsddsdsssdddsge(new PlayerStopVert(0));
             //        model.playerA.stopVert();
             if (e.getCode() == KeyCode.A)
                 model.processMessage(new PlayerStopHorz(0));
@@ -139,7 +171,7 @@ public class ClientView {
             if (e.getCode() == KeyCode.UP)
                 model.processMessage(new PlayerStopVert(1));
             if (e.getCode() == KeyCode.DOWN)
-                model.processMessage(new PlayerStopHorz(1));
+                model.processMessage(new PlayerStopVert(1));
         });
 
         window.setScene(scene);
