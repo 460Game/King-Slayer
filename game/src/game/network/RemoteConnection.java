@@ -57,7 +57,7 @@ public class RemoteConnection {
 
             server.addListener(new Listener() {
                 public void received (Connection c, Object obj) {
-                    Log.info("Server received from " + c.getID());
+                    Log.info("Server received from " + c.getID() + " " + obj.toString());
                     GameConnection connection = (GameConnection)c;
 
                     clientList.putIfAbsent(connection.getID(), connection);
@@ -85,13 +85,14 @@ public class RemoteConnection {
             client.addListener(new Listener() {
                 public void connected (Connection connection) {
                     Log.info("Client " + connection.getID() + " connected");
+                    client.sendTCP("Now server should see this");
 //                    NetworkCommon.UserName usrName = new NetworkCommon.UserName("");
 //                    usrName.user_name = name;
 //                    client.sendTCP(usrName);
                 }
 
                 public void received (Connection connection, Object obj) {
-                    Log.info("Client " + client.getID() + "received");
+                    Log.info("Client " + client.getID() + "received " + obj.toString());
                     if (obj instanceof Message) {
                         lobbyClient.getMsg((Message) obj);
                     }
