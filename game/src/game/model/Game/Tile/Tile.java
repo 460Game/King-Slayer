@@ -10,6 +10,7 @@ public enum Tile {
     BARRIER(false, "barrier.png"),
     DEEP_WATER(false, "deepWater.png"),
     GRASS(true, "grass.png"),
+    NO_BUILD(true, "nobuild.png"),
     METAL(true, "metal.png"),
     PATH(true, "rock.png"),
     SHALLOW_WATER(true, "shallowWater.png"),

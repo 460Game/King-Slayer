@@ -212,11 +212,12 @@ public class LobbyClient extends Application {
                 }
             });
         }
-
-        public static void main(String[] args) throws InterruptedException, IOException {
-            Log.set(Log.LEVEL_DEBUG);
-            Application.launch();
-        }
     }
+
+    public static void main(String[] args) throws InterruptedException, IOException {
+        Log.set(Log.LEVEL_DEBUG);
+        Application.launch();
+    }
+
 }
 

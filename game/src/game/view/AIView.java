@@ -9,7 +9,7 @@ public class AIView {
     Thread thread;
 
     public AIView(GameModel model) {
-        thread = new Thread(()-> {
+        thread = new Thread(() -> {
             model.update();
             try {
                 Thread.sleep(16);

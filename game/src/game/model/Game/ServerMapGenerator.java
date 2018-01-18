@@ -53,11 +53,12 @@ public class ServerMapGenerator implements MapGenerator {
         river(Tile.DEEP_WATER),
         edgeWater(Tile.DEEP_WATER),
         tresure(Tile.PATH),
+        tresureNoBuild(Tile.NO_BUILD),
         metal(Tile.METAL),
         stone(Tile.STONE),
         tree(Tile.TREE),
         wall(Tile.WALL),
-        room(Tile.PATH),
+        room(Tile.NO_BUILD),
         grass(Tile.GRASS),
         barrier(Tile.BARRIER),
         unset(null),
@@ -248,7 +249,7 @@ public class ServerMapGenerator implements MapGenerator {
                 for (int y = t.y - 2; y <= t.y + 2; y++)
                     if (random.nextDouble() < 0.3)
                         if(grid[x][y] != TS.edgeWater)
-                        grid[x][y] = TS.tresure;
+                        grid[x][y] = TS.tresureNoBuild;
         }
 
 
