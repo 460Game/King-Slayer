@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 
 import java.util.HashSet;
 import java.util.Set;
+import static Util.Const.*;
 
 public class CircleShape extends Shape {
 
@@ -89,6 +90,6 @@ public class CircleShape extends Shape {
     @Override
     public void draw(GraphicsContext gc) {
         gc.setFill(Color.RED);
-        gc.fillOval(x*32,y*32,32 * radius,32 * radius);
+        gc.fillOval(x*TILE_PIXELS,y*TILE_PIXELS,TILE_PIXELS * radius,TILE_PIXELS * radius);
     }
 }

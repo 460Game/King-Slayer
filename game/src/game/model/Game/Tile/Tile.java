@@ -2,12 +2,12 @@ package game.model.Game.Tile;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-
+import static Util.Const.*;
 import java.io.IOException;
 
 public enum Tile {
 
-    BARRIER(false, "grass.png"),
+    BARRIER(false, "barrier.png"),
     DEEP_WATER(false, "deepWater.png"),
     GRASS(true, "grass.png"),
     METAL(true, "metal.png"),
@@ -31,6 +31,6 @@ public enum Tile {
     }
 
     public void draw(GraphicsContext gc, int x, int y) {
-        gc.drawImage(this.IMAGE, x * 64, y * 64, 64, 64);
+        gc.drawImage(this.IMAGE, x * TILE_PIXELS, y * TILE_PIXELS, TILE_PIXELS, TILE_PIXELS);
     }
 }
