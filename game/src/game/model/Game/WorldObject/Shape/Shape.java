@@ -22,6 +22,8 @@ public abstract class Shape {
     public abstract double getX();
     public abstract double getY();
 
+    public abstract boolean blocksCell(int x, int y);
+
     static class GridCellReference {
         public int x, y;
 

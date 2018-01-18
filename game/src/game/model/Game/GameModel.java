@@ -1,6 +1,5 @@
 package game.model.Game;
 
-import Util.Util;
 import game.model.Game.Grid.GridCell;
 import game.model.Game.Tile.Tile;
 import game.model.Game.WorldObject.Entity;
@@ -59,7 +58,7 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
         Set<Entity> objects = new HashSet<>();
         for (int i = x; i < x + w; i++)
             for (int j = y; j < y + +w; j++)
-                objects.addAll(grid[i][j].getContains());
+                objects.addAll(grid[i][j].getContents());
         return objects;
     }
 
@@ -106,7 +105,7 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
     @Override
     public void setTile(int x, int y, Tile tile) {
-        grid[x][y].setType(tile);
+        grid[x][y].setTile(tile);
     }
 
     @Override

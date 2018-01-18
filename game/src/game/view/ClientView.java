@@ -156,7 +156,7 @@ public class ClientView {
                 model.processMessage(new PlayerStopVert(0));
             //     model.playerA.stopVert();
             if (e.getCode() == KeyCode.S)
-                model.processMessasdsdsddsdsssdddsge(new PlayerStopVert(0));
+                model.processMessage(new PlayerStopVert(0));
             //        model.playerA.stopVert();
             if (e.getCode() == KeyCode.A)
                 model.processMessage(new PlayerStopHorz(0));
