@@ -24,16 +24,14 @@ public class LobbyClient {
     ClientView clientView;
     String name;
     ChatFrame chatFrame;
-    public LobbyClient() {
-        client = new RemoteConnection(false, this);
+    public LobbyClient() throws IOException {
 
 
         // Request the host from the user.
         String input = (String)JOptionPane.showInputDialog(null, "Host:", "Connect to chat server", JOptionPane.QUESTION_MESSAGE,
-                null, null, "10.124.77.166");
+                null, null, "localhost");
         if (input == null || input.trim().length() == 0) System.exit(1);
         final String host = input.trim();
-//        String host = "10.210.77.20";
         Log.info(host);
 
         // Request the user's name.
@@ -58,17 +56,18 @@ public class LobbyClient {
         });
         chatFrame.setVisible(true);
 
+        client = new RemoteConnection(false, this);
         // We'll do the connect on a new thread so the ChatFrame can show a progress bar.
         // Connecting to localhost is usually so fast you won't see the progress bar.
         new Thread("Connect") {
             public void run () {
+
                 try {
                     client.connectToServer(5000, host);
-                    // Server communication after connection can go here, or in Listener#connected().
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    System.exit(1);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+                // Server communication after connection can go here, or in Listener#connected().
             }
         }.start();
 
@@ -217,6 +216,11 @@ public class LobbyClient {
                     messageList.ensureIndexIsVisible(model.size() - 1);
                 }
             });
+        }
+
+        public static void main (String[] args) throws InterruptedException, IOException {
+            Log.set(Log.LEVEL_DEBUG);
+            LobbyClient client = new LobbyClient();
         }
     }
 }

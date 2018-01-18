@@ -29,7 +29,7 @@ public class RemoteConnection {
 
     ConcurrentHashMap<Integer, Client> clientList;
 
-    public RemoteConnection(boolean isServer, Object lobby) {
+    public RemoteConnection(boolean isServer, Object lobby) throws IOException {
         this.isServer = isServer;
         if (isServer) {
             //TODO change this later
@@ -45,6 +45,7 @@ public class RemoteConnection {
             lobbyClient = (LobbyClient) lobby;
             client = new Client();
         }
+        start();
     }
 
     public void start() throws IOException {
@@ -57,7 +58,10 @@ public class RemoteConnection {
                     Client connection = (Client)c;
 
                     clientList.putIfAbsent(connection.getID(), connection);
-                    lobbyServer.getMsg((Message) obj);
+                    if (obj instanceof Message) {
+                        lobbyServer.getMsg((Message) obj);
+                    }
+
                 }
 
                 //TODO: implement disconnected
@@ -81,7 +85,10 @@ public class RemoteConnection {
                 }
 
                 public void received (Connection connection, Object obj) {
-                    lobbyClient.getMsg((Message) obj);
+                    if (obj instanceof Message) {
+                        lobbyClient.getMsg((Message) obj);
+                    }
+
 //                    if (object instanceof ChatCommon.AllUserNames) {
 //                        ChatCommon.AllUserNames updateNames = (ChatCommon.AllUserNames) object;
 //                        chatFrame.setNames(updateNames.names);
@@ -111,7 +118,11 @@ public class RemoteConnection {
      * @throws IOException
      */
     public void connectToServer(int port, String host) throws IOException {
-        if (isServer) Log.error("Server should not connect to server crossing network");
+        if (isServer) {
+            Log.error("Server should not connect to server crossing network");
+            return;
+        }
+        Log.info("Client connect to " + host + " " + port);
         client.connect(port, host, NetworkCommon.port);
     }
 

@@ -27,7 +27,7 @@ public class LobbyServer {
     private GameModel serverModel;
     RemoteConnection server;
     Set<RemoteConnection.RemoteModel> remoteModels;
-    public LobbyServer() {
+    public LobbyServer() throws IOException {
         server = new RemoteConnection(true, this);
 
         JFrame frame = new JFrame("Chat Server");
