@@ -49,14 +49,22 @@ public class ClientView {
 
         Scene scene = new Scene(root);
         scene.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.W)
-                model.processMessage(new PlayerUp(0));
+            if (e.getCode() == KeyCode.W) {
+                gc.transform(new Affine(Affine.translate(0, -100)));
+            }
+             //   model.processMessage(new PlayerUp(0));
             if (e.getCode() == KeyCode.S)
-                model.processMessage(new PlayerDown(0));
+
+                gc.transform(new Affine(Affine.translate(0, 100)));
+             //   model.processMessage(new PlayerDown(0));
             if (e.getCode() == KeyCode.A)
-                model.processMessage(new PlayerLeft(0));
+
+                gc.transform(new Affine(Affine.translate(-100, 0)));
+              //  model.processMessage(new PlayerLeft(0));
             if (e.getCode() == KeyCode.D)
-                model.processMessage(new PlayerRight(0));
+
+                gc.transform(new Affine(Affine.translate(100, 0)));
+             //   model.processMessage(new PlayerRight(0));
      //           model.playerA.right();
             if (e.getCode() == KeyCode.UP)
                 model.processMessage(new PlayerUp(1));

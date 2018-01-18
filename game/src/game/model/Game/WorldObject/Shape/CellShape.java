@@ -67,6 +67,6 @@ public class CellShape extends Shape {
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.fillRect(this.gridCell.x * 10, this.gridCell.y * 10, 10, 10);
+        gc.fillRect(this.gridCell.x * 32, this.gridCell.y * 32, 32, 32);
     }
 }

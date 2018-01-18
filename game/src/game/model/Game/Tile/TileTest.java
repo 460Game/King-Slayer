@@ -13,7 +13,7 @@ public abstract class TileTest extends Tile {
     @Override
     public void draw(GraphicsContext gc, int x, int y) {
         gc.setFill(getColor());
-        gc.fillRect(x*10,y*10,10,10);
+        gc.fillRect(x*64,y*64,64,64);
      //   gc.strokeRect(x*10,y*10,10,10);
     }
 

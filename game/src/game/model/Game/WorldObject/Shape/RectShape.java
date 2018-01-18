@@ -108,6 +108,6 @@ public class RectShape extends Shape {
 
     @Override
     public void draw(GraphicsContext gc) {
-      //  gc.fillRect(x * 10, y * 10, w, h);
+        gc.fillRect(x * 32, y * 32, w * 32, h * 32);
     }
 }

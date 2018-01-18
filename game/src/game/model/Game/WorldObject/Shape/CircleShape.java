@@ -89,6 +89,6 @@ public class CircleShape extends Shape {
     @Override
     public void draw(GraphicsContext gc) {
         gc.setFill(Color.RED);
-        gc.fillOval(x*10,y*10,10 * radius,10 * radius);
+        gc.fillOval(x*32,y*32,32 * radius,32 * radius);
     }
 }
