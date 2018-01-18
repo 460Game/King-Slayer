@@ -68,7 +68,7 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
         return generator;
     }
 
-    public GameModel(boolean isServer, Collection<IModel> others, MapGenerator generator) {
+    public GameModel(boolean isServer, Collection<? extends IModel> others, MapGenerator generator) {
         super(isServer, others);
 
         entities = new HashMap<>();
