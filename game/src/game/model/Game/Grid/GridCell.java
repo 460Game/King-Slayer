@@ -83,16 +83,18 @@ public class GridCell {
     }
 
     /**
-     *
-     * @param gc
+     * Renders the cell with the background determined by the current
+     * tile type.
+     * @param gc context used to draw the cell background
      */
     public void drawBackground(GraphicsContext gc) {
         tile.draw(gc, x, y);
     }
 
     /**
-     *
-     * @param model
+     * Perform collisions between the current contents of the cell.
+     * The collisions are handled based on the entities involved.
+     * @param model current model of the game
      */
     public void collideContents(GameModel model) {
         for(Entity a : contents)
