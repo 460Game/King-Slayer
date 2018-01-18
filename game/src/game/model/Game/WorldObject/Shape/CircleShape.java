@@ -10,7 +10,7 @@ import static Util.Const.*;
 
 public class CircleShape extends Shape {
 
-    private double x,y, radius;
+    private double x, y, radius;
 
     transient Set<GridCellReference> memo = null;
 
@@ -26,7 +26,8 @@ public class CircleShape extends Shape {
 
     @Override
     public boolean blocksCell(int x, int y) {
-        return false; //RYAN TODO
+        return false;
+        // TODO actual math/corners
     }
 
     @Override
@@ -35,7 +36,7 @@ public class CircleShape extends Shape {
             return memo;
         memo = new HashSet<>();
 
-        for(int i = (int)(x - radius + 0.5); i <= Math.ceil(x + radius + 0.5); i++)
+        for(int i = (int) (x - radius + 0.5); i <= Math.ceil(x + radius + 0.5); i++)
             for(int j = (int)(y - radius + 0.5); j <= Math.ceil(y + radius + 0.5); j++)
                 if(Util.dist(this.x, this.y, i + 0.5, j + 0.5) <= radius + 0.70710678118)
                     memo.add(new GridCellReference(i,j));

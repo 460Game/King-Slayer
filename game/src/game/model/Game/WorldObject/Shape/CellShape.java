@@ -30,8 +30,7 @@ public class CellShape extends Shape {
 
     @Override
     public boolean blocksCell(int x, int y) {
-        return false;
-        //RYAN TODO
+        return gridCell.x == x && gridCell.y == y;
     }
 
     @Override
