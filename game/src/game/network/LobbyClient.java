@@ -57,19 +57,10 @@ public class LobbyClient {
         chatFrame.setVisible(true);
 
         client = new RemoteConnection(false, this);
+
         // We'll do the connect on a new thread so the ChatFrame can show a progress bar.
         // Connecting to localhost is usually so fast you won't see the progress bar.
-        new Thread("Connect") {
-            public void run () {
-
-                try {
-                    client.connectToServer(5000, host);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                // Server communication after connection can go here, or in Listener#connected().
-            }
-        }.start();
+        client.connectToServer(5000, host);
 
 
     }
