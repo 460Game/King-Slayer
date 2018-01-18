@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.EndPoint;
 import game.message.*;
 import game.message.playerMoveMessage.*;
 import game.model.Game.GameModel;
+import game.model.Game.Tile.Tile;
 import game.model.Game.WorldObject.Blocker;
 import game.model.Game.WorldObject.Entity;
 import game.model.Game.WorldObject.Shape.*;
@@ -44,7 +45,7 @@ public class NetworkCommon {
         kryo.register(CompositeShape.class);
         kryo.register(RectShape.class);
 
-        kryo.register(UUID.class);
+        kryo.register(Tile.class);
 
 
 

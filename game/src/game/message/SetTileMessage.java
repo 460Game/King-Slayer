@@ -8,10 +8,10 @@ public class SetTileMessage implements ToClientMessage {
     private int x,y;
     private Tile tile;
 
-    SetTileMessage() {
+    public SetTileMessage() {
 
     }
-    SetTileMessage(int x, int y, Tile tile) {
+    public SetTileMessage(int x, int y, Tile tile) {
         this.tile = tile;
         this.x = x;
         this.y = y;
