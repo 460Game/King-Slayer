@@ -168,7 +168,10 @@ public abstract class Entity {
      */
     public abstract void update(long time, GameModel model);
 
-
+    /**
+     * Updates the entity in the game model.
+     * @param model current game model
+     */
     public void update(GameModel model) {
 
         //note that getCells returns a new instance every time
@@ -195,6 +198,10 @@ public abstract class Entity {
         return (int) (id % Integer.MAX_VALUE);
     }
 
+    /**
+     * Draws the entity in the game.
+     * @param gc context used to draw the entity
+     */
     public abstract void draw(GraphicsContext gc);
 
     @Override
@@ -209,51 +216,72 @@ public abstract class Entity {
         return this.id == entity.id;
     }
 
+    /**
+     * Gets the x-coordinate of the center of the entity.
+     * @return the x-coordinate of the center of the entity
+     */
     public double getX() {
        return this.getShape().getX();
     }
 
+    /**
+     * Gets the y-coordinate of the center of the entity.
+     * @return the y-coordinate of the center of the entity
+     */
     public double getY() {
         return this.getShape().getY();
     }
 
     /**
-     * this should return the set of all tiles this shape overlaps with
-     * returns a new set every time
-     * @param gameMap
-     * @return
+     * Return the set of all cells this entity overlaps with. This method
+     * should return a new set every time.
+     * @param gameMap current model of the game
+     * @return the set of all cells that this entity overlaps with.
      */
     public Collection<GridCell> getCells(GameModel gameMap) {
         return getShape().getCells(gameMap);
     }
 
     /**
-     * given that they are on same cell, do they collide?
-     * @param
-     * @return
+     * Returns true if this entity collides with the specified entity, given that
+     * they are on the same cell. Returns false otherwise.
+     * @param other the entity to be tested for collisions
+     * @return true if this entity collides with the specified entity
      */
     public boolean testCollision(Entity other) {
         return this.getShape().testCollision(other.getShape());
     }
 
     /**
-     * shift the shape by the delta
-     * @param dx
-     * @param dy
+     * Shift the entity by the delta specified.
+     * @param dx shift in x-coordinate
+     * @param dy shift in y-coordinate
      */
     public void shift(double dx, double dy) {
         this.getShape().shift(dx,dy);
     }
 
+    /**
+     * Sets the position to the coordinates specified.
+     * @param x x-coordinate of the center of the entity
+     * @param y y-coordinate of the center of the entity
+     */
     public void setPos(double x, double y) {
         this.getShape().setPos(x,y);
     }
 
-
+    /**
+     * Rotates the entity by the given angle.
+     * @param r angle to rotate the entity by
+     */
     public void rotate(double r) {
         this.getShape().rotate(r);
     }
 
+    /**
+     * Sets the angle of the entity to the angle specified.
+     * @param r new angle of the entity.
+     */
     public void setAngle(double r) {
         this.getShape().setAngle(r);
     }
