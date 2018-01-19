@@ -57,8 +57,8 @@ public class TestPlayer extends Entity {
 
     @Override
     public void update(long time, GameModel model) {
-        shape.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10);
-
+       // shape.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10); TODO for testing
+        shape.shift(dx * 1, dy * 1);
     }
 
     public void up() {

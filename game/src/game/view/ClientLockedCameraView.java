@@ -69,16 +69,16 @@ public class ClientLockedCameraView {
                 double gameW = scaleFactor[0] * window.getWidth() / TILE_PIXELS;
                 double gameH = scaleFactor[0] * window.getHeight() / TILE_PIXELS;
 
-                double xDelta = model.playerB.getX() * TILE_PIXELS * scaleFactor[0] - window.getWidth()/2 - pos[0];
-                double yDelta = model.playerB.getY() * TILE_PIXELS * scaleFactor[0] - window.getHeight()/2 - pos[1];
+            //    double xDelta = model.getP.getX() * TILE_PIXELS * scaleFactor[0] - window.getWidth()/2 - pos[0];
+           //     double yDelta = model.playerB.getY() * TILE_PIXELS * scaleFactor[0] - window.getHeight()/2 - pos[1];
 
-                gcFG.transform(new Affine(Affine.translate(xDelta, yDelta)));
-                gcBG.transform(new Affine(Affine.translate(xDelta, yDelta)));
+           //     gcFG.transform(new Affine(Affine.translate(xDelta, yDelta)));
+           //     gcBG.transform(new Affine(Affine.translate(xDelta, yDelta)));
 
-                pos[0] += xDelta;
-                pos[1] += yDelta;
+           //     pos[0] += xDelta;
+           //     pos[1] += yDelta;
 
-                model.draw(gcFG, (int)(model.playerB.getX() - gameW / 2), (int)(model.playerB.getY() - gameH / 2), (int)gameW, (int)gameH);
+         //       model.draw(gcFG, (int)(model.playerB.getX() - gameW / 2), (int)(model.playerB.getY() - gameH / 2), (int)gameW, (int)gameH);
             }
         };
 

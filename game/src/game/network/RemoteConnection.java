@@ -184,8 +184,8 @@ public class RemoteConnection {
 
         @Override
         public long nanoTime() {
-            return 0;
-        }
+            return System.nanoTime();
+        } //TODO this wont work across computers
 
         public int getConnectId() {
             if (isServer) return -1;

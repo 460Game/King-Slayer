@@ -10,6 +10,7 @@ import game.model.Game.WorldObject.Entity.Blocker;
 import game.model.Game.WorldObject.Entity.Entity;
 import game.model.Game.WorldObject.Shape.*;
 import game.model.Game.WorldObject.Entity.TestPlayer;
+import game.model.Game.WorldObject.Team;
 
 public class NetworkCommon {
     static public int port = 54555;
@@ -30,6 +31,7 @@ public class NetworkCommon {
         kryo.register(SetTileMessage.class);
         kryo.register(ToClientMessage.class);
         kryo.register(ToServerMessage.class);
+        kryo.register(CreatePlayerMessage.class);
 
         kryo.register(TestPlayer.class);
         kryo.register(Blocker.class);
@@ -40,6 +42,8 @@ public class NetworkCommon {
         kryo.register(CircleShape.class);
         kryo.register(CompositeShape.class);
         kryo.register(RectShape.class);
+
+        kryo.register(Team.class);
 
         kryo.register(Tile.class);
 

@@ -1,5 +1,6 @@
 package game.model.Game;
 
+import game.message.CreatePlayerMessage;
 import game.model.Game.Grid.GridCell;
 import game.model.Game.Tile.Tile;
 import game.model.Game.WorldObject.Drawable;
@@ -14,77 +15,41 @@ import java.util.*;
 
 public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
-    /**
-     * Grid of the game map. Each tile on the map is represented by a 1x1 cell.
-     */
-    private GridCell[][] grid = new GridCell[Util.Const.GRID_X_SIZE][Util.Const.GRID_Y_SIZE];
+    public static int GRID_X_SIZE = 100;
+    public static int GRID_Y_SIZE = 100;
 
-    private Collection<GridCell> allCells;
+    private GridCell[][] grid = new GridCell[GRID_X_SIZE][GRID_Y_SIZE];
 
-    /**
-     * Tool to generate the game map.
-     */
-    private MapGenerator generator;
-
-    //TODO temp test
-    public TestPlayer playerA = null;
-    public TestPlayer playerB = null;
+    Collection<GridCell> allCells;
 
     private Map<Entity,Entity> entities;
 
-    /**
-     * Gets the map width in terms of number of grid cells.
-     * @return the number of grid cells in the width of the map
-     */
     public int getMapWidth() {
-        return Util.Const.GRID_X_SIZE;
+        return GRID_X_SIZE;
     }
 
-    /**
-     * Gets the map height in terms of number of grid cells.
-     * @return the number of grid cells in the height of the map
-     */
     public int getMapHeight() {
-        return Util.Const.GRID_Y_SIZE;
+        return GRID_Y_SIZE;
     }
 
-    /**
-     * Gets the cell at the specified coordinates. The coordinates represent
-     * the upper left corner of the cell.
-     * @param x x-coordinate
-     * @param y y-coordinate
-     * @return the cell with the given upper left coordinates
-     */
     public GridCell getCell(int x, int y) {
         return grid[x][y];
     }
 
-    /**
-     * Gets the tile at the specified coordinates. The coordinates represent
-     * the upper left corner of the cell.
-     * @param x
-     * @param y
-     * @return
-     */
     public Tile getTile(int x, int y) {
         return grid[x][y].getTile();
     }
 
-    /**
-     * Returns true if the cell at the given coordinates has been explored.
-     * The coordinates represent the upper left corner of the cell.
-     * @param x x-coordinate
-     * @param y y-coordinate
-     * @return true if the cell at the given coordinates has been explored
-     */
     public boolean explored(int x, int y) {
         return true; //TODO LOS
     }
 
-    /**
-     * Removes the entity with the given ID from every tile on the game map.
-     * @param entityID ID of the entity to be removed
-     */
+
+    ArrayList<TestPlayer> players = new ArrayList<>();
+    public ArrayList<TestPlayer> getPlayers() {
+        return players;
+    }
+
     @Override
     public void removeByID(long entityID) {
         for (GridCell[] arr : grid)
@@ -108,9 +73,14 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
         return objects;
     }
 
+    private MapGenerator generator;
+
     public MapGenerator getGenerator() {
         return generator;
     }
+
+    public TestPlayer playerA = null;
+    public TestPlayer playerB = null;
 
     public GameModel(boolean isServer, Collection<? extends IModel> others, MapGenerator generator) {
         super(isServer, others);
@@ -120,15 +90,16 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
         this.generator = generator;
 
-        for (int i = 0; i < Util.Const.GRID_X_SIZE; i++)
-            for (int j = 0; j < Util.Const.GRID_Y_SIZE; j++)
+        for (int i = 0; i < GRID_X_SIZE; i++)
+            for (int j = 0; j < GRID_Y_SIZE; j++)
                 grid[i][j] = new GridCell(this, i, j, generator.makeTile(i, j));
 
-        for (int i = 0; i < Util.Const.GRID_X_SIZE; i++)
-            for (int j = 0; j < Util.Const.GRID_Y_SIZE; j++)
+        for (int i = 0; i < GRID_X_SIZE; i++)
+            for (int j = 0; j < GRID_Y_SIZE; j++)
                 allCells.add(grid[i][j]);
 
         generator.makeStartingEntities().forEach(e -> entities.put(e,e));
+
 
         if(isServer) {
             for(Entity e : entities.keySet()) {
@@ -143,6 +114,11 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
           //  entities.put(playerA,playerA);
           //  entities.put(playerB,playerB);
         }
+        assert(playerA != null);
+        assert(playerB != null);
+
+        players.add(playerA);
+        players.add(playerB);
     }
 
     @Override
@@ -163,8 +139,8 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
     @Override
     public void update() {
-//        for (GridCell tile : allCells)  // TODO collisions broken
-//            tile.collideContents(this);
+       // for (GridCell tile : allCells)   TODO collisions broken
+       //     tile.collideContents(this);
 
         for (Entity e : entities.keySet())
             e.update(this);
@@ -184,17 +160,17 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     }
 
 
-//    /**
-//     * @param x top left x
-//     * @param y top lefy y
-//     * @param w width in game space
-//     * @param h height in game space
-//     * @param gc
-//     * @param i
-//     * @param i1
-//     * @param i2
-//     * @param i3
-//     */
+    /**
+     * @param x top left x
+     * @param y top lefy y
+     * @param w width in game space
+     * @param h height in game space
+     * @param gc
+     * @param i
+     * @param i1
+     * @param i2
+     * @param i3
+     */
     public void draw(GraphicsContext gc, double cx, double cy, double w, double h) {
         gc.setFill(Color.DARKBLUE);
         gc.fillRect(-100000,-100000,100000000,10000000);

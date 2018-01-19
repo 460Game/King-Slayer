@@ -10,6 +10,7 @@ import java.io.IOException;
 import Util.Util;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.Connection;
+import game.message.CreatePlayerMessage;
 import game.message.Message;
 import game.message.SetTileMessage;
 import game.model.Game.GameModel;
@@ -22,10 +23,7 @@ import javafx.stage.Stage;
 
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class LobbyServer extends Application {
 
@@ -77,6 +75,23 @@ public class LobbyServer extends Application {
                 for (int j = 0; j < serverModel.getMapWidth(); j++)
                     client.processMessage(new SetTileMessage(i, j, serverModel.getTile(i, j)));
         }
+
+
+        Iterator<? extends IModel> iter = (Iterator<? extends IModel>) remoteModels.iterator();
+        iter.next().processMessage(new CreatePlayerMessage(serverModel.playerA));
+        iter.next().processMessage(new CreatePlayerMessage(serverModel.playerB));
+
+        Thread t = new Thread(()-> {
+            while(true) {
+                serverModel.update();
+                try {
+                    Thread.sleep(15);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.start();
     }
 
 }
