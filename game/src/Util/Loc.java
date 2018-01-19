@@ -16,7 +16,5 @@ public class Loc {
     }
 
     @Override
-    public int hashCode() {
-        return (int)0.5*(x+y)*(x+y+1) + y;
-    }
+    public int hashCode() { return (int) (0.5 * (x + y) * (x + y + 1)) + y; }
 }

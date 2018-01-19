@@ -127,8 +127,8 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
     @Override
     public void update() {
-       // for (GridCell tile : allCells)   TODO collisions broken
-       //     tile.collideContents(this);
+//        for (GridCell tile : allCells)  // TODO collisions broken
+//            tile.collideContents(this);
 
         for (Entity e : entities.keySet())
             e.update(this);
@@ -148,17 +148,17 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     }
 
 
-    /**
-     * @param x top left x
-     * @param y top lefy y
-     * @param w width in game space
-     * @param h height in game space
-     * @param gc
-     * @param i
-     * @param i1
-     * @param i2
-     * @param i3
-     */
+//    /**
+//     * @param x top left x
+//     * @param y top lefy y
+//     * @param w width in game space
+//     * @param h height in game space
+//     * @param gc
+//     * @param i
+//     * @param i1
+//     * @param i2
+//     * @param i3
+//     */
     public void draw(GraphicsContext gc, double cx, double cy, double w, double h) {
         gc.setFill(Color.DARKBLUE);
         gc.fillRect(-100000,-100000,100000000,10000000);

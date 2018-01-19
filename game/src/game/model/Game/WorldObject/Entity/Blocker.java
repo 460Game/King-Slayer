@@ -9,7 +9,6 @@ public class Blocker extends Entity {
 
     private CellShape shape;
 
-
     @Override
     public void copyOf(Entity other) {
         assert(other instanceof Blocker);

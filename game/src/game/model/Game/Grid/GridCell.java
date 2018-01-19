@@ -106,8 +106,10 @@ public class GridCell implements Drawable {
     public void collideContents(GameModel model) {
         for(Entity a : contents)
             for (Entity b : contents)
-                if (a != b) // && a.getShape().testCollision(b.getShape()))
+                if (a != b && a.getShape().testCollision(b.getShape()))
                     a.collision(model, b);
+
+        // Problem: collide in two cells
     }
 
     /**

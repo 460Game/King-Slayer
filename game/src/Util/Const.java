@@ -22,7 +22,13 @@ public abstract class Const {
      */
     public final static int TILE_PIXELS = 32;
 
-    // TODO comment
+    /**
+     * Number of pixels on the width of the canvas.
+     */
     public final static int CANVAS_WIDTH = GameModel.GRID_X_SIZE * TILE_PIXELS;
+
+    /**
+     * Number of pixels on the height of the canvas.
+     */
     public final static int CANVAS_HEIGHT = GameModel.GRID_Y_SIZE * TILE_PIXELS;
 }
