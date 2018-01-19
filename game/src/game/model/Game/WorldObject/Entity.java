@@ -11,12 +11,35 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Defines an abstract entity in the game world.
+ */
 public abstract class Entity {
 
-    public abstract void collision(GameModel model, Entity collidesWith);
+    /**
+     * Current health of the entity.
+     */
+    private int health;
+
+    /**
+     * Current speed of the entity.
+     */
+    private double speed;
+
+    /**
+     * Current angle with which the angle is moving.
+     */
+    private double angle;
+
+    /**
+     * Team of this entity.
+     */
+    private Team team;
 
     private long id = Util.random.nextLong();
     private long last_update;
+
+    public abstract void collision(GameModel model, Entity collidesWith);
 
     public void copyOf(Entity other) {
         this.id = other.id;
