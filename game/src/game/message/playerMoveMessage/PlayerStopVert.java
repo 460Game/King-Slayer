@@ -6,23 +6,24 @@ import game.model.Game.GameModel;
 
 public class PlayerStopVert extends ActionMessage {
 
-    boolean p;
-    public PlayerStopVert() {
+    long id;
+    public PlayerStopVert(long i) {
         super();
+        id = i;
     }
-    public PlayerStopVert(int i) {
-        super();
-        p = i == 0;
+
+    PlayerStopVert(){
+
     }
 
     @Override
     public void execute(GameModel model) {
-        if(p) {
-            model.playerA.stopVert();
-            model.processMessage(new SetEntityMessage(model.playerA));
+        if(model.getPlayers().get(0).getId() == id) {
+            model.getPlayers().get(0).stopVert();
+            model.processMessage(new SetEntityMessage(model.getPlayers().get(0)));
         } else {
-            model.playerB.stopVert();
-            model.processMessage(new SetEntityMessage(model.playerB));
+            model.getPlayers().get(1).stopVert();
+            model.processMessage(new SetEntityMessage(model.getPlayers().get(1)));
         }
     }
 }

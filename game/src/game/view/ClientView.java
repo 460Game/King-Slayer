@@ -4,6 +4,7 @@ import static Util.Const.*;
 
 
 import game.message.playerMoveMessage.*;
+import game.model.ClientGameModel;
 import game.model.Game.GameModel;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
@@ -16,13 +17,13 @@ import javafx.stage.Stage;
 
 public class ClientView {
 
-    private GameModel model;
+    private ClientGameModel model;
 
     private AnimationTimer animator;
 
     private Stage window;
 
-    public ClientView(GameModel model) {
+    public ClientView(ClientGameModel model) {
         this.model = model;
     }
 
@@ -62,9 +63,11 @@ public class ClientView {
                 double gameW = scaleFactor[0] * window.getWidth() / TILE_PIXELS;
                 double gameH = scaleFactor[0] * window.getHeight() / TILE_PIXELS;
 
-                gc.transform(new Affine(Affine.translate(-model.playerB.getX() * TILE_PIXELS + window.getWidth()/2, -model.playerB.getY()* TILE_PIXELS  + window.getHeight()/2)));
-                model.draw(gc, model.playerB.getX(), model.playerB.getY(), gameW, gameH);
-                gc.transform(new Affine(Affine.translate(model.playerB.getX()* TILE_PIXELS-window.getWidth()/2, model.playerB.getY()* TILE_PIXELS- window.getHeight()/2)));
+                if(model.getLocalPlayer() != null) {
+                    gc.transform(new Affine(Affine.translate(-model.getLocalPlayer().getX() * TILE_PIXELS + window.getWidth() / 2, -model.getLocalPlayer().getY() * TILE_PIXELS + window.getHeight() / 2)));
+                    model.draw(gc, model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), gameW, gameH);
+                    gc.transform(new Affine(Affine.translate(model.getLocalPlayer().getX() * TILE_PIXELS - window.getWidth() / 2, model.getLocalPlayer().getY() * TILE_PIXELS - window.getHeight() / 2)));
+                }
             }
         };
 
@@ -109,22 +112,22 @@ public class ClientView {
             if (e.getCode() == KeyCode.UP) {
 
              //   model.processMessage(new PlayerUp(0));
-                model.processMessage(new PlayerUp(1));
+                model.processMessage(new PlayerUp(model.getLocalPlayer().getId()));
             }
             if (e.getCode() == KeyCode.DOWN) {
 
              //   model.processMessage(new PlayerDown(0));
-                model.processMessage(new PlayerDown(1));
+                model.processMessage(new PlayerDown(model.getLocalPlayer().getId()));
             }
             if (e.getCode() == KeyCode.LEFT) {
 
               //  model.processMessage(new PlayerLeft(0));
-                model.processMessage(new PlayerLeft(1));
+                model.processMessage(new PlayerLeft(model.getLocalPlayer().getId()));
             }
             if (e.getCode() == KeyCode.RIGHT){
 
               //  model.processMessage(new PlayerRight(0));
-                model.processMessage(new PlayerRight(1));
+                model.processMessage(new PlayerRight(model.getLocalPlayer().getId()));
             }
         });
 
@@ -143,19 +146,19 @@ public class ClientView {
             //         model.playerA.stopHorz();
             if (e.getCode() == KeyCode.RIGHT) {
             //    model.processMessage(new PlayerStopHorz(0));
-                model.processMessage(new PlayerStopHorz(1));
+                model.processMessage(new PlayerStopHorz(model.getLocalPlayer().getId()));
             }
             if (e.getCode() == KeyCode.LEFT) {
              //   model.processMessage(new PlayerStopHorz(0));
-                model.processMessage(new PlayerStopHorz(1));
+                model.processMessage(new PlayerStopHorz(model.getLocalPlayer().getId()));
             }
             if (e.getCode() == KeyCode.UP) {
              //   model.processMessage(new PlayerStopVert(0));
-                model.processMessage(new PlayerStopVert(1));
+                model.processMessage(new PlayerStopVert(model.getLocalPlayer().getId()));
             }
             if (e.getCode() == KeyCode.DOWN) {
              //   model.processMessage(new PlayerStopVert(0));
-                model.processMessage(new PlayerStopVert(1));
+                model.processMessage(new PlayerStopVert(model.getLocalPlayer().getId()));
             }
         });
 

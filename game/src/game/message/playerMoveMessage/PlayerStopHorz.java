@@ -7,25 +7,25 @@ import game.model.Game.GameModel;
 public class PlayerStopHorz extends ActionMessage {
 
 
-    boolean p;
-    public PlayerStopHorz() {
+    long id;
+    public PlayerStopHorz(long i) {
         super();
-    }
-    public PlayerStopHorz(int i) {
-        super();
-        p = i == 0;
+        id = i;
     }
 
+    PlayerStopHorz() {
+
+    }
 
 
     @Override
     public void execute(GameModel model) {
-        if(p) {
-            model.playerA.stopHorz();
-            model.processMessage(new SetEntityMessage(model.playerA));
+        if(model.getPlayers().get(0).getId() == id) {
+            model.getPlayers().get(0).stopHorz();
+            model.processMessage(new SetEntityMessage(model.getPlayers().get(0)));
         } else {
-            model.playerB.stopHorz();
-            model.processMessage(new SetEntityMessage(model.playerB));
+            model.getPlayers().get(1).stopHorz();
+            model.processMessage(new SetEntityMessage(model.getPlayers().get(1)));
         }
     }
 }

@@ -1,5 +1,6 @@
 package game.model.Game;
 
+import game.message.CreatePlayerMessage;
 import game.model.Game.Grid.GridCell;
 import game.model.Game.Tile.Tile;
 import game.model.Game.WorldObject.Drawable;
@@ -21,10 +22,6 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
     Collection<GridCell> allCells;
 
-    //TODO temp test
-    public TestPlayer playerA = null;
-    public TestPlayer playerB = null;
-
     private Map<Entity,Entity> entities;
 
     public int getMapWidth() {
@@ -45,6 +42,12 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
     public boolean explored(int x, int y) {
         return true; //TODO LOS
+    }
+
+
+    ArrayList<TestPlayer> players = new ArrayList<>();
+    public ArrayList<TestPlayer> getPlayers() {
+        return players;
     }
 
     @Override
@@ -76,6 +79,9 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
         return generator;
     }
 
+    public TestPlayer playerA = null;
+    public TestPlayer playerB = null;
+
     public GameModel(boolean isServer, Collection<? extends IModel> others, MapGenerator generator) {
         super(isServer, others);
 
@@ -94,6 +100,7 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
         generator.makeStartingEntities().forEach(e -> entities.put(e,e));
 
+
         if(isServer) {
             for(Entity e : entities.keySet()) {
                 if(e instanceof TestPlayer && playerA == null){
@@ -107,6 +114,11 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
           //  entities.put(playerA,playerA);
           //  entities.put(playerB,playerB);
         }
+        assert(playerA != null);
+        assert(playerB != null);
+
+        players.add(playerA);
+        players.add(playerB);
     }
 
     @Override

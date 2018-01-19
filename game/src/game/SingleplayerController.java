@@ -11,12 +11,12 @@ import java.util.Collections;
 
 public class SingleplayerController extends Application {
 
-    private GameModel serverModel;
+    private ServerGameModel serverModel;
     private ClientView clientView;
 
     public SingleplayerController() {
         serverModel = new ServerGameModel(Collections.EMPTY_SET);
-        clientView = new ClientView(serverModel);
+       // clientView = new ClientView(serverModel); TODO
     }
 
     @Override

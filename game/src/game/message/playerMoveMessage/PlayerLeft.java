@@ -3,27 +3,28 @@ package game.message.playerMoveMessage;
 import game.message.ActionMessage;
 import game.message.SetEntityMessage;
 import game.model.Game.GameModel;
+import game.model.Game.WorldObject.Entity.TestPlayer;
 
 public class PlayerLeft extends ActionMessage {
 
-    boolean p;
-    public PlayerLeft() {
+    long id;
+    public PlayerLeft(long i) {
         super();
-    }
-    public PlayerLeft(int i) {
-        super();
-        p = i == 0;
+        id = i;
     }
 
+    PlayerLeft(){
+
+    }
 
     @Override
     public void execute(GameModel model) {
-        if(p) {
-            model.playerA.left();
-            model.processMessage(new SetEntityMessage(model.playerA));
+        if(model.getPlayers().get(0).getId() == id) {
+            model.getPlayers().get(0).left();
+            model.processMessage(new SetEntityMessage(model.getPlayers().get(0)));
         } else {
-            model.playerB.left();
-            model.processMessage(new SetEntityMessage(model.playerB));
+            model.getPlayers().get(1).left();
+            model.processMessage(new SetEntityMessage(model.getPlayers().get(1)));
         }
     }
 }
