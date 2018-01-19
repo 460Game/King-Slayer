@@ -1,20 +1,19 @@
-package game.model.Game.WorldObject;
+package game.model.Game.WorldObject.Entity;
 
 import Util.Util;
 import game.model.Game.GameModel;
 import game.model.Game.Grid.GridCell;
+import game.model.Game.WorldObject.Drawable;
 import game.model.Game.WorldObject.Shape.Shape;
+import game.model.Game.WorldObject.Team;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Collection;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Defines an abstract entity in the game world.
  */
-public abstract class Entity {
+public abstract class Entity implements Drawable {
 
     /**
      * Current health of the entity.
@@ -173,24 +172,19 @@ public abstract class Entity {
      * @param model current game model
      */
     public void update(GameModel model) {
-
-        //note that getCells returns a new instance every time
-     //   Collection<GridCell> beforeSet = getShape().getCells(model);
-    //    Collection<GridCell> toRemove = getShape().getCells(model);
-
         long current_time = model.nanoTime();
         update(current_time - last_update, model);
         last_update = current_time;
 
-        Collection<GridCell> afterSet = getShape().getCells(model);
-
-     //   toRemove.removeAll(afterSet); //to remove
-      //  afterSet.removeAll(beforeSet); //to add
-
-        for(GridCell cell : model.getAllCells())
-            cell.remove(this);
-        for(GridCell cell : afterSet)
-            cell.add(this);
+        //TODO this needs to be better
+        if(getShape().moved()) {
+            Collection<GridCell> afterSet = getShape().getCells(model);
+            for (GridCell cell : model.getAllCells())
+                cell.removeContents(this);
+            for (GridCell cell : afterSet)
+                cell.addContents(this);
+        }
+        //TODO this must be more effeceint
     }
 
     @Override

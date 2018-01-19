@@ -1,14 +1,9 @@
-package game.model.Game.WorldObject;
+package game.model.Game.WorldObject.Entity;
 
 import game.model.Game.GameModel;
-import game.model.Game.WorldObject.Entity;
 import game.model.Game.WorldObject.Shape.CellShape;
 import game.model.Game.WorldObject.Shape.Shape;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-
-import java.util.UUID;
-import java.util.concurrent.BlockingDeque;
 
 public class Blocker extends Entity {
 
@@ -25,6 +20,7 @@ public class Blocker extends Entity {
 
     public Blocker() {
         super();
+        this.shape = new CellShape();
     }
 
     public Blocker(GameModel model, int x, int y) {
@@ -49,6 +45,11 @@ public class Blocker extends Entity {
         //Draw nothing
        // gc.setFill(Color.DARKORANGE);
        // gc.fillOval(x*10 + 2, y*10 + 2, 5, 5);
+    }
+
+    @Override
+    public double getDrawZ() {
+        return 0;
     }
 
     @Override

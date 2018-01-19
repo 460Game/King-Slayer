@@ -28,7 +28,7 @@ public class CellShape extends Shape {
      * Default constructor needed for serialization.
      */
     public CellShape() {
-
+        this.gridCell = new GridCellReference(0, 0);
     }
 
     @Override
@@ -42,6 +42,17 @@ public class CellShape extends Shape {
     @Override
     public boolean blocksCell(int xcell, int ycell) {
         return gridCell.x == xcell && gridCell.y == ycell;
+    }
+
+    boolean moved = true;
+
+    @Override
+    public boolean moved() {
+        if(moved) {
+            moved = false;
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -58,16 +69,18 @@ public class CellShape extends Shape {
     public void shift(double x, double y) {
         if ((x - Math.round(x)) > 0.01 || (y - Math.round(y)) > 0.01)
             throw new RuntimeException("Cell shape cannot shift by a non-integer value.");
-
+        moved = true;
         this.gridCell.x += Math.round(x);
         this.gridCell.y += Math.round(y);
     }
 
     @Override
     public void setPos(double x, double y) {
+        x -= 0.5; //translate from center to grid coordiantes
+        y -= 0.5;
         if ((x - Math.round(x)) > 0.01 || (y - Math.round(y)) > 0.01)
             throw new RuntimeException("Cell shape position cannot be set to a non-integer value.");
-
+        moved = true;
         this.gridCell.x = (int) Math.round(x);
         this.gridCell.y = (int) Math.round(y);
     }

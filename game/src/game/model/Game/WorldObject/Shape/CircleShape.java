@@ -77,6 +77,17 @@ public class CircleShape extends Shape {
         // TODO better definition?
     }
 
+    boolean moved = true;
+
+    @Override
+    public boolean moved() {
+        if(moved) {
+            moved = false;
+            return true;
+        }
+        return false;
+    }
+
     @Override
     Set<GridCellReference> getCellsReference() {
         if(memo != null)
@@ -116,6 +127,7 @@ public class CircleShape extends Shape {
     @Override
     public void shift(double x, double y) {
         memo = null; // Need to recalculate cells shape is on later.
+        moved = true;
         this.x += x;
         this.y += y;
     }
@@ -123,6 +135,7 @@ public class CircleShape extends Shape {
     @Override
     public void setPos(double x, double y) {
         memo = null; // Need to recalculate cells shape is on later.
+        moved = true;
         this.x = x;
         this.y = y;
     }

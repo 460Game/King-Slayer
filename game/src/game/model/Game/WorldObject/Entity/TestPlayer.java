@@ -1,11 +1,9 @@
-package game.model.Game.WorldObject;
+package game.model.Game.WorldObject.Entity;
 
 import game.model.Game.GameModel;
-import game.model.Game.WorldObject.Shape.CellShape;
 import game.model.Game.WorldObject.Shape.CircleShape;
 import game.model.Game.WorldObject.Shape.Shape;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 public class TestPlayer extends Entity {
 
@@ -25,6 +23,7 @@ public class TestPlayer extends Entity {
 
     public TestPlayer() {
         super();
+        shape = new CircleShape(0.0,0.0, 0.5);
     }
 
     public TestPlayer(GameModel model, double x, double y) {
@@ -49,6 +48,11 @@ public class TestPlayer extends Entity {
     @Override
     public void draw(GraphicsContext gc) {
         shape.draw(gc);
+    }
+
+    @Override
+    public double getDrawZ() {
+        return getY();
     }
 
     @Override

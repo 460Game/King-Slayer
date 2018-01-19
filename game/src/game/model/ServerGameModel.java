@@ -1,10 +1,7 @@
 package game.model;
 
-import game.message.SetTileMessage;
 import game.model.Game.GameModel;
-import game.model.Game.MapGenerator;
 import game.model.Game.ServerMapGenerator;
-import game.model.Game.WorldObject.TestPlayer;
 
 import java.util.Collection;
 

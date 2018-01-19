@@ -15,58 +15,44 @@ public enum Tile {
     /**
      * Barrier tile.
      */
-    BARRIER(false, "barrier.png"),
+    BARRIER(false, true, "barrier.png"),
 
     /**
      * Deep water tile.
      */
-    DEEP_WATER(false, "deepWater.png"),
+    DEEP_WATER(false, false, "deepWater.png"),
 
     /**
      * Grass tile.
      */
-    GRASS(true, "grass.png"),
+    GRASS(true, false, "grass.png"),
 
     /**
      * TODO
      */
-    NO_BUILD(true, "nobuild.png"),
-
-    /**
-     * Tile with metal.
-     */
-    METAL(true, "metal.png"),
+    NO_BUILD(true, false, "nobuild.png"),
 
     /**
      * Generic path tile.
      */
-    PATH(true, "rock.png"),
+    PATH(true, false, "rock.png"),
 
     /**
      * Shallow water tile.
      */
-    SHALLOW_WATER(true, "shallowWater.png"),
-
-    /**
-     * Tile with stone.
-     */
-    STONE(true, "stone.png"),
-
-    /**
-     * Tile with a tree (wood).
-     */
-    TREE(false, "tree.png"),
+    SHALLOW_WATER(true, false, "shallowWater.png"),
 
     /**
      * Wall tile.
      */
-    WALL(false, "wall.png"),
+    WALL(false, true, "wall.png"),
 
     /**
      * Fog tile.
      */
-    FOG(true, "fog.png");
+    FOG(true, false, "fog.png");
 
+    public final boolean aboveGround;
     /**
      * Flag that determines whether entities can pass through the specified
      * tile if nothing is on it.
@@ -81,9 +67,11 @@ public enum Tile {
     /**
      * Constructor for a tile.
      * @param isPassable flag that says whether a tile can be passed through
+     * @param aboveGround flag that says whether the tile can be drawn above the player
      * @param imageName name of the file that holds the tile image
      */
-    Tile(boolean isPassable, String imageName) {
+    Tile(boolean isPassable, boolean aboveGround, String imageName) {
+        this.aboveGround = aboveGround;
         this.IS_PASSABLE = isPassable;
         try {
             this.IMAGE = new Image(Tile.class.getResource(imageName).openStream());

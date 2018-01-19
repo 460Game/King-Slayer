@@ -42,19 +42,14 @@ public class ClientLockedCameraView {
 
         window.widthProperty().addListener(l -> {
             canvasBG.setWidth(window.getWidth());
-            canvasFG.setWidth(window.getWidth());
-            model.drawBG(gcBG);
         });
 
         window.heightProperty().addListener(l -> {
             canvasBG.setHeight(window.getHeight());
-            canvasFG.setHeight(window.getHeight());
-            model.drawBG(gcBG);
         });
 
         window.setFullScreen(true);
 
-        model.drawBG(gcBG);
 
         root.getChildren().add(canvasBG);
         root.getChildren().add(canvasFG);
@@ -83,7 +78,7 @@ public class ClientLockedCameraView {
                 pos[0] += xDelta;
                 pos[1] += yDelta;
 
-                model.drawFG(gcFG, model.playerB.getX() - gameW / 2, model.playerB.getY() - gameH / 2, gameW, gameH);
+                model.draw(gcFG, (int)(model.playerB.getX() - gameW / 2), (int)(model.playerB.getY() - gameH / 2), (int)gameW, (int)gameH);
             }
         };
 
@@ -92,12 +87,10 @@ public class ClientLockedCameraView {
                 scaleFactor[0] *= 0.9;
                 gcFG.transform(new Affine(Affine.scale(0.9, 0.9)));
                 gcBG.transform(new Affine(Affine.scale(0.9, 0.9)));
-                model.drawBG(gcBG);
             } else {
                 scaleFactor[0] *= 1.1;
                 gcFG.transform(new Affine(Affine.scale(1.1, 1.1)));
                 gcBG.transform(new Affine(Affine.scale(1.1, 1.1)));
-                model.drawBG(gcBG);
             }
         });
 

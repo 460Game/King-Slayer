@@ -32,6 +32,11 @@ public class RectShape extends Shape {
     }
 
     @Override
+    public boolean moved() {
+        return false;
+    }
+
+    @Override
     Set<GridCellReference> getCellsReference() {
         if (memo != null)
             return memo;

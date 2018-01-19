@@ -37,6 +37,16 @@ public abstract class Shape {
      */
     public abstract boolean blocksCell(int xcell, int ycell);
 
+    /**
+     * Returns true if shape occupyies different tiles since the last time this was called
+     *
+     * TODO to do this even better, we could have the shape itself track the diff
+     * how would that work when we send this over network though? may need to decouple shape logic from tile logic more
+     *
+     * @return
+     */
+    public abstract boolean moved();
+
     static class GridCellReference {
 
         /**

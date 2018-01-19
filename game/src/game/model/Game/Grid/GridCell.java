@@ -2,21 +2,21 @@ package game.model.Game.Grid;
 
 import game.model.Game.GameModel;
 import game.model.Game.Tile.Tile;
-import game.model.Game.WorldObject.Blocker;
-import game.model.Game.WorldObject.Entity;
+import game.model.Game.WorldObject.Entity.Blocker;
+import game.model.Game.WorldObject.Drawable;
+import game.model.Game.WorldObject.Entity.Entity;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Defines an individual cell on the game grid. Knows the entities
  * that currently exist on the cell and the type of tile that it
  * currently is.
  */
-public class GridCell {
+public class GridCell implements Drawable {
 
     /**
      * Set of entities that currently reside on the cell.
@@ -55,7 +55,7 @@ public class GridCell {
      * Adds the specified entity to this cell.
      * @param o the entity to be added to this cell
      */
-    public void add(Entity o) {
+    public void addContents(Entity o) {
         contents.add(o);
     }
 
@@ -63,7 +63,7 @@ public class GridCell {
      * Removes the specified entity from this cell.
      * @param o the entity to be removed from this cell
      */
-    public void remove(Entity o) {
+    public void removeContents(Entity o) {
         contents.remove(o);
     }
 
@@ -78,8 +78,8 @@ public class GridCell {
         this.x = x;
         this.y = y;
         this.tile = tile;
-        if(!isPassable())
-            add(new Blocker(model, x, y));
+        if(!isPassable()) //TODO tempoary - long term this will be genrated by the map gernator itself
+            addContents(new Blocker(model, x, y));
     }
 
     /**
@@ -87,8 +87,15 @@ public class GridCell {
      * tile type.
      * @param gc context used to draw the cell background
      */
-    public void drawBackground(GraphicsContext gc) {
+    public void draw(GraphicsContext gc) {
         tile.draw(gc, x, y);
+    }
+
+    @Override
+    public double getDrawZ() {
+        if(!tile.aboveGround)
+            return 0;
+        return y;
     }
 
     /**
@@ -143,4 +150,5 @@ public class GridCell {
     public int getY() {
         return y;
     }
+
 }

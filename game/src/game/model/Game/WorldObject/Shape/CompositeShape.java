@@ -33,6 +33,11 @@ public class CompositeShape extends Shape {
     }
 
     @Override
+    public boolean moved() {
+        return false; //TODO
+    }
+
+    @Override
     Set<GridCellReference> getCellsReference() {
         Set<GridCellReference> set = a.getCellsReference();
         set.addAll(b.getCellsReference());

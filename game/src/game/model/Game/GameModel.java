@@ -2,8 +2,9 @@ package game.model.Game;
 
 import game.model.Game.Grid.GridCell;
 import game.model.Game.Tile.Tile;
-import game.model.Game.WorldObject.Entity;
-import game.model.Game.WorldObject.TestPlayer;
+import game.model.Game.WorldObject.Drawable;
+import game.model.Game.WorldObject.Entity.Entity;
+import game.model.Game.WorldObject.Entity.TestPlayer;
 import game.model.IModel;
 import game.model.ProcessorForwarderModel;
 import javafx.scene.canvas.GraphicsContext;
@@ -53,11 +54,18 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
                 tile.removeByID(entityID);
     }
 
-
+    /**
+     * returns approximately all the entities inside of the box centered at x,y with width, height
+     * @param x
+     * @param y
+     * @param w
+     * @param h
+     * @return
+     */
     public Set<Entity> inBox(int x, int y, int w, int h) {
         Set<Entity> objects = new HashSet<>();
-        for (int i = x; i < x + w; i++)
-            for (int j = y; j < y + +w; j++)
+        for (int i = x - w/2; i < x + w/2 + w; i++)
+            for (int j = y - h/2; j < y + h/2; j++)
                 objects.addAll(grid[i][j].getContents());
         return objects;
     }
@@ -84,11 +92,20 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
             for (int j = 0; j < GRID_Y_SIZE; j++)
                 allCells.add(grid[i][j]);
 
+        generator.makeStartingEntities().forEach(e -> entities.put(e,e));
+
         if(isServer) {
-            playerA = new TestPlayer(this, generator.getStartingLocations().get(0).x, generator.getStartingLocations().get(0).y);
-            playerB = new TestPlayer(this, generator.getStartingLocations().get(1).x, generator.getStartingLocations().get(1).y);
-            entities.put(playerA,playerA);
-            entities.put(playerB,playerB);
+            for(Entity e : entities.keySet()) {
+                if(e instanceof TestPlayer && playerA == null){
+                    playerA = (TestPlayer) e;
+                } else if(e instanceof TestPlayer) {
+                    playerB = (TestPlayer) e;
+                }
+            }
+          //  playerA = new TestPlayer(this, generator.getStartingLocations().get(0).x, generator.getStartingLocations().get(0).y);
+          //  playerB = new TestPlayer(this, generator.getStartingLocations().get(1).x, generator.getStartingLocations().get(1).y);
+          //  entities.put(playerA,playerA);
+          //  entities.put(playerB,playerB);
         }
     }
 
@@ -110,8 +127,8 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
     @Override
     public void update() {
-        for (GridCell tile : allCells)
-            tile.collideContents(this);
+       // for (GridCell tile : allCells)   TODO collisions broken
+       //     tile.collideContents(this);
 
         for (Entity e : entities.keySet())
             e.update(this);
@@ -130,24 +147,35 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
         }
     }
 
-    public void drawBG(GraphicsContext gc) {
-        gc.setFill(Color.DARKBLUE);
-        gc.fillRect(-10000,-10000,10000000,1000000);
-        for (GridCell tile : allCells)
-            tile.drawBackground(gc);
-    }
 
     /**
-     *  @param gc
      * @param x top left x
      * @param y top lefy y
      * @param w width in game space
      * @param h height in game space
+     * @param gc
+     * @param i
+     * @param i1
+     * @param i2
+     * @param i3
      */
-    public void drawFG(GraphicsContext gc, double x, double y, double w, double h) {
-        //TODO only draw inside box
+    public void draw(GraphicsContext gc, double cx, double cy, double w, double h) {
+        gc.setFill(Color.DARKBLUE);
+        gc.fillRect(-100000,-100000,100000000,10000000);
 
-        for (Entity e : entities.values())
-            e.draw(gc);
+        ArrayList<Drawable> drawEntities = new ArrayList<>();
+
+        for(int y = Math.max(0,(int) (cy - h/2)); y < Math.min(cy + h/2, getMapHeight()); y++) {
+            for(int x = Math.max(0,(int) (cx - w/2)); x < Math.min(cx + w/2, getMapWidth()); x++) {
+                GridCell cell = getCell(x,y);
+                drawEntities.add(cell);
+                drawEntities.addAll(cell.getContents());
+            }
+        }
+
+        drawEntities.sort(Comparator.comparingDouble(Drawable::getDrawZ));
+
+        for (Drawable d : drawEntities)
+            d.draw(gc);
     }
 }

@@ -2,7 +2,9 @@ package game.model.Game;
 
 import Util.Util;
 import Util.Loc;
+import com.esotericsoftware.jsonbeans.Test;
 import game.model.Game.Tile.*;
+import game.model.Game.WorldObject.Entity.*;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -45,35 +47,53 @@ public class ServerMapGenerator implements MapGenerator {
         return grid[i][j].make(i, j);
     }
 
+    @Override
+    public Collection<Entity> makeStartingEntities() {
+        Set<Entity> entities = new HashSet<>();
+        for(int i = 0; i < this.mapW; i++)
+            for(int j = 0; j < this.mapH; j++)
+                grid[i][j].makeE(i,j).ifPresent(entities::add);
+        return entities;
+    }
+
     public List<Loc> getStartingLocations() {
         return startingLocations;
     }
 
     public static enum TS {
-        river(Tile.DEEP_WATER),
-        edgeWater(Tile.DEEP_WATER),
-        tresure(Tile.PATH),
-        tresureNoBuild(Tile.NO_BUILD),
-        metal(Tile.METAL),
-        stone(Tile.STONE),
-        tree(Tile.TREE),
-        wall(Tile.WALL),
-        room(Tile.NO_BUILD),
-        grass(Tile.GRASS),
-        barrier(Tile.BARRIER),
-        unset(null),
-        start(Tile.PATH),
-        bridge(Tile.SHALLOW_WATER),
-        road(Tile.PATH);
+        river(Tile.DEEP_WATER, Blocker::new),
+        edgeWater(Tile.DEEP_WATER, Blocker::new),
+        tresure(Tile.PATH, null),//Tresure::new),
+        tresureNoBuild(Tile.NO_BUILD, null),//Tresure::new),
+        metal(Tile.NO_BUILD, null),//Metal::new),
+        stone(Tile.NO_BUILD, null),//Stone::new),
+        tree(Tile.GRASS, Tree::new),//Tree::new),
+        wall(Tile.WALL, Blocker::new),
+        room(Tile.NO_BUILD, null),
+        grass(Tile.GRASS, null),
+        barrier(Tile.BARRIER, Blocker::new),
+        unset(null, null),
+        start(Tile.PATH, TestPlayer::new),
+        bridge(Tile.SHALLOW_WATER, null),
+        road(Tile.PATH, null);
 
         private Tile make;
+        private Supplier<Entity> spawner;
 
-        TS(Tile make) {
-            this.make = make;
+        TS(Tile make, Supplier<Entity> spawner) {
+            this.make = make; this.spawner = spawner;
         }
 
         public Tile make(int i, int j) {
             return this.make;
+        }
+
+        public Optional<Entity> makeE(int i, int j) {
+            if(spawner == null)
+                return Optional.empty();
+            Entity e = spawner.get();
+            e.setPos(i + 0.5, j + 0.5);
+            return Optional.of(e);
         }
     }
 
@@ -133,7 +153,7 @@ public class ServerMapGenerator implements MapGenerator {
 
             Set<Loc> river = walk(river_start_x, river_start_y, river_end_x, river_end_y, 0.7);
 
-            //if any tile has 3 neighbors add it
+            //if any tile has 3 neighbors addContents it
 
             for (Loc t : river) {
 
@@ -299,7 +319,7 @@ public class ServerMapGenerator implements MapGenerator {
     /**
      * returns the set of all connected tiles of the same type
      *
-     * @param set the set to add too
+     * @param set the set to addContents too
      * @param x   the tiles x
      * @param y   the tiles y
      */
@@ -392,7 +412,7 @@ public class ServerMapGenerator implements MapGenerator {
 
             Set<Loc> toRemove = new HashSet<>();
             for (Loc l : set) {
-                // if not at end and onlk has one neighbor, remove it
+                // if not at end and onlk has one neighbor, removeContents it
                 if (l.x != sx || l.y != sy) {
 
                     int count = 0;

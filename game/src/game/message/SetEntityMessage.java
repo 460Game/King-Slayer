@@ -1,7 +1,7 @@
 package game.message;
 
 import game.model.Game.GameModel;
-import game.model.Game.WorldObject.Entity;
+import game.model.Game.WorldObject.Entity.Entity;
 
 public class SetEntityMessage implements ToClientMessage {
 
