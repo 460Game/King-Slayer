@@ -63,8 +63,8 @@ public class ServerMapGenerator implements MapGenerator {
     public static enum TS {
         river(Tile.DEEP_WATER, Blocker::new),
         edgeWater(Tile.DEEP_WATER, Blocker::new),
-        tresure(Tile.PATH, null),//Tresure::new),
-        tresureNoBuild(Tile.NO_BUILD, null),//Tresure::new),
+        tresure(Tile.PATH, null),//Treasure::new),
+        tresureNoBuild(Tile.NO_BUILD, null),//Treasure::new),
         metal(Tile.NO_BUILD, null),//Metal::new),
         stone(Tile.NO_BUILD, null),//Stone::new),
         tree(Tile.GRASS, Tree::new),//Tree::new),

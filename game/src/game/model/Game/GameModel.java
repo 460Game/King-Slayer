@@ -14,12 +14,17 @@ import java.util.*;
 
 public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
-    public static int GRID_X_SIZE = 100;
-    public static int GRID_Y_SIZE = 100;
+    /**
+     * Grid of the game map. Each tile on the map is represented by a 1x1 cell.
+     */
+    private GridCell[][] grid = new GridCell[Util.Const.GRID_X_SIZE][Util.Const.GRID_Y_SIZE];
 
-    private GridCell[][] grid = new GridCell[GRID_X_SIZE][GRID_Y_SIZE];
+    private Collection<GridCell> allCells;
 
-    Collection<GridCell> allCells;
+    /**
+     * Tool to generate the game map.
+     */
+    private MapGenerator generator;
 
     //TODO temp test
     public TestPlayer playerA = null;
@@ -27,26 +32,59 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
     private Map<Entity,Entity> entities;
 
+    /**
+     * Gets the map width in terms of number of grid cells.
+     * @return the number of grid cells in the width of the map
+     */
     public int getMapWidth() {
-        return GRID_X_SIZE;
+        return Util.Const.GRID_X_SIZE;
     }
 
+    /**
+     * Gets the map height in terms of number of grid cells.
+     * @return the number of grid cells in the height of the map
+     */
     public int getMapHeight() {
-        return GRID_Y_SIZE;
+        return Util.Const.GRID_Y_SIZE;
     }
 
+    /**
+     * Gets the cell at the specified coordinates. The coordinates represent
+     * the upper left corner of the cell.
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return the cell with the given upper left coordinates
+     */
     public GridCell getCell(int x, int y) {
         return grid[x][y];
     }
 
+    /**
+     * Gets the tile at the specified coordinates. The coordinates represent
+     * the upper left corner of the cell.
+     * @param x
+     * @param y
+     * @return
+     */
     public Tile getTile(int x, int y) {
         return grid[x][y].getTile();
     }
 
+    /**
+     * Returns true if the cell at the given coordinates has been explored.
+     * The coordinates represent the upper left corner of the cell.
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return true if the cell at the given coordinates has been explored
+     */
     public boolean explored(int x, int y) {
         return true; //TODO LOS
     }
 
+    /**
+     * Removes the entity with the given ID from every tile on the game map.
+     * @param entityID ID of the entity to be removed
+     */
     @Override
     public void removeByID(long entityID) {
         for (GridCell[] arr : grid)
@@ -70,8 +108,6 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
         return objects;
     }
 
-    private MapGenerator generator;
-
     public MapGenerator getGenerator() {
         return generator;
     }
@@ -84,12 +120,12 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
         this.generator = generator;
 
-        for (int i = 0; i < GRID_X_SIZE; i++)
-            for (int j = 0; j < GRID_Y_SIZE; j++)
+        for (int i = 0; i < Util.Const.GRID_X_SIZE; i++)
+            for (int j = 0; j < Util.Const.GRID_Y_SIZE; j++)
                 grid[i][j] = new GridCell(this, i, j, generator.makeTile(i, j));
 
-        for (int i = 0; i < GRID_X_SIZE; i++)
-            for (int j = 0; j < GRID_Y_SIZE; j++)
+        for (int i = 0; i < Util.Const.GRID_X_SIZE; i++)
+            for (int j = 0; j < Util.Const.GRID_Y_SIZE; j++)
                 allCells.add(grid[i][j]);
 
         generator.makeStartingEntities().forEach(e -> entities.put(e,e));

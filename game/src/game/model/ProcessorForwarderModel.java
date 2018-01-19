@@ -8,8 +8,9 @@ import java.util.Collections;
 
 public abstract class ProcessorForwarderModel implements IModel {
 
-    boolean isClient = false;
-    boolean isServer = false;
+    private boolean isClient = false;
+
+    private boolean isServer = false;
 
     public ProcessorForwarderModel(boolean isServer, Collection<? extends IModel> others) {
         if(isServer) {

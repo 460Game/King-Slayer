@@ -6,7 +6,7 @@ import com.esotericsoftware.kryo.Kryo;
 
 public class Util {
 
-    public static Kryo KYRO = new Kryo();
+    public static Kryo KRYO = new Kryo();
     public static Random random = new Random();
 
     public static <T> boolean setsIntersect(Set<T> a, Set<T> b) {
@@ -17,7 +17,7 @@ public class Util {
         return false;
     }
 
-    static <T> boolean setsDisjoint(Set<T> a, Set<T> b) {
+    public static <T> boolean setsDisjoint(Set<T> a, Set<T> b) {
         return !setsIntersect(a,b);
     }
 

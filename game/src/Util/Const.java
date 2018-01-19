@@ -8,6 +8,16 @@ import game.model.Game.GameModel;
 public abstract class Const {
 
     /**
+     * Width of the game map, in terms of number of grid cells.
+     */
+    public final static int GRID_X_SIZE = 100;
+
+    /**
+     * Height of the game map, in terms of number of grid cells.
+     */
+    public final static int GRID_Y_SIZE = 100;
+
+    /**
      * Width of the initial game screen.
      */
     public final static int INIT_SCREEN_WIDTH = 800;
@@ -25,10 +35,10 @@ public abstract class Const {
     /**
      * Number of pixels on the width of the canvas.
      */
-    public final static int CANVAS_WIDTH = GameModel.GRID_X_SIZE * TILE_PIXELS;
+    public final static int CANVAS_WIDTH = GRID_X_SIZE * TILE_PIXELS;
 
     /**
      * Number of pixels on the height of the canvas.
      */
-    public final static int CANVAS_HEIGHT = GameModel.GRID_Y_SIZE * TILE_PIXELS;
+    public final static int CANVAS_HEIGHT = GRID_Y_SIZE * TILE_PIXELS;
 }
