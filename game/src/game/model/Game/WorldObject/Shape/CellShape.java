@@ -1,7 +1,5 @@
 package game.model.Game.WorldObject.Shape;
 
-import game.model.Game.GameModel;
-import game.model.Game.Grid.GridCell;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Collections;
@@ -30,6 +28,7 @@ public class CellShape extends Shape {
      * Default constructor needed for serialization.
      */
     public CellShape() {
+
     }
 
     @Override
@@ -41,8 +40,8 @@ public class CellShape extends Shape {
     public double getY() { return gridCell.y + 0.5; }
 
     @Override
-    public boolean blocksCell(int x, int y) {
-        return gridCell.x == x && gridCell.y == y;
+    public boolean blocksCell(int xcell, int ycell) {
+        return gridCell.x == xcell && gridCell.y == ycell;
     }
 
     @Override

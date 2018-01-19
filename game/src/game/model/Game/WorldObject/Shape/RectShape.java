@@ -26,7 +26,7 @@ public class RectShape extends Shape {
     }
 
     @Override
-    public boolean blocksCell(int x, int y) {
+    public boolean blocksCell(int xcell, int ycell) {
         return false;
         // TODO
     }

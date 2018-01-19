@@ -3,7 +3,6 @@ package game.model.Game.WorldObject.Shape;
 import Util.Util;
 import game.model.Game.GameModel;
 import game.model.Game.Grid.GridCell;
-import game.model.Game.WorldObject.Entity;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Collection;
@@ -32,11 +31,11 @@ public abstract class Shape {
     /**
      * Returns true if the shape blocks the cell it is currently on. Returns
      * false otherwise.
-     * @param x x-coordinate of the upper left corner of the cell
-     * @param y y-coordinate of the upper left corner of the cell
+     * @param xcell x-coordinate of the upper left corner of the cell
+     * @param ycell y-coordinate of the upper left corner of the cell
      * @return true if the shape blocks the cell it is currently on
      */
-    public abstract boolean blocksCell(int x, int y);
+    public abstract boolean blocksCell(int xcell, int ycell);
 
     static class GridCellReference {
 
