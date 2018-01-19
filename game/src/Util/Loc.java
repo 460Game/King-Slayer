@@ -9,12 +9,12 @@ public class Loc {
     /**
      * X-coordinate.
      */
-    private int x;
+    public int x;
 
     /**
      * Y-coordinate.
      */
-    private int y;
+    public int y;
 
     /**
      * Constructor for a location with given coordinates.

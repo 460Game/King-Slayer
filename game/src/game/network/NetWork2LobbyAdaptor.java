@@ -1,4 +1,9 @@
 package game.network;
 
-public interface Lobby2NetWordAdaptor {
+import game.message.Message;
+
+public interface NetWork2LobbyAdaptor {
+    public void init();
+    public void makeModel();
+    public void getMsg(Message obj);
 }

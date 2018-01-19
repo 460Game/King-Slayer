@@ -6,8 +6,6 @@ import game.message.Message;
 import game.model.IModel;
 
 import java.io.IOException;
-import java.rmi.Remote;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,19 +22,27 @@ public class RemoteConnection {
         }
     }
 
-    boolean isServer;
-    Server server;
-    Client client;
-    LobbyServer lobbyServer;
-    LobbyClient lobbyClient;
-    GameConnection serverConnectionForClient;
-    ConcurrentHashMap<Integer, GameConnection> clientList;
+    static final int TOTALPLAYER = 2;
 
-    public RemoteConnection(boolean isServer, Object lobby) throws IOException {
+    boolean isServer;
+    NetWork2LobbyAdaptor adaptor;
+
+    Server server;
+    ConcurrentHashMap<Integer, GameConnection> clientList;
+    int readyClient = 0;
+
+    Client client;
+
+//    GameConnection serverConnectionForClient;
+
+
+
+    public RemoteConnection(boolean isServer, Object lobby, NetWork2LobbyAdaptor adaptor) throws IOException {
         this.isServer = isServer;
+        this.adaptor = adaptor;
         if (isServer) {
-            //TODO change this later
-            lobbyServer = (LobbyServer) lobby;
+//            //TODO change this later
+//            lobbyServer = (LobbyServer) lobby;
             clientList = new ConcurrentHashMap<>();
             server = new Server() {
                 protected Connection newConnection() {
@@ -44,8 +50,8 @@ public class RemoteConnection {
                 }
             };
         } else {
-            //TODO change this later
-            lobbyClient = (LobbyClient) lobby;
+//            //TODO change this later
+//            lobbyClient = (LobbyClient) lobby;
             client = new Client();
         }
         start();
@@ -62,8 +68,16 @@ public class RemoteConnection {
 
                     clientList.putIfAbsent(connection.getID(), connection);
 
+                    if (obj instanceof NetworkCommon.ClientReadyMsg) {
+                        readyClient++;
+                        Log.info("!!!!!!!!! " + readyClient + " are ready !!!!!!!");
+                        if (readyClient == TOTALPLAYER) {
+                            adaptor.init();//send the map
+                        }
+                    }
                     if (obj instanceof Message) {
-                        lobbyServer.getMsg((Message) obj);
+//                        lobbyServer.getMsg((Message) obj);
+                        adaptor.getMsg((Message) obj);
                     }
 
                 }
@@ -94,11 +108,16 @@ public class RemoteConnection {
 
                 public void received (Connection connection, Object obj) {
                     Log.info("Client " + client.getID() + "received " + obj.toString());
-                    if (obj instanceof NetworkCommon.StartGameMsg) {
-                        lobbyClient.startGame();
+                    if (obj instanceof NetworkCommon.ClientMakeModelMsg) {
+//                        lobbyClient.startGame();
+                        adaptor.init(); //make clientModel
+                        client.sendTCP("A client is ready");
+                        client.sendTCP(new NetworkCommon.ClientReadyMsg());
                     }
+
                     if (obj instanceof Message) {
-                        lobbyClient.getMsg((Message) obj);
+//                        lobbyClient.getMsg((Message) obj);
+                        adaptor.getMsg((Message) obj);
                     }
 
 //                    if (object instanceof ChatCommon.AllUserNames) {
@@ -193,14 +212,21 @@ public class RemoteConnection {
         }
 
         public void startGame() {
-            if (isServer) {
-                Log.info("server click start the game");
-                server.sendToAllTCP("Server START GAME!!");
-                server.sendToAllTCP(new NetworkCommon.StartGameMsg());
+            if (isServer) { // means it is server call this method on remote model
+                Log.info("Server click start the game");
+                server.sendToAllTCP(new NetworkCommon.ClientMakeModelMsg());
             }
-            else {
-                Log.info("client start the game");
-                lobbyClient.startGame();
+            else {// a client should not make server to start
+                Log.error("ERROR: client start the game");
+            }
+        }
+
+        public void notifyReady() {
+            if (!isServer) {
+                Log.info("Client is ready");
+                client.sendTCP(new NetworkCommon.ClientReadyMsg());
+            } else {
+                Log.error("ERROR: Server should not call notifyReady");
             }
         }
     }

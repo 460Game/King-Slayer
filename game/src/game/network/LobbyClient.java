@@ -71,7 +71,22 @@ public class LobbyClient extends Application {
         });
         chatFrame.setVisible(true);
         Log.info("frame should be visible");
-        client = new RemoteConnection(false, this);
+        client = new RemoteConnection(false, this, new NetWork2LobbyAdaptor() {
+            @Override
+            public void init() {
+                makeModel();//make model
+            }
+
+            @Override
+            public void makeModel() {
+                startGame();
+            }
+
+            @Override
+            public void getMsg(Message obj) {
+                clientGetMsg(obj);
+            }
+        });
 
         // We'll do the connect on a new thread so the ChatFrame can show a progress bar.
         // Connecting to localhost is usually so fast you won't see the progress bar.
@@ -79,13 +94,14 @@ public class LobbyClient extends Application {
 
     }
 
-    public void getMsg(Message msg) {
+    public void clientGetMsg(Message msg) {
         if (msg == null) Log.error("msg null!");
         if (clientGameModel == null) Log.error("clientGameModel is null!");
         clientGameModel.processMessage(msg);
     }
 
     public void startGame() {
+        //TODO kinda unsafe here. server might not have a model yet
         serverModel = client.makeRemoteModel().iterator().next();
 
         //TODO !!!! don't have getGenerator

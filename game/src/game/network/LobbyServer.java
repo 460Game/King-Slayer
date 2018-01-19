@@ -33,7 +33,43 @@ public class LobbyServer extends Application {
 
     @Override
     public void start(Stage window) throws Exception {
-        server = new RemoteConnection(true, this);
+        server = new RemoteConnection(true, this, new NetWork2LobbyAdaptor() {
+            @Override
+            public void init() {//should send the map
+
+                for(IModel client : remoteModels) {
+                    for (int i = 0; i < serverModel.getMapWidth(); i++)
+                        for (int j = 0; j < serverModel.getMapWidth(); j++)
+                            client.processMessage(new SetTileMessage(i, j, serverModel.getTile(i, j)));
+                }
+
+                Iterator<? extends IModel> iter = (Iterator<? extends IModel>) remoteModels.iterator();
+                iter.next().processMessage(new CreatePlayerMessage(serverModel.playerA));
+                iter.next().processMessage(new CreatePlayerMessage(serverModel.playerB));
+
+                Thread t = new Thread(()-> {
+                    while(true) {
+                        serverModel.update();
+                        try {
+                            Thread.sleep(15);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                t.start();
+            }
+
+            @Override
+            public void makeModel() {
+
+            }
+
+            @Override
+            public void getMsg(Message obj) {
+                serverGetMsg(obj);
+            }
+        });
 
         window.setTitle("Chat Server");
 
@@ -59,40 +95,24 @@ public class LobbyServer extends Application {
     public static void main(String[] args) throws IOException {
         Application.launch();
     }
+
     //TODO implement this
-    public void getMsg(Message msg) {
+    public void serverGetMsg(Message msg) {
         serverModel.processMessage(msg);
     }
 
     public void startGame() {
+
         remoteModels = server.makeRemoteModel();
         serverModel = new ServerGameModel(remoteModels);
+
         for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
             remoteModel.startGame();
         }
-        for(IModel client : remoteModels) {
-            for (int i = 0; i < serverModel.getMapWidth(); i++)
-                for (int j = 0; j < serverModel.getMapWidth(); j++)
-                    client.processMessage(new SetTileMessage(i, j, serverModel.getTile(i, j)));
-        }
 
 
-        Iterator<? extends IModel> iter = (Iterator<? extends IModel>) remoteModels.iterator();
-        iter.next().processMessage(new CreatePlayerMessage(serverModel.playerA));
-        iter.next().processMessage(new CreatePlayerMessage(serverModel.playerB));
-
-        Thread t = new Thread(()-> {
-            while(true) {
-                serverModel.update();
-                try {
-                    Thread.sleep(15);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        t.start();
     }
+    public void makeServerModel() {}
 
 }
 
