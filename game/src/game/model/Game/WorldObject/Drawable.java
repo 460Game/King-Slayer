@@ -2,17 +2,23 @@ package game.model.Game.WorldObject;
 
 import javafx.scene.canvas.GraphicsContext;
 
+/**
+ * Interface used to draw objects on the map.
+ */
 public interface Drawable {
 
-    public void draw(GraphicsContext gc);
+    /**
+     * Draw the object on the game map.
+     * @param gc context used to draw the objects
+     */
+    void draw(GraphicsContext gc);
 
     /**
-     * everything is drawn in order of least Z to highest Z
-     * so something on bottem can have -1 z
-     * something on top can hava a large Z
-     * anything in middle should have approxibly their y value in Z
-     * @return
+     * Everything is drawn in order of least Z to highest Z.
+     * Something on bottom can have z = -1, and something on top can have a
+     * large Z. Anything in middle should have approximately their y value in Z.
+     * @return the Z value of the object being drawn
      */
-    public double getDrawZ();
+    double getDrawZ();
 
 }

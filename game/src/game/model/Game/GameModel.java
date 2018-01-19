@@ -33,6 +33,45 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     private Map<Entity,Entity> entities;
 
     /**
+     * Constructor for the game model.
+     * @param isServer flag on whether or not this model belongs to the server
+     * @param others other game models that this model should talk to
+     * @param generator map generator for this game model
+     */
+    public GameModel(boolean isServer, Collection<? extends IModel> others, MapGenerator generator) {
+        super(isServer, others);
+
+        entities = new HashMap<>();
+        allCells = new ArrayList<>();
+
+        this.generator = generator;
+
+        for (int i = 0; i < Util.Const.GRID_X_SIZE; i++)
+            for (int j = 0; j < Util.Const.GRID_Y_SIZE; j++)
+                grid[i][j] = new GridCell(this, i, j, generator.makeTile(i, j));
+
+        for (int i = 0; i < Util.Const.GRID_X_SIZE; i++)
+            for (int j = 0; j < Util.Const.GRID_Y_SIZE; j++)
+                allCells.add(grid[i][j]);
+
+        generator.makeStartingEntities().forEach(e -> entities.put(e,e));
+
+        if(isServer) {
+            for(Entity e : entities.keySet()) {
+                if(e instanceof TestPlayer && playerA == null){
+                    playerA = (TestPlayer) e;
+                } else if(e instanceof TestPlayer) {
+                    playerB = (TestPlayer) e;
+                }
+            }
+            //  playerA = new TestPlayer(this, generator.getStartingLocations().get(0).x, generator.getStartingLocations().get(0).y);
+            //  playerB = new TestPlayer(this, generator.getStartingLocations().get(1).x, generator.getStartingLocations().get(1).y);
+            //  entities.put(playerA,playerA);
+            //  entities.put(playerB,playerB);
+        }
+    }
+
+    /**
      * Gets the map width in terms of number of grid cells.
      * @return the number of grid cells in the width of the map
      */
@@ -62,9 +101,9 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     /**
      * Gets the tile at the specified coordinates. The coordinates represent
      * the upper left corner of the cell.
-     * @param x
-     * @param y
-     * @return
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return tile of the cell with the given upper left coordinates
      */
     public Tile getTile(int x, int y) {
         return grid[x][y].getTile();
@@ -112,39 +151,6 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
         return generator;
     }
 
-    public GameModel(boolean isServer, Collection<? extends IModel> others, MapGenerator generator) {
-        super(isServer, others);
-
-        entities = new HashMap<>();
-        allCells = new ArrayList<>();
-
-        this.generator = generator;
-
-        for (int i = 0; i < Util.Const.GRID_X_SIZE; i++)
-            for (int j = 0; j < Util.Const.GRID_Y_SIZE; j++)
-                grid[i][j] = new GridCell(this, i, j, generator.makeTile(i, j));
-
-        for (int i = 0; i < Util.Const.GRID_X_SIZE; i++)
-            for (int j = 0; j < Util.Const.GRID_Y_SIZE; j++)
-                allCells.add(grid[i][j]);
-
-        generator.makeStartingEntities().forEach(e -> entities.put(e,e));
-
-        if(isServer) {
-            for(Entity e : entities.keySet()) {
-                if(e instanceof TestPlayer && playerA == null){
-                    playerA = (TestPlayer) e;
-                } else if(e instanceof TestPlayer) {
-                    playerB = (TestPlayer) e;
-                }
-            }
-          //  playerA = new TestPlayer(this, generator.getStartingLocations().get(0).x, generator.getStartingLocations().get(0).y);
-          //  playerB = new TestPlayer(this, generator.getStartingLocations().get(1).x, generator.getStartingLocations().get(1).y);
-          //  entities.put(playerA,playerA);
-          //  entities.put(playerB,playerB);
-        }
-    }
-
     @Override
     public GameModel getGameModel() {
         return this;
@@ -154,7 +160,6 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     public long nanoTime() {
         return System.nanoTime(); //TODO hm
     }
-
 
     @Override
     public void setTile(int x, int y, Tile tile) {
