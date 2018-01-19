@@ -30,10 +30,11 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     public TestPlayer playerA = null;
     public TestPlayer playerB = null;
 
-    private Map<Entity,Entity> entities;
+    private Map<Entity, Entity> entities;
 
     /**
      * Gets the map width in terms of number of grid cells.
+     *
      * @return the number of grid cells in the width of the map
      */
     public int getMapWidth() {
@@ -42,6 +43,7 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
     /**
      * Gets the map height in terms of number of grid cells.
+     *
      * @return the number of grid cells in the height of the map
      */
     public int getMapHeight() {
@@ -51,6 +53,7 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     /**
      * Gets the cell at the specified coordinates. The coordinates represent
      * the upper left corner of the cell.
+     *
      * @param x x-coordinate
      * @param y y-coordinate
      * @return the cell with the given upper left coordinates
@@ -62,6 +65,7 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     /**
      * Gets the tile at the specified coordinates. The coordinates represent
      * the upper left corner of the cell.
+     *
      * @param x
      * @param y
      * @return
@@ -73,6 +77,7 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     /**
      * Returns true if the cell at the given coordinates has been explored.
      * The coordinates represent the upper left corner of the cell.
+     *
      * @param x x-coordinate
      * @param y y-coordinate
      * @return true if the cell at the given coordinates has been explored
@@ -83,6 +88,7 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
     /**
      * Removes the entity with the given ID from every tile on the game map.
+     *
      * @param entityID ID of the entity to be removed
      */
     @Override
@@ -94,6 +100,7 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
     /**
      * returns approximately all the entities inside of the box centered at x,y with width, height
+     *
      * @param x
      * @param y
      * @param w
@@ -102,8 +109,8 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
      */
     public Set<Entity> inBox(int x, int y, int w, int h) {
         Set<Entity> objects = new HashSet<>();
-        for (int i = x - w/2; i < x + w/2 + w; i++)
-            for (int j = y - h/2; j < y + h/2; j++)
+        for (int i = x - w / 2; i < x + w / 2 + w; i++)
+            for (int j = y - h / 2; j < y + h / 2; j++)
                 objects.addAll(grid[i][j].getContents());
         return objects;
     }
@@ -128,20 +135,20 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
             for (int j = 0; j < Util.Const.GRID_Y_SIZE; j++)
                 allCells.add(grid[i][j]);
 
-        generator.makeStartingEntities().forEach(e -> entities.put(e,e));
+        generator.makeStartingEntities().forEach(e -> entities.put(e, e));
 
-        if(isServer) {
-            for(Entity e : entities.keySet()) {
-                if(e instanceof TestPlayer && playerA == null){
+        if (isServer) {
+            for (Entity e : entities.keySet()) {
+                if (e instanceof TestPlayer && playerA == null) {
                     playerA = (TestPlayer) e;
-                } else if(e instanceof TestPlayer) {
+                } else if (e instanceof TestPlayer) {
                     playerB = (TestPlayer) e;
                 }
             }
-          //  playerA = new TestPlayer(this, generator.getStartingLocations().get(0).x, generator.getStartingLocations().get(0).y);
-          //  playerB = new TestPlayer(this, generator.getStartingLocations().get(1).x, generator.getStartingLocations().get(1).y);
-          //  entities.put(playerA,playerA);
-          //  entities.put(playerB,playerB);
+            //  playerA = new TestPlayer(this, generator.getStartingLocations().get(0).x, generator.getStartingLocations().get(0).y);
+            //  playerB = new TestPlayer(this, generator.getStartingLocations().get(1).x, generator.getStartingLocations().get(1).y);
+            //  entities.put(playerA,playerA);
+            //  entities.put(playerB,playerB);
         }
     }
 
@@ -175,16 +182,16 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     }
 
     public void setEntity(Entity entity) {
-        if(entities.containsKey(entity)) {
+        if (entities.containsKey(entity)) {
             Entity e = entities.get(entity);
             e.copyOf(entity);
         } else {
-            entities.put(entity,entity);
+            entities.put(entity, entity);
         }
     }
 
 
-//    /**
+    //    /**
 //     * @param x top left x
 //     * @param y top lefy y
 //     * @param w width in game space
@@ -197,13 +204,13 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
 //     */
     public void draw(GraphicsContext gc, double cx, double cy, double w, double h) {
         gc.setFill(Color.DARKBLUE);
-        gc.fillRect(-100000,-100000,100000000,10000000);
+        gc.fillRect(-100000, -100000, 100000000, 10000000);
 
         ArrayList<Drawable> drawEntities = new ArrayList<>();
 
-        for(int y = Math.max(0,(int) (cy - h/2)); y < Math.min(cy + h/2, getMapHeight()); y++) {
-            for(int x = Math.max(0,(int) (cx - w/2)); x < Math.min(cx + w/2, getMapWidth()); x++) {
-                GridCell cell = getCell(x,y);
+        for (int y = Math.max(0, (int) (cy - h / 2)); y < Math.min(cy + h / 2, getMapHeight()); y++) {
+            for (int x = Math.max(0, (int) (cx - w / 2)); x < Math.min(cx + w / 2, getMapWidth()); x++) {
+                GridCell cell = getCell(x, y);
                 drawEntities.add(cell);
                 drawEntities.addAll(cell.getContents());
             }
@@ -214,4 +221,26 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
         for (Drawable d : drawEntities)
             d.draw(gc);
     }
+
+    private boolean running = false;
+
+    public void start() {
+        running = true;
+        Thread t = new Thread(() -> {
+            while(running) {
+                this.update();
+                try {
+                    Thread.sleep(15);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.start();
+    }
+
+    public void stop() {
+        running = false;
+    }
+
 }

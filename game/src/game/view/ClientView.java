@@ -4,6 +4,7 @@ import static Util.Const.*;
 
 
 import game.message.playerMoveMessage.*;
+import game.model.ClientGameModel;
 import game.model.Game.GameModel;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
@@ -22,7 +23,7 @@ public class ClientView {
 
     private Stage window;
 
-    public ClientView(GameModel model) {
+    public ClientView(ClientGameModel model) {
         this.model = model;
     }
 
@@ -33,9 +34,7 @@ public class ClientView {
         window.setTitle("King Slayer");
 
         Group root = new Group();
-
         Canvas canvas = new Canvas(INIT_SCREEN_WIDTH, INIT_SCREEN_HEIGHT);
-
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         window.widthProperty().addListener(l -> {
@@ -54,11 +53,11 @@ public class ClientView {
 
         double[] scaleFactor = {1.0};
 
+        model.start();
+
         AnimationTimer animator = new AnimationTimer() {
             @Override
             public void handle(long arg0) {
-                model.update(); //TODO update seperately from draw
-
                 double gameW = scaleFactor[0] * window.getWidth() / TILE_PIXELS;
                 double gameH = scaleFactor[0] * window.getHeight() / TILE_PIXELS;
 
