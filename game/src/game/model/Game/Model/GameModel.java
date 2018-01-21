@@ -208,6 +208,11 @@ public abstract class GameModel extends UpdateModel {
             d.draw(gc);
     }
 
+    /**
+     * Gets the player with the specified index.
+     * @param index index of the player
+     * @return player with the index
+     */
     public TestPlayer getPlayer(int index) {
         return players.get(index);
     }

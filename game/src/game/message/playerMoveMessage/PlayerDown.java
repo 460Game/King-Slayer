@@ -4,22 +4,37 @@ import game.message.ActionMessage;
 import game.message.SetEntityMessage;
 import game.model.Game.Model.ServerGameModel;
 
+/**
+ * Message sent by a client to tell the server to move the player
+ * downwards on the game map.
+ */
 public class PlayerDown extends ActionMessage {
 
-    long id;
+    /**
+     * ID to distinguish player that sent the message.
+     */
+    private long id;
 
-    public PlayerDown(long i) {
+    /**
+     * Constructor for the move message.
+     * @param id player ID that send the message
+     */
+    public PlayerDown(long id) {
         super();
-        id = i;
+        this.id = id;
     }
 
-    PlayerDown() {
+    /**
+     * Default constructor needed for serialization.
+     */
+    public PlayerDown() {
 
     }
 
     @Override
     public void executeServer(ServerGameModel model) {
-        model.getPlayer(id).down();
-        model.processMessage(new SetEntityMessage(model.getPlayer(id)));
+        // TODO temporary fix, need to fix id issue
+        model.getPlayer(Math.toIntExact(id)).down();
+        model.processMessage(new SetEntityMessage(model.getPlayer(Math.toIntExact(id))));
     }
 }
