@@ -48,7 +48,7 @@ public class GridCell implements Drawable {
      * @return the current contents of the cell
      */
     public Set<Entity> getContents() {
-        return Collections.synchronizedSet(contents);
+        return contents;
     }
 
     /**
