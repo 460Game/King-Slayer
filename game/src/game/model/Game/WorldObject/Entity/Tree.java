@@ -29,9 +29,9 @@ public class Tree extends Resource {
 
     }
 
-    Image image;
+    static Image image;
 
-    {
+    static {
         try {
             image = new Image(Tile.class.getResource("tree.png").openStream());
         } catch (IOException e) {

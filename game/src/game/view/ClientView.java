@@ -52,6 +52,15 @@ public class ClientView {
 
         double[] scaleFactor = {1.0};
 
+//        model.start();
+        while (!model.isRunning()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         AnimationTimer animator = new AnimationTimer() {
             @Override
             public void handle(long arg0) {

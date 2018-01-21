@@ -43,7 +43,7 @@ public class LobbyClient extends Application {
         Log.info("client start!!!!!!");
 
 //        final String host = input.trim();
-        String host = "10.123.79.145";
+        String host = "localhost";
         Log.info(host);
 
         // Request the user's name.
@@ -98,14 +98,13 @@ public class LobbyClient extends Application {
         clientGameModel.processMessage(msg);
     }
 
+    //TODO rename this to makeModel
     public void startGame() {
         //TODO kinda unsafe here. server might not have a model yet
         serverModel = client.makeRemoteModel().iterator().next();
 
         //TODO !!!! don't have getGenerator
-        clientGameModel = new ClientGameModel();
-
-        clientGameModel.init(new Model() {
+        clientGameModel = new ClientGameModel(new Model() {
             @Override
             public void processMessage(Message m) {
                 serverModel.processMessage(m);
@@ -116,6 +115,7 @@ public class LobbyClient extends Application {
                 return serverModel.nanoTime();
             }
         });
+
         clientView = new ClientView(clientGameModel);
         Platform.runLater(()-> {
             clientView.start(window);

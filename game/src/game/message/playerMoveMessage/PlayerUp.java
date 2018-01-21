@@ -32,9 +32,13 @@ public class PlayerUp extends ActionMessage {
 
     }
 
+    /**
+     * Move the player upwards.
+     * @param model the game model on the game server
+     */
     @Override
     public void executeServer(ServerGameModel model) {
-        ((TestPlayer)model.getEntityById(id)).up();
+        ((TestPlayer) model.getEntityById(id)).up();
         model.processMessage(new SetEntityMessage(model.getEntityById(id)));
     }
 }

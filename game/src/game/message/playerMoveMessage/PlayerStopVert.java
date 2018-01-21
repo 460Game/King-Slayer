@@ -33,9 +33,13 @@ public class PlayerStopVert extends ActionMessage {
 
     }
 
+    /**
+     * Stops the player's vertical movement.
+     * @param model the game model on the game server
+     */
     @Override
     public void executeServer(ServerGameModel model) {
-        ((TestPlayer)model.getEntityById(id)).stopVert();
+        ((TestPlayer) model.getEntityById(id)).stopVert();
         model.processMessage(new SetEntityMessage(model.getEntityById(id)));
     }
 }

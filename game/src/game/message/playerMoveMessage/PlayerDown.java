@@ -32,9 +32,13 @@ public class PlayerDown extends ActionMessage {
 
     }
 
+    /**
+     * Moves the player downwards.
+     * @param model the game model on the game server
+     */
     @Override
     public void executeServer(ServerGameModel model) {
-        ((TestPlayer)model.getEntityById(id)).down();
+        ((TestPlayer) model.getEntityById(id)).down();
         model.processMessage(new SetEntityMessage(model.getEntityById(id)));
     }
 }

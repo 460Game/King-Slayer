@@ -8,8 +8,10 @@ import game.model.Game.WorldObject.Entity.TestPlayer;
 
 public class ClientGameModel extends GameModel {
 
-    public ClientGameModel() {
+
+    public ClientGameModel(Model server) {
         super(new ClientMapGenerator());
+        this.server = server;
     }
 
     private long localPlayer;
@@ -40,7 +42,4 @@ public class ClientGameModel extends GameModel {
         return System.nanoTime(); //TODO @tian @tian fix this!!! https://en.wikipedia.org/wiki/Clock_synchronization
     }
 
-    public void init(Model server) {
-        this.server = server;
-    }
 }

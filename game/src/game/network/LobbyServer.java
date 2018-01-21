@@ -26,6 +26,11 @@ public class LobbyServer extends Application {
             @Override
             public void init() {//should send the map
                 serverModel.init(remoteModels);
+                try {
+                    server.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

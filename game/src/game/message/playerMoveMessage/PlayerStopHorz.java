@@ -33,10 +33,13 @@ public class PlayerStopHorz extends ActionMessage {
 
     }
 
-
+    /**
+     * Stops the player's horizontal movement.
+     * @param model the game model on the game server
+     */
     @Override
     public void executeServer(ServerGameModel model) {
-        ((TestPlayer)model.getEntityById(id)).stopHorz();
+        ((TestPlayer) model.getEntityById(id)).stopHorz();
         model.processMessage(new SetEntityMessage(model.getEntityById(id)));
     }
 }
