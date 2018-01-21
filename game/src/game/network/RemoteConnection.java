@@ -110,9 +110,13 @@ public class RemoteConnection {
                     Log.info("Client " + client.getID() + "received " + obj.toString());
                     if (obj instanceof NetworkCommon.ClientMakeModelMsg) {
 //                        lobbyClient.startGame();
-                        adaptor.init(); //make clientModel
+                        adaptor.makeModel(); //make clientModel
                         client.sendTCP("A client is ready");
                         client.sendTCP(new NetworkCommon.ClientReadyMsg());
+                    }
+
+                    if (obj instanceof NetworkCommon.ClientStartModelMsg) {
+                        adaptor.init();
                     }
 
                     if (obj instanceof Message) {
@@ -228,6 +232,12 @@ public class RemoteConnection {
             } else {
                 Log.error("ERROR: Server should not call notifyReady");
             }
+        }
+
+        //call by server to ask the client to start the model
+        public void startModel() {
+            if (!isServer) return;
+            server.sendToAllTCP(new NetworkCommon.ClientStartModelMsg());
         }
     }
 
