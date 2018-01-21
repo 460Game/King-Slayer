@@ -27,7 +27,7 @@ public class ClientGameModel extends GameModel {
         if(server == null)
             throw new RuntimeException("Cannot receive message before init()");
         if (m.sendToClient())
-            m.execute(this);
+            this.queueMessage(m);
         if (m.sendToServer())
             server.processMessage(m);
     }

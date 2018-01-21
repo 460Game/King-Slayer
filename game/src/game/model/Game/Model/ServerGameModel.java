@@ -22,7 +22,7 @@ public class ServerGameModel extends GameModel {
         if(clients == null)
             throw new RuntimeException("Cannot receive message before init()");
         if (m.sendToServer())
-            m.execute(this);
+            this.queueMessage(m);
         if (m.sendToClient())
             clients.forEach(model -> model.processMessage(m));
     }

@@ -1,5 +1,6 @@
 package game.model.Game.Model;
 
+import game.message.Message;
 import game.model.Game.Grid.GridCell;
 import game.model.Game.Map.MapGenerator;
 import game.model.Game.Map.Tile;
@@ -10,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public abstract class GameModel extends UpdateModel {
 
@@ -21,12 +23,18 @@ public abstract class GameModel extends UpdateModel {
     private Collection<GridCell> allCells;
     private List<TestPlayer> players;
 
+    private LinkedBlockingQueue<Message> messageQueue = new LinkedBlockingQueue<>();
+
     /**
      * Tool to generate the game map.
      */
     private MapGenerator generator;
 
     private Map<Entity, Entity> entities;
+
+    protected void queueMessage(Message message) {
+        messageQueue.add(message);
+    }
 
     /**
      * Constructor for the game model.
@@ -142,6 +150,9 @@ public abstract class GameModel extends UpdateModel {
 
     @Override
     public void update() {
+        ArrayList<Message> list = new ArrayList<>();
+        messageQueue.drainTo(list);
+        list.forEach(m -> m.execute(this));
 
 //        for (GridCell tile : allCells)  // TODO collisions broken
 //            tile.collideContents(this);
