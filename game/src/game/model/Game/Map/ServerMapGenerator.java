@@ -1,9 +1,7 @@
-package game.model.Game;
+package game.model.Game.Map;
 
 import Util.Util;
 import Util.Loc;
-import com.esotericsoftware.jsonbeans.Test;
-import game.model.Game.Tile.*;
 import game.model.Game.WorldObject.Entity.*;
 
 import java.util.*;

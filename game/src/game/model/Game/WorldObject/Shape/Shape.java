@@ -1,7 +1,7 @@
 package game.model.Game.WorldObject.Shape;
 
 import Util.Util;
-import game.model.Game.GameModel;
+import game.model.Game.Model.GameModel;
 import game.model.Game.Grid.GridCell;
 import javafx.scene.canvas.GraphicsContext;
 

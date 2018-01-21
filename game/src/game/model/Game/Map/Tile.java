@@ -1,4 +1,4 @@
-package game.model.Game.Tile;
+package game.model.Game.Map;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;

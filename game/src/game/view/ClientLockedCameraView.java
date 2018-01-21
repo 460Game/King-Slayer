@@ -1,7 +1,7 @@
 package game.view;
 
 import game.message.playerMoveMessage.*;
-import game.model.Game.GameModel;
+import game.model.Game.Model.GameModel;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;

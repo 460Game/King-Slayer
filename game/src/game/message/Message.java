@@ -1,7 +1,7 @@
 package game.message;
 
-import game.model.Game.GameModel;
-import game.model.IModel;
+import game.model.Game.Model.GameModel;
+import game.model.Game.Model.Model;
 
 public interface Message {
     default boolean sendToServer(){
@@ -11,7 +11,7 @@ public interface Message {
         return false;
     }
 
-    default void execute(IModel model) {
+    default void execute(Model model) {
         model.processMessage(this);
     }
 

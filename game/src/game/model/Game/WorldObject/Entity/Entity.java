@@ -1,7 +1,7 @@
 package game.model.Game.WorldObject.Entity;
 
 import Util.Util;
-import game.model.Game.GameModel;
+import game.model.Game.Model.GameModel;
 import game.model.Game.Grid.GridCell;
 import game.model.Game.WorldObject.Drawable;
 import game.model.Game.WorldObject.Shape.Shape;

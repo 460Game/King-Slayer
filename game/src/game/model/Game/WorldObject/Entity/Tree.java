@@ -1,7 +1,7 @@
 package game.model.Game.WorldObject.Entity;
 
-import game.model.Game.GameModel;
-import game.model.Game.Tile.Tile;
+import game.model.Game.Model.GameModel;
+import game.model.Game.Map.Tile;
 import game.model.Game.WorldObject.Shape.CircleShape;
 import game.model.Game.WorldObject.Shape.Shape;
 import javafx.scene.canvas.GraphicsContext;

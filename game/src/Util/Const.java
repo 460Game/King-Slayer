@@ -1,7 +1,5 @@
 package Util;
 
-import game.model.Game.GameModel;
-
 /**
  * Abstract class that defines various constants to be used.
  */
@@ -41,4 +39,15 @@ public abstract class Const {
      * Number of pixels on the height of the canvas.
      */
     public final static int CANVAS_HEIGHT = GRID_Y_SIZE * TILE_PIXELS;
+
+    /**
+     * Number of updates per second
+     * should match with 1e9/UPDATE_LOOP_TIME_NANOS = UPDATE_LOOP_TIME_NANOS
+     */
+    public final static int UPDATES_PER_SECOND = 60;
+
+    /**
+     * Number of nanoseconds to optimaly spend on each update loop
+     */
+    public final static int UPDATE_LOOP_TIME_NANOS = 16666667;
 }

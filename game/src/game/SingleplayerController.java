@@ -1,12 +1,11 @@
 package game;
 
-import game.model.Game.GameModel;
-import game.model.ServerGameModel;
-import game.view.AIView;
+import game.model.Game.Model.ServerGameModel;
 import game.view.ClientView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.util.Collection;
 import java.util.Collections;
 
 public class SingleplayerController extends Application {
@@ -15,12 +14,12 @@ public class SingleplayerController extends Application {
     private ClientView clientView;
 
     public SingleplayerController() {
-        serverModel = new ServerGameModel(Collections.EMPTY_SET);
-       // clientView = new ClientView(serverModel); TODO
+        serverModel = new ServerGameModel();
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        serverModel.init(Collections.EMPTY_SET);
         clientView.start(new Stage());
     }
 

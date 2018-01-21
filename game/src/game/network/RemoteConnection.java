@@ -3,7 +3,7 @@ package game.network;
 import com.esotericsoftware.kryonet.*;
 import com.esotericsoftware.minlog.Log;
 import game.message.Message;
-import game.model.IModel;
+import game.model.Game.Model.Model;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -184,7 +184,7 @@ public class RemoteConnection {
         return remoteModels;
     }
 
-    class RemoteModel implements IModel {
+    class RemoteModel implements Model {
         int connectId;
         public RemoteModel(int conid) {
             connectId = conid;

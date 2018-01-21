@@ -1,7 +1,7 @@
 package game.message;
 
-import game.model.Game.GameModel;
-import game.model.Game.Tile.Tile;
+import game.model.Game.Model.ClientGameModel;
+import game.model.Game.Map.Tile;
 
 public class SetTileMessage implements ToClientMessage {
 
@@ -18,7 +18,7 @@ public class SetTileMessage implements ToClientMessage {
     }
 
     @Override
-    public void execute(GameModel model) {
+    public void executeClient(ClientGameModel model) {
         model.setTile(x,y,tile);
     }
 }

@@ -1,7 +1,7 @@
 package game.model.Game.Grid;
 
-import game.model.Game.GameModel;
-import game.model.Game.Tile.Tile;
+import game.model.Game.Model.GameModel;
+import game.model.Game.Map.Tile;
 import game.model.Game.WorldObject.Entity.Blocker;
 import game.model.Game.WorldObject.Drawable;
 import game.model.Game.WorldObject.Entity.Entity;

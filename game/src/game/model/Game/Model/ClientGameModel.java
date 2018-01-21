@@ -1,0 +1,43 @@
+package game.model.Game.Model;
+
+import game.message.Message;
+import game.model.Game.Map.MapGenerator;
+import game.model.Game.WorldObject.Entity.TestPlayer;
+
+public class ClientGameModel extends GameModel {
+
+    public ClientGameModel(MapGenerator generator) {
+        super(generator);
+    }
+
+    private int localPlayer;
+
+    public TestPlayer getLocalPlayer() {
+        return this.getPlayer(localPlayer);
+    }
+
+    public void setLocalPlayer(int player) {
+        localPlayer = localPlayer;
+    }
+
+    private Model server;
+
+    @Override
+    public void processMessage(Message m) {
+        if(server == null)
+            throw new RuntimeException("Cannot receive message before init()");
+        if (m.sendToClient())
+            m.execute(this);
+        if (m.sendToServer())
+            server.processMessage(m);
+    }
+
+    @Override
+    public long nanoTime() {
+        return System.nanoTime(); //TODO @tian @tian fix this!!! https://en.wikipedia.org/wiki/Clock_synchronization
+    }
+
+    public void init(Model server) {
+        this.server = server;
+    }
+}

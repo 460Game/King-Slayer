@@ -2,29 +2,24 @@ package game.message.playerMoveMessage;
 
 import game.message.ActionMessage;
 import game.message.SetEntityMessage;
-import game.model.Game.GameModel;
-import game.model.Game.WorldObject.Entity.TestPlayer;
+import game.model.Game.Model.ServerGameModel;
 
 public class PlayerDown extends ActionMessage {
 
     long id;
+
     public PlayerDown(long i) {
         super();
         id = i;
     }
 
-    PlayerDown(){
+    PlayerDown() {
 
     }
 
     @Override
-    public void execute(GameModel model) {
-        if(model.getPlayers().get(0).getId() == id) {
-            model.getPlayers().get(0).down();
-            model.processMessage(new SetEntityMessage(model.getPlayers().get(0)));
-        } else {
-            model.getPlayers().get(1).down();
-            model.processMessage(new SetEntityMessage(model.getPlayers().get(1)));
-        }
+    public void executeServer(ServerGameModel model) {
+        model.getPlayer(id).down();
+        model.processMessage(new SetEntityMessage(model.getPlayer(id)));
     }
 }

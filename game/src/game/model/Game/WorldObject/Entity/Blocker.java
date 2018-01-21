@@ -1,6 +1,6 @@
 package game.model.Game.WorldObject.Entity;
 
-import game.model.Game.GameModel;
+import game.model.Game.Model.GameModel;
 import game.model.Game.WorldObject.Shape.CellShape;
 import game.model.Game.WorldObject.Shape.Shape;
 import javafx.scene.canvas.GraphicsContext;

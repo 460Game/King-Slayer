@@ -1,18 +1,17 @@
-package game.model.Game;
+package game.model.Game.Model;
 
 import game.model.Game.Grid.GridCell;
-import game.model.Game.Tile.Tile;
+import game.model.Game.Map.MapGenerator;
+import game.model.Game.Map.Tile;
 import game.model.Game.WorldObject.Drawable;
 import game.model.Game.WorldObject.Entity.Entity;
 import game.model.Game.WorldObject.Entity.TestPlayer;
-import game.model.IModel;
-import game.model.ProcessorForwarderModel;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.util.*;
 
-public class GameModel extends ProcessorForwarderModel implements IGameModel {
+public abstract class GameModel extends UpdateModel {
 
     /**
      * Grid of the game map. Each tile on the map is represented by a 1x1 cell.
@@ -20,26 +19,21 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
     private GridCell[][] grid = new GridCell[Util.Const.GRID_X_SIZE][Util.Const.GRID_Y_SIZE];
 
     private Collection<GridCell> allCells;
+    private List<TestPlayer> players;
 
     /**
      * Tool to generate the game map.
      */
     private MapGenerator generator;
 
-    //TODO temp test
-    public TestPlayer playerA = null;
-    public TestPlayer playerB = null;
-
     private Map<Entity, Entity> entities;
 
     /**
      * Constructor for the game model.
-     * @param isServer flag on whether or not this model belongs to the server
-     * @param others other game models that this model should talk to
      * @param generator map generator for this game model
      */
-    public GameModel(boolean isServer, Collection<? extends IModel> others, MapGenerator generator) {
-        super(isServer, others);
+    public GameModel(MapGenerator generator) {
+        super();
 
         entities = new HashMap<>();
         allCells = new ArrayList<>();
@@ -56,18 +50,11 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
 
         generator.makeStartingEntities().forEach(e -> entities.put(e,e));
 
-        if(isServer) {
-            for(Entity e : entities.keySet()) {
-                if(e instanceof TestPlayer && playerA == null){
-                    playerA = (TestPlayer) e;
-                } else if(e instanceof TestPlayer) {
-                    playerB = (TestPlayer) e;
-                }
-            }
-            //  playerA = new TestPlayer(this, generator.getStartingLocations().get(0).x, generator.getStartingLocations().get(0).y);
-            //  playerB = new TestPlayer(this, generator.getStartingLocations().get(1).x, generator.getStartingLocations().get(1).y);
-            //  entities.put(playerA,playerA);
-            //  entities.put(playerB,playerB);
+        players = new ArrayList<>();
+
+        for(Entity e : entities.keySet()) {
+            if(e instanceof TestPlayer)
+            players.add((TestPlayer) e);
         }
     }
 
@@ -125,11 +112,11 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
      *
      * @param entityID ID of the entity to be removed
      */
-    @Override
     public void removeByID(long entityID) {
         for (GridCell[] arr : grid)
             for (GridCell tile : arr)
                 tile.removeByID(entityID);
+        //TODO why dosnt this remove it from the entity map and players list
     }
 
     /**
@@ -149,33 +136,17 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
         return objects;
     }
 
-    public MapGenerator getGenerator() {
-        return generator;
-    }
-
-    @Override
-    public GameModel getGameModel() {
-        return this;
-    }
-
-    @Override
-    public long nanoTime() {
-        return System.nanoTime(); //TODO hm
-    }
-
-
-    @Override
     public void setTile(int x, int y, Tile tile) {
         grid[x][y].setTile(tile);
     }
 
     @Override
     public void update() {
+
 //        for (GridCell tile : allCells)  // TODO collisions broken
 //            tile.collideContents(this);
 
-        for (Entity e : entities.keySet())
-            e.update(this);
+        entities.keySet().forEach(e -> e.update(this));
     }
 
     public Collection<GridCell> getAllCells() {
@@ -188,6 +159,9 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
             e.copyOf(entity);
         } else {
             entities.put(entity,entity);
+
+            if(entity instanceof TestPlayer)
+                players.add((TestPlayer) entity);
         }
     }
 
@@ -223,25 +197,12 @@ public class GameModel extends ProcessorForwarderModel implements IGameModel {
             d.draw(gc);
     }
 
-    private boolean running = false;
-
-    public void start() {
-        running = true;
-        Thread t = new Thread(() -> {
-            while(running) {
-                this.update();
-                try {
-                    Thread.sleep(15);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        t.start();
+    public TestPlayer getPlayer(int index) {
+        return players.get(index);
     }
 
-    public void stop() {
-        running = false;
-    }
 
+    public Collection<Entity> getAllEntities() {
+        return entities.keySet();
+    }
 }

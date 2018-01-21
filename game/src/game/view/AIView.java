@@ -1,6 +1,6 @@
 package game.view;
 
-import game.model.Game.GameModel;
+import game.model.Game.Model.GameModel;
 
 public class AIView {
 

@@ -1,12 +1,10 @@
 package game.network;
 
-import Util.Util;
 import com.esotericsoftware.minlog.Log;
 import game.message.Message;
-import game.model.ClientGameModel;
-import game.model.Game.ClientMapGenerator;
-import game.model.Game.MapGenerator;
-import game.model.IModel;
+import game.model.Game.Model.ClientGameModel;
+import game.model.Game.Map.ClientMapGenerator;
+import game.model.Game.Model.Model;
 import game.view.ClientView;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -105,7 +103,7 @@ public class LobbyClient extends Application {
         serverModel = client.makeRemoteModel().iterator().next();
 
         //TODO !!!! don't have getGenerator
-        clientGameModel = new ClientGameModel(new IModel() {
+        clientGameModel = new ClientGameModel(new Model() {
             @Override
             public void processMessage(Message m) {
                 serverModel.processMessage(m);

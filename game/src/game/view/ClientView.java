@@ -4,8 +4,7 @@ import static Util.Const.*;
 
 
 import game.message.playerMoveMessage.*;
-import game.model.ClientGameModel;
-import game.model.Game.GameModel;
+import game.model.Game.Model.ClientGameModel;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
