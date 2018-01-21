@@ -40,4 +40,14 @@ public enum Team {
         this.team = teamNumber;
         this.color = color;
     }
+
+    public static Team valueOf(int i) {
+        if(i == 0)
+            return Team.NEUTRAL;
+        if(i == 1)
+            return Team.ONE;
+        if(i == 2)
+            return Team.TWO;
+        throw new RuntimeException("Invalid team number");
+    }
 }

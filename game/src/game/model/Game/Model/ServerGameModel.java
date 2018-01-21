@@ -6,6 +6,7 @@ import game.message.*;
 import game.model.Game.Map.ServerMapGenerator;
 import game.model.Game.WorldObject.Entity.Entity;
 import game.model.Game.WorldObject.Entity.TestPlayer;
+import game.model.Game.WorldObject.Team;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,16 +52,16 @@ public class ServerGameModel extends GameModel {
 
         ArrayList<TestPlayer> players = new ArrayList<>();
         for (Entity entity : this.getAllEntities()) {
-            if(entity instanceof TestPlayer)
+            if(entity instanceof TestPlayer) {
+                entity.setTeam(Team.valueOf((players.size() % 2) + 1));
                 players.add((TestPlayer) entity);
+            }
         }
 
         int i = 0;
         // Send player to client
         for(Model model : clients) {
-
-            Log.info("sending set player message");
-            model.processMessage(new SetPlayerMessage(players.get(i)));
+            model.processMessage(new SetPlayerMessage(players.get(i++)));
         }
     }
 

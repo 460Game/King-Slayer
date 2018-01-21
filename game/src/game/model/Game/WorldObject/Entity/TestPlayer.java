@@ -3,7 +3,9 @@ package game.model.Game.WorldObject.Entity;
 import game.model.Game.Model.GameModel;
 import game.model.Game.WorldObject.Shape.CircleShape;
 import game.model.Game.WorldObject.Shape.Shape;
+import game.model.Game.WorldObject.Team;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class TestPlayer extends Entity {
 
@@ -23,7 +25,7 @@ public class TestPlayer extends Entity {
 
     public TestPlayer() {
         super();
-        shape = new CircleShape(0.0,0.0, 0.5);
+        shape = new CircleShape(0.0, 0.0, 0.5);
     }
 
     public TestPlayer(GameModel model, double x, double y) {
@@ -47,6 +49,11 @@ public class TestPlayer extends Entity {
 
     @Override
     public void draw(GraphicsContext gc) {
+        if (this.getTeam() == Team.ONE)
+            gc.setFill(Color.RED);
+        else
+            gc.setFill(Color.BLUE);
+
         shape.draw(gc);
     }
 
@@ -57,7 +64,7 @@ public class TestPlayer extends Entity {
 
     @Override
     public void update(long time, GameModel model) {
-       // shape.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10); TODO for testing
+        // shape.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10); TODO for testing
         shape.shift(dx * 0.25, dy * 0.25);
     }
 

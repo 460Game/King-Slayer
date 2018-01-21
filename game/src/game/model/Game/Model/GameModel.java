@@ -139,7 +139,7 @@ public abstract class GameModel extends UpdateModel {
         messageQueue.drainTo(list);
         list.forEach(m -> m.execute(this));
 
-//        for (GridCell tile : allCells)  // TODO collisions broken
+ //       for (GridCell tile : allCells)  // TODO collisions broken
 //            tile.collideContents(this);
 
         entities.values().forEach(e -> e.update(this));
