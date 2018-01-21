@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Defines an individual cell on the game grid. Knows the entities
  * that currently exist on the cell and the type of tile that it
- * currently is.
+ * currently is.w
  */
 public class GridCell implements Drawable {
 
@@ -105,9 +105,8 @@ public class GridCell implements Drawable {
      */
     public void collideContents(GameModel model) {
         for(Entity a : contents)
-            for (Entity b : contents)
-                if (a != b && a.getShape().testCollision(b.getShape()))
-                    a.collision(model, b);
+            contents.stream().filter(b -> a != b && a.getShape().testCollision(b.getShape())).forEach(
+                    b -> a.collision(model, b));
 
         // Problem: collide in two cells
     }
