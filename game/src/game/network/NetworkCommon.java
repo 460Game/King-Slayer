@@ -61,14 +61,21 @@ public class NetworkCommon {
         kryo.register(ClientReadyMsg.class);
 
         kryo.register(RemoteConnection.GameConnection.class);
+        kryo.register(ClientStartModelMsg.class);
+
     }
 
     public static class ClientMakeModelMsg {
         public ClientMakeModelMsg() {
         }
     }
+
     public static class ClientReadyMsg {
         public ClientReadyMsg() {}
+    }
+
+    public static class ClientStartModelMsg {
+        public ClientStartModelMsg() {}
     }
 
 }

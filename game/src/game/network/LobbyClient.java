@@ -72,7 +72,13 @@ public class LobbyClient extends Application {
         client = new RemoteConnection(false, this, new NetWork2LobbyAdaptor() {
             @Override
             public void init() {
-                makeModel();//make model
+                clientGameModel.start();
+
+                clientView = new ClientView(clientGameModel);
+                Platform.runLater(()-> {
+                    clientView.start(window);
+                });
+                Log.info("Client Started!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             }
 
             @Override
@@ -116,10 +122,7 @@ public class LobbyClient extends Application {
             }
         });
 
-        clientView = new ClientView(clientGameModel);
-        Platform.runLater(()-> {
-            clientView.start(window);
-        });
+
     }
 
 

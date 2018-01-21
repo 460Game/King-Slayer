@@ -31,6 +31,9 @@ public class LobbyServer extends Application {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
+                    remoteModel.startModel();
+                }
             }
 
             @Override
