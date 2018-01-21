@@ -46,17 +46,17 @@ public class ServerGameModel extends GameModel {
                 for (int j = 0; j < this.getMapWidth(); j++)
                     client.processMessage(new SetTileMessage(i, j, this.getTile(i, j)));
 
-        //Send all enttities to clients
-        for(Entity entity : this.getAllEntities())
-            this.processMessage(new SetEntityMessage(entity));
-
         ArrayList<TestPlayer> players = new ArrayList<>();
         for (Entity entity : this.getAllEntities()) {
             if(entity instanceof TestPlayer) {
-                entity.setTeam(Team.valueOf((players.size() % 2) + 1));
+                entity.setTeam(Team.valueOf(((players.size()/2) % 2) + 1));
                 players.add((TestPlayer) entity);
             }
         }
+
+        //Send all enttities to clients
+        for(Entity entity : this.getAllEntities())
+            this.processMessage(new SetEntityMessage(entity));
 
         int i = 0;
         // Send player to client

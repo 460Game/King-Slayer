@@ -49,11 +49,7 @@ public class TestPlayer extends Entity {
 
     @Override
     public void draw(GraphicsContext gc) {
-        if (this.getTeam() == Team.ONE)
-            gc.setFill(Color.RED);
-        else
-            gc.setFill(Color.BLUE);
-
+        gc.setFill(this.getTeam().color);
         shape.draw(gc);
     }
 

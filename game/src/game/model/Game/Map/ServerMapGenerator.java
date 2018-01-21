@@ -42,7 +42,7 @@ public class ServerMapGenerator implements MapGenerator {
 
     @Override
     public Tile makeTile(int i, int j) {
-        return grid[i][j].make(i, j);
+        return grid[i][j].make();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ServerMapGenerator implements MapGenerator {
             this.make = make; this.spawner = spawner;
         }
 
-        public Tile make(int i, int j) {
+        public Tile make() {
             return this.make;
         }
 
@@ -239,7 +239,8 @@ public class ServerMapGenerator implements MapGenerator {
 
         for (int i = 0; i < NUM_STARTS_ROOM; i++) {
             t = rooms.poll();
-            grid[t.x][t.y] = TS.start;
+            grid[t.x-1][t.y] = TS.start;
+            grid[t.x+1][t.y] = TS.start;
             startingLocations.add(t);
         }
 
