@@ -32,9 +32,13 @@ public class PlayerLeft extends ActionMessage {
 
     }
 
+    /**
+     * Moves the player leftwards.
+     * @param model the game model on the game server
+     */
     @Override
     public void executeServer(ServerGameModel model) {
-        ((TestPlayer)model.getEntityById(id)).left();
+        ((TestPlayer) model.getEntityById(id)).left();
         model.processMessage(new SetEntityMessage(model.getEntityById(id)));
     }
 }
