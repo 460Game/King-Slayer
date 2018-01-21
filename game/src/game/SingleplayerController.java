@@ -11,21 +11,14 @@ import java.util.Collections;
 
 public class SingleplayerController extends Application {
 
-    private ServerGameModel serverModel;
-    private ClientGameModel clientModel;
-    private ClientView clientView;
-
-    public SingleplayerController() {
-        serverModel = new ServerGameModel();
-        clientModel = new ClientGameModel(serverModel);
-    }
-
     @Override
     public void start(Stage primaryStage) throws Exception {
+        ServerGameModel serverModel = new ServerGameModel();
+        ClientGameModel clientModel = new ClientGameModel(serverModel);
         serverModel.init(Collections.singleton(clientModel));
         serverModel.start();
         clientModel.start();
-        clientView = new ClientView(clientModel);
+        ClientView clientView = new ClientView(clientModel);
         clientView.start(primaryStage);
     }
 

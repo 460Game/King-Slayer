@@ -163,6 +163,6 @@ public class CircleShape extends Shape {
     @Override
     public void draw(GraphicsContext gc) {
         gc.setFill(Color.RED);
-        gc.fillOval(x * TILE_PIXELS, y * TILE_PIXELS, TILE_PIXELS * radius, TILE_PIXELS * radius);
+        gc.fillOval(x * TILE_PIXELS - TILE_PIXELS * radius * 0.5, y * TILE_PIXELS - TILE_PIXELS * radius * 0.5, TILE_PIXELS * radius, TILE_PIXELS * radius);
     }
 }

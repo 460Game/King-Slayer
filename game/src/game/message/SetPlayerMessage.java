@@ -43,5 +43,5 @@ public class SetPlayerMessage implements ToClientMessage {
      * @param model the game model on the client
      */
     @Override
-    public void executeClient(ClientGameModel model) { model.setLocalPlayer(Math.toIntExact(playerId)); } // TODO temp fix
+    public void executeClient(ClientGameModel model) { model.setLocalPlayer(playerId); } // TODO temp fix
 }
