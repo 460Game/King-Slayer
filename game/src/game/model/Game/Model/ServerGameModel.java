@@ -32,11 +32,11 @@ public class ServerGameModel extends GameModel {
         return System.nanoTime();
     }
 
-    public void init(Collection<? extends Model> models) {
+    public void init(Collection<? extends Model> clients) {
         this.clients = clients;
 
         // Send map to client
-        for(Model client : models)
+        for(Model client : clients)
             for (int i = 0; i < this.getMapWidth(); i++)
                 for (int j = 0; j < this.getMapWidth(); j++)
                     client.processMessage(new SetTileMessage(i, j, this.getTile(i, j)));
@@ -47,7 +47,7 @@ public class ServerGameModel extends GameModel {
 
         int i = 0;
         // Send player to client
-        for(Model model : models) {
+        for(Model model : clients) {
             model.processMessage(new SetPlayerMessage(this.getPlayer(i)));
         }
 

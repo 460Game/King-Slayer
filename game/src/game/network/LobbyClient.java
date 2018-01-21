@@ -103,7 +103,7 @@ public class LobbyClient extends Application {
         serverModel = client.makeRemoteModel().iterator().next();
 
         //TODO !!!! don't have getGenerator
-        clientGameModel = new ClientGameModel(new ClientMapGenerator());
+        clientGameModel = new ClientGameModel();
 
         clientGameModel.init(new Model() {
             @Override

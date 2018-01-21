@@ -1,13 +1,14 @@
 package game.model.Game.Model;
 
 import game.message.Message;
+import game.model.Game.Map.ClientMapGenerator;
 import game.model.Game.Map.MapGenerator;
 import game.model.Game.WorldObject.Entity.TestPlayer;
 
 public class ClientGameModel extends GameModel {
 
-    public ClientGameModel(MapGenerator generator) {
-        super(generator);
+    public ClientGameModel() {
+        super(new ClientMapGenerator());
     }
 
     private int localPlayer;
