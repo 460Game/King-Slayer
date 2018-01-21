@@ -1,9 +1,12 @@
 package game.model.Game.Model;
 
+import com.esotericsoftware.jsonbeans.Test;
 import game.message.*;
 import game.model.Game.Map.ServerMapGenerator;
 import game.model.Game.WorldObject.Entity.Entity;
+import game.model.Game.WorldObject.Entity.TestPlayer;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -45,10 +48,16 @@ public class ServerGameModel extends GameModel {
         for(Entity entity : this.getAllEntities())
             this.processMessage(new SetEntityMessage(entity));
 
+        ArrayList<TestPlayer> players = new ArrayList<>();
+        for (Entity entity : this.getAllEntities()) {
+            if(entity instanceof TestPlayer)
+                players.add((TestPlayer) entity);
+        }
+
         int i = 0;
         // Send player to client
         for(Model model : clients) {
-            model.processMessage(new SetPlayerMessage(this.getPlayer(i)));
+            model.processMessage(new SetPlayerMessage(players.get(i)));
         }
 
         // Send start game to all

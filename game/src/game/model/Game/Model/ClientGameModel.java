@@ -11,10 +11,10 @@ public class ClientGameModel extends GameModel {
         super(new ClientMapGenerator());
     }
 
-    private int localPlayer;
+    private long localPlayer;
 
     public TestPlayer getLocalPlayer() {
-        return this.getPlayer(localPlayer);
+        return (TestPlayer) this.getEntityById(localPlayer);
     }
 
     public void setLocalPlayer(long player) {

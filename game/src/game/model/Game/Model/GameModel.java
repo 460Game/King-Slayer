@@ -21,16 +21,10 @@ public abstract class GameModel extends UpdateModel {
     private GridCell[][] grid = new GridCell[Util.Const.GRID_X_SIZE][Util.Const.GRID_Y_SIZE];
 
     private Collection<GridCell> allCells;
-    private List<TestPlayer> players;
 
     private LinkedBlockingQueue<Message> messageQueue = new LinkedBlockingQueue<>();
 
-    /**
-     * Tool to generate the game map.
-     */
-    private MapGenerator generator;
-
-    private Map<Entity, Entity> entities;
+    private Map<Long, Entity> entities;
 
     protected void queueMessage(Message message) {
         messageQueue.add(message);
@@ -46,8 +40,6 @@ public abstract class GameModel extends UpdateModel {
         entities = new HashMap<>();
         allCells = new ArrayList<>();
 
-        this.generator = generator;
-
         for (int i = 0; i < Util.Const.GRID_X_SIZE; i++)
             for (int j = 0; j < Util.Const.GRID_Y_SIZE; j++)
                 grid[i][j] = new GridCell(this, i, j, generator.makeTile(i, j));
@@ -56,14 +48,7 @@ public abstract class GameModel extends UpdateModel {
             for (int j = 0; j < Util.Const.GRID_Y_SIZE; j++)
                 allCells.add(grid[i][j]);
 
-        generator.makeStartingEntities().forEach(e -> entities.put(e,e));
-
-        players = new ArrayList<>();
-
-        for(Entity e : entities.keySet()) {
-            if(e instanceof TestPlayer)
-            players.add((TestPlayer) e);
-        }
+        generator.makeStartingEntities().forEach(e -> entities.put(e.getId(),e));
     }
 
     /**
@@ -157,7 +142,7 @@ public abstract class GameModel extends UpdateModel {
 //        for (GridCell tile : allCells)  // TODO collisions broken
 //            tile.collideContents(this);
 
-        entities.keySet().forEach(e -> e.update(this));
+        entities.values().forEach(e -> e.update(this));
     }
 
     public Collection<GridCell> getAllCells() {
@@ -165,14 +150,11 @@ public abstract class GameModel extends UpdateModel {
     }
 
     public void setEntity(Entity entity) {
-        if(entities.containsKey(entity)) {
-            Entity e = entities.get(entity);
+        if(entities.containsKey(entity.getId())) {
+            Entity e = entities.get(entity.getId());
             e.copyOf(entity);
         } else {
-            entities.put(entity,entity);
-
-            if(entity instanceof TestPlayer)
-                players.add((TestPlayer) entity);
+            entities.put(entity.getId(),entity);
         }
     }
 
@@ -208,17 +190,12 @@ public abstract class GameModel extends UpdateModel {
             d.draw(gc);
     }
 
-    /**
-     * Gets the player with the specified index.
-     * @param index index of the player
-     * @return player with the index
-     */
-    public TestPlayer getPlayer(int index) {
-        return players.get(index);
-    }
-
 
     public Collection<Entity> getAllEntities() {
-        return entities.keySet();
+        return entities.values();
+    }
+
+    public Entity getEntityById(long entity) {
+        return entities.get(entity);
     }
 }

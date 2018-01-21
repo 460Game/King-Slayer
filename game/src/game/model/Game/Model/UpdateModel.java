@@ -1,7 +1,6 @@
 package game.model.Game.Model;
 
-import Util.Const;
-import game.model.Game.Model.Model;
+import static Util.Const.*;
 
 public abstract class UpdateModel implements Model {
 
@@ -27,11 +26,11 @@ public abstract class UpdateModel implements Model {
         while (running) {
             long start = System.nanoTime();
             this.update();
-            long after = System.nanoTime();
-
-            if (start + Const.UPDATE_LOOP_TIME_NANOS < after)
+            long delta = System.nanoTime()- start;
+            if (UPDATE_LOOP_TIME_NANOS > delta)
                 try {
-                    Thread.sleep(Const.UPDATE_LOOP_TIME_NANOS - after + start);
+                Thread.yield();
+                    Thread.sleep((UPDATE_LOOP_TIME_NANOS - delta)/ 1000000L);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

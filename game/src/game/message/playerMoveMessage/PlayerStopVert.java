@@ -3,6 +3,7 @@ package game.message.playerMoveMessage;
 import game.message.ActionMessage;
 import game.message.SetEntityMessage;
 import game.model.Game.Model.ServerGameModel;
+import game.model.Game.WorldObject.Entity.TestPlayer;
 
 /**
  * Message sent by a client to tell the server to stop the player
@@ -34,8 +35,7 @@ public class PlayerStopVert extends ActionMessage {
 
     @Override
     public void executeServer(ServerGameModel model) {
-        // TODO temporary fix, need to fix id issue
-        model.getPlayer(Math.toIntExact(id)).stopVert();
-        model.processMessage(new SetEntityMessage(model.getPlayer(Math.toIntExact(id))));
+        ((TestPlayer)model.getEntityById(id)).stopVert();
+        model.processMessage(new SetEntityMessage(model.getEntityById(id)));
     }
 }
