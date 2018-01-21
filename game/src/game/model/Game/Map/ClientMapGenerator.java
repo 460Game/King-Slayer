@@ -11,6 +11,7 @@ import java.util.List;
  * Map generator for the client side of the game.
  */
 public class ClientMapGenerator implements MapGenerator {
+
     @Override
     public Tile makeTile(int i, int j) {
         return Tile.FOG;

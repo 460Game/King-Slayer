@@ -7,6 +7,9 @@ import game.model.Game.WorldObject.Entity.*;
 import java.util.*;
 import java.util.function.Supplier;
 
+/**
+ * Map generator for the server side of the game.
+ */
 public class ServerMapGenerator implements MapGenerator {
 
     private final int mapW;

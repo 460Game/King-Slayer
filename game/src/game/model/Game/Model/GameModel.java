@@ -109,7 +109,7 @@ public abstract class GameModel extends UpdateModel {
         for (GridCell[] arr : grid)
             for (GridCell tile : arr)
                 tile.removeByID(entityID);
-        //TODO why dosnt this remove it from the entity map and players list
+        //TODO why doesnt this remove it from the entity map and players list
     }
 
     /**
@@ -139,8 +139,9 @@ public abstract class GameModel extends UpdateModel {
         messageQueue.drainTo(list);
         list.forEach(m -> m.execute(this));
 
- //       for (GridCell tile : allCells)  // TODO collisions broken
-//            tile.collideContents(this);
+        for (GridCell cell : allCells) {// TODO collisions broken
+            cell.collideContents(this);
+        }
 
         entities.values().forEach(e -> e.update(this));
     }

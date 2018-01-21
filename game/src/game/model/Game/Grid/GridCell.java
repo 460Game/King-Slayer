@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Defines an individual cell on the game grid. Knows the entities
  * that currently exist on the cell and the type of tile that it
- * currently is.w
+ * currently is.
  */
 public class GridCell implements Drawable {
 
@@ -78,8 +78,6 @@ public class GridCell implements Drawable {
         this.x = x;
         this.y = y;
         this.tile = tile;
-        if(!isPassable()) //TODO tempoary - long term this will be genrated by the map gernator itself
-            addContents(new Blocker(model, x, y));
     }
 
     /**
@@ -106,7 +104,10 @@ public class GridCell implements Drawable {
     public void collideContents(GameModel model) {
         for(Entity a : contents)
             contents.stream().filter(b -> a != b && a.getShape().testCollision(b.getShape())).forEach(
-                    b -> a.collision(model, b));
+                    b -> {
+                        a.collision(model, b);
+                        System.out.println("COlliding" + a.toString() + " and " + b.toString());
+                    });
 
         // Problem: collide in two cells
     }

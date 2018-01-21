@@ -2,6 +2,7 @@ package game.model.Game.WorldObject.Entity;
 
 import game.model.Game.Model.GameModel;
 import game.model.Game.Map.Tile;
+import game.model.Game.WorldObject.Shape.CellShape;
 import game.model.Game.WorldObject.Shape.CircleShape;
 import game.model.Game.WorldObject.Shape.Shape;
 import javafx.scene.canvas.GraphicsContext;
@@ -17,7 +18,8 @@ public class Tree extends Resource {
 
     }
 
-    Shape shape = new CircleShape(0,0,0.5);
+//    Shape shape = new CircleShape(0,0,0);
+    Shape shape = new CellShape(); // TODO FIX THis
 
     @Override
     public Shape getShape() {

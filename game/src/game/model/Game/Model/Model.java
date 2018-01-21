@@ -4,7 +4,17 @@ import game.message.Message;
 
 import java.util.Collection;
 
+/**
+ * Interface for a generic game model.
+ */
 public interface Model {
-    public abstract void processMessage(Message m);
-    public abstract long nanoTime();
+
+    /**
+     * Process the message sent to this model.
+     * @param m message to be processed
+     */
+    void processMessage(Message m);
+
+
+    long nanoTime();
 }

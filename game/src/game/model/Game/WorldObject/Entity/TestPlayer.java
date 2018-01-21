@@ -39,7 +39,7 @@ public class TestPlayer extends Entity {
         double ydiff = this.getY() - collidesWith.getY();
 
         while (shape.testCollision(collidesWith.getShape()))
-            shape.shift(0.1 * xdiff, 0.1 * ydiff);
+            shape.shift(-0.05 * shape.getRadius() * Math.cos(getMovementAngle()), 0.05 * shape.getRadius() * Math.sin(getMovementAngle()));
     }
 
     @Override
@@ -66,18 +66,22 @@ public class TestPlayer extends Entity {
 
     public void up() {
         dy = -1;
+        setMovementAngle(Math.PI / 2);
     }
 
     public void left() {
         dx = -1;
+        setMovementAngle(Math.PI);
     }
 
     public void right() {
         dx = 1;
+        setMovementAngle(0);
     }
 
     public void down() {
         dy = 1;
+        setMovementAngle(3 * Math.PI / 2);
     }
 
     public void stopVert() {

@@ -62,6 +62,8 @@ public class CircleShape extends Shape {
         return y;
     }
 
+    public double getRadius() { return radius; }
+
     @Override
     public boolean blocksCell(int xcell, int ycell) {
         // Get other coordinates of the cell.
