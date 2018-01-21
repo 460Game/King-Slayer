@@ -17,13 +17,13 @@ public class SingleplayerController extends Application {
 
     public SingleplayerController() {
         serverModel = new ServerGameModel();
-        clientModel = new ClientGameModel();
+        clientModel = new ClientGameModel(null);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         serverModel.init(Collections.EMPTY_SET);
-        clientModel.init(serverModel);
+//        clientModel.init(serverModel);
         clientView = new ClientView(clientModel);
         clientView.start(new Stage());
     }

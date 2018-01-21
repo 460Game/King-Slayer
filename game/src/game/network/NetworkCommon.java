@@ -8,9 +8,13 @@ import game.message.playerMoveMessage.*;
 import game.model.Game.Map.Tile;
 import game.model.Game.WorldObject.Entity.Blocker;
 import game.model.Game.WorldObject.Entity.Entity;
+import game.model.Game.WorldObject.Entity.Tree;
 import game.model.Game.WorldObject.Shape.*;
 import game.model.Game.WorldObject.Entity.TestPlayer;
+import game.model.Game.WorldObject.Shape.Shape;
 import game.model.Game.WorldObject.Team;
+
+import java.awt.*;
 
 public class NetworkCommon {
     static public int port = 54555;
@@ -36,6 +40,10 @@ public class NetworkCommon {
         kryo.register(TestPlayer.class);
         kryo.register(Blocker.class);
         kryo.register(Entity.class);
+        kryo.register(Tree.class);
+        kryo.register(Shape.GridCellReference.class);
+        kryo.register(StartGameMessage.class);
+
 
         kryo.register(Shape.class);
         kryo.register(CellShape.class);

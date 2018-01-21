@@ -1,6 +1,7 @@
 package game.view;
 
 import static Util.Const.*;
+import static java.lang.Thread.sleep;
 
 
 import game.message.playerMoveMessage.*;
@@ -52,7 +53,14 @@ public class ClientView {
 
         double[] scaleFactor = {1.0};
 
-        model.start();
+//        model.start();
+        while (!model.isRunning()) {
+            try {
+                sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         AnimationTimer animator = new AnimationTimer() {
             @Override

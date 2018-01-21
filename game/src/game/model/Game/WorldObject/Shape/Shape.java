@@ -47,7 +47,7 @@ public abstract class Shape {
      */
     public abstract boolean moved();
 
-    static class GridCellReference {
+    public static class GridCellReference {
 
         /**
          * X-coordinate of the upper left corner of the cell.
@@ -58,6 +58,11 @@ public abstract class Shape {
          * Y-coordinate of the upper left corner of the cell.
          */
         public int y;
+
+        /**
+         *
+         */
+        GridCellReference() {}
 
         /**
          * Constructor for the cell reference with given coordinates.
