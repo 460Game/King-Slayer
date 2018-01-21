@@ -2,6 +2,9 @@ package game.model.Game.Map;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+
 import static Util.Const.*;
 import java.io.IOException;
 
@@ -15,42 +18,42 @@ public enum Tile {
     /**
      * Barrier tile.
      */
-    BARRIER(false, true, "barrier.png"),
+    BARRIER(false, true, "barrier.png", Color.BLACK),
 
     /**
      * Deep water tile.
      */
-    DEEP_WATER(false, false, "deepWater.png"),
+    DEEP_WATER(false, false, "deepWater.png", Color.DARKBLUE),
 
     /**
      * Grass tile.
      */
-    GRASS(true, false, "grass.png"),
+    GRASS(true, false, "grass.png", Color.GREEN),
 
     /**
      * TODO
      */
-    NO_BUILD(true, false, "nobuild.png"),
+    NO_BUILD(true, false, "nobuild.png", Color.WHITE),
 
     /**
      * Generic path tile.
      */
-    PATH(true, false, "rock.png"),
+    PATH(true, false, "rock.png", Color.WHITE),
 
     /**
      * Shallow water tile.
      */
-    SHALLOW_WATER(true, false, "shallowWater.png"),
+    SHALLOW_WATER(true, false, "shallowWater.png", Color.LIGHTCYAN),
 
     /**
      * Wall tile.
      */
-    WALL(false, true, "wall.png"),
+    WALL(false, true, "wall.png", Color.BLACK),
 
     /**
      * Fog tile.
      */
-    FOG(true, false, "fog.png");
+    FOG(true, false, "fog.png", Color.GRAY);
 
     public final boolean aboveGround;
     /**
@@ -64,15 +67,18 @@ public enum Tile {
      */
     public Image IMAGE;
 
+    private Color color;
+
     /**
      * Constructor for a tile.
      * @param isPassable flag that says whether a tile can be passed through
      * @param aboveGround flag that says whether the tile can be drawn above the player
      * @param imageName name of the file that holds the tile image
      */
-    Tile(boolean isPassable, boolean aboveGround, String imageName) {
+    Tile(boolean isPassable, boolean aboveGround, String imageName, Color color) {
         this.aboveGround = aboveGround;
         this.IS_PASSABLE = isPassable;
+        this.color = color;
         try {
             this.IMAGE = new Image(Tile.class.getResource(imageName).openStream());
         } catch (IOException | NullPointerException e) {
@@ -91,5 +97,9 @@ public enum Tile {
      */
     public void draw(GraphicsContext gc, int x, int y) {
         gc.drawImage(this.IMAGE, x * TILE_PIXELS, y * TILE_PIXELS, TILE_PIXELS, TILE_PIXELS);
+    }
+
+    public Paint getColor() {
+        return color;
     }
 }
