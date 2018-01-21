@@ -22,10 +22,12 @@ public class SingleplayerController extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        serverModel.init(Collections.EMPTY_SET);
-        clientModel.init(serverModel);
+        clientModel.init(serverModel); //TODO remove this call
+        serverModel.init(Collections.singleton(clientModel));
+        serverModel.start();
+        clientModel.start();
         clientView = new ClientView(clientModel);
-        clientView.start(new Stage());
+        clientView.start(primaryStage);
     }
 
     public static void main(String args[]) {

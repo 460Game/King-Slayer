@@ -1,5 +1,7 @@
 package game.model.Game.Model;
 
+import com.esotericsoftware.minlog.Log;
+
 import static Util.Const.*;
 
 public abstract class UpdateModel implements Model {
@@ -7,6 +9,7 @@ public abstract class UpdateModel implements Model {
     private boolean running = false;
 
     public void start() {
+        Log.info("Starting Model");
         if (running) throw new RuntimeException("Cannot start model when already running");
         running = true;
         (new Thread(this::run)).start();

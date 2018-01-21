@@ -1,6 +1,7 @@
 package game.model.Game.Model;
 
 import com.esotericsoftware.jsonbeans.Test;
+import com.esotericsoftware.minlog.Log;
 import game.message.*;
 import game.model.Game.Map.ServerMapGenerator;
 import game.model.Game.WorldObject.Entity.Entity;
@@ -57,13 +58,10 @@ public class ServerGameModel extends GameModel {
         int i = 0;
         // Send player to client
         for(Model model : clients) {
+
+            Log.info("sending set player message");
             model.processMessage(new SetPlayerMessage(players.get(i)));
         }
-
-        // Send start game to all
-        this.processMessage(new StartGameMessage());
-
-        this.start();
     }
 
 }

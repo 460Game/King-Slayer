@@ -1,5 +1,6 @@
 package game.model.Game.Model;
 
+import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.model.Game.Map.ClientMapGenerator;
 import game.model.Game.Map.MapGenerator;
@@ -17,8 +18,9 @@ public class ClientGameModel extends GameModel {
         return (TestPlayer) this.getEntityById(localPlayer);
     }
 
-    public void setLocalPlayer(long player) {
-        localPlayer = localPlayer;
+    public void setLocalPlayer(long localPlayer) {
+        Log.info("Set local player");
+        this.localPlayer = localPlayer;
     }
 
     private Model server;

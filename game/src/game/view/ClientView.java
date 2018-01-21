@@ -1,7 +1,7 @@
 package game.view;
 
 import static Util.Const.*;
-
+import com.esotericsoftware.minlog.Log;
 
 import game.message.playerMoveMessage.*;
 import game.model.Game.Model.ClientGameModel;
@@ -52,19 +52,15 @@ public class ClientView {
 
         double[] scaleFactor = {1.0};
 
-        model.start();
-
         AnimationTimer animator = new AnimationTimer() {
             @Override
             public void handle(long arg0) {
                 double gameW = scaleFactor[0] * window.getWidth() / TILE_PIXELS;
                 double gameH = scaleFactor[0] * window.getHeight() / TILE_PIXELS;
 
-                if(model.getLocalPlayer() != null) {
-                    gc.transform(new Affine(Affine.translate(-model.getLocalPlayer().getX() * TILE_PIXELS + window.getWidth() / 2, -model.getLocalPlayer().getY() * TILE_PIXELS + window.getHeight() / 2)));
-                    model.draw(gc, model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), gameW, gameH);
-                    gc.transform(new Affine(Affine.translate(model.getLocalPlayer().getX() * TILE_PIXELS - window.getWidth() / 2, model.getLocalPlayer().getY() * TILE_PIXELS - window.getHeight() / 2)));
-                }
+                gc.transform(new Affine(Affine.translate(-model.getLocalPlayer().getX() * TILE_PIXELS + window.getWidth() / 2, -model.getLocalPlayer().getY() * TILE_PIXELS + window.getHeight() / 2)));
+                model.draw(gc, model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), gameW, gameH);
+                gc.transform(new Affine(Affine.translate(model.getLocalPlayer().getX() * TILE_PIXELS - window.getWidth() / 2, model.getLocalPlayer().getY() * TILE_PIXELS - window.getHeight() / 2)));
             }
         };
 
