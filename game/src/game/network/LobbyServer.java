@@ -16,7 +16,7 @@ import java.util.*;
 
 public class LobbyServer extends Application {
 
-    private GameModel serverModel;
+    private ServerGameModel serverModel;
     private RemoteConnection server;
     private Set<RemoteConnection.RemoteModel> remoteModels;
 
@@ -25,7 +25,7 @@ public class LobbyServer extends Application {
         server = new RemoteConnection(true, this, new NetWork2LobbyAdaptor() {
             @Override
             public void init() {//should send the map
-                serverModel.init();
+                serverModel.init(remoteModels);
             }
 
             @Override
@@ -72,7 +72,7 @@ public class LobbyServer extends Application {
     public void startGame() {
 
         remoteModels = server.makeRemoteModel();
-        serverModel = new ServerGameModel(remoteModels);
+        serverModel = new ServerGameModel();
 
         for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
             remoteModel.startGame();

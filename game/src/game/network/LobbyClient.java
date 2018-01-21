@@ -103,7 +103,9 @@ public class LobbyClient extends Application {
         serverModel = client.makeRemoteModel().iterator().next();
 
         //TODO !!!! don't have getGenerator
-        clientGameModel = new ClientGameModel(new Model() {
+        clientGameModel = new ClientGameModel(new ClientMapGenerator());
+
+        clientGameModel.init(new Model() {
             @Override
             public void processMessage(Message m) {
                 serverModel.processMessage(m);
@@ -113,8 +115,7 @@ public class LobbyClient extends Application {
             public long nanoTime() {
                 return serverModel.nanoTime();
             }
-        }, new ClientMapGenerator());
-
+        });
         clientView = new ClientView(clientGameModel);
         Platform.runLater(()-> {
             clientView.start(window);

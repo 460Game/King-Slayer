@@ -16,7 +16,7 @@ public class ClientGameModel extends GameModel {
         return this.getPlayer(localPlayer);
     }
 
-    public void setLocalPlayer(int player) {
+    public void setLocalPlayer(long player) {
         localPlayer = localPlayer;
     }
 
