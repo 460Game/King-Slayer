@@ -52,24 +52,17 @@ public class ClientView {
 
         double[] scaleFactor = {1.0};
 
-//        model.start();
-        while (!model.isRunning()) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
         AnimationTimer animator = new AnimationTimer() {
             @Override
             public void handle(long arg0) {
                 double gameW = scaleFactor[0] * window.getWidth() / TILE_PIXELS;
                 double gameH = scaleFactor[0] * window.getHeight() / TILE_PIXELS;
 
-                gc.transform(new Affine(Affine.translate(-model.getLocalPlayer().getX() * TILE_PIXELS + window.getWidth() / 2, -model.getLocalPlayer().getY() * TILE_PIXELS + window.getHeight() / 2)));
+                double xt = - model.getLocalPlayer().getX() * TILE_PIXELS + window.getWidth() / 2;
+                double yt = -model.getLocalPlayer().getY() * TILE_PIXELS + (window.getHeight() / 2);
+                gc.transform(new Affine(Affine.translate(xt, yt)));
                 model.draw(gc, model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), gameW, gameH);
-                gc.transform(new Affine(Affine.translate(model.getLocalPlayer().getX() * TILE_PIXELS - window.getWidth() / 2, model.getLocalPlayer().getY() * TILE_PIXELS - window.getHeight() / 2)));
+                gc.transform(new Affine(Affine.translate(-xt, -yt)));
             }
         };
 

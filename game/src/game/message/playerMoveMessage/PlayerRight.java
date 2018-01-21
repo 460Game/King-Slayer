@@ -5,6 +5,7 @@ import game.message.SetEntityMessage;
 import game.model.Game.Model.ServerGameModel;
 import game.model.Game.WorldObject.Entity.TestPlayer;
 
+import com.esotericsoftware.minlog.Log;
 /**
  * Message sent by a client to tell the server to move the player
  * rightwards on the game map.

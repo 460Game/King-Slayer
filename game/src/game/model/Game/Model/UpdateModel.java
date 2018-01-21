@@ -12,7 +12,7 @@ public abstract class UpdateModel implements Model {
         Log.info("Starting Model");
         if (running) throw new RuntimeException("Cannot start model when already running");
         running = true;
-        (new Thread(this::run)).start();
+        (new Thread(this::run, this.toString() + " Update Thread")).start();
     }
 
     public void stop() {

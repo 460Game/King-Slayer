@@ -64,4 +64,8 @@ public class ServerGameModel extends GameModel {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Server Game Model";
+    }
 }

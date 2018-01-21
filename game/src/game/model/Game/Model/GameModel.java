@@ -158,6 +158,27 @@ public abstract class GameModel extends UpdateModel {
         }
     }
 
+    /**
+     * Decorator around drable to memozie z value so can sort even while another thread mutates z values
+     */
+   private static class DrawableZ implements Comparable<DrawableZ>{
+        private Drawable drawable;
+        private double z;
+
+        DrawableZ(Drawable drawable) {
+            this.drawable = drawable;
+            this.z = drawable.getDrawZ();
+        }
+
+       public void draw(GraphicsContext gc) {
+           drawable.draw(gc);
+       }
+
+        @Override
+        public int compareTo(DrawableZ o) {
+            return Double.compare(this.z, o.z);
+        }
+    }
 
     //    /**
 //     * @param x top left x
@@ -184,10 +205,7 @@ public abstract class GameModel extends UpdateModel {
             }
         }
 
-        drawEntities.sort(Comparator.comparingDouble(Drawable::getDrawZ));
-
-        for (Drawable d : drawEntities)
-            d.draw(gc);
+        drawEntities.stream().map(DrawableZ::new).sorted().forEach(a -> a.draw(gc));
     }
 
 

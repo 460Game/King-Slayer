@@ -42,4 +42,9 @@ public class ClientGameModel extends GameModel {
         return System.nanoTime(); //TODO @tian @tian fix this!!! https://en.wikipedia.org/wiki/Clock_synchronization
     }
 
+    @Override
+    public String toString() {
+        return "Client Game Model";
+    }
+
 }

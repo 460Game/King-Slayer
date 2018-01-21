@@ -21,7 +21,10 @@ public class NetworkCommon {
     static public final int REMOTEMODEL = 1;
     // This registers serializes files
     public static void register (EndPoint endPoint) {
-        Kryo kryo = endPoint.getKryo();
+        KyroRegister(endPoint.getKryo());
+    }
+
+    public static void KyroRegister(Kryo kryo) {
         kryo.register(Message.class);
         kryo.register(PlayerDown.class);
         kryo.register(PlayerLeft.class);
