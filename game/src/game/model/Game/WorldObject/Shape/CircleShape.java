@@ -91,7 +91,7 @@ public class CircleShape extends Shape {
     }
 
     @Override
-    Set<GridCellReference> getCellsReference() {
+    public Set<GridCellReference> getCellsReference() {
         if(memo != null)
             return memo;
 
@@ -101,7 +101,8 @@ public class CircleShape extends Shape {
         // overlaps with them.
         for(int i = (int) (x - radius); i <= Math.ceil(x + radius); i++)
             for(int j = (int) (y - radius); j <= Math.ceil(y + radius); j++)
-                if(Util.dist(this.x, this.y, i + 0.5, j + 0.5) <= radius + 0.70710678118)
+                if((Util.dist(this.x, this.y, i + 0.5, j + 0.5) <= radius + 0.70710678118) && this.x + radius != i
+                        && this.y + radius != j)
                     memo.add(new GridCellReference(i, j));
 
         return memo;

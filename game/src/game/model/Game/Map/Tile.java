@@ -67,6 +67,9 @@ public enum Tile {
      */
     public Image IMAGE;
 
+    /**
+     * Color of the tile.
+     */
     private Color color;
 
     /**
@@ -99,6 +102,10 @@ public enum Tile {
         gc.drawImage(this.IMAGE, x * TILE_PIXELS, y * TILE_PIXELS, TILE_PIXELS, TILE_PIXELS);
     }
 
+    /**
+     * Gets the color of the tile.
+     * @return color of the tile
+     */
     public Paint getColor() {
         return color;
     }

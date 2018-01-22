@@ -35,11 +35,19 @@ public class TestPlayer extends Entity {
 
     @Override
     public void collision(GameModel model, Entity collidesWith) {
-        double xdiff = this.getX() - collidesWith.getX();
-        double ydiff = this.getY() - collidesWith.getY();
+        double xdiff = Math.abs(this.getX() - collidesWith.getX());
+        double ydiff = Math.abs(this.getY() - collidesWith.getY());
+
+        System.out.println("X: " + (shape.getX()) + ", Y: " + (shape.getY()) + ", radius: " + shape.getRadius());
+
+        for(Shape.GridCellReference g : shape.getCellsReference())
+            System.out.println("Cell X: " + g.x + ", cell Y: " + g.y);
+
+        System.out.println("BLocker X, y: " + collidesWith.getX() + ", " + collidesWith.getY());
 
         while (shape.testCollision(collidesWith.getShape()))
-            shape.shift(-0.05 * shape.getRadius() * Math.cos(getMovementAngle()), 0.05 * shape.getRadius() * Math.sin(getMovementAngle()));
+//            shape.shift(-0.05 * shape.getRadius() * Math.cos(getMovementAngle()), 0.05 * shape.getRadius() * Math.sin(getMovementAngle()));
+            shape.shift(-(xdiff - shape.getRadius()) * Math.cos(getMovementAngle()), (ydiff - shape.getRadius()) * Math.sin(getMovementAngle()));
     }
 
     @Override
