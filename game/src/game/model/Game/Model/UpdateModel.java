@@ -29,6 +29,8 @@ public abstract class UpdateModel implements Model {
         while (running) {
             long start = System.nanoTime();
             this.update();
+            //want it independent of how long update take, so use the following instead
+            //of thread.sleep()...
             long delta = System.nanoTime()- start;
             if (UPDATE_LOOP_TIME_NANOS > delta)
                 try {

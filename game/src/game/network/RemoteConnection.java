@@ -6,9 +6,9 @@ import game.message.Message;
 import game.model.Game.Model.Model;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.lang.Thread.sleep;
 
@@ -31,9 +31,14 @@ public class RemoteConnection {
 
     Server server;
     ConcurrentHashMap<Integer, GameConnection> clientList;
+
     int readyClient = 0;
 
     Client client;
+
+    Map<Integer, LinkedBlockingQueue<Message>> messageQueues;
+
+
 
 //    GameConnection serverConnectionForClient;
 
@@ -43,6 +48,9 @@ public class RemoteConnection {
     public RemoteConnection(boolean isServer, Object lobby, NetWork2LobbyAdaptor adaptor) throws IOException {
         this.isServer = isServer;
         this.adaptor = adaptor;
+
+        messageQueues = new HashMap<>();
+
         if (isServer) {
 //            //TODO change this later
 //            lobbyServer = (LobbyServer) lobby;
@@ -69,7 +77,12 @@ public class RemoteConnection {
                     Log.info("Server received from " + c.getID() + " " + obj.toString());
                     GameConnection connection = (GameConnection)c;
 
-                    clientList.putIfAbsent(connection.getID(), connection);
+                    //init a queue when have a new client
+                    if (!clientList.containsKey(connection.getID())) {
+                        clientList.putIfAbsent(connection.getID(), connection);
+                        messageQueues.put(connection.getID(), new LinkedBlockingQueue<>());
+                    }
+
 
                     if (obj instanceof NetworkCommon.ClientReadyMsg) {
                         readyClient++;
@@ -78,8 +91,14 @@ public class RemoteConnection {
                             adaptor.init();//send the map
                         }
                     }
+
+                    if (obj instanceof ArrayList) {
+                        for (Message msg : (ArrayList<Message>) obj) {
+                            adaptor.getMsg(msg);
+                        }
+                    }
+
                     if (obj instanceof Message) {
-//                        lobbyServer.getMsg((Message) obj);
                         adaptor.getMsg((Message) obj);
                     }
 
@@ -103,7 +122,9 @@ public class RemoteConnection {
             client.addListener(new Listener() {
                 public void connected (Connection connection) {
                     Log.info("Client " + connection.getID() + " connected");
-                    client.sendTCP("Now server should see this");
+                    client.sendTCP("Client " + connection.getID() + " connected");
+                    //use client ID for the queue for client use
+                    messageQueues.put(client.getID(), new LinkedBlockingQueue<>());
 //                    NetworkCommon.UserName usrName = new NetworkCommon.UserName("");
 //                    usrName.user_name = name;
 //                    client.sendTCP(usrName);
@@ -112,35 +133,24 @@ public class RemoteConnection {
                 public void received (Connection connection, Object obj) {
                     Log.info("Client " + client.getID() + "received " + obj.toString());
                     if (obj instanceof NetworkCommon.ClientMakeModelMsg) {
-//                        lobbyClient.startGame();
                         adaptor.makeModel(); //make clientModel
-                        client.sendTCP("A client is ready");
                         client.sendTCP(new NetworkCommon.ClientReadyMsg());
                     }
 
                     if (obj instanceof NetworkCommon.ClientStartModelMsg) {
-                        Log.info("Client should start model hereeeeeeeeeeeeeeeeeeeeeeeeeeee");
                         adaptor.init();
                     }
 
+                    if (obj instanceof ArrayList) {
+                        for (Message msg : (ArrayList<Message>) obj) {
+                            adaptor.getMsg(msg);
+                        }
+                    }
+
                     if (obj instanceof Message) {
-//                        lobbyClient.getMsg((Message) obj);
                         adaptor.getMsg((Message) obj);
                     }
 
-//                    if (object instanceof ChatCommon.AllUserNames) {
-//                        ChatCommon.AllUserNames updateNames = (ChatCommon.AllUserNames) object;
-//                        chatFrame.setNames(updateNames.names);
-//                        return;
-//                    }
-//
-//                    if (object instanceof ChatCommon.ChatMsg && !alreadyPingBack) {
-//                        endTime = System.nanoTime();
-//                        Log.info("Time: " + (endTime - startTime));
-//                        ChatCommon.ChatMsg chatMessage = (ChatCommon.ChatMsg) object;
-//                        chatFrame.addMessage(chatMessage.msg);
-//                        return;
-//                    }
                 }
 
                 public void disconnected (Connection connection) {
@@ -148,6 +158,41 @@ public class RemoteConnection {
                 }
             });
         }
+        (new Thread(this::sendQueueMsg, this.toString() + " Send Batched Message Thread")).start();
+    }
+
+    private void sendQueueMsg() {
+        while (true) {
+
+            try {
+                sleep(15);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (isServer) {
+                for (int connectId : messageQueues.keySet()) {
+                    List<Message> messageList = new ArrayList<>();
+                    LinkedBlockingQueue q = messageQueues.get(connectId);
+                    q.drainTo(messageList);
+                    if (messageList.size() <= 0) continue;
+                    Log.info("check list: " + messageList.toString());
+                    server.sendToTCP(connectId, messageList);
+                }
+            } else {
+                if (messageQueues.size() < 1) continue;
+                List<Message> messageList = new ArrayList<>();
+                LinkedBlockingQueue q = messageQueues.get(client.getID());
+                q.drainTo(messageList);
+                if (messageList.size() <= 0) continue;
+                Log.info("check list: " + messageList.toString());
+                client.sendTCP(messageList);
+            }
+        }
+    }
+
+    private void enqueueMsg(Message msg, int conId) {
+        messageQueues.get(conId).add(msg);
     }
 
     /**
@@ -202,16 +247,11 @@ public class RemoteConnection {
         @Override
         public void processMessage(Message m) {
             if (isServer) { //then the remote is a client
-                try {
-                    sleep(20);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                server.sendToTCP(connectId, m);
+//                server.sendToTCP(connectId, m);
+                enqueueMsg(m, connectId);
             } else {
-//                Log.info(m.toString());
-                client.sendTCP("client want to send a msg");
-                client.sendTCP(m);
+//                client.sendTCP(m);
+                enqueueMsg(m, connectId);
             }
         }
 
@@ -248,7 +288,6 @@ public class RemoteConnection {
         //call by server to ask the client to start the model
         public void startModel() {
             if (!isServer) return;
-//            server.sendToAllTCP(new NetworkCommon.ClientStartModelMsg());
             server.sendToTCP(connectId, new NetworkCommon.ClientStartModelMsg());
         }
     }

@@ -26,7 +26,6 @@ public class LobbyServer extends Application {
         server = new RemoteConnection(true, this, new NetWork2LobbyAdaptor() {
             @Override
             public void init() {//should send the map
-                Log.info("server inittttttttttttttttttttt");
                 serverModel.init(remoteModels);
                 serverModel.start();
 

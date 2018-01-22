@@ -15,6 +15,7 @@ import game.model.Game.WorldObject.Shape.Shape;
 import game.model.Game.WorldObject.Team;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class NetworkCommon {
     static public int port = 54555;
@@ -63,6 +64,8 @@ public class NetworkCommon {
 
         kryo.register(RemoteConnection.GameConnection.class);
         kryo.register(ClientStartModelMsg.class);
+//        kryo.register(BatchMsg.class);
+        kryo.register(ArrayList.class);
 
     }
 
@@ -78,6 +81,17 @@ public class NetworkCommon {
     public static class ClientStartModelMsg {
         public ClientStartModelMsg() {}
     }
+
+//    public static class BatchMsg {
+//        ArrayList<Message> msgs;
+//        public BatchMsg() {}
+//        public BatchMsg(ArrayList<Message> messages) {
+//            msgs = messages;
+//        }
+//        public ArrayList<Message> getMsgs() {
+//            return msgs;
+//        }
+//    }
 
 }
 
