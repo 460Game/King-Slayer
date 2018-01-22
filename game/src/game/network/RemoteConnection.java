@@ -46,6 +46,7 @@ public class RemoteConnection {
 
 
     public RemoteConnection(boolean isServer, Object lobby, NetWork2LobbyAdaptor adaptor) throws IOException {
+        Log.set(Log.LEVEL_DEBUG);
         this.isServer = isServer;
         this.adaptor = adaptor;
 
@@ -55,7 +56,7 @@ public class RemoteConnection {
 //            //TODO change this later
 //            lobbyServer = (LobbyServer) lobby;
             clientList = new ConcurrentHashMap<>();
-            server = new Server() {
+            server = new Server(10000000, 10000000 /2) {
                 protected Connection newConnection() {
                     return new RemoteConnection.GameConnection("ServerName");
                 }
@@ -63,7 +64,7 @@ public class RemoteConnection {
         } else {
 //            //TODO change this later
 //            lobbyClient = (LobbyClient) lobby;
-            client = new Client();
+            client = new Client(10000000, 10000000 /2);
         }
         start();
     }
@@ -165,7 +166,7 @@ public class RemoteConnection {
         while (true) {
 
             try {
-                sleep(15);
+                sleep(3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -176,7 +177,7 @@ public class RemoteConnection {
                     LinkedBlockingQueue q = messageQueues.get(connectId);
                     q.drainTo(messageList);
                     if (messageList.size() <= 0) continue;
-                    Log.info("check list: " + messageList.toString());
+//                    Log.info("check list: " + messageList.toString());
                     server.sendToTCP(connectId, messageList);
                 }
             } else {
@@ -185,14 +186,17 @@ public class RemoteConnection {
                 LinkedBlockingQueue q = messageQueues.get(client.getID());
                 q.drainTo(messageList);
                 if (messageList.size() <= 0) continue;
-                Log.info("check list: " + messageList.toString());
+//                Log.info("check list: " + messageList.toString());
                 client.sendTCP(messageList);
             }
         }
     }
 
     private void enqueueMsg(Message msg, int conId) {
-        messageQueues.get(conId).add(msg);
+        if (isServer)
+            messageQueues.get(conId).add(msg);
+        else
+            messageQueues.get(client.getID()).add(msg);
     }
 
     /**

@@ -69,6 +69,7 @@ public class LobbyServer extends Application {
     }
 
     public static void main(String[] args) throws IOException {
+        Log.set(Log.LEVEL_DEBUG);
         Application.launch();
     }
 
