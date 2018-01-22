@@ -99,7 +99,7 @@ public enum Tile {
      *          tile
      */
     public void draw(GraphicsContext gc, int x, int y) {
-        gc.drawImage(this.IMAGE, x * TILE_PIXELS, y * TILE_PIXELS - this.IMAGE.getHeight() + TILE_PIXELS, 2*this.IMAGE.getWidth(), 2*this.IMAGE.getHeight());
+        gc.drawImage(this.IMAGE, x * TILE_PIXELS, y * TILE_PIXELS - 2*this.IMAGE.getHeight() + 2*TILE_PIXELS, 2*this.IMAGE.getWidth(), 2*this.IMAGE.getHeight());
     }
 
     /**
