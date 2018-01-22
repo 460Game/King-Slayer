@@ -51,6 +51,7 @@ public class TestPlayer extends Entity {
 
         System.out.println("BLocker X, y: " + collidesWith.getX() + ", " + collidesWith.getY());
 
+        // TODO issue with both directions?
         while (shape.testCollision(collidesWith.getShape()))
 //            shape.shift(-0.05 * shape.getRadius() * Math.cos(getMovementAngle()), 0.05 * shape.getRadius() * Math.sin(getMovementAngle()));
             shape.shift(-(xdiff - shape.getRadius()) * Math.cos(getMovementAngle()), (ydiff - shape.getRadius()) * Math.sin(getMovementAngle()));

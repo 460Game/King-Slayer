@@ -109,7 +109,9 @@ public class GridCell implements Drawable {
                         System.out.println("COlliding" + a.toString() + " and " + b.toString());
                     });
 
-        // Problem: collide in two cells
+        // TODO problem: a collide b, fix collision, b doesnt collide a
+
+        // TODO Problem: collide in two cells
     }
 
     /**

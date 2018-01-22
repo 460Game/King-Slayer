@@ -15,7 +15,7 @@ public class CopyingModelWrapper implements Model {
 
     private Model model;
 
-    CopyingModelWrapper(Model model) {
+    public CopyingModelWrapper(Model model) {
         this.model = model;
     }
 

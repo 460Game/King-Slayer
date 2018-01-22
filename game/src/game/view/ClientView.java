@@ -29,7 +29,6 @@ public class ClientView {
     }
 
     public void start(Stage window) {
-
         window.setResizable(true);
         window.setTitle("King Slayer");
 

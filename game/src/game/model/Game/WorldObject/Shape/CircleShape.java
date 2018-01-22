@@ -112,7 +112,7 @@ public class CircleShape extends Shape {
     public boolean sameCellTestCollision(Shape shape) {
         if(shape instanceof CircleShape) {
             CircleShape circle = (CircleShape) shape;
-            return Util.dist(x, y,  circle.getX() , circle.getY()) <= this.radius + circle.radius;
+            return Util.dist(x, y, circle.getX(), circle.getY()) <= this.radius + circle.radius;
         } else if(shape instanceof RectShape) {
             RectShape rect = (RectShape) shape;
             return rect.testCollision(this);
