@@ -31,12 +31,12 @@ public class TestPlayer extends Entity {
 
     public TestPlayer() {
         super();
-        shape = new CircleShape(0.0, 0.0, 0.2);
+        shape = new CircleShape(0.0, 0.0, 0.3);
     }
 
     public TestPlayer(GameModel model, double x, double y) {
         super(model);
-        shape = new CircleShape(x, y, 0.2);
+        shape = new CircleShape(x, y, 0.3);
     }
 
     @Override
@@ -81,11 +81,14 @@ public class TestPlayer extends Entity {
         //gc.setFill(this.getTeam().color);
         //shape.draw(gc);
         if (this.getTeam() == Team.ONE) {
-            gc.drawImage(imageRedKing, this.getX() * TILE_PIXELS - TILE_PIXELS / 2,
-                this.getY() * TILE_PIXELS - TILE_PIXELS, TILE_PIXELS, 1.5 * TILE_PIXELS);
+            gc.drawImage(imageRedKing,
+                this.getX() * TILE_PIXELS - TILE_PIXELS / 2,
+                this.getY() * TILE_PIXELS - TILE_PIXELS + 40,
+                TILE_PIXELS,
+                1.5 * TILE_PIXELS);
         } else {
             gc.drawImage(imageBlueKing, this.getX() * TILE_PIXELS - TILE_PIXELS / 2,
-                this.getY() * TILE_PIXELS - TILE_PIXELS, TILE_PIXELS, 1.5 * TILE_PIXELS);
+                this.getY() * TILE_PIXELS - TILE_PIXELS + 40, TILE_PIXELS, 1.5 * TILE_PIXELS);
         }
     }
 

@@ -86,13 +86,12 @@ public class ClientView {
                 double gameH = scaleFactor[0] * window.getHeight() / TILE_PIXELS;
                 double xt = - model.getLocalPlayer().getX() * TILE_PIXELS + window.getWidth() / 2;
                 double yt = -model.getLocalPlayer().getY() * TILE_PIXELS + (window.getHeight() / 2);
-                gc.transform(new Affine(Affine.translate(xt, yt)));
+                gc.setTransform(new Affine(Affine.translate(xt, yt)));
                 model.draw(gc, model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), gameW, gameH);
-                gc.transform(new Affine(Affine.translate(-xt, -yt)));
             }
         };
 
-        scene.setOnScroll(e -> {
+       /*scene.setOnScroll(e -> {
             if (e.getDeltaY() < 0) {
                 scaleFactor[0] *= 1.1;
                 gc.transform(new Affine(Affine.scale(0.9, 0.9)));
@@ -100,7 +99,7 @@ public class ClientView {
                 scaleFactor[0] *= 0.9;
                 gc.transform(new Affine(Affine.scale(1.1, 1.1)));
             }
-        });
+        });*/
 
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.F11) window.setFullScreen(true);

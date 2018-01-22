@@ -1,8 +1,15 @@
 package game.model.Game.WorldObject.Entity;
 
+import game.model.Game.Map.Tile;
 import game.model.Game.Model.GameModel;
+import game.model.Game.WorldObject.Shape.CellShape;
 import game.model.Game.WorldObject.Shape.Shape;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+
+import java.io.IOException;
+
+import static Util.Const.TILE_PIXELS;
 
 public class Metal extends Resource {
     @Override
@@ -10,9 +17,12 @@ public class Metal extends Resource {
 
     }
 
+    //    Shape shape = new CircleShape(0,0,0.5);
+    Shape shape = new CellShape(); // TODO FIX THis
+
     @Override
     public Shape getShape() {
-        return null;
+        return shape;
     }
 
     @Override
@@ -20,13 +30,23 @@ public class Metal extends Resource {
 
     }
 
+    static Image image;
+
+    static {
+        try {
+            image = new Image(Tile.class.getResource("iron_ingots.png").openStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void draw(GraphicsContext gc) {
-
+        gc.drawImage(this.image, this.getX() * TILE_PIXELS - TILE_PIXELS/2, this.getY() * TILE_PIXELS - TILE_PIXELS/2, TILE_PIXELS, 1.5*TILE_PIXELS);
     }
 
     @Override
     public double getDrawZ() {
-        return 0;
+        return getY();
     }
 }

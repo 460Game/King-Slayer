@@ -23,7 +23,7 @@ public enum Tile {
     /**
      * Deep water tile.
      */
-    DEEP_WATER(false, false, "deepWater.png", Color.DARKBLUE),
+    DEEP_WATER(false, false, "deep_water.png", Color.DARKBLUE),
 
     /**
      * Grass tile.
@@ -43,7 +43,7 @@ public enum Tile {
     /**
      * Shallow water tile.
      */
-    SHALLOW_WATER(true, false, "shallowWater.png", Color.LIGHTCYAN),
+    SHALLOW_WATER(true, false, "shallow_water.png", Color.LIGHTCYAN),
 
     /**
      * Wall tile.
@@ -99,7 +99,7 @@ public enum Tile {
      *          tile
      */
     public void draw(GraphicsContext gc, int x, int y) {
-        gc.drawImage(this.IMAGE, x * TILE_PIXELS, y * TILE_PIXELS, TILE_PIXELS, TILE_PIXELS);
+        gc.drawImage(this.IMAGE, x * TILE_PIXELS, y * TILE_PIXELS - this.IMAGE.getHeight() + TILE_PIXELS, 2*this.IMAGE.getWidth(), 2*this.IMAGE.getHeight());
     }
 
     /**
