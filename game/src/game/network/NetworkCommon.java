@@ -7,11 +7,8 @@ import com.esotericsoftware.kryonet.EndPoint;
 import game.message.*;
 import game.message.playerMoveMessage.*;
 import game.model.Game.Map.Tile;
-import game.model.Game.WorldObject.Entity.Blocker;
-import game.model.Game.WorldObject.Entity.Entity;
-import game.model.Game.WorldObject.Entity.Tree;
+import game.model.Game.WorldObject.Entity.*;
 import game.model.Game.WorldObject.Shape.*;
-import game.model.Game.WorldObject.Entity.TestPlayer;
 import game.model.Game.WorldObject.Shape.Shape;
 import game.model.Game.WorldObject.Team;
 
@@ -49,6 +46,9 @@ public class NetworkCommon {
         kryo.register(Entity.class);
         kryo.register(Tree.class);
         kryo.register(Shape.GridCellReference.class);
+
+        kryo.register(Stone.class);
+        kryo.register(Metal.class);
 
         kryo.register(Shape.class);
         kryo.register(CellShape.class);
