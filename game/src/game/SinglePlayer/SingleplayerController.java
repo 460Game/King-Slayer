@@ -9,6 +9,10 @@ import javafx.stage.Stage;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * Class that allows for single player running of the game. This is
+ * mainly used for testing and debugging.
+ */
 public class SingleplayerController extends Application {
 
     @Override

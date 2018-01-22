@@ -56,13 +56,11 @@ public class ServerGameModel extends GameModel {
 
         //Send all enttities to clients
         for(Entity entity : this.getAllEntities())
-            this.processMessage(new SetEntityMessage(entity));
+            clients.forEach(client -> client.processMessage(new SetEntityMessage(entity)));
 
         int i = 0;
         // Send player to client
-        for(Model model : clients) {
-            model.processMessage(new SetPlayerMessage(players.get(i++)));
-        }
+        for(Model model : clients) model.processMessage(new SetPlayerMessage(players.get(i++)));
     }
 
     @Override

@@ -29,7 +29,6 @@ public class ClientView {
     }
 
     public void start(Stage window) {
-
         window.setResizable(true);
         window.setTitle("King Slayer");
 
@@ -64,7 +63,8 @@ public class ClientView {
         AnimationTimer animator = new AnimationTimer() {
             @Override
             public void handle(long arg0) {
-                minimapGC.setTransform(new Affine(Transform.scale(minimapGC.getCanvas().getWidth()/model.getMapWidth(),
+                minimapGC.setTransform(new Affine(Transform.scale(
+                    minimapGC.getCanvas().getWidth()/model.getMapWidth(),
                     minimapGC.getCanvas().getHeight()/model.getMapHeight())));
                 minimapGC.fillRect(0,0,minimapGC.getCanvas().getWidth(), minimapGC.getCanvas().getHeight());
                 for(int x= 0; x < model.getMapWidth(); x++){
