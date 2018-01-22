@@ -1,11 +1,17 @@
 package game.model.Game.WorldObject.Entity;
 
+import game.model.Game.Map.Tile;
 import game.model.Game.Model.GameModel;
 import game.model.Game.WorldObject.Shape.CircleShape;
 import game.model.Game.WorldObject.Shape.Shape;
 import game.model.Game.WorldObject.Team;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+
+import java.io.IOException;
+
+import static Util.Const.TILE_PIXELS;
 
 public class TestPlayer extends Entity {
 
@@ -55,10 +61,29 @@ public class TestPlayer extends Entity {
         return shape;
     }
 
+    static Image imageRedKing;
+    static Image imageBlueKing;
+
+    static {
+        try {
+            imageRedKing = new Image(Tile.class.getResource("king_red_1.png").openStream());
+            imageBlueKing = new Image(Tile.class.getResource("king_blue_1.png").openStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void draw(GraphicsContext gc) {
-        gc.setFill(this.getTeam().color);
-        shape.draw(gc);
+        //gc.setFill(this.getTeam().color);
+        //shape.draw(gc);
+        if (this.getTeam() == Team.ONE) {
+            gc.drawImage(this.imageRedKing, this.getX() * TILE_PIXELS - TILE_PIXELS / 2,
+                this.getY() * TILE_PIXELS - TILE_PIXELS / 2, TILE_PIXELS, 1.5 * TILE_PIXELS);
+        } else {
+            gc.drawImage(this.imageBlueKing, this.getX() * TILE_PIXELS - TILE_PIXELS / 2,
+                this.getY() * TILE_PIXELS - TILE_PIXELS / 2, TILE_PIXELS, 1.5 * TILE_PIXELS);
+        }
     }
 
     @Override
