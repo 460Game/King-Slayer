@@ -45,8 +45,6 @@ public class NetworkCommon {
         kryo.register(Entity.class);
         kryo.register(Tree.class);
         kryo.register(Shape.GridCellReference.class);
-        kryo.register(StartGameMessage.class);
-
 
         kryo.register(Shape.class);
         kryo.register(CellShape.class);
