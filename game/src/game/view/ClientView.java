@@ -77,7 +77,7 @@ public class ClientView {
                 for(Entity player : model.getAllEntities()) {
                     if(player instanceof TestPlayer) {
                         minimapGC.setFill(player.getTeam().color);
-                        minimapGC.fillOval(player.getX(),player.getY(),2,2);
+                        minimapGC.fillOval(player.getX(),player.getY(),3,3);
                     }
                 }
                 minimapGC.setTransform(new Affine());

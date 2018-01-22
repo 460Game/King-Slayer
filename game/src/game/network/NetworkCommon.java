@@ -2,6 +2,7 @@ package game.network;
 
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.serializers.DefaultSerializers;
 import com.esotericsoftware.kryonet.EndPoint;
 import game.message.*;
 import game.message.playerMoveMessage.*;
@@ -15,6 +16,8 @@ import game.model.Game.WorldObject.Shape.Shape;
 import game.model.Game.WorldObject.Team;
 
 import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class NetworkCommon {
@@ -55,7 +58,8 @@ public class NetworkCommon {
 
         kryo.register(Team.class);
 
-        kryo.register(Tile.class);
+        DefaultSerializers.EnumSerializer tileSerializer = new DefaultSerializers.EnumSerializer(Tile.class);
+        kryo.register(Tile.class, tileSerializer);
 
 
 
