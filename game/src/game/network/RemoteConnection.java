@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static java.lang.Thread.sleep;
+
 /**
  * For client => construct => start => connectToServer, start game: makeRemoteModels =>
  */
@@ -22,7 +24,7 @@ public class RemoteConnection {
         }
     }
 
-    static final int TOTALPLAYER = 2;
+    static final int TOTALPLAYER = 3;
 
     boolean isServer;
     NetWork2LobbyAdaptor adaptor;
@@ -200,6 +202,11 @@ public class RemoteConnection {
         @Override
         public void processMessage(Message m) {
             if (isServer) { //then the remote is a client
+                try {
+                    sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 server.sendToTCP(connectId, m);
             } else {
 //                Log.info(m.toString());
