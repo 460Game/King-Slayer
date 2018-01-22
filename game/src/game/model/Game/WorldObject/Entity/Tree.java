@@ -18,7 +18,7 @@ public class Tree extends Resource {
 
     }
 
-//    Shape shape = new CircleShape(0,0,0);
+//    Shape shape = new CircleShape(0,0,0.5);
     Shape shape = new CellShape(); // TODO FIX THis
 
     @Override

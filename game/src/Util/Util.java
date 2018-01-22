@@ -6,6 +6,9 @@ import com.esotericsoftware.kryo.Kryo;
 
 public class Util {
 
+    /**
+     * Helper random class to generate random seeds.
+     */
     public static Random random = new Random();
 
     public static <T> boolean setsIntersect(Set<T> a, Set<T> b) {

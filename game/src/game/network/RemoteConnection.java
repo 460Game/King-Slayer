@@ -203,7 +203,7 @@ public class RemoteConnection {
         public void processMessage(Message m) {
             if (isServer) { //then the remote is a client
                 try {
-                    sleep(20);
+                    sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

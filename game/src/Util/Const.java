@@ -41,13 +41,13 @@ public abstract class Const {
     public final static int CANVAS_HEIGHT = GRID_Y_SIZE * TILE_PIXELS;
 
     /**
-     * Number of updates per second
-     * should match with 1e9/UPDATE_LOOP_TIME_NANOS = UPDATE_LOOP_TIME_NANOS
+     * Number of updates per second.
+     * Should equal 1e9/UPDATE_LOOP_TIME_NANOS = UPDATE_LOOP_TIME_NANOS.
      */
     public final static int UPDATES_PER_SECOND = 60;
 
     /**
-     * Number of nanoseconds to optimaly spend on each update loop
+     * Number of nanoseconds to optimally spend on each update loop.
      */
     public final static int UPDATE_LOOP_TIME_NANOS = 16666667;
 }
