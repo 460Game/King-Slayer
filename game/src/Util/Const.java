@@ -28,7 +28,7 @@ public abstract class Const {
     /**
      * Number of pixels on the side of a tile.
      */
-    public final static int TILE_PIXELS = 32;
+    public final static int TILE_PIXELS = 64;
 
     /**
      * Number of pixels on the width of the canvas.
