@@ -37,6 +37,7 @@ public class RemoteConnection {
 
 
 
+
     public RemoteConnection(boolean isServer, Object lobby, NetWork2LobbyAdaptor adaptor) throws IOException {
         this.isServer = isServer;
         this.adaptor = adaptor;
@@ -116,6 +117,7 @@ public class RemoteConnection {
                     }
 
                     if (obj instanceof NetworkCommon.ClientStartModelMsg) {
+                        Log.info("Client should start model hereeeeeeeeeeeeeeeeeeeeeeeeeeee");
                         adaptor.init();
                     }
 
@@ -176,6 +178,7 @@ public class RemoteConnection {
         else client.stop();
     }
 
+    //if isServer, make client remoteModel
     public Set<RemoteModel> makeRemoteModel() {
         Set<RemoteModel> remoteModels = new HashSet<>();
         if (isServer) {
@@ -218,7 +221,8 @@ public class RemoteConnection {
         public void startGame() {
             if (isServer) { // means it is server call this method on remote model
                 Log.info("Server click start the game");
-                server.sendToAllTCP(new NetworkCommon.ClientMakeModelMsg());
+//                server.sendToAllTCP(new NetworkCommon.ClientMakeModelMsg());
+                server.sendToTCP(connectId, new NetworkCommon.ClientMakeModelMsg());
             }
             else {// a client should not make server to start
                 Log.error("ERROR: client start the game");
@@ -237,7 +241,8 @@ public class RemoteConnection {
         //call by server to ask the client to start the model
         public void startModel() {
             if (!isServer) return;
-            server.sendToAllTCP(new NetworkCommon.ClientStartModelMsg());
+//            server.sendToAllTCP(new NetworkCommon.ClientStartModelMsg());
+            server.sendToTCP(connectId, new NetworkCommon.ClientStartModelMsg());
         }
     }
 

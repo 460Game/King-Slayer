@@ -3,6 +3,7 @@ package game.network;
 import java.io.IOException;
 
 
+import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.model.Game.Model.GameModel;
 import game.model.Game.Model.ServerGameModel;
@@ -25,13 +26,13 @@ public class LobbyServer extends Application {
         server = new RemoteConnection(true, this, new NetWork2LobbyAdaptor() {
             @Override
             public void init() {//should send the map
+                Log.info("server inittttttttttttttttttttt");
                 serverModel.init(remoteModels);
-                try {
-                    server.start();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                serverModel.start();
+
+                Log.info(remoteModels.size() + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
+                    Log.info("server start client: " + remoteModel.connectId + "!!!!!!!!!!");
                     remoteModel.startModel();
                 }
             }

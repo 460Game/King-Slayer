@@ -72,6 +72,7 @@ public class LobbyClient extends Application {
         client = new RemoteConnection(false, this, new NetWork2LobbyAdaptor() {
             @Override
             public void init() {
+                Log.info("client inttttttttttttttttttttttttttttt");
                 clientGameModel.start();
 
                 clientView = new ClientView(clientGameModel);
