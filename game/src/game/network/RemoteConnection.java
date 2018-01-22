@@ -24,7 +24,7 @@ public class RemoteConnection {
         }
     }
 
-    static final int TOTALPLAYER = 3;
+    static int TOTALPLAYER = 3;
 
     boolean isServer;
     NetWork2LobbyAdaptor adaptor;
@@ -87,8 +87,7 @@ public class RemoteConnection {
 
                     if (obj instanceof NetworkCommon.ClientReadyMsg) {
                         readyClient++;
-                        Log.info("!!!!!!!!! " + readyClient + " are ready !!!!!!!");
-                        if (readyClient == TOTALPLAYER) {
+                        if (readyClient == clientList.size()) {
                             adaptor.init();//send the map
                         }
                     }
