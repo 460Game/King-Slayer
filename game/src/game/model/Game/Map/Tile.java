@@ -33,12 +33,12 @@ public enum Tile {
     /**
      * TODO
      */
-    NO_BUILD(true, false, "nobuild.png", Color.WHITE),
+    NO_BUILD(true, false, "nobuild.png", Color.SANDYBROWN),
 
     /**
      * Generic path tile.
      */
-    PATH(true, false, "rock.png", Color.WHITE),
+    PATH(true, false, "rock.png", Color.SANDYBROWN),
 
     /**
      * Shallow water tile.

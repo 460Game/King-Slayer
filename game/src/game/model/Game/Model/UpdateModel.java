@@ -29,10 +29,10 @@ public abstract class UpdateModel implements Model {
         while (running) {
             long start = System.nanoTime();
             this.update();
+            Thread.yield();
             long delta = System.nanoTime()- start;
             if (UPDATE_LOOP_TIME_NANOS > delta)
                 try {
-                Thread.yield();
                     Thread.sleep((UPDATE_LOOP_TIME_NANOS - delta)/ 1000000L);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
