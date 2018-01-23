@@ -30,11 +30,22 @@ public class Metal extends Resource {
 
     }
 
-    static Image image;
+    static Image[] image = new Image[11];
+    private int imageNum = 0;
 
     static {
         try {
-            image = new Image(Tile.class.getResource("iron_ingots.png").openStream());
+            image[0] = new Image(Tile.class.getResource("iron_ingots.png").openStream());
+            image[1] = new Image(Tile.class.getResource("iron_ingots_1.png").openStream());
+            image[2] = new Image(Tile.class.getResource("iron_ingots_2.png").openStream());
+            image[3] = new Image(Tile.class.getResource("iron_ingots_3.png").openStream());
+            image[4] = new Image(Tile.class.getResource("iron_ingots_4.png").openStream());
+            image[5] = new Image(Tile.class.getResource("iron_ingots_5.png").openStream());
+            image[6] = new Image(Tile.class.getResource("iron_ingots_6.png").openStream());
+            image[7] = new Image(Tile.class.getResource("iron_ingots_7.png").openStream());
+            image[8] = new Image(Tile.class.getResource("iron_ingots_8.png").openStream());
+            image[9] = new Image(Tile.class.getResource("iron_ingots_9.png").openStream());
+            image[10] = new Image(Tile.class.getResource("iron_ingots_10.png").openStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,7 +53,7 @@ public class Metal extends Resource {
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.drawImage(this.image, this.getX() * TILE_PIXELS - TILE_PIXELS/2, this.getY() * TILE_PIXELS - TILE_PIXELS/2, TILE_PIXELS, 1.5*TILE_PIXELS);
+        draw(gc, image[imageNum]);
     }
 
     @Override

@@ -1,14 +1,21 @@
 package game.model.Game.WorldObject.Entity;
 
 import Util.Util;
+import game.model.Game.Map.Tile;
 import game.model.Game.Model.GameModel;
 import game.model.Game.Grid.GridCell;
 import game.model.Game.WorldObject.Drawable;
 import game.model.Game.WorldObject.Shape.Shape;
 import game.model.Game.WorldObject.Team;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
+import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import static Util.Const.TILE_PIXELS;
 
 /**
  * Defines an abstract entity in the game world.
@@ -197,6 +204,17 @@ public abstract class Entity implements Drawable {
      * @param gc context used to draw the entity
      */
     public abstract void draw(GraphicsContext gc);
+
+    /**
+     * Draws the entity in the game.
+     * @param gc context used to draw the entity
+     */
+    public void draw(GraphicsContext gc, Image image) {
+        gc.drawImage(image,
+            this.getX() * TILE_PIXELS - TILE_PIXELS/2,
+            this.getY() * TILE_PIXELS - TILE_PIXELS/2 + 25,
+            TILE_PIXELS, 1.5*TILE_PIXELS);
+    }
 
     @Override
     public boolean equals(Object o) {

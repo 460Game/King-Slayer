@@ -42,7 +42,7 @@ public class Stone extends Resource {
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.drawImage(this.image, this.getX() * TILE_PIXELS - TILE_PIXELS/2, this.getY() * TILE_PIXELS - TILE_PIXELS/2, TILE_PIXELS, 1.5*TILE_PIXELS);
+        draw(gc, image);
     }
 
     @Override
