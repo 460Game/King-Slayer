@@ -3,8 +3,9 @@ package game.model.Game.Model;
 import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.model.Game.Map.ClientMapGenerator;
-import game.model.Game.Map.MapGenerator;
-import game.model.Game.WorldObject.Entity.TestPlayer;
+import game.model.Game.WorldObject.Entity.KingPlayer;
+import game.model.Game.WorldObject.Entity.Player;
+import game.model.Game.WorldObject.Entity.SlayerPlayer;
 
 public class ClientGameModel extends GameModel {
 
@@ -16,8 +17,12 @@ public class ClientGameModel extends GameModel {
 
     private long localPlayer;
 
-    public TestPlayer getLocalPlayer() {
-        return (TestPlayer) this.getEntityById(localPlayer);
+    public Player getLocalPlayer() {
+        if (this.getEntityById(localPlayer).getClass().equals(KingPlayer.class)) {
+            return (KingPlayer) this.getEntityById(localPlayer);
+        } else {
+            return (SlayerPlayer) this.getEntityById(localPlayer);
+        }
     }
 
     public void setLocalPlayer(long localPlayer) {

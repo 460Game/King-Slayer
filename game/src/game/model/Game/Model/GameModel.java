@@ -6,7 +6,6 @@ import game.model.Game.Map.MapGenerator;
 import game.model.Game.Map.Tile;
 import game.model.Game.WorldObject.Drawable;
 import game.model.Game.WorldObject.Entity.Entity;
-import game.model.Game.WorldObject.Entity.TestPlayer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 

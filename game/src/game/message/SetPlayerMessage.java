@@ -1,9 +1,7 @@
 package game.message;
 
-import com.esotericsoftware.minlog.Log;
 import game.model.Game.Model.ClientGameModel;
-import game.model.Game.WorldObject.Entity.TestPlayer;
-import game.model.Game.WorldObject.Team;
+import game.model.Game.WorldObject.Entity.Player;
 
 /**
  * Message sent to set a player on a client's game model. This message
@@ -37,7 +35,7 @@ public class SetPlayerMessage implements ToClientMessage {
      *
      * @param player the player to be set
      */
-    public SetPlayerMessage(TestPlayer player) {
+    public SetPlayerMessage(Player player) {
         this.playerId = player.getId();
     }
 

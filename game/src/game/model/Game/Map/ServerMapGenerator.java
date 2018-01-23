@@ -74,7 +74,8 @@ public class ServerMapGenerator implements MapGenerator {
         grass(Tile.GRASS, null),
         barrier(Tile.BARRIER, Blocker::new),
         unset(null, null),
-        start(Tile.PATH, TestPlayer::new),
+        startKing(Tile.PATH, KingPlayer::new),
+        startSlayer(Tile.PATH, SlayerPlayer::new),
         bridge(Tile.SHALLOW_WATER, null),
         road(Tile.PATH, null);
 
@@ -242,8 +243,8 @@ public class ServerMapGenerator implements MapGenerator {
 
         for (int i = 0; i < NUM_STARTS_ROOM; i++) {
             t = rooms.poll();
-            grid[t.x-1][t.y] = TS.start;
-            grid[t.x+1][t.y] = TS.start;
+            grid[t.x-1][t.y] = TS.startKing;
+            grid[t.x+1][t.y] = TS.startSlayer;
             startingLocations.add(t);
         }
 

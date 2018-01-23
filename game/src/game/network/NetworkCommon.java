@@ -12,9 +12,6 @@ import game.model.Game.WorldObject.Shape.*;
 import game.model.Game.WorldObject.Shape.Shape;
 import game.model.Game.WorldObject.Team;
 
-import java.awt.*;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class NetworkCommon {
@@ -41,7 +38,7 @@ public class NetworkCommon {
         kryo.register(ToServerMessage.class);
         kryo.register(SetPlayerMessage.class);
 
-        kryo.register(TestPlayer.class);
+        kryo.register(Player.class);
         kryo.register(Blocker.class);
         kryo.register(Entity.class);
         kryo.register(Tree.class);

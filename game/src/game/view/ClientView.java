@@ -1,24 +1,20 @@
 package game.view;
 
 import static Util.Const.*;
-import com.esotericsoftware.minlog.Log;
 
 import game.message.playerMoveMessage.*;
 import game.model.Game.Model.ClientGameModel;
 import game.model.Game.WorldObject.Entity.Entity;
-import game.model.Game.WorldObject.Entity.TestPlayer;
+import game.model.Game.WorldObject.Entity.Player;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
-
-import java.awt.*;
 
 public class ClientView {
 
@@ -75,7 +71,7 @@ public class ClientView {
                 }
                 //TEMP HACK
                 for(Entity player : model.getAllEntities()) {
-                    if(player instanceof TestPlayer) {
+                    if(player instanceof Player) {
                         minimapGC.setFill(player.getTeam().color);
                         minimapGC.fillOval(player.getX(),player.getY(),3,3);
                     }

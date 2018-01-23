@@ -1,16 +1,13 @@
 package game.model.Game.Model;
 
-import com.esotericsoftware.jsonbeans.Test;
-import com.esotericsoftware.minlog.Log;
 import game.message.*;
 import game.model.Game.Map.ServerMapGenerator;
 import game.model.Game.WorldObject.Entity.Entity;
-import game.model.Game.WorldObject.Entity.TestPlayer;
+import game.model.Game.WorldObject.Entity.Player;
 import game.model.Game.WorldObject.Team;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import static Util.Const.*;
 
@@ -47,11 +44,11 @@ public class ServerGameModel extends GameModel {
                     client.processMessage(new SetTileMessage(i, j, this.getTile(i, j)));
                 }
 
-        ArrayList<TestPlayer> players = new ArrayList<>();
+        ArrayList<Player> players = new ArrayList<>();
         for (Entity entity : this.getAllEntities()) {
-            if(entity instanceof TestPlayer) {
+            if(entity instanceof Player) {
                 entity.setTeam(Team.valueOf(((players.size()/2) % 2) + 1));
-                players.add((TestPlayer) entity);
+                players.add((Player) entity);
             }
         }
 

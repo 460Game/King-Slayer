@@ -1,24 +1,16 @@
 package game.model.Game.WorldObject.Entity;
 
-import game.model.Game.Map.Tile;
 import game.model.Game.Model.GameModel;
 import game.model.Game.WorldObject.Shape.CircleShape;
 import game.model.Game.WorldObject.Shape.Shape;
-import game.model.Game.WorldObject.Team;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
-import java.io.IOException;
-
-import static Util.Const.TILE_PIXELS;
-
-public class TestPlayer extends Entity {
+public abstract class Player extends Entity {
 
     @Override
     public void copyOf(Entity other) {
-        assert (other instanceof TestPlayer);
-        TestPlayer o = (TestPlayer) other;
+        assert (other instanceof Player);
+        Player o = (Player) other;
         this.shape = o.shape;
         this.dx = o.dx;
         this.dy = o.dy;
@@ -29,12 +21,12 @@ public class TestPlayer extends Entity {
     private double dx = 0;
     private double dy = 0;
 
-    public TestPlayer() {
+    public Player() {
         super();
         shape = new CircleShape(0.0, 0.0, 0.3);
     }
 
-    public TestPlayer(GameModel model, double x, double y) {
+    public Player(GameModel model, double x, double y, boolean king) {
         super(model);
         shape = new CircleShape(x, y, 0.3);
     }
@@ -64,35 +56,6 @@ public class TestPlayer extends Entity {
         return shape;
     }
 
-    static Image imageRedKing;
-    static Image imageBlueKing;
-
-    static Image imageRedSlayer;
-    static Image imageBlueSlayer;
-
-    static {
-        try {
-            imageRedKing = new Image(Tile.class.getResource("king_red_1.png").openStream());
-            imageBlueKing = new Image(Tile.class.getResource("king_blue_1.png").openStream());
-
-            imageRedSlayer = new Image(Tile.class.getResource("slayer_red_1.png").openStream());
-            imageBlueSlayer = new Image(Tile.class.getResource("slayer_blue_1.png").openStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void draw(GraphicsContext gc) {
-        //gc.setFill(this.getTeam().color);
-        //shape.draw(gc);
-        if (this.getTeam() == Team.ONE) {
-            draw(gc, imageRedKing);
-        } else {
-            draw(gc, imageBlueKing);
-        }
-    }
-
     @Override
     public double getDrawZ() {
         return getY();
@@ -107,6 +70,11 @@ public class TestPlayer extends Entity {
         this.y = shape.getY();
         // shape.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10); TODO use the delta
         shape.shift(Math.cos(this.getMovementAngle()) * this.getSpeed(), Math.sin(this.getMovementAngle()) * this.getSpeed());
+    }
+
+    @Override
+    public void draw(GraphicsContext gc) {
+
     }
 
     private void change() {

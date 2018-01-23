@@ -3,7 +3,7 @@ package game.message.playerMoveMessage;
 import game.message.ActionMessage;
 import game.message.SetEntityMessage;
 import game.model.Game.Model.ServerGameModel;
-import game.model.Game.WorldObject.Entity.TestPlayer;
+import game.model.Game.WorldObject.Entity.Player;
 
 /**
  * Message sent by a client to tell the server to stop the player
@@ -38,7 +38,7 @@ public class PlayerUp extends ActionMessage {
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        ((TestPlayer) model.getEntityById(id)).up();
+        ((Player) model.getEntityById(id)).up();
         model.processMessage(new SetEntityMessage(model.getEntityById(id)));
     }
 }
