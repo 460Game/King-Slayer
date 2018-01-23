@@ -75,8 +75,8 @@ public class TestPlayer extends Entity {
             e.printStackTrace();
         }
     }
-    @Override
 
+    @Override
     public void draw(GraphicsContext gc) {
         //gc.setFill(this.getTeam().color);
         //shape.draw(gc);
