@@ -34,7 +34,7 @@ public class Stone extends Resource {
 
     static {
         try {
-            image = new Image(Tile.class.getResource("boulder_1.png").openStream());
+            image = new Image(Tile.class.getResource("boulder_tall.png").openStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
