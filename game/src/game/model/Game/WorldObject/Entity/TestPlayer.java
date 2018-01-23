@@ -67,10 +67,16 @@ public class TestPlayer extends Entity {
     static Image imageRedKing;
     static Image imageBlueKing;
 
+    static Image imageRedSlayer;
+    static Image imageBlueSlayer;
+
     static {
         try {
             imageRedKing = new Image(Tile.class.getResource("king_red_1.png").openStream());
             imageBlueKing = new Image(Tile.class.getResource("king_blue_1.png").openStream());
+
+            imageRedSlayer = new Image(Tile.class.getResource("slayer_red_1.png").openStream());
+            imageBlueSlayer = new Image(Tile.class.getResource("slayer_blue_1.png").openStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,14 +87,9 @@ public class TestPlayer extends Entity {
         //gc.setFill(this.getTeam().color);
         //shape.draw(gc);
         if (this.getTeam() == Team.ONE) {
-            gc.drawImage(imageRedKing,
-                this.getX() * TILE_PIXELS - TILE_PIXELS / 2,
-                this.getY() * TILE_PIXELS - TILE_PIXELS + 40,
-                TILE_PIXELS,
-                1.5 * TILE_PIXELS);
+            draw(gc, imageRedKing);
         } else {
-            gc.drawImage(imageBlueKing, this.getX() * TILE_PIXELS - TILE_PIXELS / 2,
-                this.getY() * TILE_PIXELS - TILE_PIXELS + 40, TILE_PIXELS, 1.5 * TILE_PIXELS);
+            draw(gc, imageBlueKing);
         }
     }
 
