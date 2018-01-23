@@ -30,11 +30,12 @@ public class Stone extends Resource {
 
     }
 
-    static Image image;
+    static Image[] image = new Image[8];
+    private int imageNum = 0;
 
     static {
         try {
-            image = new Image(Tile.class.getResource("boulder_tall.png").openStream());
+            image[0] = new Image(Tile.class.getResource("boulder_tall.png").openStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,7 +43,7 @@ public class Stone extends Resource {
 
     @Override
     public void draw(GraphicsContext gc) {
-        draw(gc, image);
+        draw(gc, image[imageNum]);
     }
 
     @Override

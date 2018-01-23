@@ -31,11 +31,16 @@ public class Tree extends Resource {
 
     }
 
-    static Image image;
+    static Image[] image = new Image[5];
+    private int imageNum = 0;
 
     static {
         try {
-            image = new Image(Tile.class.getResource("tree.png").openStream());
+            image[0] = new Image(Tile.class.getResource("tree.png").openStream());
+            image[1] = new Image(Tile.class.getResource("tree_1.png").openStream());
+            image[2] = new Image(Tile.class.getResource("tree_2.png").openStream());
+            image[3] = new Image(Tile.class.getResource("tree_3.png").openStream());
+            image[4] = new Image(Tile.class.getResource("tree_4.png").openStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,7 +48,7 @@ public class Tree extends Resource {
 
     @Override
     public void draw(GraphicsContext gc) {
-        draw(gc, image);
+        draw(gc, image[imageNum]);
     }
 
     @Override
