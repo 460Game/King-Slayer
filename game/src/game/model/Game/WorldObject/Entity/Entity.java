@@ -186,8 +186,10 @@ public abstract class Entity implements Drawable {
         //TODO this needs to be better
         if(getShape().moved()) {
             Collection<GridCell> afterSet = getShape().getCells(model);
+
             for (GridCell cell : model.getAllCells())
-                cell.removeContents(this);
+                if(!afterSet.contains(cell))
+                  cell.removeContents(this);
             for (GridCell cell : afterSet)
                 cell.addContents(this);
         }

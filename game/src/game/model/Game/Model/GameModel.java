@@ -111,22 +111,6 @@ public abstract class GameModel extends UpdateModel {
         //TODO why doesnt this remove it from the entity map and players list
     }
 
-    /**
-     * returns approximately all the entities inside of the box centered at x,y with width, height
-     *
-     * @param x
-     * @param y
-     * @param w
-     * @param h
-     * @return
-     */
-    public Set<Entity> inBox(int x, int y, int w, int h) {
-        Set<Entity> objects = new HashSet<>();
-        for (int i = x - w / 2; i < x + w / 2 + w; i++)
-            for (int j = y - h / 2; j < y + h / 2; j++)
-                objects.addAll(grid[i][j].getContents());
-        return objects;
-    }
 
     public void setTile(int x, int y, Tile tile) {
         grid[x][y].setTile(tile);
@@ -195,17 +179,31 @@ public abstract class GameModel extends UpdateModel {
         gc.setFill(Color.DARKBLUE);
         gc.fillRect(-100000, -100000, 100000000, 10000000);
 
+        List<Drawable> drawEntities = drawBox(cx,cy,w,h);
+
+        drawEntities.stream().map(DrawableZ::new).sorted().forEach(a -> a.draw(gc));
+    }
+
+    /**
+     * returns approximately all the entities inside of the box centered at x,y with width, height
+     *
+     * @param x
+     * @param y
+     * @param w
+     * @param h
+     * @return
+     */
+    private List<Drawable> drawBox(double x, double y, double w, double h) {
         ArrayList<Drawable> drawEntities = new ArrayList<>();
 
-        for (int y = Math.max(0, (int) (cy - h / 2)); y < Math.min(cy + h / 2, getMapHeight()); y++) {
-            for (int x = Math.max(0, (int) (cx - w / 2)); x < Math.min(cx + w / 2, getMapWidth()); x++) {
-                GridCell cell = getCell(x, y);
+        for (int j = Math.max(0, (int) (y - h / 2)); j < Math.min(y + h / 2, getMapHeight()); j++) {
+            for (int i = Math.max(0, (int) (x - w / 2)); i < Math.min(x + w / 2, getMapWidth()); i++) {
+                GridCell cell = getCell(i, j);
                 drawEntities.add(cell);
                 drawEntities.addAll(cell.getContents());
             }
         }
-
-        drawEntities.stream().map(DrawableZ::new).sorted().forEach(a -> a.draw(gc));
+        return drawEntities;
     }
 
 
