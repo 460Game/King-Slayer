@@ -21,7 +21,7 @@ public class KingPlayer extends Player {
       imageRedKing = new Image(Tile.class.getResource("king_red_1.png").openStream());
 
       /* Blue King */
-      // Normal
+      // Front
       imagesBlueKing[0][0] = new Image(Tile.class.getResource("king_blue_0.png").openStream());
       imagesBlueKing[0][1] = new Image(Tile.class.getResource("king_blue_1.png").openStream());
       imagesBlueKing[0][2] = imagesBlueKing[0][0];
@@ -32,6 +32,18 @@ public class KingPlayer extends Player {
       imagesBlueKing[1][1] = new Image(Tile.class.getResource("king_blue_right_1.png").openStream());
       imagesBlueKing[1][2] = imagesBlueKing[1][0];
       imagesBlueKing[1][3] = new Image(Tile.class.getResource("king_blue_right_2.png").openStream());
+
+      // Left
+      imagesBlueKing[2][0] = new Image(Tile.class.getResource("king_blue_left_0.png").openStream());
+      imagesBlueKing[2][1] = new Image(Tile.class.getResource("king_blue_left_1.png").openStream());
+      imagesBlueKing[2][2] = imagesBlueKing[2][0];
+      imagesBlueKing[2][3] = new Image(Tile.class.getResource("king_blue_left_2.png").openStream());
+
+      // Back
+      imagesBlueKing[3][0] = new Image(Tile.class.getResource("king_blue_back_0.png").openStream());
+      imagesBlueKing[3][1] = new Image(Tile.class.getResource("king_blue_back_1.png").openStream());
+      imagesBlueKing[3][2] = imagesBlueKing[3][0];
+      imagesBlueKing[3][3] = new Image(Tile.class.getResource("king_blue_back_2.png").openStream());
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -56,13 +68,13 @@ public class KingPlayer extends Player {
     // Update direction of image
     double angle = getMovementAngle();
     if (angle >= -0.75 * Math.PI && angle < -0.25 * Math.PI) {
-      direction = 2;
+      direction = 3;
     } else if (angle >= -0.25 * Math.PI && angle < 0.25 * Math.PI) {
       direction = 1;
     } else if (angle >= 0.25 * Math.PI && angle < 0.75 * Math.PI) {
       direction = 0;
     } else if (angle >= 0.75 * Math.PI || angle < -0.75 * Math.PI) {
-      direction = 3;
+      direction = 2;
     }
 
     // Update image being used
