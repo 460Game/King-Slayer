@@ -24,11 +24,13 @@ public abstract class Player extends Entity {
     public Player() {
         super();
         shape = new CircleShape(0.0, 0.0, 0.3);
+        setMovementAngle(0.5 * Math.PI);
     }
 
     public Player(GameModel model, double x, double y, boolean king) {
         super(model);
         shape = new CircleShape(x, y, 0.3);
+        setMovementAngle(0.5 * Math.PI);
     }
 
     @Override
@@ -101,7 +103,7 @@ public abstract class Player extends Entity {
         }
     }
 
-    private boolean up = false, left = false, right = false, down = false;
+    protected boolean up = false, left = false, right = false, down = false;
 
     public void up() {
         if(!up) {

@@ -47,7 +47,7 @@ public class ServerGameModel extends GameModel {
         ArrayList<Player> players = new ArrayList<>();
         for (Entity entity : this.getAllEntities()) {
             if(entity instanceof Player) {
-                entity.setTeam(Team.valueOf(((players.size()/2) % 2) + 1));
+                entity.setTeam(Team.TWO);//Team.valueOf(((players.size()/2) % 2) + 1));
                 players.add((Player) entity);
             }
         }
