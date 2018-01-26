@@ -100,10 +100,17 @@ public class CircleShape extends Shape {
         // Look at all close cells to the circle and check if the circle
         // overlaps with them.
         for(int i = (int) (x - radius); i <= Math.ceil(x + radius); i++)
-            for(int j = (int) (y - radius); j <= Math.ceil(y + radius); j++)
-                if((Util.dist(this.x, this.y, i + 0.5, j + 0.5) <= radius + 0.70710678118) && this.x + radius != i
-                        && this.y + radius != j)
+            for(int j = (int) (y - radius); j <= Math.ceil(y + radius); j++) {
+
+//                if((Util.dist(this.x, this.y, i + 0.5, j + 0.5) <= radius + 0.70710678118) && this.x + radius != i
+//                        && this.y + radius != j)
+//                    memo.add(new GridCellReference(i, j));
+                double dx = this.x - Math.max(i, Math.min(this.x, i + 1));
+                double dy = this.y - Math.max(j, Math.min(this.y, j + 1));
+                if ((dx * dx + dy * dy + 0.000001) < radius * radius) {
                     memo.add(new GridCellReference(i, j));
+                }
+            }
 
         return memo;
     }

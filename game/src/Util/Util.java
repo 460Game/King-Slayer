@@ -56,4 +56,8 @@ public class Util {
     public static boolean closeDouble(double a, double b) {
         return Math.abs(a - b) < 10e-5;
     }
+
+    public static double angle2Points(double x1, double y1, double x2, double y2) {
+        return Math.atan2(y2 - y1, x2 - x1);
+    }
 }
