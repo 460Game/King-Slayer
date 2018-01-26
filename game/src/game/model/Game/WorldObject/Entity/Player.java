@@ -217,6 +217,16 @@ public abstract class Player extends MovingEntity {
         change();
     }
 
+    public void stopLeft() {
+        left = false;
+        change();
+    }
+
+    public void stopRight() {
+        right = false;
+        change();
+    }
+
     public void stopHorz() {
         right = false;
         left = false;
