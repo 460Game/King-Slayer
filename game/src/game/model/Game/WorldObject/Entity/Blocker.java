@@ -6,40 +6,47 @@ import game.model.Game.WorldObject.Shape.Shape;
 import game.model.Game.WorldObject.Team;
 import javafx.scene.canvas.GraphicsContext;
 
-public class Blocker extends Entity {
+/**
+ * Defines a blocking entity that covers an entire cell and
+ * cannot be passed through.
+ */
+public class Blocker extends StationaryEntity {
 
+    /**
+     * Shape of a blocker is a cell shape.
+     */
     private CellShape shape;
 
     @Override
     public void copyOf(Entity other) {
         assert(other instanceof Blocker);
-        Blocker o = (Blocker)other;
+        Blocker o = (Blocker) other;
         this.shape = o.shape;
         super.copyOf(other);
     }
 
+    /**
+     * Constructor for a blocker. It has infinite health and
+     * has no team affiliation.
+     */
     public Blocker() {
         super();
         this.shape = new CellShape();
-        this.setSpeed(0);
-        this.setMovementAngle(0);
         this.setTeam(Team.NEUTRAL);
         this.setHealth(Double.POSITIVE_INFINITY);
     }
 
+    /**
+     * Constructor for a blocker, given a position and game model.
+     * @param model current model of the game
+     * @param x x-coordinate
+     * @param y y-coordinate
+     */
     public Blocker(GameModel model, int x, int y) {
         super(model);
         this.shape = new CellShape(x, y);
-        this.setSpeed(0);
-        this.setMovementAngle(0);
         this.setTeam(Team.NEUTRAL);
         this.setHealth(Double.POSITIVE_INFINITY);
-    }
-
-
-    @Override
-    public void collision(GameModel model, Entity collidesWith) {
-        //Do nothing
     }
 
     @Override
@@ -48,9 +55,19 @@ public class Blocker extends Entity {
     }
 
     @Override
+    public void collision(GameModel model, StationaryEntity collidesWith) {
+        // Do nothing
+    }
+
+    @Override
+    public void collision(GameModel model, MovingEntity collidesWith) {
+        // Do nothing
+    }
+
+    @Override
     public void draw(GraphicsContext gc) {
        // shape.draw(gc);
-        //Draw nothing
+        // Draw nothing
        // gc.setFill(Color.DARKORANGE);
        // gc.fillOval(x*10 + 2, y*10 + 2, 5, 5);
     }

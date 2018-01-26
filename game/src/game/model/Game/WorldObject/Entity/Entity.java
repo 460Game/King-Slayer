@@ -67,7 +67,6 @@ public abstract class Entity implements Drawable {
         last_update = model.nanoTime();
     }
 
-
     /**
      * Gets the current health of the entity.
      * @return the current health of the entity
@@ -136,9 +135,16 @@ public abstract class Entity implements Drawable {
     /**
      * Perform collision with the other entity in the current game model.
      * @param model current game model
-     * @param collidesWith entity that this entity collides with
+     * @param collidesWith stationary entity that this entity collides with
      */
-    public abstract void collision(GameModel model, Entity collidesWith);
+    public abstract void collision(GameModel model, StationaryEntity collidesWith);
+
+    /**
+     * Perform collision with the other entity in the current game model.
+     * @param model current game model
+     * @param collidesWith moving entity that this entity collides with
+     */
+    public abstract void collision(GameModel model, MovingEntity collidesWith);
 
     /**
      * Sets this entity to be a copy of another entity.
