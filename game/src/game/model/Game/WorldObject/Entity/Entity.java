@@ -71,7 +71,7 @@ public abstract class Entity implements Drawable {
      * Gets the current health of the entity.
      * @return the current health of the entity
      */
-    public double getHealth() {
+    double getHealth() {
         return health;
     }
 
@@ -79,7 +79,7 @@ public abstract class Entity implements Drawable {
      * Sets the current health of the entity to the amount specified.
      * @param health new health of the entity
      */
-    public void setHealth(double health) {
+    void setHealth(double health) {
         this.health = health;
     }
 
@@ -87,7 +87,7 @@ public abstract class Entity implements Drawable {
      * Gets the current speed of the entity.
      * @return the current speed of the entity
      */
-    public double getSpeed() {
+    double getSpeed() {
         return speed;
     }
 
@@ -95,7 +95,7 @@ public abstract class Entity implements Drawable {
      * Sets the current speed of the entity to the amount specified.
      * @param speed new speed of the entity
      */
-    public void setSpeed(double speed) {
+    void setSpeed(double speed) {
         this.speed = speed;
     }
 
@@ -103,7 +103,7 @@ public abstract class Entity implements Drawable {
      * Gets the current angle of movement of the entity.
      * @return the current angle of movement of the entity
      */
-    public double getMovementAngle() {
+    double getMovementAngle() {
         return angle;
     }
 
@@ -112,7 +112,7 @@ public abstract class Entity implements Drawable {
      * specified.
      * @param angle new angle of movement
      */
-    public void setMovementAngle(double angle) {
+    void setMovementAngle(double angle) {
         this.angle = angle;
     }
 

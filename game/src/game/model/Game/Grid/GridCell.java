@@ -5,6 +5,8 @@ import game.model.Game.Map.Tile;
 import game.model.Game.WorldObject.Entity.Blocker;
 import game.model.Game.WorldObject.Drawable;
 import game.model.Game.WorldObject.Entity.Entity;
+import game.model.Game.WorldObject.Entity.MovingEntity;
+import game.model.Game.WorldObject.Entity.StationaryEntity;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Collections;
@@ -105,8 +107,11 @@ public class GridCell implements Drawable {
         for(Entity a : contents)
             contents.stream().filter(b -> a != b && a.getShape().testCollision(b.getShape())).forEach(
                     b -> {
-                        a.collision(model, b);
 //                        System.out.println("COlliding" + a.toString() + " and " + b.toString());
+                        if (b instanceof StationaryEntity)
+                            a.collision(model, (StationaryEntity) b);
+                        else
+                            a.collision(model, (MovingEntity) b);
                     });
 
         // TODO more efficient

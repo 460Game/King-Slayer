@@ -28,4 +28,14 @@ public abstract class StationaryEntity extends Entity {
         this();
         last_update = model.nanoTime();
     }
+
+    @Override
+    public void collision(GameModel model, StationaryEntity collidesWith) {
+        // Do nothing
+    }
+
+    @Override
+    public void collision(GameModel model, MovingEntity collidesWith) {
+        // Do nothing
+    }
 }

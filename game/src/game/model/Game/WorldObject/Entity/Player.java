@@ -7,7 +7,7 @@ import game.model.Game.WorldObject.Shape.CircleShape;
 import game.model.Game.WorldObject.Shape.Shape;
 import javafx.scene.canvas.GraphicsContext;
 
-public abstract class Player extends Entity {
+public abstract class Player extends MovingEntity {
 
     @Override
     public void copyOf(Entity other) {
@@ -36,21 +36,26 @@ public abstract class Player extends Entity {
     }
 
     @Override
+    public void collision(GameModel model, MovingEntity collidesWith) {
+
+    }
+
+    @Override
     public void collision(GameModel model, StationaryEntity collidesWith) {
         if (Util.closeDouble(this.getMovementAngle(), Math.PI) && collidesWith.getShape() instanceof CellShape) {//collidesWith.getSpeed() == 0 ) {
             setSpeed(0);
-            setPos(collidesWith.getX() + 0.5 + this.shape.getRadius(), y); // Center of entity + 0.5 = right edge +
+            setPos(collidesWith.getX() + 0.5 + this.shape.getRadius() + 0.0001, y); // Center of entity + 0.5 = right edge +
             // shape radius to get new center
         } else if (Util.closeDouble(this.getMovementAngle(), 0) && collidesWith.getShape() instanceof CellShape) {//collidesWith.getSpeed() == 0) {
             setSpeed(0);
-            setPos(collidesWith.getX() - 0.5 - this.shape.getRadius(), y); // Center of entity - 0.5 = left edge -
+            setPos(collidesWith.getX() - 0.5 - this.shape.getRadius() - 0.0001, y); // Center of entity - 0.5 = left edge -
                                                                            // shape radius to get new center
         } else if (Util.closeDouble(this.getMovementAngle(), Math.PI / 2) && collidesWith.getShape() instanceof CellShape) {//collidesWith.getSpeed() == 0) {
             setSpeed(0);
-            setPos(x, collidesWith.getY() - 0.5 - this.shape.getRadius());
+            setPos(x, collidesWith.getY() - 0.5 - this.shape.getRadius() - 0.0001);
         } else if (Util.closeDouble(this.getMovementAngle(), - Math.PI / 2) && collidesWith.getShape() instanceof CellShape) {//collidesWith.getSpeed() == 0) {
             setSpeed(0);
-            setPos(x, collidesWith.getY() + 0.5 -+this.shape.getRadius());
+            setPos(x, collidesWith.getY() + 0.5 + this.shape.getRadius() + 0.0001);
         } else
             setPos(x, y);
 

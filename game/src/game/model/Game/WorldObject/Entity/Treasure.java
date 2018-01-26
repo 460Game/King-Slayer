@@ -4,11 +4,7 @@ import game.model.Game.Model.GameModel;
 import game.model.Game.WorldObject.Shape.Shape;
 import javafx.scene.canvas.GraphicsContext;
 
-public class Treasure extends Entity {
-    @Override
-    public void collision(GameModel model, Entity collidesWith) {
-
-    }
+public class Treasure extends StationaryEntity {
 
     @Override
     public Shape getShape() {

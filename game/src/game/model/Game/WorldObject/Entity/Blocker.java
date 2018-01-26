@@ -55,16 +55,6 @@ public class Blocker extends StationaryEntity {
     }
 
     @Override
-    public void collision(GameModel model, StationaryEntity collidesWith) {
-        // Do nothing
-    }
-
-    @Override
-    public void collision(GameModel model, MovingEntity collidesWith) {
-        // Do nothing
-    }
-
-    @Override
     public void draw(GraphicsContext gc) {
        // shape.draw(gc);
         // Draw nothing

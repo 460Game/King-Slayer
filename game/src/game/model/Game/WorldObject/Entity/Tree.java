@@ -13,10 +13,6 @@ import java.io.IOException;
 import static Util.Const.TILE_PIXELS;
 
 public class Tree extends Resource {
-    @Override
-    public void collision(GameModel model, Entity collidesWith) {
-
-    }
 
 //    Shape shape = new CircleShape(0,0,0.5);
     Shape shape = new CellShape(); // TODO FIX THis
