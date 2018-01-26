@@ -4,7 +4,8 @@ import game.model.Game.Model.GameModel;
 
 public class AIView {
 
-    //TODO
+    //TODO fog of war, separation, resource availability
+    // TODO pt 2 a*, path smoothing, flockign
 
     Thread thread;
 

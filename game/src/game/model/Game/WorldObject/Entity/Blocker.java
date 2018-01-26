@@ -3,6 +3,7 @@ package game.model.Game.WorldObject.Entity;
 import game.model.Game.Model.GameModel;
 import game.model.Game.WorldObject.Shape.CellShape;
 import game.model.Game.WorldObject.Shape.Shape;
+import game.model.Game.WorldObject.Team;
 import javafx.scene.canvas.GraphicsContext;
 
 public class Blocker extends Entity {
@@ -20,11 +21,19 @@ public class Blocker extends Entity {
     public Blocker() {
         super();
         this.shape = new CellShape();
+        this.setSpeed(0);
+        this.setMovementAngle(0);
+        this.setTeam(Team.NEUTRAL);
+        this.setHealth(Double.POSITIVE_INFINITY);
     }
 
     public Blocker(GameModel model, int x, int y) {
         super(model);
-        this.shape = new CellShape(x,y);
+        this.shape = new CellShape(x, y);
+        this.setSpeed(0);
+        this.setMovementAngle(0);
+        this.setTeam(Team.NEUTRAL);
+        this.setHealth(Double.POSITIVE_INFINITY);
     }
 
 

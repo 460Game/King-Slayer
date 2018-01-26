@@ -106,9 +106,10 @@ public class GridCell implements Drawable {
             contents.stream().filter(b -> a != b && a.getShape().testCollision(b.getShape())).forEach(
                     b -> {
                         a.collision(model, b);
-                        System.out.println("COlliding" + a.toString() + " and " + b.toString());
+//                        System.out.println("COlliding" + a.toString() + " and " + b.toString());
                     });
 
+        // TODO more efficient
         // TODO problem: a collide b, fix collision, b doesnt collide a
 
         // TODO Problem: collide in two cells

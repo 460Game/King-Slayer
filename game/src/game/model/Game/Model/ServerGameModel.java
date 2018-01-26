@@ -19,6 +19,8 @@ public class ServerGameModel extends GameModel {
 
     private Collection<? extends Model> clients = null;
 
+
+
     @Override
     public void processMessage(Message m) {
         if(clients == null)

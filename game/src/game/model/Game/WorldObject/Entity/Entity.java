@@ -25,7 +25,7 @@ public abstract class Entity implements Drawable {
     /**
      * Current health of the entity.
      */
-    private int health;
+    private double health;
 
     /**
      * Current speed of the entity.
@@ -72,7 +72,7 @@ public abstract class Entity implements Drawable {
      * Gets the current health of the entity.
      * @return the current health of the entity
      */
-    public int getHealth() {
+    public double getHealth() {
         return health;
     }
 
@@ -80,7 +80,7 @@ public abstract class Entity implements Drawable {
      * Sets the current health of the entity to the amount specified.
      * @param health new health of the entity
      */
-    public void setHealth(int health) {
+    public void setHealth(double health) {
         this.health = health;
     }
 

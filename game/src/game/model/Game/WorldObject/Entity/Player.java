@@ -1,9 +1,13 @@
 package game.model.Game.WorldObject.Entity;
 
+import Util.Util;
 import game.model.Game.Model.GameModel;
+import game.model.Game.WorldObject.Shape.CellShape;
 import game.model.Game.WorldObject.Shape.CircleShape;
 import game.model.Game.WorldObject.Shape.Shape;
 import javafx.scene.canvas.GraphicsContext;
+
+import static Util.Util.closeDouble;
 
 public abstract class Player extends Entity {
 
@@ -35,7 +39,24 @@ public abstract class Player extends Entity {
 
     @Override
     public void collision(GameModel model, Entity collidesWith) {
-        this.setPos(x,y);
+        if (Util.closeDouble(this.getMovementAngle(), Math.PI) && collidesWith.getShape() instanceof CellShape) {//collidesWith.getSpeed() == 0 ) {
+            setSpeed(0);
+            setPos(collidesWith.getX() + 0.5 + this.shape.getRadius(), y); // Center of entity + 0.5 = right edge +
+            // shape radius to get new center
+        } else if (Util.closeDouble(this.getMovementAngle(), 0) && collidesWith.getShape() instanceof CellShape) {//collidesWith.getSpeed() == 0) {
+            setSpeed(0);
+            setPos(collidesWith.getX() - 0.5 - this.shape.getRadius(), y); // Center of entity - 0.5 = left edge -
+                                                                           // shape radius to get new center
+        } else if (Util.closeDouble(this.getMovementAngle(), Math.PI / 2) && collidesWith.getShape() instanceof CellShape) {//collidesWith.getSpeed() == 0) {
+            setSpeed(0);
+            setPos(x, collidesWith.getY() - 0.5 - this.shape.getRadius());
+        } else if (Util.closeDouble(this.getMovementAngle(), - Math.PI / 2) && collidesWith.getShape() instanceof CellShape) {//collidesWith.getSpeed() == 0) {
+            setSpeed(0);
+            setPos(x, collidesWith.getY() + 0.5 -+this.shape.getRadius());
+        } else
+            setPos(x, y);
+
+        // TODO problem running into object from another direction but still hiting object
         // double xdiff = Math.abs(this.getX() - collidesWith.getX());
         // double ydiff = Math.abs(this.getY() - collidesWith.getY());
 
