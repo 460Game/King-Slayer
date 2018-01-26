@@ -132,72 +132,72 @@ public abstract class Player extends MovingEntity {
     protected boolean up = false, left = false, right = false, down = false;
 
     public void up() {
-//        if(!up) {
-//            up = true;
-//            change();
-//        }
-        if (!up) {
+        if(!up) {
             up = true;
-            setSpeed(getSpeed() + 0.1);
-            dy = -1;
-            setMovementAngle(Math.atan2(dy, dx));
+            change();
         }
+//        if (!up) {
+//            up = true;
+//            setSpeed(getSpeed() + 0.1);
+//            dy = -1;
+//            setMovementAngle(Math.atan2(dy, dx));
+//        }
     }
 
     public void left() {
-//        if(!left) {
-//            left = true;
-//            change();
-//        }
-        if (!left) {
+        if(!left) {
             left = true;
-            setSpeed(getSpeed() + 0.1);
-            dx = -1;
-            setMovementAngle(Math.atan2(dy, dx));
+            change();
         }
+//        if (!left) {
+//            left = true;
+//            setSpeed(getSpeed() + 0.1);
+//            dx = -1;
+//            setMovementAngle(Math.atan2(dy, dx));
+//        }
     }
 
     public void right() {
-//        if(!right) {
-//            right = true;
-//            change();
-//        }
-        if (!right) {
+        if(!right) {
             right = true;
-            setSpeed(getSpeed() + 0.1);
-            dx = 1;
-            setMovementAngle(Math.atan2(dy, dx));
+            change();
         }
+//        if (!right) {
+//            right = true;
+//            setSpeed(getSpeed() + 0.1);
+//            dx = 1;
+//            setMovementAngle(Math.atan2(dy, dx));
+//        }
     }
 
     public void down() {
-//        if(!down) {
-//            down = true;
-//            change();
-//        }
-        if (!down) {
+        if(!down) {
             down = true;
-            setSpeed(getSpeed() + 0.1);
-            dy = 1;
-            setMovementAngle(Math.atan2(dy, dx));
+            change();
         }
+//        if (!down) {
+//            down = true;
+//            setSpeed(getSpeed() + 0.1);
+//            dy = 1;
+//            setMovementAngle(Math.atan2(dy, dx));
+//        }
     }
 
     public void stopVert() {
         up = false;
         down = false;
-//        change();
-        setSpeed(0);
-        dy = 0;
-        setMovementAngle(Math.atan2(dy, dx));
+        change();
+//        setSpeed(0);
+//        dy = 0;
+//        setMovementAngle(Math.atan2(dy, dx));
     }
 
     public void stopHorz() {
         right = false;
         left = false;
-//        change();
-        setSpeed(0);
-        dx = 0;
-        setMovementAngle(Math.atan2(dy, dx));
+        change();
+//        setSpeed(0);
+//        dx = 0;
+//        setMovementAngle(Math.atan2(dy, dx));
     }
 }
