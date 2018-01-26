@@ -115,6 +115,9 @@ public abstract class Player extends MovingEntity {
             System.out.println("LEFT: " + left);
             System.out.println("RIGHT: " + right);
             System.out.println("DOWN: " + down);
+            double olddx = dx;
+            double olddy = dy;
+            double oldAngle = this.getMovementAngle();
 
             int dx = 0;
             int dy = 0;
@@ -126,15 +129,18 @@ public abstract class Player extends MovingEntity {
                 dx = 1;
             if (left)
                 dx = -1;
+            this.setMovementAngle(Math.atan2(dy, dx));
             if (up && down) {
                 dy = 0;
                 this.setSpeed(0);
+                this.setMovementAngle(oldAngle);
             }
             if (left && right) {
                 dx = 0;
                 this.setSpeed(0);
+                this.setMovementAngle(oldAngle);
             }
-            this.setMovementAngle(Math.atan2(dy, dx));
+
         }
     }
 
