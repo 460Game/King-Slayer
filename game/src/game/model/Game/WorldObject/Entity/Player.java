@@ -110,6 +110,11 @@ public abstract class Player extends MovingEntity {
             this.setSpeed(0);
         else {
             this.setSpeed(0.1);
+            System.out.println("NEW CHANGE!!!!!!1");
+            System.out.println("UP: " + up);
+            System.out.println("LEFT: " + left);
+            System.out.println("RIGHT: " + right);
+            System.out.println("DOWN: " + down);
 
             int dx = 0;
             int dy = 0;
@@ -121,10 +126,14 @@ public abstract class Player extends MovingEntity {
                 dx = 1;
             if (left)
                 dx = -1;
-            if (up && down)
+            if (up && down) {
                 dy = 0;
-            if (left && right)
+                this.setSpeed(0);
+            }
+            if (left && right) {
                 dx = 0;
+                this.setSpeed(0);
+            }
             this.setMovementAngle(Math.atan2(dy, dx));
         }
     }
@@ -190,6 +199,16 @@ public abstract class Player extends MovingEntity {
 //        setSpeed(0);
 //        dy = 0;
 //        setMovementAngle(Math.atan2(dy, dx));
+    }
+
+    public void stopUp() {
+        up = false;
+        change();
+    }
+
+    public void stopDown() {
+        down = false;
+        change();
     }
 
     public void stopHorz() {

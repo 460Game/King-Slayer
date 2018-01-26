@@ -116,8 +116,10 @@ public class ClientView {
                 model.processMessage(new PlayerStopHorz(model.getLocalPlayer().getId()));
             if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.W)
                 model.processMessage(new PlayerStopVert(model.getLocalPlayer().getId()));
+//                model.processMessage(new PlayerStopUp(model.getLocalPlayer().getId()));
             if (e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.S)
                 model.processMessage(new PlayerStopVert(model.getLocalPlayer().getId()));
+//                model.processMessage(new PlayerStopDown(model.getLocalPlayer().getId()));
         });
 
         window.setScene(scene);
