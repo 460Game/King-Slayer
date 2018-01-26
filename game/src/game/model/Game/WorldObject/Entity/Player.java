@@ -37,16 +37,20 @@ public abstract class Player extends MovingEntity {
 
     @Override
     public void collision(GameModel model, MovingEntity collidesWith) {
-
+        if (collidesWith.getSpeed() == 0) {
+            // TODO treat like stationary entity collision
+        } else {
+            // TODO other cases
+        }
     }
 
     @Override
     public void collision(GameModel model, StationaryEntity collidesWith) {
-        System.out.println("X: " + (shape.getX()) + ", Y: " + (shape.getY()) + ", radius: " + shape.getRadius());
-
-        for(Shape.GridCellReference g : shape.getCellsReference())
-            System.out.println("Cell X: " + g.x + ", cell Y: " + g.y);
-        System.out.println("BLocker X, y: " + collidesWith.getX() + ", " + collidesWith.getY());
+//        System.out.println("X: " + (shape.getX()) + ", Y: " + (shape.getY()) + ", radius: " + shape.getRadius());
+//
+//        for(Shape.GridCellReference g : shape.getCellsReference())
+//            System.out.println("Cell X: " + g.x + ", cell Y: " + g.y);
+//        System.out.println("BLocker X, y: " + collidesWith.getX() + ", " + collidesWith.getY());
         if (Util.closeDouble(this.getMovementAngle(), Math.PI) && collidesWith.getShape() instanceof CellShape) {//collidesWith.getSpeed() == 0 ) {
             setSpeed(0);
             setPos(collidesWith.getX() + 0.5 + this.shape.getRadius(), y); // Center of entity + 0.5 = right edge +
@@ -67,13 +71,6 @@ public abstract class Player extends MovingEntity {
         // TODO problem running into object from another direction but still hiting object
         // double xdiff = Math.abs(this.getX() - collidesWith.getX());
         // double ydiff = Math.abs(this.getY() - collidesWith.getY());
-
-        // System.out.println("X: " + (shape.getX()) + ", Y: " + (shape.getY()) + ", radius: " + shape.getRadius());
-
-        // for(Shape.GridCellReference g : shape.getCellsReference())
-        //    System.out.println("Cell X: " + g.x + ", cell Y: " + g.y);
-
-        // System.out.println("BLocker X, y: " + collidesWith.getX() + ", " + collidesWith.getY());
 
         // TODO issue with both directions?
         //    while (shape.testCollision(collidesWith.getShape()))
@@ -135,42 +132,72 @@ public abstract class Player extends MovingEntity {
     protected boolean up = false, left = false, right = false, down = false;
 
     public void up() {
-        if(!up) {
+//        if(!up) {
+//            up = true;
+//            change();
+//        }
+        if (!up) {
             up = true;
-            change();
+            setSpeed(getSpeed() + 0.1);
+            dy = -1;
+            setMovementAngle(Math.atan2(dy, dx));
         }
     }
 
     public void left() {
-        if(!left) {
+//        if(!left) {
+//            left = true;
+//            change();
+//        }
+        if (!left) {
             left = true;
-            change();
+            setSpeed(getSpeed() + 0.1);
+            dx = -1;
+            setMovementAngle(Math.atan2(dy, dx));
         }
     }
 
     public void right() {
-        if(!right) {
+//        if(!right) {
+//            right = true;
+//            change();
+//        }
+        if (!right) {
             right = true;
-            change();
+            setSpeed(getSpeed() + 0.1);
+            dx = 1;
+            setMovementAngle(Math.atan2(dy, dx));
         }
     }
 
     public void down() {
-        if(!down) {
+//        if(!down) {
+//            down = true;
+//            change();
+//        }
+        if (!down) {
             down = true;
-            change();
+            setSpeed(getSpeed() + 0.1);
+            dy = 1;
+            setMovementAngle(Math.atan2(dy, dx));
         }
     }
 
     public void stopVert() {
         up = false;
         down = false;
-        change();
+//        change();
+        setSpeed(0);
+        dy = 0;
+        setMovementAngle(Math.atan2(dy, dx));
     }
 
     public void stopHorz() {
         right = false;
         left = false;
-        change();
+//        change();
+        setSpeed(0);
+        dx = 0;
+        setMovementAngle(Math.atan2(dy, dx));
     }
 }
