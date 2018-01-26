@@ -107,7 +107,7 @@ public class CircleShape extends Shape {
 //                    memo.add(new GridCellReference(i, j));
                 double dx = this.x - Math.max(i, Math.min(this.x, i + 1));
                 double dy = this.y - Math.max(j, Math.min(this.y, j + 1));
-                if ((dx * dx + dy * dy + 0.000001) < radius * radius) {
+                if ((dx * dx + dy * dy + 0.1) < radius * radius) {
                     memo.add(new GridCellReference(i, j));
                 }
             }
