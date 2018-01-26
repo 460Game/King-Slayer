@@ -68,10 +68,12 @@ public class ServerMapGenerator implements MapGenerator {
         tresureNoBuild(Tile.NO_BUILD, null),//Treasure::new),
         metal(Tile.NO_BUILD, Metal::new),
         stone(Tile.NO_BUILD, Stone::new),
-        tree(Tile.GRASS, Tree::new),//Tree::new),
+        tree(Tile.GRASS_0, Tree::new),//Tree::new),
         wall(Tile.WALL, Blocker::new),
         room(Tile.NO_BUILD, null),
-        grass(Tile.GRASS, null),
+        grass0(Tile.GRASS_0, null),
+        grass1(Tile.GRASS_1, null),
+        grass2(Tile.GRASS_2, null),
         barrier(Tile.BARRIER, Blocker::new),
         unset(null, null),
         startKing(Tile.PATH, KingPlayer::new),
@@ -287,7 +289,15 @@ public class ServerMapGenerator implements MapGenerator {
                             if(random.nextDouble() < 0.4)
                                  grid[t2.x][t2.y] = TS.tree;
                             else
-                                grid[t2.x][t2.y] = TS.grass;
+                                if (random.nextDouble() < 0.55) {
+                                    grid[t2.x][t2.y] = TS.grass0;
+                                } else {
+                                    if (random.nextBoolean()) {
+                                        grid[t2.x][t2.y] = TS.grass1;
+                                    } else {
+                                        grid[t2.x][t2.y] = TS.grass2;
+                                    }
+                                }
                         }
 
                     } else if(set.size() > 5){

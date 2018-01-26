@@ -7,6 +7,7 @@ import javafx.scene.paint.Paint;
 
 import static Util.Const.*;
 import java.io.IOException;
+import java.util.Random;
 
 /**
  * Enumeration of all possible tiles in the game map. Each tile has an image
@@ -28,7 +29,17 @@ public enum Tile {
     /**
      * Grass tile.
      */
-    GRASS(true, false, "grass.png", Color.GREEN),
+    GRASS_0(true, false, "grass.png"),
+
+    /**
+     * Grass tile.
+     */
+    GRASS_1(true, false, "grass_1.png"),
+
+    /**
+     * Grass tile.
+     */
+    GRASS_2(true, false, "grass_2.png"),
 
     /**
      * TODO
@@ -88,6 +99,25 @@ public enum Tile {
             e.printStackTrace();
             System.err.println("Get null: " + imageName);
         }
+        this.color = IMAGE.getPixelReader().getColor(0, 0);
+    }
+
+    /**
+     * Constructor for a tile.
+     * @param isPassable flag that says whether a tile can be passed through
+     * @param aboveGround flag that says whether the tile can be drawn above the player
+     * @param imageName name of the file that holds the tile image
+     */
+    Tile(boolean isPassable, boolean aboveGround, String imageName) {
+        this.aboveGround = aboveGround;
+        this.IS_PASSABLE = isPassable;
+        try {
+            this.IMAGE = new Image(Tile.class.getResource(imageName).openStream());
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
+            System.err.println("Get null: " + imageName);
+        }
+        this.color = IMAGE.getPixelReader().getColor(0, 0);
     }
 
     /**
