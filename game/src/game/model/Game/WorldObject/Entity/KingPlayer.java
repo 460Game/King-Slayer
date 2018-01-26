@@ -83,7 +83,7 @@ public class KingPlayer extends Player {
         // Update image being used
         if (this.getSpeed() != 0) {
             count++;
-            if (count > 10) {
+            if (count > 11) {
                 count = 0;
                 imageNum = (imageNum + 1) % imagesBlueKing[direction].length;
             }
