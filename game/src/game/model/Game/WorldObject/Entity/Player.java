@@ -46,11 +46,11 @@ public abstract class Player extends MovingEntity {
 
     @Override
     public void collision(GameModel model, StationaryEntity collidesWith) {
-//        System.out.println("X: " + (shape.getX()) + ", Y: " + (shape.getY()) + ", radius: " + shape.getRadius());
-//
-//        for(Shape.GridCellReference g : shape.getCellsReference())
-//            System.out.println("Cell X: " + g.x + ", cell Y: " + g.y);
-//        System.out.println("BLocker X, y: " + collidesWith.getX() + ", " + collidesWith.getY());
+        System.out.println("X: " + (shape.getX()) + ", Y: " + (shape.getY()) + ", radius: " + shape.getRadius());
+
+        for(Shape.GridCellReference g : shape.getCellsReference())
+            System.out.println("Cell X: " + g.x + ", cell Y: " + g.y);
+        System.out.println("BLocker X, y: " + collidesWith.getX() + ", " + collidesWith.getY());
         if (Util.closeDouble(this.getMovementAngle(), Math.PI) && collidesWith.getShape() instanceof CellShape) {//collidesWith.getSpeed() == 0 ) {
             setSpeed(0);
             setPos(collidesWith.getX() + 0.5 + this.shape.getRadius(), y); // Center of entity + 0.5 = right edge +
@@ -110,11 +110,11 @@ public abstract class Player extends MovingEntity {
             this.setSpeed(0);
         else {
             this.setSpeed(0.1);
-            System.out.println("NEW CHANGE!!!!!!1");
-            System.out.println("UP: " + up);
-            System.out.println("LEFT: " + left);
-            System.out.println("RIGHT: " + right);
-            System.out.println("DOWN: " + down);
+//            System.out.println("NEW CHANGE!!!!!!1");
+//            System.out.println("UP: " + up);
+//            System.out.println("LEFT: " + left);
+//            System.out.println("RIGHT: " + right);
+//            System.out.println("DOWN: " + down);
             double olddx = dx;
             double olddy = dy;
             double oldAngle = this.getMovementAngle();
