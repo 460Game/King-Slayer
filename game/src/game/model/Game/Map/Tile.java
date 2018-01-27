@@ -49,7 +49,7 @@ public enum Tile {
     /**
      * Generic path tile.
      */
-    PATH(true, false, "rock.png", Color.LIGHTGREY),
+    PATH(true, false, "crapdirt.png", Color.LIGHTGREY),
 
     /**
      * Shallow water tile.

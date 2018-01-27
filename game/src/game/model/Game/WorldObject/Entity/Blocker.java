@@ -55,20 +55,17 @@ public class Blocker extends StationaryEntity {
     }
 
     @Override
-    public void draw(GraphicsContext gc) {
-       // shape.draw(gc);
-        // Draw nothing
-       // gc.setFill(Color.DARKORANGE);
-       // gc.fillOval(x*10 + 2, y*10 + 2, 5, 5);
-    }
-
-    @Override
     public double getDrawZ() {
         return 0;
     }
 
     @Override
     public void update(long time, GameModel model) {
+        //Do nothing
+    }
+
+    @Override
+    public void draw(GraphicsContext gc) {
         //Do nothing
     }
 }
