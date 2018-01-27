@@ -7,8 +7,8 @@ import game.model.Game.WorldObject.Entity.Player;
 
 /**
  * Message sent by a client to tell the server to stop the player
- * moving horizontally on the game map. This is sent whenever the
- * left/right key is let go.
+ * moving rightwards on the game map. This is sent whenever the
+ * right key is let go.
  */
 public class PlayerStopRight extends ActionMessage {
 
@@ -34,7 +34,7 @@ public class PlayerStopRight extends ActionMessage {
     }
 
     /**
-     * Stops the player's horizontal movement.
+     * Stops the player's rightward movement.
      * @param model the game model on the game server
      */
     @Override

@@ -6,8 +6,8 @@ import game.model.Game.Model.ServerGameModel;
 import game.model.Game.WorldObject.Entity.Player;
 
 /**
- * Message sent by a client to tell the server to stop the player
- * moving vertically on the game map.
+ * Message sent by a client to tell the server to move the player
+ * upwards on the game map.
  */
 public class PlayerUp extends ActionMessage {
 

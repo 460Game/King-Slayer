@@ -7,7 +7,7 @@ import game.model.Game.WorldObject.Entity.Player;
 
 /**
  * Message sent by a client to tell the server to stop the player
- * moving vertically upwards on the game map. This is sent whenever the
+ * moving downwards on the game map. This is sent whenever the
  * down key is let go.
  */
 public class PlayerStopDown extends ActionMessage {
@@ -35,7 +35,7 @@ public class PlayerStopDown extends ActionMessage {
     }
 
     /**
-     * Stops the player's upwards movement.
+     * Stops the player's downward movement.
      * @param model the game model on the game server
      */
     @Override

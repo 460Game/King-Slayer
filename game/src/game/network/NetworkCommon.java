@@ -27,8 +27,10 @@ public class NetworkCommon {
         kryo.register(PlayerDown.class);
         kryo.register(PlayerLeft.class);
         kryo.register(PlayerRight.class);
-        kryo.register(PlayerStopHorz.class);
-        kryo.register(PlayerStopVert.class);
+        kryo.register(PlayerStopDown.class);
+        kryo.register(PlayerStopUp.class);
+        kryo.register(PlayerStopLeft.class);
+        kryo.register(PlayerStopRight.class);
         kryo.register(PlayerUp.class);
         kryo.register(ActionMessage.class);
         kryo.register(RemoveEntityMessage.class);
