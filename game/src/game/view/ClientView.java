@@ -4,6 +4,7 @@ import static Util.Const.*;
 
 import game.Pathing.Astar;
 import game.message.playerMoveMessage.*;
+import game.model.Game.Grid.GridCell;
 import game.model.Game.Model.ClientGameModel;
 import game.model.Game.WorldObject.Entity.Entity;
 import game.model.Game.WorldObject.Entity.Player;
@@ -16,6 +17,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
+
+import java.util.Set;
 
 public class ClientView {
 
@@ -111,6 +114,17 @@ public class ClientView {
                 model.processMessage(new PlayerLeft(model.getLocalPlayer().getId())); // Start leftward movement.
             if (e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.D)
                 model.processMessage(new PlayerRight(model.getLocalPlayer().getId())); // Start upward movement.
+            // TODO remove, temp for testing
+            if (e.getCode() == KeyCode.SPACE) {
+                astar.findTraversableNodes();
+                Set<GridCell> nodes = astar.getNodes();
+                GridCell end = nodes.iterator().next();
+                int startx = (int) model.getLocalPlayer().getX();
+                int starty = (int) model.getLocalPlayer().getY();
+                System.out.println("Start x, y: " + startx + ", " + starty);
+                System.out.println("End x, y: " + end.getX() + ", " + end.getY());
+                astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end);
+            }
         });
 
         scene.setOnKeyReleased(e -> {
@@ -122,11 +136,6 @@ public class ClientView {
                 model.processMessage(new PlayerStopLeft(model.getLocalPlayer().getId())); // Stop leftward movement.
             if (e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.D)
                 model.processMessage(new PlayerStopRight(model.getLocalPlayer().getId())); // Stop rightward movement.
-        });
-
-        scene.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.SPACE)
-                astar.findTraversableNodes();
         });
 
         window.setScene(scene);

@@ -42,7 +42,12 @@ public class GridCell implements Drawable {
      * @return true if the cell is able to be walked through
      */
     public boolean isPassable() {
-        return contents.stream().anyMatch(e -> e.getShape().blocksCell(x, y));
+        for (Entity e : contents) {
+            if (e.getShape().blocksCell(x, y))
+                return false;
+        }
+        return true;
+//        return contents.stream().anyMatch(e -> e.getShape().blocksCell(x, y));
     }
 
     /**
