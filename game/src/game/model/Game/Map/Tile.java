@@ -52,6 +52,7 @@ public enum Tile {
     FOG(true, false, "fog.png", 10, Color.GRAY);
 
     public final boolean aboveGround;
+
     /**
      * Flag that determines whether entities can pass through the specified
      * tile if nothing is on it.

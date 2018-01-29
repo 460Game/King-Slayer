@@ -43,7 +43,7 @@ public class GridCell implements Drawable {
      */
     public boolean isPassable() {
         for (Entity e : contents) {
-            if (e.getShape().blocksCell(x, y))
+            if (e.getShape().blocksCell(x, y) && this.getTile().IS_PASSABLE)
                 return false;
         }
         return true;
