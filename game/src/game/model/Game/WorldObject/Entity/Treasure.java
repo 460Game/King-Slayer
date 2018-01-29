@@ -17,7 +17,7 @@ public class Treasure extends StationaryEntity {
     }
 
     @Override
-    public void draw(GraphicsContext gc) {
+    public void draw(GraphicsContext gc, GameModel model) {
 
     }
 

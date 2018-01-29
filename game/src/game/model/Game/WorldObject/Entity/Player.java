@@ -101,7 +101,7 @@ public abstract class Player extends MovingEntity {
     }
 
     @Override
-    public void draw(GraphicsContext gc) {
+    public void draw(GraphicsContext gc, GameModel model) {
 
     }
 

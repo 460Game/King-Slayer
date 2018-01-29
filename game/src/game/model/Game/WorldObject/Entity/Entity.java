@@ -211,7 +211,7 @@ public abstract class Entity implements Drawable {
      * Draws the entity in the game.
      * @param gc context used to draw the entity
      */
-    public abstract void draw(GraphicsContext gc);
+    public abstract void draw(GraphicsContext gc, GameModel model);
 
     /**
      * Draws the entity in the game.

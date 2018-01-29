@@ -1,6 +1,7 @@
 package game.model.Game.WorldObject.Entity;
 
 import game.model.Game.Map.Tile;
+import game.model.Game.Model.GameModel;
 import game.model.Game.WorldObject.Team;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -21,7 +22,7 @@ public class SlayerPlayer extends Player {
   }
 
   @Override
-  public void draw(GraphicsContext gc) {
+  public void draw(GraphicsContext gc, GameModel model) {
     //gc.setFill(this.getTeam().color);
     //shape.draw(gc);
     if (this.getTeam() == Team.ONE) {

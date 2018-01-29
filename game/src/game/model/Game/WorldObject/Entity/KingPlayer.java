@@ -54,7 +54,7 @@ public class KingPlayer extends Player {
     }
 
     @Override
-    public void draw(GraphicsContext gc) {
+    public void draw(GraphicsContext gc, GameModel model) {
         //gc.setFill(this.getTeam().color);
         //shape.draw(gc);
         if (this.getTeam() == Team.ONE) {

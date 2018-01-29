@@ -1,6 +1,7 @@
 package game.model.Game.WorldObject.Entity;
 
 import game.model.Game.Map.Tile;
+import game.model.Game.Model.GameModel;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -22,7 +23,7 @@ public class BlockerBox extends Blocker {
 
 
     @Override
-    public void draw(GraphicsContext gc) {
+    public void draw(GraphicsContext gc, GameModel model) {
         gc.drawImage(wall, (this.getX()-0.5) * TILE_PIXELS, (this.getY()-0.5) * TILE_PIXELS - 2*wall.getHeight() + 2*TILE_PIXELS, 2*wall.getWidth(), 2*wall.getHeight());
     }
 }

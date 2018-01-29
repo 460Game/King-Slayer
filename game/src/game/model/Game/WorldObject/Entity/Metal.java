@@ -48,7 +48,7 @@ public class Metal extends Resource {
     }
 
     @Override
-    public void draw(GraphicsContext gc) {
+    public void draw(GraphicsContext gc, GameModel model) {
         draw(gc, image[imageNum]);
     }
 

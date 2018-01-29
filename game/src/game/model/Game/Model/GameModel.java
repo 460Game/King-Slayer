@@ -85,6 +85,9 @@ public abstract class GameModel extends UpdateModel {
      * @return tile of the cell with the given upper left coordinates
      */
     public Tile getTile(int x, int y) {
+        if (x >= getMapWidth() || x < 0 || y >= getMapHeight() || y < 0) {
+            return Tile.DEEP_WATER;
+        }
         return grid[x][y].getTile();
     }
 
@@ -154,8 +157,8 @@ public abstract class GameModel extends UpdateModel {
             this.z = drawable.getDrawZ();
         }
 
-       public void draw(GraphicsContext gc) {
-           drawable.draw(gc);
+       public void draw(GraphicsContext gc, GameModel model) {
+           drawable.draw(gc, model);
        }
 
         @Override
@@ -181,7 +184,7 @@ public abstract class GameModel extends UpdateModel {
 
         List<Drawable> drawEntities = drawBox(cx,cy,w,h);
 
-        drawEntities.stream().map(DrawableZ::new).sorted().forEach(a -> a.draw(gc));
+        drawEntities.stream().map(DrawableZ::new).sorted().forEach(a -> a.draw(gc, this));
     }
 
     /**

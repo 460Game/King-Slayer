@@ -1,5 +1,6 @@
 package game.model.Game.WorldObject;
 
+import game.model.Game.Model.GameModel;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -11,7 +12,7 @@ public interface Drawable {
      * Draw the object on the game map.
      * @param gc context used to draw the objects
      */
-    void draw(GraphicsContext gc);
+    void draw(GraphicsContext gc, GameModel model);
 
     /**
      * Everything is drawn in order of least Z to highest Z.
