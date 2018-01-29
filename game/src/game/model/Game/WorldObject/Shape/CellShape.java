@@ -32,9 +32,7 @@ public class CellShape extends Shape {
     }
 
     @Override
-    public double getX() {
-        return gridCell.x + 0.5;
-    }
+    public double getX() { return gridCell.x + 0.5; }
 
     @Override
     public double getY() { return gridCell.y + 0.5; }
@@ -76,7 +74,7 @@ public class CellShape extends Shape {
 
     @Override
     public void setPos(double x, double y) {
-        x -= 0.5; //translate from center to grid coordiantes
+        x -= 0.5; //translate from center to grid coordinates
         y -= 0.5;
         if ((x - Math.round(x)) > 0.01 || (y - Math.round(y)) > 0.01)
             throw new RuntimeException("Cell shape position cannot be set to a non-integer value.");

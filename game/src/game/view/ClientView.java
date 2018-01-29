@@ -2,6 +2,7 @@ package game.view;
 
 import static Util.Const.*;
 
+import game.Pathing.Astar;
 import game.message.playerMoveMessage.*;
 import game.model.Game.Model.ClientGameModel;
 import game.model.Game.WorldObject.Entity.Entity;
@@ -20,8 +21,11 @@ public class ClientView {
 
     private ClientGameModel model;
 
+    private Astar astar;
+
     public ClientView(ClientGameModel model) {
         this.model = model;
+        astar = new Astar(model);
     }
 
     public void start(Stage window) {
@@ -100,28 +104,29 @@ public class ClientView {
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.F11) window.setFullScreen(true);
             if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.W)
-                model.processMessage(new PlayerUp(model.getLocalPlayer().getId()));
+                model.processMessage(new PlayerUp(model.getLocalPlayer().getId())); // Start upward movement.
             if (e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.S)
-                model.processMessage(new PlayerDown(model.getLocalPlayer().getId()));
+                model.processMessage(new PlayerDown(model.getLocalPlayer().getId())); // Start downward movement.
             if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.A)
-                model.processMessage(new PlayerLeft(model.getLocalPlayer().getId()));
+                model.processMessage(new PlayerLeft(model.getLocalPlayer().getId())); // Start leftward movement.
             if (e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.D)
-                model.processMessage(new PlayerRight(model.getLocalPlayer().getId()));
+                model.processMessage(new PlayerRight(model.getLocalPlayer().getId())); // Start upward movement.
         });
 
         scene.setOnKeyReleased(e -> {
-            if (e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.D)
-//                model.processMessage(new PlayerStopHorz(model.getLocalPlayer().getId()));
-                model.processMessage(new PlayerStopRight(model.getLocalPlayer().getId()));
-            if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.A)
-//                model.processMessage(new PlayerStopHorz(model.getLocalPlayer().getId()));
-                model.processMessage(new PlayerStopLeft(model.getLocalPlayer().getId()));
             if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.W)
-//                model.processMessage(new PlayerStopVert(model.getLocalPlayer().getId()));
-                model.processMessage(new PlayerStopUp(model.getLocalPlayer().getId()));
+                model.processMessage(new PlayerStopUp(model.getLocalPlayer().getId())); // Stop upward movement.
             if (e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.S)
-//                model.processMessage(new PlayerStopVert(model.getLocalPlayer().getId()));
-                model.processMessage(new PlayerStopDown(model.getLocalPlayer().getId()));
+                model.processMessage(new PlayerStopDown(model.getLocalPlayer().getId())); // Stop downward movement.
+            if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.A)
+                model.processMessage(new PlayerStopLeft(model.getLocalPlayer().getId())); // Stop leftward movement.
+            if (e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.D)
+                model.processMessage(new PlayerStopRight(model.getLocalPlayer().getId())); // Stop rightward movement.
+        });
+
+        scene.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.SPACE)
+                astar.findTraversableNodes();
         });
 
         window.setScene(scene);

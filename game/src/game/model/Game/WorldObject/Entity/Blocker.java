@@ -56,7 +56,7 @@ public class Blocker extends StationaryEntity {
 
     @Override
     public double getDrawZ() {
-        return 0;
+        return this.shape.getY();
     }
 
     @Override

@@ -33,14 +33,20 @@ public enum Team {
     public Color color;
 
     /**
-     * Constructor for a team
-     * @param teamNumber
+     * Constructor for a team.
+     * @param teamNumber number to represent team
+     * @param color color to represent team
      */
     Team(int teamNumber, Color color) {
         this.team = teamNumber;
         this.color = color;
     }
 
+    /**
+     * Return the team corresponding to the specified number.
+     * @param i an integer
+     * @return the team corresponding to the specified number
+     */
     public static Team valueOf(int i) {
         if(i == 0)
             return Team.NEUTRAL;

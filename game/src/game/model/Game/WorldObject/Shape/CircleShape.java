@@ -62,6 +62,10 @@ public class CircleShape extends Shape {
         return y;
     }
 
+    /**
+     * Gets the radius of the circle.
+     * @return radius of the circle
+     */
     public double getRadius() { return radius; }
 
     @Override
@@ -79,7 +83,7 @@ public class CircleShape extends Shape {
         // TODO better definition?
     }
 
-    boolean moved = true;
+    private boolean moved = true;
 
     @Override
     public boolean moved() {
@@ -101,12 +105,8 @@ public class CircleShape extends Shape {
         // overlaps with them.
         for(int i = (int) (x - radius); i <= Math.ceil(x + radius); i++)
             for(int j = (int) (y - radius); j <= Math.ceil(y + radius); j++) {
-
-//                if((Util.dist(this.x, this.y, i + 0.5, j + 0.5) <= radius + 0.70710678118) && this.x + radius != i
-//                        && this.y + radius != j)
-//                    memo.add(new GridCellReference(i, j));
-                double dx = this.x - Math.max(i, Math.min(this.x, i + 1));
-                double dy = this.y - Math.max(j, Math.min(this.y, j + 1));
+                double dx = this.x - Math.max(i, Math.min(this.x, i + 1)); // Get distance from farthest x to center
+                double dy = this.y - Math.max(j, Math.min(this.y, j + 1)); // Get distance from farthest y to center
                 if ((dx * dx + dy * dy + 0.01) < radius * radius) {
                     memo.add(new GridCellReference(i, j));
                 }
@@ -172,6 +172,7 @@ public class CircleShape extends Shape {
 
     @Override
     public void draw(GraphicsContext gc) {
-        gc.fillOval(x * TILE_PIXELS - TILE_PIXELS * radius * 0.5, y * TILE_PIXELS - TILE_PIXELS * radius * 0.5, TILE_PIXELS * radius, TILE_PIXELS * radius);
+        gc.fillOval(x * TILE_PIXELS - TILE_PIXELS * radius * 0.5, y * TILE_PIXELS - TILE_PIXELS * radius * 0.5,
+                TILE_PIXELS * radius, TILE_PIXELS * radius);
     }
 }

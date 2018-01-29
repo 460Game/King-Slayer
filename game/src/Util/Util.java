@@ -53,10 +53,26 @@ public class Util {
         return Math.sqrt( (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
     }
 
+    /**
+     * Check if the two doubles are closer than a set distance. Return true
+     * if the two numbers are within that distance. Return false otherwise.
+     * @param a first number to compare
+     * @param b second number to compare.
+     * @return true if the two numbers are closer than a set distance
+     */
     public static boolean closeDouble(double a, double b) {
         return Math.abs(a - b) < 10e-5;
     }
 
+    /**
+     * Returns the angle between two points. This angle ranges from
+     * -pi to pi.
+     * @param x1 x-coordinate of first point
+     * @param y1 y-coordinate of first point
+     * @param x2 x-coordinate of second point
+     * @param y2 y-coordinate of second point
+     * @return angle between two points
+     */
     public static double angle2Points(double x1, double y1, double x2, double y2) {
         return Math.atan2(y2 - y1, x2 - x1);
     }
