@@ -122,8 +122,7 @@ public enum Tile {
         Tile w = model.getTile(x - 1, y);
         int hashKey = FourTuple.hashToFourTuple(this.tupleNum, n.tupleNum, e.tupleNum, s.tupleNum, w.tupleNum);
         try {
-            gc.drawImage(this.IMAGE,
-                FourTuple.map.get(hashKey).x, FourTuple.map.get(hashKey).y, 32, 32,
+            gc.drawImage(this.IMAGE, FourTuple.map.get(hashKey).x, FourTuple.map.get(hashKey).y, 32, 32,
                 x * TILE_PIXELS, y * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
         } catch (Exception error) {
             if (tupleNum == FourTuple.GRASS) {
