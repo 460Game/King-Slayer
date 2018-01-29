@@ -36,6 +36,11 @@ public class GridCell implements Drawable {
     private Tile tile;
 
     /**
+     * Flag that determines whether the cell is passable or not.
+     */
+    private boolean passable;
+
+    /**
      * Returns true if the cell is able to be passed through, or equivalently,
      * if a pathing enemy should try to go through this tile. A cell is
      * considered unpassable f it has a cell shape occupying it.
@@ -43,7 +48,7 @@ public class GridCell implements Drawable {
      */
     public boolean isPassable() {
         for (Entity e : contents) {
-            if (e.getShape().blocksCell(x, y) && this.getTile().IS_PASSABLE)
+            if (e.getShape().blocksCell(x, y) || !passable)
                 return false;
         }
         return true;
@@ -85,6 +90,7 @@ public class GridCell implements Drawable {
         this.x = x;
         this.y = y;
         this.tile = tile;
+        this.passable = tile.IS_PASSABLE;
     }
 
     /**

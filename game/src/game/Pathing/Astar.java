@@ -80,6 +80,8 @@ public class Astar {
 //            System.out.println("SIZE of open set: " + open.size());
         }
         throw new RuntimeException("A* failed to produce a path.");
+        // TODO fix diagonal paths where tiles cannot be passed through
+        // TODO fix path through trees
     }
 
     private List<GridCell> path = null;
@@ -100,8 +102,8 @@ public class Astar {
     public void findTraversableNodes() {
         nodes = new HashSet<>();
         nodes = cells.stream().filter(GridCell::isPassable).collect(Collectors.toSet());
-        for (GridCell node : nodes)
-            System.out.println("Node x,y: " + node.getX() + ", " + node.getY());
+//        for (GridCell node : nodes)
+//            System.out.println("Node x,y: " + node.getX() + ", " + node.getY());
         System.out.println(nodes.size());
     }
 
@@ -118,7 +120,7 @@ public class Astar {
         if(path != null) {
             gc.setLineWidth(5);
             gc.setFill(Color.BLUE);
-            gc.strokePolyline( path.stream().mapToDouble(c -> TILE_PIXELS*(c.getX() + 0.5)).toArray() ,path.stream().mapToDouble(c -> TILE_PIXELS*(c.getY() + 0.5)).toArray(), path.size());
+            gc.strokePolyline( path.stream().mapToDouble(c -> TILE_PIXELS * (c.getX() + 0.5)).toArray() ,path.stream().mapToDouble(c -> TILE_PIXELS * (c.getY() + 1.5)).toArray(), path.size());
         }
     }
 }
