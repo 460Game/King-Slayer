@@ -20,6 +20,7 @@ import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class ClientView {
@@ -123,8 +124,9 @@ public class ClientView {
             }
         });*/
 
-//       astar.findTraversableNodes();
-//       Set<GridCell> nextDestination = astar.getNodes();
+        astar.findTraversableNodes();
+        Set<GridCell> nextDestination = astar.getNodes();
+        Iterator<GridCell> it = nextDestination.iterator();
 
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.F11) window.setFullScreen(true);
@@ -143,19 +145,20 @@ public class ClientView {
                 GridCell end = nodes.iterator().next();
                 int startx = (int) model.getLocalPlayer().getX();
                 int starty = (int) model.getLocalPlayer().getY();
-                System.out.println("Start x, y: " + startx + ", " + starty);
-                System.out.println("End x, y: " + end.getX() + ", " + end.getY());
-                astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end);
-            }
-//            if (e.getCode() == KeyCode.ENTER) {
-//                GridCell end = nextDestination.iterator().next();
-//                int startx = (int) model.getLocalPlayer().getX();
-//                int starty = (int) model.getLocalPlayer().getY();
 //                System.out.println("Start x, y: " + startx + ", " + starty);
 //                System.out.println("End x, y: " + end.getX() + ", " + end.getY());
-//                astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end);
-//                nextDestination.remove(end);
-//            }
+                astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end);
+            }
+            if (e.getCode() == KeyCode.ENTER) {
+                astar.findTraversableNodes();
+                GridCell end = it.next();
+                int startx = (int) model.getLocalPlayer().getX();
+                int starty = (int) model.getLocalPlayer().getY();
+//                System.out.println("Start x, y: " + startx + ", " + starty);
+//                System.out.println("End x, y: " + end.getX() + ", " + end.getY());
+                astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end);
+                it.remove();
+            }
         });
 
         scene.setOnKeyReleased(e -> {

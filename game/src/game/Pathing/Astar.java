@@ -93,9 +93,9 @@ public class Astar {
             current = prevNodes.get(current);
             path.add(0, current);
         }
-        System.out.println(path.size());
-        for (GridCell cell : path)
-            System.out.println("Cell x, y: " + cell.getX() + ", " + cell.getY());
+//        System.out.println("Path size: " + path.size());
+//        for (GridCell cell : path)
+//            System.out.println("Cell x, y: " + cell.getX() + ", " + cell.getY());
         return path;
     }
 
@@ -104,7 +104,7 @@ public class Astar {
         nodes = cells.stream().filter(GridCell::isPassable).collect(Collectors.toSet());
 //        for (GridCell node : nodes)
 //            System.out.println("Node x,y: " + node.getX() + ", " + node.getY());
-        System.out.println(nodes.size());
+//        System.out.println(nodes.size());
     }
 
     public Set<GridCell> getNodes() {
