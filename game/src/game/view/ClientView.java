@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
@@ -37,27 +38,31 @@ public class ClientView {
 
         Group root = new Group();
         Canvas canvas = new Canvas(INIT_SCREEN_WIDTH, INIT_SCREEN_HEIGHT);
+        Canvas debugCanvas = new Canvas(INIT_SCREEN_WIDTH, INIT_SCREEN_HEIGHT);
         Canvas minimapCanvas = new Canvas(INIT_SCREEN_WIDTH/3, INIT_SCREEN_HEIGHT/3);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         GraphicsContext minimapGC = minimapCanvas.getGraphicsContext2D();
+        GraphicsContext debugGC = debugCanvas.getGraphicsContext2D();
 
         window.widthProperty().addListener(l -> {
             minimapCanvas.setWidth(Math.min(window.getWidth()/3, window.getHeight()/3));
             minimapCanvas.setHeight(Math.min(window.getWidth()/3, window.getHeight()/3));
             canvas.setWidth(window.getWidth());
+            debugCanvas.setWidth(window.getWidth());
         });
 
         window.heightProperty().addListener(l -> {
             minimapCanvas.setWidth(Math.min(window.getWidth()/3, window.getHeight()/3));
             minimapCanvas.setHeight(Math.min(window.getWidth()/3, window.getHeight()/3));
             canvas.setHeight(window.getHeight());
+            debugCanvas.setHeight(window.getHeight());
         });
 
         window.setFullScreen(true);
 
         root.getChildren().add(canvas);
+        root.getChildren().add(debugCanvas);
         root.getChildren().add(minimapCanvas);
-
 
         Scene scene = new Scene(root);
 
@@ -90,8 +95,21 @@ public class ClientView {
                 double xt = - model.getLocalPlayer().getX() * TILE_PIXELS + window.getWidth() / 2;
                 double yt = -model.getLocalPlayer().getY() * TILE_PIXELS + (window.getHeight() / 2);
                 gc.setTransform(new Affine(Affine.translate(xt, yt)));
+                debugGC.setTransform(new Affine());
+                debugGC.clearRect(0, 0, debugCanvas.getWidth(), debugCanvas.getHeight());
+                debugGC.setTransform(new Affine(Affine.translate(xt, yt)));
                 model.draw(gc, model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), gameW, gameH);
-            }
+
+                astar.draw(debugGC);
+
+                //TODO temp for testing, doing this every frame
+    astar.findTraversableNodes();
+    Set<GridCell> nodes = astar.getNodes();
+    GridCell end = nodes.iterator().next();
+    int startx = (int) model.getLocalPlayer().getX();
+    int starty = (int) model.getLocalPlayer().getY();
+    astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end);
+}
         };
 
        /*scene.setOnScroll(e -> {
@@ -123,8 +141,7 @@ public class ClientView {
                 int starty = (int) model.getLocalPlayer().getY();
                 System.out.println("Start x, y: " + startx + ", " + starty);
                 System.out.println("End x, y: " + end.getX() + ", " + end.getY());
-                astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end);
-            }
+                astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end);            }
         });
 
         scene.setOnKeyReleased(e -> {

@@ -1,10 +1,15 @@
 package game.Pathing;
 
+import com.esotericsoftware.minlog.Log;
 import game.model.Game.Grid.GridCell;
 import game.model.Game.Model.GameModel;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static Util.Const.TILE_PIXELS;
 
 /**
  * Class used to perform A* search on the graph.
@@ -77,8 +82,10 @@ public class Astar {
         throw new RuntimeException("A* failed to produce a path.");
     }
 
+    private List<GridCell> path = null;
+
     public List<GridCell> getPath(Map<GridCell, GridCell> prevNodes, GridCell current) {
-        List<GridCell> path = new LinkedList<>();
+        path = new LinkedList<>();
         path.add(current);
         while (prevNodes.keySet().contains(current)) {
             current = prevNodes.get(current);
@@ -105,5 +112,13 @@ public class Astar {
     public double heuristicValue(GridCell a, GridCell b) {
 //        return (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
         return (a.getX() - b.getX()) * (a.getX() - b.getX()) + (a.getY() - b.getY()) * (a.getY() - b.getY());
+    }
+
+    public void draw(GraphicsContext gc) {
+        if(path != null) {
+            gc.setLineWidth(5);
+            gc.setFill(Color.BLUE);
+            gc.strokePolyline( path.stream().mapToDouble(c -> TILE_PIXELS*(c.getX() + 0.5)).toArray() ,path.stream().mapToDouble(c -> TILE_PIXELS*(c.getY() + 0.5)).toArray(), path.size());
+        }
     }
 }
