@@ -29,7 +29,7 @@ public class NetworkCommon {
         kryo.register(PlayerStopLeft.class);
         kryo.register(PlayerStopRight.class);
         kryo.register(ActionMessage.class);
-        kryo.register(MoveMessage.class);
+//        kryo.register(MoveMessage.class);
         kryo.register(RemoveEntityMessage.class);
         kryo.register(SetEntityMessage.class);
         kryo.register(SetTileMessage.class);
