@@ -5,7 +5,6 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.serializers.DefaultSerializers;
 import com.esotericsoftware.kryonet.EndPoint;
 import game.message.*;
-import game.message.playerMoveMessage.*;
 import game.model.Game.Map.Tile;
 import game.model.Game.WorldObject.Entity.*;
 import game.model.Game.WorldObject.Shape.*;
@@ -26,7 +25,7 @@ public class NetworkCommon {
         kryo.register(Message.class);
         kryo.register(StopMessage.class);
         kryo.register(ActionMessage.class);
-//        kryo.register(MoveMessage.class);
+        kryo.register(MoveMessage.class);
         kryo.register(RemoveEntityMessage.class);
         kryo.register(SetEntityMessage.class);
         kryo.register(SetTileMessage.class);
