@@ -20,8 +20,9 @@ public abstract class Player extends MovingEntity {
     }
 
     private CircleShape shape;
-    private double dx = 0;
-    private double dy = 0;
+    private int dx;
+    private int dy;
+    private boolean up = false, left = false, right = false, down = false;
 
     public Player() {
         super();
@@ -46,26 +47,44 @@ public abstract class Player extends MovingEntity {
 
     @Override
     public void collision(GameModel model, StationaryEntity collidesWith) {
-//        System.out.println("X: " + (shape.getX()) + ", Y: " + (shape.getY()) + ", radius: " + shape.getRadius());
-//
+        System.out.println("X: " + (shape.getX()) + ", Y: " + (shape.getY()) + ", radius: " + shape.getRadius());
+
 //        for(Shape.GridCellReference g : shape.getCellsReference())
 //            System.out.println("Cell X: " + g.x + ", cell Y: " + g.y);
-//        System.out.println("BLocker X, y: " + collidesWith.getX() + ", " + collidesWith.getY());
-        if (Util.closeDouble(this.getMovementAngle(), Math.PI) && collidesWith.getShape() instanceof CellShape) {//collidesWith.getSpeed() == 0 ) {
-            setSpeed(0);
-            setPos(collidesWith.getX() + 0.5 + this.shape.getRadius(), y); // Center of entity + 0.5 = right edge +
-            // shape radius to get new center
-        } else if (Util.closeDouble(this.getMovementAngle(), 0) && collidesWith.getShape() instanceof CellShape) {//collidesWith.getSpeed() == 0) {
-            setSpeed(0);
-            setPos(collidesWith.getX() - 0.5 - this.shape.getRadius(), y); // Center of entity - 0.5 = left edge -
-                                                                           // shape radius to get new center
-        } else if (Util.closeDouble(this.getMovementAngle(), Math.PI / 2) && collidesWith.getShape() instanceof CellShape) {//collidesWith.getSpeed() == 0) {
-            setSpeed(0);
-            setPos(x, collidesWith.getY() - 0.5 - this.shape.getRadius());
-        } else if (Util.closeDouble(this.getMovementAngle(), - Math.PI / 2) && collidesWith.getShape() instanceof CellShape) {//collidesWith.getSpeed() == 0) {
-            setSpeed(0);
-            setPos(x, collidesWith.getY() + 0.5 + this.shape.getRadius());
-        } else
+        System.out.println("BLocker X, y: " + collidesWith.getX() + ", " + collidesWith.getY());
+        if (collidesWith.getShape() instanceof CellShape) {
+            double angle = Util.angle2Points(getX(), getY(), collidesWith.getX(), collidesWith.getY());
+            System.out.println("Collide angle: " + angle);
+            System.out.println("Movement angle: " + getMovementAngle());
+            if (Util.closeDouble(this.getMovementAngle(), Math.PI)) {//collidesWith.getSpeed() == 0 ) {
+                setSpeed(0);
+                setPos(collidesWith.getX() + 0.5 + this.shape.getRadius(), y); // Center of entity + 0.5 = right edge +
+                // shape radius to get new center
+            } else if (Util.closeDouble(this.getMovementAngle(), 0)) {//collidesWith.getSpeed() == 0) {
+                setSpeed(0);
+                setPos(collidesWith.getX() - 0.5 - this.shape.getRadius(), y); // Center of entity - 0.5 = left edge -
+                // shape radius to get new center
+            } else if (Util.closeDouble(this.getMovementAngle(), Math.PI / 2)) {//collidesWith.getSpeed() == 0) {
+                setSpeed(0);
+                setPos(x, collidesWith.getY() - 0.5 - this.shape.getRadius());
+            } else if (Util.closeDouble(this.getMovementAngle(), -Math.PI / 2)) {//collidesWith.getSpeed() == 0) {
+                setSpeed(0);
+                setPos(x, collidesWith.getY() + 0.5 + this.shape.getRadius());
+            } else if (angle > Math.PI / 4 && angle < 3 * Math.PI / 4) {
+                if (Util.closeDouble(this.getMovementAngle(), Math.PI / 4))
+                    setPos(x + 0.1, collidesWith.getY() - 0.5 - this.shape.getRadius());
+                else
+                    setPos(x - 0.1, collidesWith.getY() - 0.5 - this.shape.getRadius());
+            } else if (angle > -Math.PI / 4 && angle < Math.PI / 4) {
+                if (Util.closeDouble(this.getMovementAngle(), Math.PI / 4))
+                    setPos(collidesWith.getX() - 0.5 - this.shape.getRadius(), y + 0.1);
+                else
+                    setPos(collidesWith.getX() - 0.5 - this.shape.getRadius(), y - 0.1);
+            }
+            else
+                setPos(x, y);
+        }
+        else
             setPos(x, y);
 
         // TODO problem running into object from another direction but still hiting object
@@ -98,6 +117,50 @@ public abstract class Player extends MovingEntity {
 
     }
 
+    /**
+     * Move the player based on updated inputs.
+     * @param dx new change in x movement
+     * @param dy new change in y movement
+     */
+    public void move(int dx, int dy) {
+        System.out.println("Movement Angle: " + getMovementAngle());
+        boolean dirUpdate = false;  // Check if a direction has changed.
+        if (dx == 0 && dy == -1) { // Up case.
+            if(!up) {
+                up = true;
+                this.dy -= 1;
+                dirUpdate = true;
+            }
+        } else if (dx == 0 && dy == 1) { // Down case.
+            if (!down) {
+                down = true;
+                this.dy += 1;
+                dirUpdate = true;
+            }
+        } else if (dx == -1 && dy == 0) { // Left case.
+            if(!left) {
+                left = true;
+                this.dx -= 1;
+                dirUpdate = true;
+            }
+        } else { // Right case.
+            if(!right) {
+                right = true;
+                this.dx += 1;
+                dirUpdate = true;
+            }
+        }
+        if (dirUpdate) {    // Only update extra stuff if any direction now has movement in that direction.
+            setSpeed(0.1);
+            double oldAngle = getMovementAngle();
+            setMovementAngle(Math.atan2(this.dy, this.dx));       // Get new movement angle.
+            if (up && down || left && right) {   // Directions cancelling out results in no speed, maintain angle
+                this.setSpeed(0);
+                this.setMovementAngle(oldAngle);
+            }
+        }
+    }
+
     private void change() {
         if (!up && !left && !right && !down)
             this.setSpeed(0);
@@ -108,8 +171,6 @@ public abstract class Player extends MovingEntity {
 //            System.out.println("LEFT: " + left);
 //            System.out.println("RIGHT: " + right);
 //            System.out.println("DOWN: " + down);
-            double olddx = dx;
-            double olddy = dy;
             double oldAngle = this.getMovementAngle();
 
             int dx = 0;
@@ -123,6 +184,7 @@ public abstract class Player extends MovingEntity {
             if (left)
                 dx = -1;
             this.setMovementAngle(Math.atan2(dy, dx));
+            System.out.println(this.getMovementAngle());
             if (up && down) {
                 dy = 0;
                 this.setSpeed(0);
@@ -137,53 +199,27 @@ public abstract class Player extends MovingEntity {
         }
     }
 
-    private boolean up = false, left = false, right = false, down = false;
-
-    public void up() {
-        if(!up) {
-            up = true;
-            change();
-        }
-    }
-
-    public void left() {
-        if(!left) {
-            left = true;
-            change();
-        }
-    }
-
-    public void right() {
-        if(!right) {
-            right = true;
-            change();
-        }
-    }
-
-    public void down() {
-        if (!down) {
-            down = true;
-            change();
-        }
-    }
-
     public void stopUp() {
         up = false;
+        this.dy += 1;
         change();
     }
 
     public void stopDown() {
         down = false;
+        this.dy -= 1;
         change();
     }
 
     public void stopLeft() {
         left = false;
+        this.dx += 1;
         change();
     }
 
     public void stopRight() {
         right = false;
+        this.dx -= 1;
         change();
     }
 }

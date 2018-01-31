@@ -93,9 +93,9 @@ public class Astar {
             current = prevNodes.get(current);
             path.add(0, current);
         }
-//        System.out.println("Path size: " + path.size());
-//        for (GridCell cell : path)
-//            System.out.println("Cell x, y: " + cell.getX() + ", " + cell.getY());
+        System.out.println("Path size: " + path.size());
+        for (GridCell cell : path)
+            System.out.println("Cell x, y: " + cell.getX() + ", " + cell.getY());
         return path;
     }
 
@@ -120,7 +120,7 @@ public class Astar {
         if(path != null) {
             gc.setLineWidth(5);
             gc.setFill(Color.BLUE);
-            gc.strokePolyline( path.stream().mapToDouble(c -> TILE_PIXELS * (c.getX() + 0.5)).toArray() ,path.stream().mapToDouble(c -> TILE_PIXELS * (c.getY() + 1.5)).toArray(), path.size());
+            gc.strokePolyline(path.stream().mapToDouble(c -> TILE_PIXELS * (c.getX() + 0.5)).toArray(), path.stream().mapToDouble(c -> TILE_PIXELS * (c.getY() + 1.5)).toArray(), path.size());
         }
     }
 }
