@@ -3,9 +3,8 @@ package game.network;
 import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.model.Game.Model.ClientGameModel;
-import game.model.Game.Map.ClientMapGenerator;
 import game.model.Game.Model.Model;
-import game.view.ClientView;
+import game.view.GameView;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -22,7 +21,7 @@ public class LobbyClient extends Application {
     private RemoteConnection client;
     private ClientGameModel clientGameModel;
     private RemoteConnection.RemoteModel serverModel;
-    private ClientView clientView;
+    private GameView gameView;
     private String name;
     private ChatFrame chatFrame;
     private Stage window;
@@ -75,9 +74,9 @@ public class LobbyClient extends Application {
                 Log.debug("client init");
                 clientGameModel.start();
 
-                clientView = new ClientView(clientGameModel);
+                gameView = new GameView(clientGameModel);
                 Platform.runLater(()-> {
-                    clientView.start(window);
+                    gameView.start(window);
                 });
                 Log.debug("Client Started");
             }

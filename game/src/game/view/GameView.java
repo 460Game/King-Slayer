@@ -24,13 +24,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class ClientView {
+public class GameView {
 
     private ClientGameModel model;
 
     private Astar astar;
 
-    public ClientView(ClientGameModel model) {
+    public GameView(ClientGameModel model) {
         this.model = model;
         astar = new Astar(model);
     }

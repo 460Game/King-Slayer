@@ -23,7 +23,6 @@ public class SetPlayerMessage implements ToClientMessage {
 
     /**
      * Constructor for a message, given a player ID.
-     *
      * @param playerId ID of the player
      */
     public SetPlayerMessage(long playerId) {
@@ -32,7 +31,6 @@ public class SetPlayerMessage implements ToClientMessage {
 
     /**
      * Constructor for a message, given a player.
-     *
      * @param player the player to be set
      */
     public SetPlayerMessage(Player player) {
@@ -41,7 +39,6 @@ public class SetPlayerMessage implements ToClientMessage {
 
     /**
      * Sets the player in the client's game model.
-     *
      * @param model the game model on the client
      */
     @Override

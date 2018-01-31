@@ -2,16 +2,11 @@ package game.model.Game.Grid;
 
 import game.model.Game.Model.GameModel;
 import game.model.Game.Map.Tile;
-import game.model.Game.WorldObject.Entity.Blocker;
 import game.model.Game.WorldObject.Drawable;
-import game.model.Game.WorldObject.Entity.Entity;
-import game.model.Game.WorldObject.Entity.MovingEntity;
-import game.model.Game.WorldObject.Entity.StationaryEntity;
+import game.model.Game.WorldObject.Entity.*;
 import javafx.scene.canvas.GraphicsContext;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Defines an individual cell on the game grid. Knows the entities
@@ -26,9 +21,14 @@ public class GridCell implements Drawable {
     private Set<Entity> contents = new HashSet<>();
 
     /**
-     * X and y coordinates of the top left of this part of the grid.
+     * X-coordinate of the top left of this cell.
      */
-    private int x, y;
+    private int x;
+
+    /**
+     * Y-coordinate of the top left of this cell.
+     */
+    private int y;
 
     /**
      * Type of tile that the grid is currently.
@@ -48,7 +48,7 @@ public class GridCell implements Drawable {
      */
     public boolean isPassable() {
         for (Entity e : contents) {
-            if (e.getShape().blocksCell(x, y) || !passable)
+            if (e.getShape().blocksCell(x, y) || !passable) // TODO
                 return false;
         }
         return true;

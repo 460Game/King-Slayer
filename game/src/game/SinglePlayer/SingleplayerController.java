@@ -2,11 +2,10 @@ package game.SinglePlayer;
 
 import game.model.Game.Model.ClientGameModel;
 import game.model.Game.Model.ServerGameModel;
-import game.view.ClientView;
+import game.view.GameView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -22,8 +21,8 @@ public class SingleplayerController extends Application {
         serverModel.init(Collections.singleton(new CopyingModelWrapper(clientModel)));
         serverModel.start();
         clientModel.start();
-        ClientView clientView = new ClientView(clientModel);
-        clientView.start(primaryStage);
+        GameView gameView = new GameView(clientModel);
+        gameView.start(primaryStage);
     }
 
     public static void main(String args[]) {

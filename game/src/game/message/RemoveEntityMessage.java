@@ -28,7 +28,9 @@ public class RemoveEntityMessage implements ToClientMessage {
     }
 
     /**
-     * Should removeContents references to the corresponding local entity from the model
+     * Remove the references of the local entity with the given ID in the client
+     * model.
+     * @param model the game model on the client.
      */
     @Override
     public void executeClient(ClientGameModel model) {
