@@ -79,6 +79,13 @@ public class RemoteConnection {
                     Log.info("Server received from " + c.getID() + " " + obj.toString());
                     GameConnection connection = (GameConnection)c;
 
+                    //arti increase latency
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                     //init a queue when have a new client
                     if (!clientList.containsKey(connection.getID())) {
                         clientList.putIfAbsent(connection.getID(), connection);
