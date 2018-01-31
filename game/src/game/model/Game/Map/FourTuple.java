@@ -17,6 +17,10 @@ public class FourTuple {
         return cur * 10000 + n * 1000 + e * 100 + s * 10 + w;
     }
 
+    public static int hashToFourTuple(int cur,int n, int e, int s, int w, int shallow) {
+        return cur * 10000 + n * 1000 + e * 100 + s * 10 + w + shallow;
+    }
+
     static {
         map.put(hashToFourTuple(GRASS, WATER, GRASS, GRASS, WATER), new Point(0, 32));
         map.put(hashToFourTuple(GRASS, WATER, GRASS, GRASS, GRASS), new Point(32, 32));
@@ -46,6 +50,22 @@ public class FourTuple {
         map.put(hashToFourTuple(DIRT, DIRT, DIRT, GRASS, GRASS), new Point(96, 224));
         map.put(hashToFourTuple(DIRT, DIRT, DIRT, GRASS, DIRT), new Point(128, 224));
         map.put(hashToFourTuple(DIRT, DIRT, GRASS, GRASS, DIRT), new Point(160, 224));
+
+        map.put(hashToFourTuple(WATER, GRASS, WATER, WATER, WATER), new Point(32, 640));
+        map.put(hashToFourTuple(WATER, GRASS, GRASS, WATER, WATER), new Point(32, 640));
+        map.put(hashToFourTuple(WATER, GRASS, WATER, GRASS, WATER), new Point(32, 640));
+        map.put(hashToFourTuple(WATER, GRASS, WATER, WATER, GRASS), new Point(32, 640));
+        map.put(hashToFourTuple(WATER, GRASS, DIRT, WATER, WATER), new Point(32, 640));
+        map.put(hashToFourTuple(WATER, GRASS, WATER, DIRT, WATER), new Point(32, 640));
+        map.put(hashToFourTuple(WATER, GRASS, WATER, WATER, DIRT), new Point(32, 640));
+
+        map.put(hashToFourTuple(WATER, GRASS, WATER, WATER, WATER, 1), new Point(32, 544));
+        map.put(hashToFourTuple(WATER, GRASS, GRASS, WATER, WATER, 1), new Point(32, 544));
+        map.put(hashToFourTuple(WATER, GRASS, WATER, GRASS, WATER, 1), new Point(32, 544));
+        map.put(hashToFourTuple(WATER, GRASS, WATER, WATER, GRASS, 1), new Point(32, 544));
+        map.put(hashToFourTuple(WATER, GRASS, DIRT, WATER, WATER, 1), new Point(32, 544));
+        map.put(hashToFourTuple(WATER, GRASS, WATER, DIRT, WATER, 1), new Point(32, 544));
+        map.put(hashToFourTuple(WATER, GRASS, WATER, WATER, DIRT, 1), new Point(32, 544));
 
     }
 }
