@@ -26,7 +26,7 @@ public enum Tile {
     /**
      * Deep water tile.
      */
-    DEEP_WATER(false, false, "deep_water.png", 'W', Color.DARKBLUE),
+    DEEP_WATER(false, false, "deep_water.png", 'W', Color.AQUA),
 
     /**
      * Grass tile.
@@ -51,7 +51,7 @@ public enum Tile {
     /**
      * Shallow water tile.
      */
-    SHALLOW_WATER(true, false, "shallow_water.png", 'W', Color.AQUA),
+    SHALLOW_WATER(true, false, "shallow_water.png", 'B', Color.BROWN),
 
     /**
      * Fog tile.
@@ -105,10 +105,10 @@ public enum Tile {
         }
 
         matches = new HashMap<>();
-        matches.put('G', Arrays.asList('G', 'E', 'X', '_'));
-        matches.put('D', Arrays.asList('D', 'E', 'U', '_'));
-        matches.put('W', Arrays.asList('W', 'X', 'U', '_'));
-        matches.put('w', Arrays.asList('w', 'X', 'U', '_'));
+        matches.put('G', Arrays.asList('G', 'E', 'X', 'L', '_'));
+        matches.put('D', Arrays.asList('D', 'E', 'U', 'L', 'K', '_'));
+        matches.put('W', Arrays.asList('W', 'J', 'X', 'U', 'L', 'K', '_'));
+        matches.put('B', Arrays.asList('B', 'J', 'X', 'U', '_'));
     }
 
 
