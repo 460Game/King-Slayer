@@ -84,6 +84,11 @@ public class LobbyServer extends Application {
         serverModel = new ServerGameModel();
 
         for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
+            remoteModel.syncClock();
+        }
+        Log.info("finish syn!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+        for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
             remoteModel.startGame();
         }
 

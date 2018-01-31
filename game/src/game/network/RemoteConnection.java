@@ -24,8 +24,6 @@ public class RemoteConnection {
         }
     }
 
-    static int TOTALPLAYER = 3;
-
     boolean isServer;
     NetWork2LobbyAdaptor adaptor;
 
@@ -36,12 +34,15 @@ public class RemoteConnection {
 
     Client client;
 
+    long latencty = 0;
+    Long clientStartTime = null;
+    Long serverStartTime = null;
+
     Map<Integer, LinkedBlockingQueue<Message>> messageQueues;
 
+    Set<RemoteModel> remoteModels;
 
-
-//    GameConnection serverConnectionForClient;
-
+    long delta = (long) 10E6;
 
 
 
@@ -102,6 +103,15 @@ public class RemoteConnection {
                         adaptor.getMsg((Message) obj);
                     }
 
+                    if (obj instanceof NetworkCommon.SyncClockMsg) {
+                        long guessServerTime = ((NetworkCommon.SyncClockMsg) obj).getServerTime();
+                        long curTime = System.nanoTime();
+                        if (Math.abs(guessServerTime - curTime) > delta) {
+                            server.sendToTCP(c.getID(), new NetworkCommon.SyncClockMsg(curTime));
+                        }
+                        Log.info(curTime + " " + guessServerTime);
+                    }
+
                 }
 
                 //TODO: implement disconnected
@@ -112,7 +122,7 @@ public class RemoteConnection {
 
             server.bind(NetworkCommon.port);
             server.start();
-            Log.info("Server started");
+            Log.debug("Server started");
         } else {
             NetworkCommon.register(client);
             client.start();
@@ -131,7 +141,7 @@ public class RemoteConnection {
                 }
 
                 public void received (Connection connection, Object obj) {
-                    Log.info("Client " + client.getID() + "received " + obj.toString());
+                    Log.debug("Client " + client.getID() + "received " + obj.toString());
                     if (obj instanceof NetworkCommon.ClientMakeModelMsg) {
                         adaptor.makeModel(); //make clientModel
                         client.sendTCP(new NetworkCommon.ClientReadyMsg());
@@ -149,6 +159,24 @@ public class RemoteConnection {
 
                     if (obj instanceof Message) {
                         adaptor.getMsg((Message) obj);
+                    }
+
+                    if (obj instanceof NetworkCommon.SyncClockMsg) {
+                        if (clientStartTime == null) {
+                            clientStartTime = System.nanoTime();
+                            serverStartTime = ((NetworkCommon.SyncClockMsg) obj).getServerTime();
+                            client.sendTCP(new NetworkCommon.SyncClockMsg(serverStartTime));//what client think the server time is
+                            Log.info("" + ((System.nanoTime() - clientStartTime + latencty) + serverStartTime));
+                        }
+
+                        else {
+                            long serverReceiveTime = ((NetworkCommon.SyncClockMsg) obj).getServerTime();
+                            long curTime = System.nanoTime();
+                            latencty = serverReceiveTime + latencty - ((curTime - clientStartTime) + serverStartTime);
+                            client.sendTCP(new NetworkCommon.SyncClockMsg((curTime - clientStartTime) + serverStartTime + latencty));
+                            Log.info("" + ((System.nanoTime() - clientStartTime + latencty) + serverStartTime));
+                        }
+
                     }
 
                 }
@@ -230,7 +258,8 @@ public class RemoteConnection {
 
     //if isServer, make client remoteModel
     public Set<RemoteModel> makeRemoteModel() {
-        Set<RemoteModel> remoteModels = new HashSet<>();
+        if (remoteModels != null) return remoteModels;
+        remoteModels = new HashSet<>();
         if (isServer) {
             for (int id : clientList.keySet()) {
                 remoteModels.add(new RemoteModel(id));
@@ -243,6 +272,7 @@ public class RemoteConnection {
 
     class RemoteModel implements Model {
         int connectId;
+
         public RemoteModel(int conid) {
             connectId = conid;
         }
@@ -250,18 +280,18 @@ public class RemoteConnection {
         @Override
         public void processMessage(Message m) {
             if (isServer) { //then the remote is a client
-//                server.sendToTCP(connectId, m);
                 enqueueMsg(m, connectId);
             } else {
-//                client.sendTCP(m);
                 enqueueMsg(m, connectId);
             }
         }
 
         @Override
         public long nanoTime() {
-            return System.nanoTime();
-        } //TODO this wont work across computers
+//            return System.nanoTime();
+            return (System.nanoTime() - clientStartTime + latencty) + serverStartTime;
+            //clientStartTime should actually start before the received startTime, so plus the latency
+        }
 
         public int getConnectId() {
             if (isServer) return -1;
@@ -270,7 +300,7 @@ public class RemoteConnection {
 
         public void startGame() {
             if (isServer) { // means it is server call this method on remote model
-                Log.info("Server click start the game");
+                Log.debug("Server click start the game");
 //                server.sendToAllTCP(new NetworkCommon.ClientMakeModelMsg());
                 server.sendToTCP(connectId, new NetworkCommon.ClientMakeModelMsg());
             }
@@ -281,7 +311,7 @@ public class RemoteConnection {
 
         public void notifyReady() {
             if (!isServer) {
-                Log.info("Client is ready");
+                Log.debug("Client is ready");
                 client.sendTCP(new NetworkCommon.ClientReadyMsg());
             } else {
                 Log.error("ERROR: Server should not call notifyReady");
@@ -292,6 +322,11 @@ public class RemoteConnection {
         public void startModel() {
             if (!isServer) return;
             server.sendToTCP(connectId, new NetworkCommon.ClientStartModelMsg());
+        }
+
+        public void syncClock() {
+            if (isServer) server.sendToAllTCP(new NetworkCommon.SyncClockMsg(System.nanoTime()));
+
         }
     }
 

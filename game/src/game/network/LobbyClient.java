@@ -43,7 +43,7 @@ public class LobbyClient extends Application {
         Log.info("client start!!!!!!");
 
 //        final String host = input.trim();
-        String host = "10.115.78.234";
+        String host = "localhost";
         Log.info(host);
 
         // Request the user's name.
@@ -72,14 +72,14 @@ public class LobbyClient extends Application {
         client = new RemoteConnection(false, this, new NetWork2LobbyAdaptor() {
             @Override
             public void init() {
-                Log.info("client inttttttttttttttttttttttttttttt");
+                Log.debug("client init");
                 clientGameModel.start();
 
                 clientView = new ClientView(clientGameModel);
                 Platform.runLater(()-> {
                     clientView.start(window);
                 });
-                Log.info("Client Started!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Log.debug("Client Started");
             }
 
             @Override

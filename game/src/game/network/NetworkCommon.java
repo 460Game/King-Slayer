@@ -67,8 +67,8 @@ public class NetworkCommon {
 
         kryo.register(RemoteConnection.GameConnection.class);
         kryo.register(ClientStartModelMsg.class);
-//        kryo.register(BatchMsg.class);
         kryo.register(ArrayList.class);
+        kryo.register(SyncClockMsg.class);
 
     }
 
@@ -83,6 +83,17 @@ public class NetworkCommon {
 
     public static class ClientStartModelMsg {
         public ClientStartModelMsg() {}
+    }
+
+    public static class SyncClockMsg {
+        private long serverTime;
+        public SyncClockMsg() {}
+        public SyncClockMsg(long serverNanoTime) {
+            serverTime = serverNanoTime;
+        }
+        public long getServerTime() {
+            return serverTime;
+        }
     }
 
 //    public static class BatchMsg {
