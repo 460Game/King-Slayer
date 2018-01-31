@@ -15,26 +15,19 @@ public class MoveMessage extends ActionMessage{
     private long id;
 
     /**
-     * Change in y movement.
+     * String of the direction the player wants to move.
      */
-    private int dy;
-
-    /**
-     * Change in x movement.
-     */
-    private int dx;
+    private String dir;
 
     /**
      * Constructor for the move message.
      * @param id player ID that send the message
-     * @param dx change in x movement
-     * @param dy change in y movement
+     * @param dir direction of the movement
      */
-    public MoveMessage(long id, int dx, int dy) {
+    public MoveMessage(long id, String dir) {
         super();
         this.id = id;
-        this.dx = dx;
-        this.dy = dy;
+        this.dir = dir;
     }
 
     /**
@@ -50,7 +43,7 @@ public class MoveMessage extends ActionMessage{
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        ((Player) model.getEntityById(id)).move(dx, dy);
+        ((Player) model.getEntityById(id)).move(dir);
         model.processMessage(new SetEntityMessage(model.getEntityById(id)));
     }
 }

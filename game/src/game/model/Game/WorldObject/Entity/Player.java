@@ -118,108 +118,90 @@ public abstract class Player extends MovingEntity {
     }
 
     /**
-     * Move the player based on updated inputs.
-     * @param dx new change in x movement
-     * @param dy new change in y movement
+     * Move the player based on the given direction.
+     * @param dir direction the player wants to move
      */
-    public void move(int dx, int dy) {
-        System.out.println("Movement Angle: " + getMovementAngle());
+    public void move(String dir) {
+//        System.out.println("Movement Angle: " + getMovementAngle());
         boolean dirUpdate = false;  // Check if a direction has changed.
-        if (dx == 0 && dy == -1) { // Up case.
-            if(!up) {
-                up = true;
-                this.dy -= 1;
-                dirUpdate = true;
-            }
-        } else if (dx == 0 && dy == 1) { // Down case.
-            if (!down) {
-                down = true;
-                this.dy += 1;
-                dirUpdate = true;
-            }
-        } else if (dx == -1 && dy == 0) { // Left case.
-            if(!left) {
-                left = true;
-                this.dx -= 1;
-                dirUpdate = true;
-            }
-        } else { // Right case.
-            if(!right) {
-                right = true;
-                this.dx += 1;
-                dirUpdate = true;
-            }
+        switch (dir.toLowerCase()) {
+            case "up" : // Upward movement.
+                if(!up) {
+                    up = true;
+                    dy -= 1;
+                    dirUpdate = true;
+                }
+                break;
+            case "down" : // Downward movement.
+                if (!down) {
+                    down = true;
+                    dy += 1;
+                    dirUpdate = true;
+                }
+                break;
+            case "left" : // Leftward movement.
+                if(!left) {
+                    left = true;
+                    dx -= 1;
+                    dirUpdate = true;
+                }
+                break;
+            case "right" : // Rightward movement.
+                if(!right) {
+                    right = true;
+                    dx += 1;
+                    dirUpdate = true;
+                }
+                break;
+            default :
+                throw new RuntimeException("Unknown direction to move.");
         }
         if (dirUpdate) {    // Only update extra stuff if any direction now has movement in that direction.
             setSpeed(0.1);
             double oldAngle = getMovementAngle();
-            setMovementAngle(Math.atan2(this.dy, this.dx));       // Get new movement angle.
-            if (up && down || left && right) {   // Directions cancelling out results in no speed, maintain angle
-                this.setSpeed(0);
-                this.setMovementAngle(oldAngle);
+            setMovementAngle(Math.atan2(dy, dx));     // Update new movement angle after a direction has changed.
+            if (up && down || left && right) {   // Directions cancelling out results in no speed, maintain angle.
+                setSpeed(0);
+                setMovementAngle(oldAngle);
             }
         }
     }
 
-    private void change() {
-        if (!up && !left && !right && !down)
+    /**
+     * Stops the player based on the given direction.
+     * @param dir direction the player wants to stop moving
+     */
+    public void stop(String dir) {
+        switch (dir.toLowerCase()) {
+            case "up" : // Stop upward movement.
+                up = false;
+                dy += 1;
+                break;
+            case "down" : // Stop downward movement.
+                down = false;
+                dy -= 1;
+                break;
+            case "left" : // Stop leftward movement.
+                left = false;
+                dx += 1;
+                break;
+            case "right" : // Stop rightward movement.
+                right = false;
+                dx -= 1;
+                break;
+            default :
+                throw new RuntimeException("Unknown direction to stop.");
+        }
+        if (!up && !left && !right && !down)   // No movement - set speed to 0.
             this.setSpeed(0);
         else {
             this.setSpeed(0.1);
-//            System.out.println("NEW CHANGE!!!!!!1");
-//            System.out.println("UP: " + up);
-//            System.out.println("LEFT: " + left);
-//            System.out.println("RIGHT: " + right);
-//            System.out.println("DOWN: " + down);
             double oldAngle = this.getMovementAngle();
-
-            int dx = 0;
-            int dy = 0;
-            if (up)
-                dy = -1;
-            if (down)
-                dy = 1;
-            if (right)
-                dx = 1;
-            if (left)
-                dx = -1;
-            this.setMovementAngle(Math.atan2(dy, dx));
-            System.out.println(this.getMovementAngle());
-            if (up && down) {
-                dy = 0;
-                this.setSpeed(0);
-                this.setMovementAngle(oldAngle);
+            this.setMovementAngle(Math.atan2(dy, dx)); // Update new movement angle after a direction has changed.
+            if (up && down || left && right) {  // Directions cancelling out results in no speed, preserve angle.
+                setSpeed(0);
+                setMovementAngle(oldAngle);
             }
-            if (left && right) {
-                dx = 0;
-                this.setSpeed(0);
-                this.setMovementAngle(oldAngle);
-            }
-
         }
-    }
-
-    public void stopUp() {
-        up = false;
-        this.dy += 1;
-        change();
-    }
-
-    public void stopDown() {
-        down = false;
-        this.dy -= 1;
-        change();
-    }
-
-    public void stopLeft() {
-        left = false;
-        this.dx += 1;
-        change();
-    }
-
-    public void stopRight() {
-        right = false;
-        this.dx -= 1;
-        change();
     }
 }

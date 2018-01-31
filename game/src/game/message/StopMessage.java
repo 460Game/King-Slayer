@@ -1,16 +1,13 @@
-package game.message.playerMoveMessage;
+package game.message;
 
-import game.message.ActionMessage;
-import game.message.SetEntityMessage;
 import game.model.Game.Model.ServerGameModel;
 import game.model.Game.WorldObject.Entity.Player;
 
 /**
  * Message sent by a client to tell the server to stop the player
- * moving leftwards on the game map. This is sent whenever the
- * left key is let go.
+ * on the game map.
  */
-public class PlayerStopLeft extends ActionMessage {
+public class StopMessage extends ActionMessage {
 
     /**
      * ID to distinguish player that sent the message.
@@ -18,29 +15,35 @@ public class PlayerStopLeft extends ActionMessage {
     private long id;
 
     /**
+     * String of the direction the player wants to stop.
+     */
+    private String dir;
+
+    /**
      * Constructor for the stop message.
      * @param id player ID that send the message
+     * @param dir direction to stop movement
      */
-    public PlayerStopLeft(long id) {
+    public StopMessage(long id, String dir) {
         super();
         this.id = id;
+        this.dir = dir;
     }
 
     /**
      * Default constructor needed for serialization.
      */
-    public PlayerStopLeft() {
+    public StopMessage() {
 
     }
 
     /**
-     * Stops the player's leftward movement.
+     * Stops the player's movement.
      * @param model the game model on the game server
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        ((Player) model.getEntityById(id)).stopLeft();
+        ((Player) model.getEntityById(id)).stop(dir);
         model.processMessage(new SetEntityMessage(model.getEntityById(id)));
     }
 }
-

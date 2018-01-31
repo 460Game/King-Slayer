@@ -24,10 +24,7 @@ public class NetworkCommon {
 
     public static void KyroRegister(Kryo kryo) {
         kryo.register(Message.class);
-        kryo.register(PlayerStopDown.class);
-        kryo.register(PlayerStopUp.class);
-        kryo.register(PlayerStopLeft.class);
-        kryo.register(PlayerStopRight.class);
+        kryo.register(StopMessage.class);
         kryo.register(ActionMessage.class);
 //        kryo.register(MoveMessage.class);
         kryo.register(RemoveEntityMessage.class);
