@@ -100,7 +100,6 @@ public class Astar {
     }
 
     public void findTraversableNodes() {
-        nodes = new HashSet<>();
         nodes = cells.stream().filter(GridCell::isPassable).collect(Collectors.toSet());
 //        for (GridCell node : nodes)
 //            System.out.println("Node x,y: " + node.getX() + ", " + node.getY());

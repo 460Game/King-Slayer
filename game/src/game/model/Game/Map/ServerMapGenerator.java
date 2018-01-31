@@ -69,7 +69,7 @@ public class ServerMapGenerator implements MapGenerator {
         metal(Tile.PATH, Metal::new),
         stone(Tile.PATH, Stone::new),
         tree(Tile.GRASS_0, Tree::new),//Tree::new),
-        wall(Tile.PATH, BlockerWall::new),
+        wall(Tile.GRASS_0, BlockerWall::new),
         room(Tile.PATH, null),
         grass0(Tile.GRASS_0, null),
         grass1(Tile.GRASS_1, null),
