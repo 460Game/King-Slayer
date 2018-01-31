@@ -3,6 +3,7 @@ package game.view;
 import static Util.Const.*;
 
 import game.Pathing.Astar;
+import game.message.MoveMessage;
 import game.message.playerMoveMessage.*;
 import game.model.Game.Grid.GridCell;
 import game.model.Game.Model.ClientGameModel;
@@ -130,14 +131,14 @@ public class ClientView {
 
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.F11) window.setFullScreen(true);
-            if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.W)
-                model.processMessage(new PlayerUp(model.getLocalPlayer().getId())); // Start upward movement.
-            if (e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.S)
-                model.processMessage(new PlayerDown(model.getLocalPlayer().getId())); // Start downward movement.
-            if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.A)
-                model.processMessage(new PlayerLeft(model.getLocalPlayer().getId())); // Start leftward movement.
-            if (e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.D)
-                model.processMessage(new PlayerRight(model.getLocalPlayer().getId())); // Start upward movement.
+            if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.W) // Start upward movement.
+                model.processMessage(new MoveMessage(model.getLocalPlayer().getId(), 0, -1));
+            if (e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.S) // Start downward movement.
+                model.processMessage(new MoveMessage(model.getLocalPlayer().getId(), 0, 1));
+            if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.A) // Start leftward movement.
+                model.processMessage(new MoveMessage(model.getLocalPlayer().getId(), -1, 0));
+            if (e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.D) // Start upward movement.
+                model.processMessage(new MoveMessage(model.getLocalPlayer().getId(), 1, 0));
             // TODO remove, temp for testing
             if (e.getCode() == KeyCode.SPACE) {
                 astar.findTraversableNodes();
@@ -145,8 +146,8 @@ public class ClientView {
                 GridCell end = nodes.iterator().next();
                 int startx = (int) model.getLocalPlayer().getX();
                 int starty = (int) model.getLocalPlayer().getY();
-//                System.out.println("Start x, y: " + startx + ", " + starty);
-//                System.out.println("End x, y: " + end.getX() + ", " + end.getY());
+                System.out.println("Start x, y: " + startx + ", " + starty);
+                System.out.println("End x, y: " + end.getX() + ", " + end.getY());
                 astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end);
             }
             if (e.getCode() == KeyCode.ENTER) {
@@ -154,8 +155,8 @@ public class ClientView {
                 GridCell end = it.next();
                 int startx = (int) model.getLocalPlayer().getX();
                 int starty = (int) model.getLocalPlayer().getY();
-//                System.out.println("Start x, y: " + startx + ", " + starty);
-//                System.out.println("End x, y: " + end.getX() + ", " + end.getY());
+                System.out.println("Start x, y: " + startx + ", " + starty);
+                System.out.println("End x, y: " + end.getX() + ", " + end.getY());
                 astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end);
                 it.remove();
             }

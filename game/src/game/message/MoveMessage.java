@@ -1,15 +1,13 @@
-package game.message.playerMoveMessage;
+package game.message;
 
-import game.message.ActionMessage;
-import game.message.SetEntityMessage;
 import game.model.Game.Model.ServerGameModel;
 import game.model.Game.WorldObject.Entity.Player;
 
 /**
  * Message sent by a client to tell the server to move the player
- * upwards on the game map.
+ * on the game map.
  */
-public class PlayerUp extends ActionMessage {
+public class MoveMessage extends ActionMessage{
 
     /**
      * ID to distinguish player that sent the message.
@@ -17,28 +15,42 @@ public class PlayerUp extends ActionMessage {
     private long id;
 
     /**
+     * Change in y movement.
+     */
+    private int dy;
+
+    /**
+     * Change in x movement.
+     */
+    private int dx;
+
+    /**
      * Constructor for the move message.
      * @param id player ID that send the message
+     * @param dx change in x movement
+     * @param dy change in y movement
      */
-    public PlayerUp(long id) {
+    public MoveMessage(long id, int dx, int dy) {
         super();
         this.id = id;
+        this.dx = dx;
+        this.dy = dy;
     }
 
     /**
      * Default constructor needed for serialization.
      */
-    public PlayerUp() {
+    public MoveMessage() {
 
     }
 
     /**
-     * Move the player upwards.
+     * Moves the player in a certain direction.
      * @param model the game model on the game server
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        ((Player) model.getEntityById(id)).up();
+        ((Player) model.getEntityById(id)).move(dx, dy);
         model.processMessage(new SetEntityMessage(model.getEntityById(id)));
     }
 }

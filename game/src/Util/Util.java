@@ -19,7 +19,7 @@ public class Util {
      * Returns false otherwise.
      * @param a first set
      * @param b second set
-     * @param <T> T
+     * @param <T> item type in the set
      * @return true if the two sets have a non-empty intersection
      */
     public static <T> boolean setsIntersect(Set<T> a, Set<T> b) {
@@ -34,7 +34,7 @@ public class Util {
      * Returns true if the two sets are disjoint. Returns false otherwise.
      * @param a first set
      * @param b second set
-     * @param <T> T
+     * @param <T> T item type in the set
      * @return true if the two sets are disjoint
      */
     public static <T> boolean setsDisjoint(Set<T> a, Set<T> b) {
@@ -71,7 +71,7 @@ public class Util {
      * @param y1 y-coordinate of first point
      * @param x2 x-coordinate of second point
      * @param y2 y-coordinate of second point
-     * @return angle between two points
+     * @return angle between the two points
      */
     public static double angle2Points(double x1, double y1, double x2, double y2) {
         return Math.atan2(y2 - y1, x2 - x1);
