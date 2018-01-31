@@ -88,9 +88,9 @@ public class LobbyServer extends Application {
         }
         Log.info("finish syn!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-        for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
-            remoteModel.startGame();
-        }
+//        for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
+//            remoteModel.startGame();
+//        }
 
 
     }
