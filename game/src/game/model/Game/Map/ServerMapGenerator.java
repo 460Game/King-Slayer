@@ -155,7 +155,7 @@ public class ServerMapGenerator implements MapGenerator {
                 river_start_y = mapH - river_start_y - 1;
             }
 
-            Set<Loc> river = walk(river_start_x, river_start_y, river_end_x, river_end_y, 0.8);
+            Set<Loc> river = walk(river_start_x, river_start_y, river_end_x, river_end_y, 0.65);
 
             //if any tile has 3 neighbors addContents it
 
@@ -191,7 +191,7 @@ public class ServerMapGenerator implements MapGenerator {
                     for (int x = i - FEATURE_SIZE / 2; x <= i + FEATURE_SIZE / 2; x++)
                         for (int y = j - FEATURE_SIZE / 2; y <= j + FEATURE_SIZE / 2; y++)
                             if(grid[x][y] != TS.edgeWater)
-                              //  grid[x][y] = TS.room;
+                                grid[x][y] = TS.room;
 ;
 
                     for (int x = i - FEATURE_SIZE; x <= i + FEATURE_SIZE; x++)
@@ -213,32 +213,32 @@ public class ServerMapGenerator implements MapGenerator {
             }
         }
 
-
-        // Add paths between them
-
-
         List<Loc> points = new LinkedList<>();
         points.addAll(rooms);
 
         for (Loc t1 : points)
             for (Loc t2 : points) {
 
-                if (Util.dist(t1.x, t1.y, t2.x, t2.y) < distMax / 6)
+                if (Util.dist(t1.x, t1.y, t2.x, t2.y) < distMax / 5)
 
-                    for (Loc t : walk(t1.x, t1.y, t2.x, t2.y, 0.8)) {
+                    for (Loc loc : walk(t1.x, t1.y, t2.x, t2.y, 0.9)) {
 
-                        if (grid[t.x][t.y] == TS.river)
-                            grid[t.x][t.y] = TS.bridge;
-                        if (grid[t.x][t.y] == TS.unset) //alert this changed
+                        if (grid[loc.x][loc.y] == TS.river)
+                            grid[loc.x][loc.y] = TS.bridge;
+                        if (grid[loc.x][loc.y] == TS.unset) //alert this changed
                             if (random.nextDouble() < 0.98)
-                                grid[t.x][t.y] = TS.road;
+                                grid[loc.x][loc.y] = TS.road;
                             else
-                                grid[t.x][t.y] = TS.tresure;
+                                grid[loc.x][loc.y] = TS.tresure;
+                            if(grid[loc.x][loc.y] == TS.room)
+                                grid[loc.x][loc.y] = TS.road;
 
                     }
 
             }
 
+
+        // Add paths between them
 
         Loc t;
 
@@ -290,6 +290,8 @@ public class ServerMapGenerator implements MapGenerator {
         }*/
 
 
+
+
         for (int x = 0; x < mapW; x++) {
             for (int y = 0; y < mapH; y++) {
                     Set<Loc> set = new HashSet<>();
@@ -298,7 +300,7 @@ public class ServerMapGenerator implements MapGenerator {
 
                         //gen forest
                         for(Loc t2 : set) {
-                            if(random.nextDouble() < 0.4)
+                            if(random.nextDouble() < 0.35)
                                  grid[t2.x][t2.y] = TS.tree;
                             else
                                 if (random.nextDouble() < 0.55) {
