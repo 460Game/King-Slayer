@@ -222,7 +222,6 @@ public class ServerMapGenerator implements MapGenerator {
                 if (Util.dist(t1.x, t1.y, t2.x, t2.y) < distMax / 5)
 
                     for (Loc loc : walk(t1.x, t1.y, t2.x, t2.y, 0.9)) {
-
                         if (grid[loc.x][loc.y] == TS.river)
                             grid[loc.x][loc.y] = TS.bridge;
                         if (grid[loc.x][loc.y] == TS.unset) //alert this changed
