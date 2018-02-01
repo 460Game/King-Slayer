@@ -17,12 +17,12 @@ public class ServerMapGenerator implements MapGenerator {
     private final int distMax;
     private final int FEATURE_SIZE = 4;
     private final int edgeWidth = 4;
-    private final int NUM_RIVER = 5;
+    private final int NUM_RIVER = 8;
 
     final static int NUM_STARTS_ROOM = 2;
-    final static int NUM_METAL_ROOM = 5;
-    final static int NUM_STONE_ROOM = 15;
-    final static int NUM_TRESURE_ROOM = 15;
+    final static int NUM_METAL_ROOM = 7;
+    final static int NUM_STONE_ROOM = 25;
+    final static int NUM_TRESURE_ROOM = 0;
 
     private Random random;
     private TS[][] grid;
@@ -155,7 +155,7 @@ public class ServerMapGenerator implements MapGenerator {
                 river_start_y = mapH - river_start_y - 1;
             }
 
-            Set<Loc> river = walk(river_start_x, river_start_y, river_end_x, river_end_y, 0.7);
+            Set<Loc> river = walk(river_start_x, river_start_y, river_end_x, river_end_y, 0.8);
 
             //if any tile has 3 neighbors addContents it
 
@@ -224,7 +224,7 @@ public class ServerMapGenerator implements MapGenerator {
 
                 if (Util.dist(t1.x, t1.y, t2.x, t2.y) < distMax / 6)
 
-                    for (Loc t : walk(t1.x, t1.y, t2.x, t2.y, 0.7)) {
+                    for (Loc t : walk(t1.x, t1.y, t2.x, t2.y, 0.8)) {
 
                         if (grid[t.x][t.y] == TS.river)
                             grid[t.x][t.y] = TS.bridge;
@@ -267,6 +267,17 @@ public class ServerMapGenerator implements MapGenerator {
                         if(grid[x][y] != TS.edgeWater)
                         grid[x][y] = TS.stone;
         }
+
+
+        for (int i = 1; i < this.mapW-1; i++)
+            for (int j = 1; j < mapH-1; j++) {
+                if(grid[i-1][j]== TS.edgeWater || grid[i+1][j]== TS.edgeWater || grid[i][j-1]== TS.edgeWater || grid[i][j+1]== TS.edgeWater ||
+                grid[i-1][j]== TS.river || grid[i+1][j]== TS.river|| grid[i][j-1]== TS.river||grid[i][j+1]== TS.river) {
+
+                    if(grid[i][j] == TS.road || grid[i][j] == TS.room)
+                        grid[i][j] = TS.grass0;
+                }
+            }
 
         /*for (int i = 0; i < NUM_TRESURE_ROOM; i++) {
             t = rooms.poll();
