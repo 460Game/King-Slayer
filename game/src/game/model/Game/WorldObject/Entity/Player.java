@@ -43,7 +43,7 @@ public abstract class Player extends MovingEntity {
 
     @Override
     public void collision(GameModel model, MovingEntity collidesWith) {
-        if (collidesWith.getSpeed() == 0) {
+        if (collidesWith.getVelocity() == 0) {
             // TODO treat like stationary entity collision
         } else {
             // TODO other cases
@@ -61,19 +61,19 @@ public abstract class Player extends MovingEntity {
             double angle = Util.angle2Points(getX(), getY(), collidesWith.getX(), collidesWith.getY());
             System.out.println("Collide angle: " + angle);
             System.out.println("Movement angle: " + getMovementAngle());
-            if (Util.closeDouble(this.getMovementAngle(), Math.PI)) {//collidesWith.getSpeed() == 0 ) {
-                setSpeed(0);
+            if (Util.closeDouble(this.getMovementAngle(), Math.PI)) {//collidesWith.getVelocity() == 0 ) {
+                setVelocity(0);
                 setPos(collidesWith.getX() + 0.5 + this.shape.getRadius(), y); // Center of entity + 0.5 = right edge +
                 // shape radius to get new center
-            } else if (Util.closeDouble(this.getMovementAngle(), 0)) {//collidesWith.getSpeed() == 0) {
-                setSpeed(0);
+            } else if (Util.closeDouble(this.getMovementAngle(), 0)) {//collidesWith.getVelocity() == 0) {
+                setVelocity(0);
                 setPos(collidesWith.getX() - 0.5 - this.shape.getRadius(), y); // Center of entity - 0.5 = left edge -
                 // shape radius to get new center
-            } else if (Util.closeDouble(this.getMovementAngle(), Math.PI / 2)) {//collidesWith.getSpeed() == 0) {
-                setSpeed(0);
+            } else if (Util.closeDouble(this.getMovementAngle(), Math.PI / 2)) {//collidesWith.getVelocity() == 0) {
+                setVelocity(0);
                 setPos(x, collidesWith.getY() - 0.5 - this.shape.getRadius());
-            } else if (Util.closeDouble(this.getMovementAngle(), -Math.PI / 2)) {//collidesWith.getSpeed() == 0) {
-                setSpeed(0);
+            } else if (Util.closeDouble(this.getMovementAngle(), -Math.PI / 2)) {//collidesWith.getVelocity() == 0) {
+                setVelocity(0);
                 setPos(x, collidesWith.getY() + 0.5 + this.shape.getRadius());
             } else if (angle > Math.PI / 4 && angle < 3 * Math.PI / 4) {
                 if (Util.closeDouble(this.getMovementAngle(), Math.PI / 4))
@@ -124,7 +124,7 @@ public abstract class Player extends MovingEntity {
         this.x = shape.getX();
         this.y = shape.getY();
         // shape.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10); TODO use the delta
-        shape.shift(Math.cos(this.getMovementAngle()) * this.getSpeed(), Math.sin(this.getMovementAngle()) * this.getSpeed());
+        shape.shift(Math.cos(this.getMovementAngle()) * this.getVelocity(), Math.sin(this.getMovementAngle()) * this.getVelocity());
     }
 
     @Override
@@ -172,11 +172,11 @@ public abstract class Player extends MovingEntity {
                 throw new RuntimeException("Unknown direction to move.");
         }
         if (dirUpdate) {    // Only update extra stuff if any direction now has movement in that direction.
-            setSpeed(0.1);
+            setVelocity(0.1);
             double oldAngle = getMovementAngle();
             setMovementAngle(Math.atan2(dy, dx));     // Update new movement angle after a direction has changed.
             if (up && down || left && right) {   // Directions cancelling out results in no speed, maintain angle.
-                setSpeed(0);
+                setVelocity(0);
                 setMovementAngle(oldAngle);
             }
         }
@@ -208,13 +208,13 @@ public abstract class Player extends MovingEntity {
                 throw new RuntimeException("Unknown direction to stop.");
         }
         if (!up && !left && !right && !down)   // No movement - set speed to 0.
-            this.setSpeed(0);
+            this.setVelocity(0);
         else {
-            this.setSpeed(0.1);
+            this.setVelocity(0.1);
             double oldAngle = this.getMovementAngle();
             this.setMovementAngle(Math.atan2(dy, dx)); // Update new movement angle after a direction has changed.
             if (up && down || left && right) {  // Directions cancelling out results in no speed, preserve angle.
-                setSpeed(0);
+                setVelocity(0);
                 setMovementAngle(oldAngle);
             }
         }

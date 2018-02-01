@@ -28,14 +28,9 @@ public abstract class Entity implements Drawable {
     private double health;
 
     /**
-     * Current speed of the entity.
+     * Current velocity of the entity.
      */
-    private double speed;
-
-    /**
-     * Current angle with which the entity is moving.
-     */
-    private double angle;
+    private Velocity velocity;
 
     /**
      * Team of this entity.
@@ -64,7 +59,16 @@ public abstract class Entity implements Drawable {
      * @param model current game model
      */
     Entity(GameModel model) {
+        this();
         last_update = model.nanoTime();
+    }
+
+    /**
+     * Gets the id of the entity.
+     * @return the id of the entity
+     */
+    public long getId() {
+        return id;
     }
 
     /**
@@ -84,19 +88,53 @@ public abstract class Entity implements Drawable {
     }
 
     /**
-     * Gets the current speed of the entity.
-     * @return the current speed of the entity
+     * Gets the x component of the entity's velocity.
+     * @return x component of the entity's velocity
      */
-    double getSpeed() {
-        return speed;
+    double getVelocityX() {
+        return velocity.getVx();
     }
 
     /**
-     * Sets the current speed of the entity to the amount specified.
-     * @param speed new speed of the entity
+     * Sets the x component of the entity's velocity to the
+     * specified amount.
+     * @param velocityX new velocity x component
      */
-    void setSpeed(double speed) {
-        this.speed = speed;
+    void setVelocityX(double velocityX) {
+        velocity.setVx(velocityX);
+    }
+
+    /**
+     * Gets the y component of the entity's velocity.
+     * @return y component of the entity's velocity
+     */
+    double getVelocityY() {
+        return velocity.getVy();
+    }
+
+    /**
+     * Sets the y component of the entity's velocity to the
+     * specified amount.
+     * @param velocityY new velocity y component
+     */
+    void setVelocityY(double velocityY) {
+        velocity.setVy(velocityY);
+    }
+
+    /**
+     * Gets the current velocity of the entity.
+     * @return the current velocity of the entity
+     */
+    double getVelocity() {
+        return velocity.getMagnitude();
+    }
+
+    /**
+     * Sets the current velocity of the entity to the amount specified.
+     * @param velocity new velocity of the entity
+     */
+    void setVelocity(double velocity) {
+        this.velocity.setMagnitude(velocity);
     }
 
     /**
@@ -104,7 +142,7 @@ public abstract class Entity implements Drawable {
      * @return the current angle of movement of the entity
      */
     double getMovementAngle() {
-        return angle;
+        return velocity.getAngle();
     }
 
     /**
@@ -113,12 +151,12 @@ public abstract class Entity implements Drawable {
      * @param angle new angle of movement
      */
     void setMovementAngle(double angle) {
-        this.angle = angle;
+        velocity.setAngle(angle);
     }
 
     /**
-     * Gets the current health of the entity.
-     * @return the current health of the entity
+     * Gets the current team of the entity.
+     * @return the current team of the entity
      */
     public Team getTeam() {
         return team;
@@ -130,6 +168,50 @@ public abstract class Entity implements Drawable {
      */
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    /**
+     * Gets the shape of the entity.
+     * @return the shape of the entity
+     */
+    public abstract Shape getShape();
+
+    /**
+     * Gets the x-coordinate of the center of the entity.
+     * @return the x-coordinate of the center of the entity
+     */
+    public double getX() {
+        return this.getShape().getX();
+    }
+
+    /**
+     * Gets the y-coordinate of the center of the entity.
+     * @return the y-coordinate of the center of the entity
+     */
+    public double getY() {
+        return this.getShape().getY();
+    }
+
+    /**
+     * Return the set of all cells this entity overlaps with. This method
+     * should return a new set every time.
+     * @param gameMap current model of the game
+     * @return the set of all cells that this entity overlaps with.
+     */
+    public Collection<GridCell> getCells(GameModel gameMap) {
+        return getShape().getCells(gameMap);
+    }
+
+    /**
+     * Sets this entity to be a copy of another entity.
+     * @param other the entity to be copied
+     */
+    public void copyOf(Entity other) {
+        this.health = other.health;
+        this.velocity = other.velocity;
+        this.team = other.team;
+        this.id = other.id;
+        this.last_update = other.last_update;
     }
 
     /**
@@ -147,30 +229,13 @@ public abstract class Entity implements Drawable {
     public abstract void collision(GameModel model, MovingEntity collidesWith);
 
     /**
-     * Sets this entity to be a copy of another entity.
-     * @param other the entity to be copied
+     * Returns true if this entity collides with the specified entity, given that
+     * they are on the same cell. Returns false otherwise.
+     * @param other the entity to be tested for collisions
+     * @return true if this entity collides with the specified entity
      */
-    public void copyOf(Entity other) {
-        this.health = other.health;
-        this.angle = other.angle;
-        this.speed = other.speed;
-        this.team = other.team;
-        this.id = other.id;
-        this.last_update = other.last_update;
-    }
-
-    /**
-     * Gets the shape of the entity.
-     * @return the shape of the entity
-     */
-    public abstract Shape getShape();
-
-    /**
-     * Gets the id of the entity.
-     * @return the id of the entity
-     */
-    public long getId() {
-        return id;
+    public boolean testCollision(Entity other) {
+        return this.getShape().testCollision(other.getShape());
     }
 
     /**
@@ -199,77 +264,7 @@ public abstract class Entity implements Drawable {
             for (GridCell cell : afterSet)
                 cell.addContents(this);
         }
-        //TODO this must be more effeceint
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (id % Integer.MAX_VALUE);
-    }
-
-    /**
-     * Draws the entity in the game.
-     * @param gc context used to draw the entity
-     */
-    public abstract void draw(GraphicsContext gc, GameModel model);
-
-    /**
-     * Draws the entity in the game.
-     * @param gc context used to draw the entity
-     */
-    public void draw(GraphicsContext gc, Image image) {
-        gc.drawImage(image,
-            this.getX() * TILE_PIXELS - TILE_PIXELS/2,
-            this.getY() * TILE_PIXELS - TILE_PIXELS/2 + 25,
-            TILE_PIXELS, 1.5*TILE_PIXELS);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null)
-            return false;
-        if (getClass() != o.getClass())
-            return false;
-        Entity entity = (Entity) o;
-        return this.id == entity.id;
-    }
-
-    /**
-     * Gets the x-coordinate of the center of the entity.
-     * @return the x-coordinate of the center of the entity
-     */
-    public double getX() {
-       return this.getShape().getX();
-    }
-
-    /**
-     * Gets the y-coordinate of the center of the entity.
-     * @return the y-coordinate of the center of the entity
-     */
-    public double getY() {
-        return this.getShape().getY();
-    }
-
-    /**
-     * Return the set of all cells this entity overlaps with. This method
-     * should return a new set every time.
-     * @param gameMap current model of the game
-     * @return the set of all cells that this entity overlaps with.
-     */
-    public Collection<GridCell> getCells(GameModel gameMap) {
-        return getShape().getCells(gameMap);
-    }
-
-    /**
-     * Returns true if this entity collides with the specified entity, given that
-     * they are on the same cell. Returns false otherwise.
-     * @param other the entity to be tested for collisions
-     * @return true if this entity collides with the specified entity
-     */
-    public boolean testCollision(Entity other) {
-        return this.getShape().testCollision(other.getShape());
+        //TODO this must be more efficient
     }
 
     /**
@@ -304,5 +299,40 @@ public abstract class Entity implements Drawable {
      */
     public void setAngle(double r) {
         this.getShape().setAngle(r);
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id % Integer.MAX_VALUE);
+    }
+
+    /**
+     * Draws the entity in the game.
+     * @param gc context used to draw the entity
+     */
+    public abstract void draw(GraphicsContext gc, GameModel model);
+
+    /**
+     * Draws the entity in the game.
+     * @param gc context used to draw the entity
+     * @param image image used to represent the entity
+     */
+    public void draw(GraphicsContext gc, Image image) {
+        gc.drawImage(image,
+            this.getX() * TILE_PIXELS - TILE_PIXELS / 2,
+            this.getY() * TILE_PIXELS - TILE_PIXELS / 2 + 25,
+            TILE_PIXELS, 1.5 * TILE_PIXELS);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null)
+            return false;
+        if (getClass() != o.getClass())
+            return false;
+        Entity entity = (Entity) o;
+        return this.id == entity.id;
     }
 }

@@ -16,7 +16,7 @@ public abstract class StationaryEntity extends Entity {
      * Default constructor needed for serialization.
      */
     StationaryEntity() {
-        this.setSpeed(0);
+        this.setVelocity(0);
         this.setMovementAngle(0);
     }
 

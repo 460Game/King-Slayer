@@ -81,7 +81,7 @@ public class KingPlayer extends Player {
         }
 
         // Update image being used
-        if (this.getSpeed() != 0) {
+        if (this.getVelocity() != 0) {
             count++;
             if (count > 11) {
                 count = 0;
