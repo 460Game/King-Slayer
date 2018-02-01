@@ -6,7 +6,8 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
- * A shape that always takes up an entire cell, for blocking an entire cell.
+ * A shape that always takes up an entire cell, for entities that
+ * block an entire cell.
  */
 public class CellShape extends Shape {
 
@@ -16,19 +17,24 @@ public class CellShape extends Shape {
     private GridCellReference gridCell;
 
     /**
-     * Constructor of the shape with given coordinates.
-     * @param x x-coordinate of the upper left corner of the cell
-     * @param y y-coordinate of the upper left corner of the cell
+     * Flag that determines whether this shape has moved.
      */
-    public CellShape(int x, int y) {
-        this.gridCell = new GridCellReference(x, y);
-    }
+    private boolean moved = true;
 
     /**
      * Default constructor needed for serialization.
      */
     public CellShape() {
-        this.gridCell = new GridCellReference(0, 0);
+        gridCell = new GridCellReference(0, 0);
+    }
+
+    /**
+     * Constructor of the shape with given coordinates.
+     * @param x x-coordinate of the upper left corner of the cell
+     * @param y y-coordinate of the upper left corner of the cell
+     */
+    public CellShape(int x, int y) {
+        gridCell = new GridCellReference(x, y);
     }
 
     @Override
@@ -41,8 +47,6 @@ public class CellShape extends Shape {
     public boolean blocksCell(int xcell, int ycell) {
         return gridCell.x == xcell && gridCell.y == ycell;
     }
-
-    boolean moved = true;
 
     @Override
     public boolean moved() {
@@ -74,7 +78,7 @@ public class CellShape extends Shape {
 
     @Override
     public void setPos(double x, double y) {
-        x -= 0.5; //translate from center to grid coordinates
+        x -= 0.5; // Translate from center to grid coordinates.
         y -= 0.5;
         if ((x - Math.round(x)) > 0.01 || (y - Math.round(y)) > 0.01)
             throw new RuntimeException("Cell shape position cannot be set to a non-integer value.");

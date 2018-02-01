@@ -29,9 +29,21 @@ public class CircleShape extends Shape {
     private double radius;
 
     /**
+     * Flag that determines whether this shape has moved.
+     */
+    private boolean moved = true;
+
+    /**
      * Set of grid cell references that this shape is currently on.
      */
-    transient Set<GridCellReference> memo = null;
+    private transient Set<GridCellReference> memo = null;
+
+    /**
+     * Default constructor needed for serialization.
+     */
+    public CircleShape() {
+
+    }
 
     /**
      * Constructor of a circle shape with given coordinates and radius.
@@ -43,13 +55,6 @@ public class CircleShape extends Shape {
         this.x = x;
         this.y = y;
         this.radius = radius;
-    }
-
-    /**
-     * Default constructor needed for serialization.
-     */
-    public CircleShape() {
-
     }
 
     @Override
@@ -82,8 +87,6 @@ public class CircleShape extends Shape {
         return Util.dist(maxx, maxy, x, y) <= radius;
         // TODO better definition?
     }
-
-    private boolean moved = true;
 
     @Override
     public boolean moved() {

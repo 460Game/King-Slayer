@@ -60,7 +60,7 @@ public abstract class Shape {
         public int y;
 
         /**
-         *
+         * Default constructor.
          */
         GridCellReference() {}
 

@@ -2,11 +2,12 @@ package game.model.Game.WorldObject.Entity;
 
 import Util.Util;
 import game.model.Game.Model.GameModel;
-import game.model.Game.WorldObject.Shape.CellShape;
-import game.model.Game.WorldObject.Shape.CircleShape;
-import game.model.Game.WorldObject.Shape.Shape;
+import game.model.Game.WorldObject.Shape.*;
 import javafx.scene.canvas.GraphicsContext;
 
+/**
+ * Class that defines an abstract player in the game world.
+ */
 public abstract class Player extends MovingEntity {
 
     @Override
@@ -16,6 +17,10 @@ public abstract class Player extends MovingEntity {
         this.shape = o.shape;
         this.dx = o.dx;
         this.dy = o.dy;
+        this.up = o.up;
+        this.left = o.left;
+        this.right = o.right;
+        this.down = o.down;
         super.copyOf(other);
     }
 
@@ -80,6 +85,16 @@ public abstract class Player extends MovingEntity {
                     setPos(collidesWith.getX() - 0.5 - this.shape.getRadius(), y + 0.1);
                 else
                     setPos(collidesWith.getX() - 0.5 - this.shape.getRadius(), y - 0.1);
+            } else if (angle > 3 * Math.PI / 4 || angle < - 3 * Math.PI / 4) {
+                if (Util.closeDouble(this.getMovementAngle(), 3 * Math.PI / 4))
+                    setPos(collidesWith.getX() + 0.5 + this.shape.getRadius(), y + 0.1);
+                else
+                    setPos(collidesWith.getX() + 0.5 + this.shape.getRadius(), y - 0.1);
+            } else if (angle < - Math.PI / 4 && angle > -3 * Math.PI / 4) {
+                if (Util.closeDouble(this.getMovementAngle(), - Math.PI / 4))
+                    setPos(x + 0.1, collidesWith.getY() + 0.5 + this.shape.getRadius());
+                else
+                    setPos(x - 0.1, collidesWith.getY() + 0.5 + this.shape.getRadius());
             }
             else
                 setPos(x, y);
