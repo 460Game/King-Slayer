@@ -1,4 +1,4 @@
-0 1
+0 1 Grass to water/bridge transitions, grass side
 _J_
 JGE
 _E_
@@ -43,7 +43,7 @@ _E_
 EGJ
 _J_
 
-7 1
+7 1 Bridge Gieces
 ___
 LBL
 ___
@@ -63,7 +63,7 @@ ___
 BBL
 ___
 
-3 5
+3 5 Dirt to grass transitions
 _G_
 GDU
 _UU
@@ -108,7 +108,7 @@ UU_
 UDG
 _G_
 
-6 8
+6 8 One corner
 UUU
 UDU
 UUG
@@ -128,7 +128,7 @@ GUU
 UDU
 UUU
 
-9 9
+9 9 Two adjacent corners
 GUU
 UDU
 GUU
@@ -148,7 +148,27 @@ UUG
 UDU
 UUG
 
-9 5
+9 11 Three corners
+GUG
+UDU
+GUU
+
+10 11
+GUG
+UDU
+UUG
+
+9 12
+GUU
+UDU
+GUG
+
+10 12
+UUG
+UDU
+GUG
+
+9 5 Two corners, one edge
 _G_
 UDU
 GUG
@@ -168,7 +188,7 @@ GUG
 UDU
 _G_
 
-9 7
+9 7 Two edges, one corner
 _G_
 GDU
 _UG
@@ -188,7 +208,7 @@ GU_
 UDG
 _G_
 
-7 13
+7 13 One edge, one corner
 _G_
 UDU
 GUU
@@ -228,7 +248,7 @@ UU_
 UDG
 GU_
 
-3 8
+3 8 Two edges, Garallel
 _U_
 GDG
 _U_
@@ -238,7 +258,7 @@ _G_
 UDU
 _G_
 
-10 13
+10 13 Two diagonal corners
 GUU
 UDU
 UUG
@@ -248,7 +268,7 @@ UUG
 UDU
 GUU
 
-4 8
+4 8 Three-four edges
 _G_
 GDG
 _U_
@@ -273,17 +293,17 @@ _U_
 GDG
 _G_
 
-3 21
+3 21 Normal water
+_W_
+_W_
+___
+
+0 20 Grass above water
 _K_
 _W_
 ___
 
-0 20
-_G_
-_W_
-___
-
-3 20
+2 19 Bridge above water
 _B_
 _W_
 ___

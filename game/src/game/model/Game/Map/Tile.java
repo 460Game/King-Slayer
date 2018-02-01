@@ -105,10 +105,10 @@ public enum Tile {
         }
 
         matches = new HashMap<>();
-        matches.put('G', Arrays.asList('G', 'E', 'X', 'L', '_'));
+        matches.put('G', Arrays.asList('G', 'E', 'X', 'L', 'K', '_'));
         matches.put('D', Arrays.asList('D', 'E', 'U', 'L', 'K', '_'));
-        matches.put('W', Arrays.asList('W', 'J', 'X', 'U', 'L', 'K', '_'));
-        matches.put('B', Arrays.asList('B', 'J', 'X', 'U', '_'));
+        matches.put('W', Arrays.asList('W', 'J', 'X', 'U', 'L', '_'));
+        matches.put('B', Arrays.asList('B', 'J', 'X', 'U', 'E', '_'));
     }
 
 
