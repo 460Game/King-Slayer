@@ -70,7 +70,7 @@ public class ServerMapGenerator implements MapGenerator {
         stone(Tile.GRASS_0, Stone::new),
         tree(Tile.GRASS_0, Tree::new),//Tree::new),
         wall(Tile.GRASS_0, BlockerWall::new),
-        room(Tile.PATH, null),
+        room(Tile.GRASS_0, null),
         grass0(Tile.GRASS_0, null),
         grass1(Tile.GRASS_1, null),
         grass2(Tile.GRASS_2, null),
@@ -191,7 +191,8 @@ public class ServerMapGenerator implements MapGenerator {
                     for (int x = i - FEATURE_SIZE / 2; x <= i + FEATURE_SIZE / 2; x++)
                         for (int y = j - FEATURE_SIZE / 2; y <= j + FEATURE_SIZE / 2; y++)
                             if(grid[x][y] != TS.edgeWater)
-                                grid[x][y] = TS.room;
+                              //  grid[x][y] = TS.room;
+;
 
                     for (int x = i - FEATURE_SIZE; x <= i + FEATURE_SIZE; x++)
                         for (int y = j - FEATURE_SIZE; y <= j + FEATURE_SIZE; y++)
