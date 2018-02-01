@@ -297,7 +297,8 @@ public abstract class Player extends MovingEntity {
         this.x = shape.getX();
         this.y = shape.getY();
         // shape.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10); TODO use the delta
-        shape.shift(getVelocityX(), getVelocityY());
+
+        shape.shift(getVelocityX() * time * 5e-8, getVelocityY() * time * 5e-8);
 
         // Update direction of image
         double angle = getMovementAngle();
@@ -320,8 +321,7 @@ public abstract class Player extends MovingEntity {
             }
         } else {
             imageNum = 0;
-        }
-    }
+        }    }
 
     public void draw(GraphicsContext gc, GameModel model, Image image, Point p) {
         gc.drawImage(image,
