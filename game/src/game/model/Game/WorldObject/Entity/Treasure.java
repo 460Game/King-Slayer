@@ -16,6 +16,8 @@ public class Treasure extends StationaryEntity {
      */
     private Shape shape = new CellShape(); // TODO FIX THis
 
+    // TODO constructor with healht/team?
+
     @Override
     public Shape getShape() {
         return shape;

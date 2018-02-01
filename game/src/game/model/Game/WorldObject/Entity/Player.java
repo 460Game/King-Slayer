@@ -15,22 +15,73 @@ public abstract class Player extends MovingEntity {
      */
     private CircleShape shape;
 
+    /**
+     * Keeps track of change in x direction. Used for
+     * calculating movement angle.
+     */
     private int dx;
-    private int dy;
-    private double x;
-    private double y;
-    private boolean up = false, left = false, right = false, down = false;
 
+    /**
+     * Keeps track of change in y direction. Used for
+     * calculating movement angle.
+     */
+    private int dy;
+
+    /**
+     * X-coordinate of the center of the player.
+     */
+    private double x;
+
+    /**
+     * Y-coordinate of the center of the player.
+     */
+    private double y;
+
+    /**
+     * Flag that says if the player is currently moving up.
+     */
+    private boolean up = false;
+
+    /**
+     * Flag that says if the player is currently moving left.
+     */
+    private boolean left = false;
+
+    /**
+     * Flag that says if the player is currently moving right.
+     */
+    private boolean right = false;
+
+    /**
+     * Flag that says if the player is currently moving down.
+     */
+    private boolean down = false;
+
+    /**
+     * Default constructor of a player.
+     */
     public Player() {
         super();
         shape = new CircleShape(0.0, 0.0, 0.3);
-
+        this.x = shape.getX();
+        this.y = shape.getY();
+        // TODO set health, team
     }
 
+    /**
+     * Constructor of a player given coordinates.
+     * @param model current model of the game
+     * @param x x-coordinate to spawn the player
+     * @param y y-coordinate to spawn the player
+     * @param king flag that determines whether this player is a king TODO is this correct?
+     */
     public Player(GameModel model, double x, double y, boolean king) {
         super(model);
         shape = new CircleShape(x, y, 0.3);
-        setMovementAngle(0.5 * Math.PI);
+        this.x = x;
+        this.y = y;
+        // TODO set health and team
+        // TODO deal with king boolean
     }
 
     @Override
@@ -122,19 +173,6 @@ public abstract class Player extends MovingEntity {
 
     }
 
-    @Override
-    public void update(long time, GameModel model) {
-        this.x = shape.getX();
-        this.y = shape.getY();
-        // shape.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10); TODO use the delta
-        shape.shift(Math.cos(this.getMovementAngle()) * this.getVelocity(), Math.sin(this.getMovementAngle()) * this.getVelocity());
-    }
-
-    @Override
-    public void draw(GraphicsContext gc, GameModel model) {
-
-    }
-
     /**
      * Move the player based on the given direction.
      * @param dir direction the player wants to move
@@ -221,5 +259,18 @@ public abstract class Player extends MovingEntity {
                 setMovementAngle(oldAngle);
             }
         }
+    }
+
+    @Override
+    public void update(long time, GameModel model) {
+        this.x = shape.getX();
+        this.y = shape.getY();
+        // shape.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10); TODO use the delta
+        shape.shift(getVelocityX(), getVelocityY());
+    }
+
+    @Override
+    public void draw(GraphicsContext gc, GameModel model) {
+
     }
 }

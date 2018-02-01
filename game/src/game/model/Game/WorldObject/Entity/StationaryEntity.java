@@ -8,16 +8,10 @@ import game.model.Game.Model.GameModel;
 public abstract class StationaryEntity extends Entity {
 
     /**
-     * Time of the last update this entity performed.
-     */
-    private long last_update;
-
-    /**
      * Default constructor needed for serialization.
      */
     StationaryEntity() {
-        this.setVelocity(0);
-        this.setMovementAngle(0);
+        super();
     }
 
     /**
@@ -25,8 +19,7 @@ public abstract class StationaryEntity extends Entity {
      * @param model current game model
      */
     StationaryEntity(GameModel model) {
-        this();
-        last_update = model.nanoTime();
+        super(model);
     }
 
     @Override

@@ -7,5 +7,5 @@ public abstract class Resource extends StationaryEntity {
 
     //TODO resource specific logic
     //i.e. amount remaining and
-
+    // TODO health, team
 }

@@ -40,7 +40,7 @@ public abstract class Entity implements Drawable {
     /**
      * ID of this entity.
      */
-    private long id = Util.random.nextLong();
+    private long id;
 
     /**
      * Time of the last update this entity performed.
@@ -52,6 +52,7 @@ public abstract class Entity implements Drawable {
      */
     Entity() {
         velocity = new Velocity(0, 0);
+        id = Util.random.nextLong();
     }
 
     /**

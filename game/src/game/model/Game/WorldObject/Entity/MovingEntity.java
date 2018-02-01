@@ -8,15 +8,10 @@ import game.model.Game.Model.GameModel;
 public abstract class MovingEntity extends Entity {
 
     /**
-     * Time of the last update this entity performed.
-     */
-    private long last_update;
-
-    /**
      * Default constructor needed for serialization.
      */
     MovingEntity() {
-
+        super();
     }
 
     /**
@@ -24,8 +19,7 @@ public abstract class MovingEntity extends Entity {
      * @param model current game model
      */
     MovingEntity(GameModel model) {
-        this();
-        last_update = model.nanoTime();
+        super(model);
     }
 
     @Override
