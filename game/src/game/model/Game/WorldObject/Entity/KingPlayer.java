@@ -6,7 +6,13 @@ import game.model.Game.WorldObject.Team;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.awt.*;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+import static Util.Const.TILE_PIXELS;
 
 /**
  * Defines the king of a team.
@@ -14,60 +20,36 @@ import java.io.IOException;
 public class KingPlayer extends Player {
 
     /**
-     * Images that represen the king on the red team.
+     * Image that represents the king on the red team.
      */
     private static Image imageRedKing;
 
     /**
-     * Images that represent the king on the blue team.
+     * Image that represents the king on the blue team.
      */
-    private static Image[][] imagesBlueKing = new Image[4][4];
-
-    /**
-     * Index to get the image for a certain frame.
-     */
-    private int imageNum = 0;
-
-    /**
-     * Index to get the images for movement in a certain direction.
-     */
-    private int direction = 0;
-
-    /**
-     * Counter to help create animation.
-     */
-    private int count = 0;
+    private static Image imageBlueKing;
 
     // Get the images to represent the king on each team.
+    private static Map<String, Point> imageMap = new HashMap<>();
     static {
+        Scanner input;
         try {
-            imageRedKing = new Image(Tile.class.getResource("king_red_1.png").openStream());
+            input = new Scanner(Tile.class.getResource("players.txt").openStream());
 
-            /* Blue King */
-            // Front
-            imagesBlueKing[0][0] = new Image(Tile.class.getResource("king_blue_0.png").openStream());
-            imagesBlueKing[0][1] = new Image(Tile.class.getResource("king_blue_1.png").openStream());
-            imagesBlueKing[0][2] = imagesBlueKing[0][0];
-            imagesBlueKing[0][3] = new Image(Tile.class.getResource("king_blue_2.png").openStream());
+            while (input.hasNext()) {
+                Point curPoint = new Point(input.nextInt(), input.nextInt());
+                if (curPoint.x == -1) break;
+                input.nextLine();
+                String info = input.nextLine();
+                imageMap.put(info, curPoint);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            // Right
-            imagesBlueKing[1][0] = new Image(Tile.class.getResource("king_blue_right_0.png").openStream());
-            imagesBlueKing[1][1] = new Image(Tile.class.getResource("king_blue_right_1.png").openStream());
-            imagesBlueKing[1][2] = imagesBlueKing[1][0];
-            imagesBlueKing[1][3] = new Image(Tile.class.getResource("king_blue_right_2.png").openStream());
-
-            // Left
-            imagesBlueKing[2][0] = new Image(Tile.class.getResource("king_blue_left_0.png").openStream());
-            imagesBlueKing[2][1] = new Image(Tile.class.getResource("king_blue_left_1.png").openStream());
-            imagesBlueKing[2][2] = imagesBlueKing[2][0];
-            imagesBlueKing[2][3] = new Image(Tile.class.getResource("king_blue_left_2.png").openStream());
-
-            // Back
-            imagesBlueKing[3][0] = new Image(Tile.class.getResource("king_blue_back_0.png").openStream());
-            imagesBlueKing[3][1] = new Image(Tile.class.getResource("king_blue_back_1.png").openStream());
-            imagesBlueKing[3][2] = imagesBlueKing[3][0];
-            imagesBlueKing[3][3] = new Image(Tile.class.getResource("king_blue_back_2.png").openStream());
-
+        try {
+            imageRedKing = new Image(Tile.class.getResource("king_red_sheet_new.png").openStream());
+            imageBlueKing = new Image(Tile.class.getResource("king_blue_sheet_new.png").openStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,40 +57,19 @@ public class KingPlayer extends Player {
 
     @Override
     public void draw(GraphicsContext gc, GameModel model) {
-        //gc.setFill(this.getTeam().color);
-        //shape.draw(gc);
-        if (this.getTeam() == Team.ONE) {
-            draw(gc, imageRedKing);
-        } else {
-            draw(gc, imagesBlueKing[direction][imageNum]);
-        }
-    }
-
-    @Override
-    public void update(long time, GameModel model) {
-        super.update(time, model);
-
-        // Update direction of image
-        double angle = getMovementAngle();
-        if (angle >= -0.75 * Math.PI && angle < -0.25 * Math.PI) {
-            direction = 3;
-        } else if (angle >= -0.25 * Math.PI && angle < 0.25 * Math.PI) {
-            direction = 1;
-        } else if (angle >= 0.25 * Math.PI && angle < 0.75 * Math.PI) {
-            direction = 0;
-        } else if (angle >= 0.75 * Math.PI || angle < -0.75 * Math.PI) {
-            direction = 2;
-        }
-
-        // Update image being used
-        if (this.getVelocity() != 0) {
-            count++;
-            if (count > 11) {
-                count = 0;
-                imageNum = (imageNum + 1) % imagesBlueKing[direction].length;
+        try {
+            Point p = imageMap.get(imageNum + "" + direction);
+            if (this.getTeam() == Team.ONE) {
+                gc.drawImage(imageRedKing,
+                    p.x * 32, p.y * 32, 32, 32,
+                    this.getX() * TILE_PIXELS, this.getY() * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
+            } else {
+                gc.drawImage(imageBlueKing,
+                    p.x * 32, p.y * 32, 32, 32,
+                    this.getX() * TILE_PIXELS, this.getY() * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
             }
-        } else {
-            imageNum = 0;
+        } catch (Exception e) {
+
         }
     }
 
