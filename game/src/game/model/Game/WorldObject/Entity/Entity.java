@@ -51,7 +51,7 @@ public abstract class Entity implements Drawable {
      * Default constructor needed for serialization.
      */
     Entity() {
-
+        velocity = new Velocity(0, 0);
     }
 
     /**

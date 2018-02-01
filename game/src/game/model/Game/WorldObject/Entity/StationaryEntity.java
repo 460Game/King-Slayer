@@ -31,7 +31,7 @@ public abstract class StationaryEntity extends Entity {
 
     @Override
     public void collision(GameModel model, StationaryEntity collidesWith) {
-        // Do nothing
+        // Do nothing because it is stationary.
     }
 
     @Override

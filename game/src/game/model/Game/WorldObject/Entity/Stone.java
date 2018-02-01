@@ -11,10 +11,16 @@ import java.io.IOException;
 
 import static Util.Const.TILE_PIXELS;
 
+/**
+ * The middle tier resource in the game world.
+ */
 public class Stone extends Resource {
 
-    //    Shape shape = new CircleShape(0,0,0.5);
-    Shape shape = new CellShape(); // TODO FIX THis
+    /**
+     * The shape of the stone resource.
+     */
+    //    private Shape shape = new CircleShape(0,0,0.5);
+    private Shape shape = new CellShape(); // TODO FIX THis
 
     @Override
     public Shape getShape() {
@@ -26,9 +32,19 @@ public class Stone extends Resource {
 
     }
 
+    /**
+     * Holds all the images that represent the amount of stone
+     * resource left in that tile.
+     */
     static Image[] image = new Image[8];
+
+    /**
+     * The index of the image to be drawn.
+     */
     private int imageNum = 0;
 
+    // Get the various images for the resource. Each image corresponds to
+    // a different amount of stone left.
     static {
         try {
             image[0] = new Image(Tile.class.getResource("boulder_tall.png").openStream());

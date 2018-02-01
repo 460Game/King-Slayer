@@ -12,8 +12,15 @@ import java.io.IOException;
 
 import static Util.Const.TILE_PIXELS;
 
+/**
+ * The basic resource in the game world. It produces wood
+ * and can be found all over the map.
+ */
 public class Tree extends Resource {
 
+    /**
+     * The shape of the wood resource.
+     */
 //    Shape shape = new CircleShape(0,0,0.5);
     Shape shape = new CellShape(); // TODO FIX THis
 
@@ -27,9 +34,19 @@ public class Tree extends Resource {
 
     }
 
+    /**
+     * Holds all the images that represent the amount of wood
+     * resource left in that tile.
+     */
     static Image[] image = new Image[5];
+
+    /**
+     * The index of the image to be drawn.
+     */
     private int imageNum = 0;
 
+    // Get the various images for the resource. Each image corresponds to
+    // a different amount of wood left.
     static {
         try {
             image[0] = new Image(Tile.class.getResource("tree.png").openStream());

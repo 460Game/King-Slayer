@@ -10,6 +10,39 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public abstract class Player extends MovingEntity {
 
+    /**
+     * Shape that represents a player in the game.
+     */
+    private CircleShape shape;
+
+    private int dx;
+    private int dy;
+    private double x;
+    private double y;
+    private boolean up = false, left = false, right = false, down = false;
+
+    public Player() {
+        super();
+        shape = new CircleShape(0.0, 0.0, 0.3);
+
+    }
+
+    public Player(GameModel model, double x, double y, boolean king) {
+        super(model);
+        shape = new CircleShape(x, y, 0.3);
+        setMovementAngle(0.5 * Math.PI);
+    }
+
+    @Override
+    public Shape getShape() {
+        return shape;
+    }
+
+    @Override
+    public double getDrawZ() {
+        return getY();
+    }
+
     @Override
     public void copyOf(Entity other) {
         assert (other instanceof Player);
@@ -22,23 +55,6 @@ public abstract class Player extends MovingEntity {
         this.right = o.right;
         this.down = o.down;
         super.copyOf(other);
-    }
-
-    private CircleShape shape;
-    private int dx;
-    private int dy;
-    private boolean up = false, left = false, right = false, down = false;
-
-    public Player() {
-        super();
-        shape = new CircleShape(0.0, 0.0, 0.3);
-        setMovementAngle(0.5 * Math.PI);
-    }
-
-    public Player(GameModel model, double x, double y, boolean king) {
-        super(model);
-        shape = new CircleShape(x, y, 0.3);
-        setMovementAngle(0.5 * Math.PI);
     }
 
     @Override
@@ -105,19 +121,6 @@ public abstract class Player extends MovingEntity {
         // TODO problem running into object from another direction but still hiting object
 
     }
-
-    @Override
-    public Shape getShape() {
-        return shape;
-    }
-
-    @Override
-    public double getDrawZ() {
-        return getY();
-    }
-
-    private double x;
-    private double y;
 
     @Override
     public void update(long time, GameModel model) {

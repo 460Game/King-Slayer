@@ -29,12 +29,8 @@ public abstract class MovingEntity extends Entity {
     }
 
     @Override
-    public void collision(GameModel model, StationaryEntity collidesWith) {
-        // Do nothing
-    }
+    public abstract void collision(GameModel model, StationaryEntity collidesWith);
 
     @Override
-    public void collision(GameModel model, MovingEntity collidesWith) {
-        // Do nothing
-    }
+    public abstract void collision(GameModel model, MovingEntity collidesWith);
 }

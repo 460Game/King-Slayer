@@ -12,18 +12,38 @@ import java.io.IOException;
  * Defines the king of a team.
  */
 public class KingPlayer extends Player {
+
+    /**
+     * Images that represen the king on the red team.
+     */
     private static Image imageRedKing;
+
+    /**
+     * Images that represent the king on the blue team.
+     */
     private static Image[][] imagesBlueKing = new Image[4][4];
 
+    /**
+     * Index to get the image for a certain frame.
+     */
     private int imageNum = 0;
+
+    /**
+     * Index to get the images for movement in a certain direction.
+     */
     private int direction = 0;
+
+    /**
+     * Counter to help create animation.
+     */
     private int count = 0;
 
+    // Get the images to represent the king on each team.
     static {
         try {
             imageRedKing = new Image(Tile.class.getResource("king_red_1.png").openStream());
 
-      /* Blue King */
+            /* Blue King */
             // Front
             imagesBlueKing[0][0] = new Image(Tile.class.getResource("king_blue_0.png").openStream());
             imagesBlueKing[0][1] = new Image(Tile.class.getResource("king_blue_1.png").openStream());
