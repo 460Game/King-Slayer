@@ -68,13 +68,13 @@ public class SlayerPlayer extends Player {
         try {
             Point p = imageMap.get(imageNum + "" + direction);
             if (this.getTeam() == Team.ONE) {
-                gc.drawImage(imageRedSlayer,
-                    p.x * 32, p.y * 32, 32, 32,
-                    this.getX() * TILE_PIXELS, this.getY() * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
+                super.draw(gc, model, imageRedSlayer, p);
+//                    p.x * 32, p.y * 32, 32, 32,
+//                    this.getX() * TILE_PIXELS, this.getY() * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
             } else {
-                gc.drawImage(imageBlueSlayer,
-                    p.x * 32, p.y * 32, 32, 32,
-                    this.getX() * TILE_PIXELS, this.getY() * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
+                super.draw(gc, model, imageBlueSlayer, p);
+//                    p.x * 32, p.y * 32, 32, 32,
+//                    this.getX() * TILE_PIXELS, this.getY() * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
             }
         } catch (Exception e) {
             //e.printStackTrace();

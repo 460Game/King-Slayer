@@ -60,13 +60,13 @@ public class KingPlayer extends Player {
         try {
             Point p = imageMap.get(imageNum + "" + direction);
             if (this.getTeam() == Team.ONE) {
-                gc.drawImage(imageRedKing,
-                    p.x * 32, p.y * 32, 32, 32,
-                    this.getX() * TILE_PIXELS, this.getY() * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
+                super.draw(gc, model, imageRedKing, p);
+//                    p.x * 32, p.y * 32, 32, 32,
+//                    this.getX() * TILE_PIXELS, this.getY() * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
             } else {
-                gc.drawImage(imageBlueKing,
-                    p.x * 32, p.y * 32, 32, 32,
-                    this.getX() * TILE_PIXELS, this.getY() * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
+                super.draw(gc, model, imageBlueKing, p);
+//                    p.x * 32, p.y * 32, 32, 32,
+//                    this.getX() * TILE_PIXELS, this.getY() * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
             }
         } catch (Exception e) {
 

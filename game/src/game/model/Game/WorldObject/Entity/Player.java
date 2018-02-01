@@ -3,7 +3,13 @@ package game.model.Game.WorldObject.Entity;
 import Util.Util;
 import game.model.Game.Model.GameModel;
 import game.model.Game.WorldObject.Shape.*;
+import game.model.Game.WorldObject.Shape.Shape;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+
+import java.awt.*;
+
+import static Util.Const.TILE_PIXELS;
 
 /**
  * Class that defines an abstract player in the game world.
@@ -317,8 +323,9 @@ public abstract class Player extends MovingEntity {
         }
     }
 
-    @Override
-    public void draw(GraphicsContext gc, GameModel model) {
-
+    public void draw(GraphicsContext gc, GameModel model, Image image, Point p) {
+        gc.drawImage(image,
+            p.x * 32, p.y * 32, 32, 32,
+            this.getX() * TILE_PIXELS - TILE_PIXELS / 2, this.getY() * TILE_PIXELS - TILE_PIXELS / 2 + 25, TILE_PIXELS, TILE_PIXELS);
     }
 }
