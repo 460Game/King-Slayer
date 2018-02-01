@@ -270,7 +270,7 @@ public class ServerMapGenerator implements MapGenerator {
         }
 
 
-        for (int i = 1; i < this.mapW-1; i++)
+    /*    for (int i = 1; i < this.mapW-1; i++)
             for (int j = 1; j < mapH-1; j++) {
                 if(grid[i-1][j]== TS.edgeWater || grid[i+1][j]== TS.edgeWater || grid[i][j-1]== TS.edgeWater || grid[i][j+1]== TS.edgeWater ||
                 grid[i-1][j]== TS.river || grid[i+1][j]== TS.river|| grid[i][j-1]== TS.river||grid[i][j+1]== TS.river) {
@@ -278,7 +278,7 @@ public class ServerMapGenerator implements MapGenerator {
                     if(grid[i][j] == TS.road || grid[i][j] == TS.room)
                         grid[i][j] = TS.grass0;
                 }
-            }
+            }*/
 
         /*for (int i = 0; i < NUM_TRESURE_ROOM; i++) {
             t = rooms.poll();
