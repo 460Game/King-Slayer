@@ -51,6 +51,9 @@ Image logo = new Image(Main.class.getResourceAsStream("logo.png"));
         Canvas midCanvas = new Canvas(window.getWidth(), window.getHeight());
         GraphicsContext midGC = midCanvas.getGraphicsContext2D();
 
+        //  Button joinGame = new Button("button");
+        //  root.getChildren().add(joinGame);
+
         root.getChildren().add(bgCanvas);
         root.getChildren().add(midCanvas);
         scene = new Scene(root);

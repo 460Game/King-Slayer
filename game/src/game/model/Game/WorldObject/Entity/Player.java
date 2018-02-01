@@ -266,7 +266,7 @@ public abstract class Player extends MovingEntity {
         this.x = shape.getX();
         this.y = shape.getY();
         // shape.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10); TODO use the delta
-        shape.shift(getVelocityX(), getVelocityY());
+        shape.shift(getVelocityX() * time * 5e-8, getVelocityY() * time * 5e-8);
     }
 
     @Override

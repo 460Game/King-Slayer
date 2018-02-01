@@ -74,6 +74,9 @@ public class GameView {
         AnimationTimer animator = new AnimationTimer() {
             @Override
             public void handle(long arg0) {
+                model.update();
+
+
                 minimapGC.setTransform(new Affine(Transform.scale(
                     minimapGC.getCanvas().getWidth()/model.getMapWidth(),
                     minimapGC.getCanvas().getHeight()/model.getMapHeight())));
