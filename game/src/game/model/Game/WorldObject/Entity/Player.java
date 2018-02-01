@@ -65,7 +65,7 @@ public abstract class Player extends MovingEntity {
     /**
      * Index to get the images for movement in a certain direction.
      */
-    int direction = 0;
+    char direction = SOUTH;
 
     /**
      * Counter to help create animation.
@@ -88,6 +88,7 @@ public abstract class Player extends MovingEntity {
         shape = new CircleShape(0.0, 0.0, 0.3);
         this.x = shape.getX();
         this.y = shape.getY();
+        this.setMovementAngle(0.5 * Math.PI);
         // TODO set health, team
     }
 
@@ -103,6 +104,7 @@ public abstract class Player extends MovingEntity {
         shape = new CircleShape(x, y, 0.3);
         this.x = x;
         this.y = y;
+        this.setMovementAngle(0.5 * Math.PI);
         // TODO set health and team
         // TODO deal with king boolean
     }
