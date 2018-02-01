@@ -58,6 +58,29 @@ public abstract class Player extends MovingEntity {
     private boolean down = false;
 
     /**
+     * Index to get the image for a certain frame.
+     */
+    int imageNum = 0;
+
+    /**
+     * Index to get the images for movement in a certain direction.
+     */
+    int direction = 0;
+
+    /**
+     * Counter to help create animation.
+     */
+    int count = 0;
+
+    /**
+     * Static variables for the four cardinal directions.
+     */
+    private static char NORTH = 'N';
+    private static char EAST = 'E';
+    private static char SOUTH = 'S';
+    private static char WEST = 'W';
+
+    /**
      * Default constructor of a player.
      */
     public Player() {
@@ -267,6 +290,29 @@ public abstract class Player extends MovingEntity {
         this.y = shape.getY();
         // shape.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10); TODO use the delta
         shape.shift(getVelocityX(), getVelocityY());
+
+        // Update direction of image
+        double angle = getMovementAngle();
+        if (angle >= -0.75 * Math.PI && angle < -0.25 * Math.PI) {
+            direction = NORTH;
+        } else if (angle >= -0.25 * Math.PI && angle < 0.25 * Math.PI) {
+            direction = EAST;
+        } else if (angle >= 0.25 * Math.PI && angle < 0.75 * Math.PI) {
+            direction = SOUTH;
+        } else if (angle >= 0.75 * Math.PI || angle < -0.75 * Math.PI) {
+            direction = WEST;
+        }
+
+        // Update image being used
+        if (this.getVelocity() != 0) {
+            count++;
+            if (count > 11) {
+                count = 0;
+                imageNum = (imageNum + 1) % 3;
+            }
+        } else {
+            imageNum = 0;
+        }
     }
 
     @Override
