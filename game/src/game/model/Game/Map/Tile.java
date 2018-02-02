@@ -80,7 +80,7 @@ public enum Tile {
 
     private static Map<String, Point> tileMap = new HashMap<>();
     private static Map<Character, List<Character>> matches;
-    private static int animationTime = 0;
+
     static {
         Scanner input;
         try {
@@ -157,7 +157,7 @@ public enum Tile {
      * @param y y-coordinate of the upper left corner of the cell holding this
      *          tile
      */
-    public void draw(GraphicsContext gc, int x, int y, GameModel model) {
+    public void draw(GraphicsContext gc, int x, int y, GameModel model, boolean firstAnimation) {
         StringBuilder hashKey = new StringBuilder();
         for (int j = -1; j < 2; j++) {
             for (int i = -1; i < 2; i++) {
@@ -182,16 +182,10 @@ public enum Tile {
                     maxPoint = curPoint;
                 }
             }
-            if (this.tupleNum == 'W') {
-                if (animationTime < 40) {
-                    gc.drawImage(this.IMAGE,
-                        maxPoint.x * 32, maxPoint.y * 32, 32, 32,
-                        x * TILE_PIXELS, y * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
-                } else {
-                    gc.drawImage(this.IMAGE,
-                        (maxPoint.x + 10) * 32, maxPoint.y * 32, 32, 32,
-                        x * TILE_PIXELS, y * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
-                }
+            if (!firstAnimation && this.tupleNum != 'W') {
+                gc.drawImage(this.IMAGE,
+                    (maxPoint.x + 10) * 32, maxPoint.y * 32, 32, 32,
+                    x * TILE_PIXELS, y * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
             } else {
                 gc.drawImage(this.IMAGE,
                     maxPoint.x * 32, maxPoint.y * 32, 32, 32,
