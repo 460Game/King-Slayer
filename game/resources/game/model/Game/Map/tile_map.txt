@@ -78,7 +78,7 @@ _K_
 JGJ
 _J_
 
-7 1 Bridge Gieces
+7 1 Bridge pieces
 ___
 LBL
 ___
@@ -283,7 +283,7 @@ UU_
 UDG
 GU_
 
-3 8 Two edges, Garallel
+3 8 Two edges, parallel
 _U_
 GDG
 _U_

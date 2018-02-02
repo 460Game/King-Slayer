@@ -182,7 +182,7 @@ public enum Tile {
                     maxPoint = curPoint;
                 }
             }
-            if (!firstAnimation && this.tupleNum != 'W') {
+            if (!firstAnimation && this.tupleNum == 'W') {
                 gc.drawImage(this.IMAGE,
                     (maxPoint.x + 10) * 32, maxPoint.y * 32, 32, 32,
                     x * TILE_PIXELS, y * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
