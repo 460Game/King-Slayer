@@ -68,7 +68,7 @@ public abstract class Player extends MovingEntity {
     /**
      * Counter to help create animation.
      */
-    int count = 0;
+    private int count = 0;
 
     /**
      * Static variables for the four cardinal directions.
@@ -304,7 +304,13 @@ public abstract class Player extends MovingEntity {
             imageNum = 0;
         }    }
 
-    public void draw(GraphicsContext gc, GameModel model, Image image, Point p) {
+    /**
+     * Draws the piece of the given image starting at point p.
+     * @param gc graphics context image is to be drawn with
+     * @param image a character sheet for the player being drawn
+     * @param p the top left point of where the desired piece of the image is
+     */
+    public void draw(GraphicsContext gc, Image image, Point p) {
         gc.drawImage(image,
             p.x * 32, p.y * 32, 32, 32,
             this.getX() * TILE_PIXELS - TILE_PIXELS / 2, this.getY() * TILE_PIXELS - TILE_PIXELS / 2 + 25, TILE_PIXELS, TILE_PIXELS);

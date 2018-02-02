@@ -47,8 +47,6 @@ public class SlayerPlayer extends Player {
                 input.nextLine();
                 String info = input.nextLine();
                 imageMap.put(info, curPoint);
-
-                System.out.println(curPoint + ": " + info);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,16 +66,12 @@ public class SlayerPlayer extends Player {
         try {
             Point p = imageMap.get(imageNum + "" + direction);
             if (this.getTeam() == Team.ONE) {
-                super.draw(gc, model, imageRedSlayer, p);
-//                    p.x * 32, p.y * 32, 32, 32,
-//                    this.getX() * TILE_PIXELS, this.getY() * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
+                super.draw(gc, imageRedSlayer, p);
             } else {
-                super.draw(gc, model, imageBlueSlayer, p);
-//                    p.x * 32, p.y * 32, 32, 32,
-//                    this.getX() * TILE_PIXELS, this.getY() * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
+                super.draw(gc, imageBlueSlayer, p);
             }
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
     }
 

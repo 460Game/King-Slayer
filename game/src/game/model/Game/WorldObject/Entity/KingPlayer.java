@@ -29,9 +29,15 @@ public class KingPlayer extends Player {
      */
     private static Image imageBlueKing;
 
-    // Get the images to represent the king on each team.
+    /**
+     * Key for figuring out which piece of the character sheet is needed for
+     * the king at a given point in time.
+     */
     private static Map<String, Point> imageMap = new HashMap<>();
+
     static {
+        // Read in file detailing which images to use at which points in time in the animation
+        // of the king.
         Scanner input;
         try {
             input = new Scanner(Tile.class.getResource("players.txt").openStream());
@@ -47,6 +53,7 @@ public class KingPlayer extends Player {
             e.printStackTrace();
         }
 
+        // Get the sprite sheets for the kings.
         try {
             imageRedKing = new Image(Tile.class.getResource("king_red_sheet_new.png").openStream());
             imageBlueKing = new Image(Tile.class.getResource("king_blue_sheet_new.png").openStream());
@@ -60,13 +67,9 @@ public class KingPlayer extends Player {
         try {
             Point p = imageMap.get(imageNum + "" + direction);
             if (this.getTeam() == Team.ONE) {
-                super.draw(gc, model, imageRedKing, p);
-//                    p.x * 32, p.y * 32, 32, 32,
-//                    this.getX() * TILE_PIXELS, this.getY() * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
+                super.draw(gc, imageRedKing, p);
             } else {
-                super.draw(gc, model, imageBlueKing, p);
-//                    p.x * 32, p.y * 32, 32, 32,
-//                    this.getX() * TILE_PIXELS, this.getY() * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, 64, 64);
+                super.draw(gc, imageBlueKing, p);
             }
         } catch (Exception e) {
 
