@@ -32,7 +32,7 @@ public class Main extends Application {
         this.window = window;
 
         window.show();
-Image logo = new Image(Main.class.getResourceAsStream("logo.png"));
+        Image logo = new Image(Main.class.getResourceAsStream("logo.png"));
         SingleplayerController test = new SingleplayerController();
         window.getIcons().add(logo);
         window.setMinHeight(400);
