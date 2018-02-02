@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import java.awt.*;
 
 import static Util.Const.TILE_PIXELS;
+import static java.lang.Math.PI;
 
 /**
  * Class that defines an abstract player in the game world.
@@ -33,16 +34,6 @@ public abstract class Player extends MovingEntity {
      * calculating movement angle.
      */
     private int dy;
-
-    /**
-     * X-coordinate of the center of the player.
-     */
-    private double x;
-
-    /**
-     * Y-coordinate of the center of the player.
-     */
-    private double y;
 
     /**
      * Flag that says if the player is currently moving up.
@@ -93,9 +84,7 @@ public abstract class Player extends MovingEntity {
     public Player() {
         super();
         shape = new CircleShape(0.0, 0.0, 0.3);
-        this.x = shape.getX();
-        this.y = shape.getY();
-        this.setMovementAngle(0.5 * Math.PI);
+        this.setMovementAngle(0.5 * PI);
         // TODO set health, team
     }
 
@@ -109,9 +98,7 @@ public abstract class Player extends MovingEntity {
     public Player(GameModel model, double x, double y, boolean king) {
         super(model);
         shape = new CircleShape(x, y, 0.3);
-        this.x = x;
-        this.y = y;
-        this.setMovementAngle(0.5 * Math.PI);
+        this.setMovementAngle(0.5 * PI);
         // TODO set health and team
         // TODO deal with king boolean
     }
@@ -151,145 +138,38 @@ public abstract class Player extends MovingEntity {
 
     @Override
     public void collision(GameModel model, StationaryEntity collidesWith) {
-        System.out.println("X: " + (shape.getX()) + ", Y: " + (shape.getY()) + ", radius: " + shape.getRadius());
+       // System.out.println("X: " + (shape.getX()) + ", Y: " + (shape.getY()) + ", radius: " + shape.getRadius());
 
 //        for(Shape.GridCellReference g : shape.getCellsReference())
 //            System.out.println("Cell X: " + g.x + ", cell Y: " + g.y);
-        System.out.println("Blocker X, y: " + collidesWith.getX() + ", " + collidesWith.getY());
-//        if (collidesWith.getShape() instanceof CellShape) {
-//            double angle = Util.angle2Points(getX(), getY(), collidesWith.getX(), collidesWith.getY());
-//            System.out.println("Collide angle: " + angle);
-//            System.out.println("Movement angle: " + getMovementAngle());
-//            if (Util.closeDouble(this.getMovementAngle(), Math.PI)) {//collidesWith.getVelocity() == 0 ) {
-//                setVelocity(0);
-//                setPos(collidesWith.getX() + 0.5 + this.shape.getRadius(), y); // Center of entity + 0.5 = right edge +
-//                // shape radius to get new center
-//            } else if (Util.closeDouble(this.getMovementAngle(), 0)) {//collidesWith.getVelocity() == 0) {
-//                setVelocity(0);
-//                setPos(collidesWith.getX() - 0.5 - this.shape.getRadius(), y); // Center of entity - 0.5 = left edge -
-//                // shape radius to get new center
-//            } else if (Util.closeDouble(this.getMovementAngle(), Math.PI / 2)) {//collidesWith.getVelocity() == 0) {
-//                setVelocity(0);
-//                setPos(x, collidesWith.getY() - 0.5 - this.shape.getRadius());
-//            } else if (Util.closeDouble(this.getMovementAngle(), -Math.PI / 2)) {//collidesWith.getVelocity() == 0) {
-//                setVelocity(0);
-//                setPos(x, collidesWith.getY() + 0.5 + this.shape.getRadius());
-//            } else if (angle > Math.PI / 4 && angle < 3 * Math.PI / 4) {
-//                if (Util.closeDouble(this.getMovementAngle(), Math.PI / 4))
-//                    setPos(x + 0.1, collidesWith.getY() - 0.5 - this.shape.getRadius());
-//                else
-//                    setPos(x - 0.1, collidesWith.getY() - 0.5 - this.shape.getRadius());
-//            } else if (angle > -Math.PI / 4 && angle < Math.PI / 4) {
-//                if (Util.closeDouble(this.getMovementAngle(), Math.PI / 4))
-//                    setPos(collidesWith.getX() - 0.5 - this.shape.getRadius(), y + 0.1);
-//                else
-//                    setPos(collidesWith.getX() - 0.5 - this.shape.getRadius(), y - 0.1);
-//            } else if (angle > 3 * Math.PI / 4 || angle < - 3 * Math.PI / 4) {
-//                if (Util.closeDouble(this.getMovementAngle(), 3 * Math.PI / 4))
-//                    setPos(collidesWith.getX() + 0.5 + this.shape.getRadius(), y + 0.1);
-//                else
-//                    setPos(collidesWith.getX() + 0.5 + this.shape.getRadius(), y - 0.1);
-//            } else if (angle < - Math.PI / 4 && angle > -3 * Math.PI / 4) {
-//                if (Util.closeDouble(this.getMovementAngle(), - Math.PI / 4))
-//                    setPos(x + 0.1, collidesWith.getY() + 0.5 + this.shape.getRadius());
-//                else
-//                    setPos(x - 0.1, collidesWith.getY() + 0.5 + this.shape.getRadius());
-//            }
-//            else
-//                setPos(x, y);
-//        }
-//        else
-//            setPos(x, y);
+      //  System.out.println("Blocker X, y: " + collidesWith.getX() + ", " + collidesWith.getY());
 
         if (collidesWith.getShape() instanceof CellShape) {
             // Check side of collision based on angle between entity and collided object.
             double collisionAngle = Util.angle2Points(getX(), getY(), collidesWith.getX(), collidesWith.getY());
 
-            // Get angle here in case it is overwritten.
-            double movementAngle = getMovementAngle();
-            double vx = getVelocityX();
-            double vy = getVelocityY();
+            boolean hitleft = !(collisionAngle < -3*PI/4 || collisionAngle > 3*PI/4);
+            boolean hittop = !(collisionAngle > -3*PI/4 && collisionAngle < -PI/4);
 
             // Hit from left/right.
-            boolean hitVerticalWall = collisionAngle > -Math.PI / 4 && collisionAngle < Math.PI / 4 ||
-                    collisionAngle > 3 * Math.PI / 4 || collisionAngle < -3 * Math.PI / 4;
+            boolean hitVerticalWall = collisionAngle > -PI / 4 && collisionAngle < PI / 4 ||
+                    collisionAngle > 3 * PI / 4 || collisionAngle < -3 * PI / 4;
 
             // Hit from top/bottom.
-            boolean hitHorizontalWall = collisionAngle < -Math.PI / 4 && collisionAngle > -3 * Math.PI / 4
-                    || collisionAngle > Math.PI / 4 && collisionAngle < 3 * Math.PI / 4;
+            boolean hitHorizontalWall = collisionAngle < -PI / 4 && collisionAngle > -3 * PI / 4
+                    || collisionAngle > PI / 4 && collisionAngle < 3 * PI / 4;
 
-            System.out.println("Collide angle: " + collisionAngle);
-            System.out.println("Movement angle: " + getMovementAngle());
+            if (hitVerticalWall) {
+                setPos(collidesWith.getX() - (hitleft ? 1 : -1) * (0.5 + this.shape.getRadius()), shape.getY());
+            }
 
-            // Normal component of the wall.
-            double nx = 0;
-            double ny = 0;
-
-//            if () // TODO angle = PI / 4?
-
-            // Hit entity from left/right side.
-            if (hitVerticalWall)
-                nx = -getVelocityX();
-
-            // Hit entity from top/bottom side.
-            if (hitHorizontalWall)
-                ny = -getVelocityY();
-
-            // Update velocity components as a result of hitting the wall.
-            setVelocityX(getVelocityX() + nx);
-            setVelocityY(getVelocityY() + ny);
-
-            System.out.println("New vx: " + getVelocityX());
-            System.out.println("New vy: " + getVelocityY());
-
-            // Moving right/left, set position to left/right respectively.
-//            if (Util.closeDouble(this.getMovementAngle(), Math.PI) || Util.closeDouble(this.getMovementAngle(), 0))
-//                setPos(collidesWith.getX() - Math.cos(movementAngle) * (0.5 + this.shape.getRadius()), y);
-//
-//            // Moving up/down, set position to down/up respectively.
-//            else if (Util.closeDouble(this.getMovementAngle(), Math.PI / 2) ||
-//                    Util.closeDouble(this.getMovementAngle(), -Math.PI / 2))
-//                setPos(x, collidesWith.getY() - Math.sin(movementAngle) * (0.5 + this.shape.getRadius()));
-
-            // Diagonal movement.
-            if (hitVerticalWall) { // movement angle is diagonal need x/y component
-                setPos(collidesWith.getX() - (vx / Math.sqrt(vx * vx)) * (0.5 + this.shape.getRadius()), y);
-                x = shape.getX();
-                y = shape.getY();
-                shape.shift(getVelocityX(), getVelocityY());
-                GridCell cell = model.getCell((int) shape.getX(), (int) (shape.getY() + shape.getRadius() * Math.sin(getMovementAngle())));
-                for (Entity e : cell.getContents())
-                    if (!e.equals(this) && this.testCollision(e)) {
-                        this.setPos(x, y);
-                        break;
-                    }
-//                GridCell cell = Shape.GridCellReference.getCell(shape.getX(), shape.getY());
-                // TODO set back to old position if cannot move further, horizontal too
-            } else if (hitHorizontalWall) {
-                setPos(x, collidesWith.getY() - (vy / Math.sqrt(vy * vy)) * (0.5 + this.shape.getRadius()));
-                x = shape.getX();
-                y = shape.getY();
-                shape.shift(getVelocityX(), getVelocityY());
-                GridCell cell = model.getCell((int) (shape.getX() + shape.getRadius() * Math.cos(getMovementAngle())), (int) shape.getY());
-                for (Entity e : cell.getContents())
-                    if (!e.equals(this) && this.testCollision(e)) {
-                        this.setPos(x, y);
-                        break;
-                    }
-            } else
-                setPos(x, y);
-
-            if (Util.closeDouble(movementAngle, 0) || Util.closeDouble(movementAngle, Math.PI / 2) ||
-                    Util.closeDouble(movementAngle, -Math.PI / 2) || Util.closeDouble(movementAngle, Math.PI))
-                setMovementAngle(movementAngle);
-
-//            if (getVelocityX() != 0 && getVelocityY() != 0) {
-//                setVelocityX(vx);
-//                setVelocityY(vy);
-//            }
+            if (hitHorizontalWall) {
+                setPos(shape.getX(), collidesWith.getY() - (hittop ? 1 : -1) * (0.5 + this.shape.getRadius()));
+            }
         }
-        else
-            setPos(x, y);
+        else{
+
+        }
 
         // TODO problem running into object from another direction but still hiting object
 
@@ -385,8 +265,6 @@ public abstract class Player extends MovingEntity {
 
     @Override
     public void update(long time, GameModel model) {
-        this.x = shape.getX();
-        this.y = shape.getY();
         double vx = getVelocityX();
         double vy = getVelocityY();
         // shape.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10); TODO use the delta
@@ -405,13 +283,13 @@ public abstract class Player extends MovingEntity {
 
         // Update direction of image
         double angle = getMovementAngle();
-        if (angle >= -0.75 * Math.PI && angle < -0.25 * Math.PI) {
+        if (angle >= -0.75 * PI && angle < -0.25 * PI) {
             direction = NORTH;
-        } else if (angle >= -0.25 * Math.PI && angle < 0.25 * Math.PI) {
+        } else if (angle >= -0.25 * PI && angle < 0.25 * PI) {
             direction = EAST;
-        } else if (angle >= 0.25 * Math.PI && angle < 0.75 * Math.PI) {
+        } else if (angle >= 0.25 * PI && angle < 0.75 * PI) {
             direction = SOUTH;
-        } else if (angle >= 0.75 * Math.PI || angle < -0.75 * Math.PI) {
+        } else if (angle >= 0.75 * PI || angle < -0.75 * PI) {
             direction = WEST;
         }
 
