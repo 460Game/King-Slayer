@@ -4,6 +4,7 @@ import static Util.Const.*;
 
 import game.Pathing.Astar;
 import game.message.MoveMessage;
+import game.message.MoveToMessage;
 import game.message.StopMessage;
 import game.model.Game.Grid.GridCell;
 import game.model.Game.Model.ClientGameModel;
@@ -20,9 +21,7 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class GameView {
 
@@ -129,6 +128,7 @@ public class GameView {
         astar.findTraversableNodes();
         Set<GridCell> nextDestination = astar.getNodes();
         Iterator<GridCell> it = nextDestination.iterator();
+        List<List<GridCell>> path = new LinkedList<>();
 
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.F11) window.setFullScreen(true);
@@ -149,7 +149,7 @@ public class GameView {
                 int starty = (int) model.getLocalPlayer().getY();
                 System.out.println("Start x, y: " + startx + ", " + starty);
                 System.out.println("End x, y: " + end.getX() + ", " + end.getY());
-                astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end);
+                path.add(astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end));
             }
             if (e.getCode() == KeyCode.ENTER) {
                 astar.findTraversableNodes();
@@ -158,9 +158,19 @@ public class GameView {
                 int starty = (int) model.getLocalPlayer().getY();
                 System.out.println("Start x, y: " + startx + ", " + starty);
                 System.out.println("End x, y: " + end.getX() + ", " + end.getY());
-                astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end);
+                path.add(astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end));
                 it.remove();
             }
+        });
+
+        scene.setOnMouseClicked(e -> {
+//            GridCell cell = model.getCell((int) model.getLocalPlayer().getX() + 1, (int) model.getLocalPlayer().getY() + 1);
+//            model.processMessage(new MoveToMessage(model.getLocalPlayer().getId(), cell));
+            while (!path.get(0).isEmpty()) {
+                GridCell cell = path.get(0).remove(0);
+                model.processMessage(new MoveToMessage(model.getLocalPlayer().getId(), cell));
+            }
+            path.remove(0);
         });
 
         scene.setOnKeyReleased(e -> {

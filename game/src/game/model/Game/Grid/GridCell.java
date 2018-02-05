@@ -94,6 +94,13 @@ public class GridCell implements Drawable {
     }
 
     /**
+     * Default constrcuctor needed for serialization.
+     */
+    public GridCell() {
+
+    }
+
+    /**
      * Renders the cell with the background determined by the current
      * tile type.
      * @param gc context used to draw the cell background

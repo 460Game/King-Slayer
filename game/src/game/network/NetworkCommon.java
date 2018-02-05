@@ -32,6 +32,7 @@ public class NetworkCommon {
         kryo.register(ToClientMessage.class);
         kryo.register(ToServerMessage.class);
         kryo.register(SetPlayerMessage.class);
+        kryo.register(MoveToMessage.class);
 
         kryo.register(Player.class);
         kryo.register(Blocker.class);

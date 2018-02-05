@@ -263,10 +263,50 @@ public abstract class Player extends MovingEntity {
         }
     }
 
+    /**
+     * Move the player to a specified cell.
+     * @param cell cell to move to.
+     */
+    public void moveTo(GridCell cell) {
+        setVelocity(0.05);
+        setMovementAngle(Math.atan2(cell.getY() + 0.5 - this.getShape().getY(), cell.getX() + 0.5 - this.getShape().getX()));
+        double movementAngle = getMovementAngle();
+//        System.out.println("PLAYER: " + this.getShape().getX() + ", " + this.getShape().getY());
+//        System.out.println("CELL: " + cell.getX() + ", " + cell.getY());
+        while ((Math.abs(cell.getX() + 0.5 - this.getX()) > 0.05 || Math.abs(cell.getY() + 0.5 - this.getY()) > 0.05) &&
+                cell.isPassable())
+            updatePlayer();
+        setVelocity(0);
+        setMovementAngle(movementAngle);
+    }
+
+    public void updatePlayer() {
+        shape.shift(getVelocityX() * 0.01, getVelocityY() * 0.01);
+        double angle = getMovementAngle();
+        if (angle >= -0.75 * PI && angle < -0.25 * PI) {
+            direction = NORTH;
+        } else if (angle >= -0.25 * PI && angle < 0.25 * PI) {
+            direction = EAST;
+        } else if (angle >= 0.25 * PI && angle < 0.75 * PI) {
+            direction = SOUTH;
+        } else if (angle >= 0.75 * PI || angle < -0.75 * PI) {
+            direction = WEST;
+        }
+
+        // Update image being used
+        if (this.getVelocity() != 0) {
+            count++;
+            if (count > 11) {
+                count = 0;
+                imageNum = (imageNum + 1) % 3;
+            }
+        } else {
+            imageNum = 0;
+        }
+    }
+
     @Override
     public void update(long time, GameModel model) {
-        double vx = getVelocityX();
-        double vy = getVelocityY();
         // shape.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10); TODO use the delta
 
         shape.shift(getVelocityX() * time * 5e-8, getVelocityY() * time * 5e-8);
