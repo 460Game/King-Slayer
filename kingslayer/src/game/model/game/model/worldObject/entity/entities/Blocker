@@ -1,8 +1,8 @@
-package game.model.game.model.worldObject.entity.Entities;
+package game.model.game.model.worldObject.entity.entities;
 
 import game.model.game.model.GameModel;
-import game.model.game.model.worldObject.shape.CellShape;
-import game.model.game.model.worldObject.shape.Shape;
+import game.model.game.model.worldObject.entity.shape.CellCollisionDataellShape;
+import game.model.game.model.worldObject.entity.shape.CollisionDatata.Shape;
 import game.model.game.model.worldObject.Team;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -13,15 +13,15 @@ import javafx.scene.canvas.GraphicsContext;
 public class Blocker extends StationaryEntity {
 
     /**
-     * shape of a blocker is a cell shape.
+     * collisionData of a blocker is a cell collisionData.
      */
-    private CellShape shape;
+    private CellShape collisionData;
 
     @Override
     public void copyOf(Entity other) {
         assert(other instanceof Blocker);
         Blocker o = (Blocker) other;
-        this.shape = o.shape;
+        this.collisionData = o.collisionData;
         super.copyOf(other);
     }
 
@@ -31,7 +31,7 @@ public class Blocker extends StationaryEntity {
      */
     public Blocker() {
         super();
-        this.shape = new CellShape();
+        this.collisionData = new CellShape();
         this.setTeam(Team.NEUTRAL);
         this.setHealth(Double.POSITIVE_INFINITY);
     }
@@ -44,19 +44,19 @@ public class Blocker extends StationaryEntity {
      */
     public Blocker(GameModel model, int x, int y) {
         super(model);
-        this.shape = new CellShape(x, y);
+        this.collisionData = new CellShape(x, y);
         this.setTeam(Team.NEUTRAL);
         this.setHealth(Double.POSITIVE_INFINITY);
     }
 
     @Override
     public Shape getShape() {
-        return shape;
+        return collisionData;
     }
 
     @Override
     public double getDrawZ() {
-        return this.shape.getY();
+        return this.collisionData.getY();
     }
 
     @Override

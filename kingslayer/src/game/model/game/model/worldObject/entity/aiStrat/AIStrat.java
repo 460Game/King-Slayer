@@ -4,5 +4,9 @@ import game.model.game.model.GameModel;
 import game.model.game.model.worldObject.entity.Entity;
 
 public abstract class AIStrat {
+
+
+    public abstract AIData initAIData();
+
     public abstract void updateAI(Entity entity, GameModel model);
 }

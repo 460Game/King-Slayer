@@ -44,11 +44,10 @@ public class ServerGameModel extends GameModel {
                     client.processMessage(new SetTileMessage(i, j, this.getTile(i, j)));
                 }
 
-        ArrayList<Player> players = new ArrayList<>();
+        ArrayList<Entity> players = new ArrayList<>();
         for (Entity entity : this.getAllEntities()) {
-            if(entity instanceof Player) {
-                entity.setTeam(Team.valueOf(((players.size()/2) % 2) + 1));
-                players.add((Player) entity);
+            if(entity.team != Team.NEUTRAL) { //TODO this is TEMPORY
+                players.add(entity);
             }
         }
 

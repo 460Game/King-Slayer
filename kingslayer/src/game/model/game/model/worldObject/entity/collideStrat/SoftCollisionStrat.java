@@ -2,11 +2,13 @@ package game.model.game.model.worldObject.entity.collideStrat;
 
 import game.model.game.model.GameModel;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.collideStrat.collideData.CollisionData;
+import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 
-public abstract class SoftCollisionStrat extends CollisionStrat{
+public class SoftCollisionStrat extends CollisionStrat{
 
-    abstract void collisionSoft(GameModel model, Entity b);
-    abstract void collisionHard(GameModel model, Entity b);
+    void collisionSoft(GameModel model, Entity b);
+    void collisionHard(GameModel model, Entity b);
 
     public final void collision(GameModel model, Entity b) {
         if(b.getCollideType() == CollideType.HARD) {

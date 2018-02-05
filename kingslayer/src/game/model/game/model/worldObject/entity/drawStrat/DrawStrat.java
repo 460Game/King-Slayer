@@ -2,10 +2,11 @@ package game.model.game.model.worldObject.entity.drawStrat;
 
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
-import game.model.game.model.worldObject.entity.drawStrat.ShapeDrawStrat;
 import javafx.scene.canvas.GraphicsContext;
 
 public abstract class DrawStrat {
+
+    public abstract DrawData initDrawData();
 
     /**
      * Draw the object on the game map.

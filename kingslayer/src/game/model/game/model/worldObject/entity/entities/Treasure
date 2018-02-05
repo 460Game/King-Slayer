@@ -1,8 +1,8 @@
-package game.model.game.model.worldObject.entity.Entities;
+package game.model.game.model.worldObject.entity.entities;
 
 import game.model.game.model.GameModel;
-import game.model.game.model.worldObject.shape.CellShape;
-import game.model.game.model.worldObject.shape.Shape;
+import game.model.game.model.worldObject.entity.shape.CellCollisionDataellShape;
+import game.model.game.model.worldObject.entity.shape.CollisionDatata.Shape;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -12,15 +12,15 @@ import javafx.scene.canvas.GraphicsContext;
 public class Treasure extends StationaryEntity {
 
     /**
-     * shape of the treasure.
+     * collisionData of the treasure.
      */
-    private Shape shape = new CellShape(); // TODO FIX THis
+    private Shape collisionData = new CellShape(); // TODO FIX THis
 
     // TODO constructor with healht/team?
 
     @Override
     public Shape getShape() {
-        return shape;
+        return collisionData;
     }
 
     @Override

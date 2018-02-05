@@ -38,11 +38,11 @@ public class GridCell {
     /**
      * Returns true if the cell is able to be passed through, or equivalently,
      * if a pathing enemy should try to go through this tile. A cell is
-     * considered unpassable f it has a cell shape occupying it.
+     * considered unpassable f it has a cell collisionData occupying it.
      * @return true if the cell is able to be walked through
      */
     public boolean isPassable() {
-        return contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD && e.data.shape.blocksCell(x, y));
+        return contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD && e.data.collisionData.blocksCell(x, y));
     }
 
     /**
@@ -108,7 +108,7 @@ public class GridCell {
             for (int j = 0; j < i; j++) {
                 Entity a = contents.get(i);
                 Entity b = contents.get(j);
-                if(a.data.shape.testCollision(b.data.shape)) {
+                if(a.data.collisionData.testCollision(b.data.collisionData)) {
                     a.collision(model, b);
                     b.collision(model, a);
                 }

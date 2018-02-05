@@ -31,7 +31,7 @@ public class Entity implements Updatable, Drawable, AIable {
     /**
      * Team of this entity.
      */
-    final Team team;
+    public final Team team;
 
     /**
      * ID of this entity.
@@ -44,13 +44,15 @@ public class Entity implements Updatable, Drawable, AIable {
         this.collisionStrat.collision(model, b);
     }
 
-    Entity(Team team, UpdateStrat updateStrat, CollisionStrat collisionStrat, DrawStrat drawStrat, AIStrat aiStrat) {
+    public Entity(double x, double y, Team team, UpdateStrat updateStrat, CollisionStrat collisionStrat, DrawStrat drawStrat, AIStrat aiStrat) {
         id = Util.random.nextLong();
         this.updateStrat = updateStrat;
         this.drawStrat = drawStrat;
         this.aiStrat = aiStrat;
         this.team = team;
         this.collisionStrat = collisionStrat;
+        this.data = new EntityData(collisionStrat.initCollisionData(),
+            aiStrat.initAIData(), drawStrat.initDrawData(), updateStrat.initUpdateData(), x, y);
     }
 
     @Override
@@ -61,10 +63,6 @@ public class Entity implements Updatable, Drawable, AIable {
     @Override
     public void draw(GraphicsContext gc) {
         this.drawStrat.draw(this, gc);
-    }
-
-    public void drawHitbox(GraphicsContext gc) {
-        ShapeDrawStrat.HITBOX_DRAW_STRAT.draw(this, gc);
     }
 
     @Override

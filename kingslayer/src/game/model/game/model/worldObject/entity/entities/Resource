@@ -1,4 +1,4 @@
-package game.model.game.model.worldObject.entity.Entities;
+package game.model.game.model.worldObject.entity.entities;
 
 /**
  * Class that defines a general resource in the game world.

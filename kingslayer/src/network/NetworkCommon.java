@@ -6,7 +6,7 @@ import com.esotericsoftware.kryo.serializers.DefaultSerializers;
 import com.esotericsoftware.kryonet.EndPoint;
 import game.message.*;
 import game.model.game.map.Tile;
-import game.model.game.model.worldObject.shape.*;
+import game.model.game.model.worldObject.entity.collideStrat.collideData.*;
 import game.model.game.model.worldObject.Team;
 
 import java.util.ArrayList;
@@ -24,40 +24,22 @@ public class NetworkCommon {
         kryo.register(Message.class);
         kryo.register(StopMessage.class);
         kryo.register(ActionMessage.class);
-        kryo.register(MoveMessage.class);
+        kryo.register(SetVelocityMessage.class);
         kryo.register(RemoveEntityMessage.class);
         kryo.register(SetEntityMessage.class);
         kryo.register(SetTileMessage.class);
         kryo.register(ToClientMessage.class);
         kryo.register(ToServerMessage.class);
         kryo.register(SetPlayerMessage.class);
-        kryo.register(MoveToMessage.class);
-
-        kryo.register(Player.class);
-        kryo.register(Blocker.class);
-        kryo.register(Entity.class);
-        kryo.register(Tree.class);
-        kryo.register(Shape.GridCellReference.class);
-
-        kryo.register(Stone.class);
-        kryo.register(Metal.class);
-
-        kryo.register(Shape.class);
-        kryo.register(CellShape.class);
-        kryo.register(CircleShape.class);
-        kryo.register(CompositeShape.class);
-        kryo.register(RectShape.class);
-
+        kryo.register(CollisionData.class);
+        kryo.register(CellCollisionData.class);
+        kryo.register(CircleCollisionData.class);
+        kryo.register(CompositeCollisionData.class);
+        kryo.register(RectCollisionData.class);
         kryo.register(Team.class);
-
-        DefaultSerializers.EnumSerializer tileSerializer = new DefaultSerializers.EnumSerializer(Tile.class);
-        kryo.register(Tile.class, tileSerializer);
-
-
-
+        kryo.register(Tile.class);
         kryo.register(ClientMakeModelMsg.class);
         kryo.register(ClientReadyMsg.class);
-
         kryo.register(RemoteConnection.GameConnection.class);
         kryo.register(ClientStartModelMsg.class);
         kryo.register(ArrayList.class);

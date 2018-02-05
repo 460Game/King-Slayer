@@ -1,12 +1,12 @@
-package game.model.game.model.worldObject.entity.Entities;
+package game.model.game.model.worldObject.entity.entities;
 
 import util.Util;
 import game.model.game.grid.GridCell;
 import game.model.game.model.GameModel;
 import game.model.game.WorldObject.Shape.*;
-import game.model.game.model.worldObject.shape.CellShape;
-import game.model.game.model.worldObject.shape.CircleShape;
-import game.model.game.model.worldObject.shape.Shape;
+import game.model.game.model.worldObject.entity.shape.CellCollisionDataellShape;
+import game.model.game.model.worldObject.entity.shape.CircleCollisionDatacleShape;
+import game.model.game.model.worldObject.entity.shape.CollisionDatata.Shape;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -21,9 +21,9 @@ import static java.lang.Math.PI;
 public abstract class Player extends MovingEntity {
 
     /**
-     * shape that represents a player in the game.
+     * collisionData that represents a player in the game.
      */
-    private CircleShape shape;
+    private CircleShape collisionData;
 
     /**
      * Keeps track of change in x direction. Used for
@@ -85,7 +85,7 @@ public abstract class Player extends MovingEntity {
      */
     public Player() {
         super();
-        shape = new CircleShape(0.0, 0.0, 0.3);
+        collisionData = new CircleShape(0.0, 0.0, 0.3);
         this.setMovementAngle(0.5 * PI);
         // TODO set health, team
     }
@@ -99,7 +99,7 @@ public abstract class Player extends MovingEntity {
      */
     public Player(GameModel model, double x, double y, boolean king) {
         super(model);
-        shape = new CircleShape(x, y, 0.3);
+        collisionData = new CircleShape(x, y, 0.3);
         this.setMovementAngle(0.5 * PI);
         // TODO set health and team
         // TODO deal with king boolean
@@ -107,7 +107,7 @@ public abstract class Player extends MovingEntity {
 
     @Override
     public Shape getShape() {
-        return shape;
+        return collisionData;
     }
 
     @Override
@@ -119,7 +119,7 @@ public abstract class Player extends MovingEntity {
     public void copyOf(Entity other) {
         assert (other instanceof Player);
         Player o = (Player) other;
-        this.shape = o.shape;
+        this.collisionData = o.collisionData;
         this.dx = o.dx;
         this.dy = o.dy;
         this.up = o.up;
@@ -140,9 +140,9 @@ public abstract class Player extends MovingEntity {
 
     @Override
     public void collision(GameModel model, StationaryEntity collidesWith) {
-       // System.out.println("X: " + (shape.getX()) + ", Y: " + (shape.getY()) + ", radius: " + shape.getRadius());
+       // System.out.println("X: " + (collisionData.getX()) + ", Y: " + (collisionData.getY()) + ", radius: " + collisionData.getRadius());
 
-//        for(shape.GridCellReference g : shape.getCellsReference())
+//        for(collisionData.GridCellReference g : collisionData.getCellsReference())
 //            System.out.println("Cell X: " + g.x + ", cell Y: " + g.y);
       //  System.out.println("Blocker X, y: " + collidesWith.getX() + ", " + collidesWith.getY());
 
@@ -162,11 +162,11 @@ public abstract class Player extends MovingEntity {
                     || collisionAngle > PI / 4 && collisionAngle < 3 * PI / 4;
 
             if (hitVerticalWall) {
-                setPos(collidesWith.getX() - (hitleft ? 1 : -1) * (0.5 + this.shape.getRadius()), shape.getY());
+                setPos(collidesWith.getX() - (hitleft ? 1 : -1) * (0.5 + this.collisionData.getRadius()), collisionData.getY());
             }
 
             if (hitHorizontalWall) {
-                setPos(shape.getX(), collidesWith.getY() - (hittop ? 1 : -1) * (0.5 + this.shape.getRadius()));
+                setPos(collisionData.getX(), collidesWith.getY() - (hittop ? 1 : -1) * (0.5 + this.collisionData.getRadius()));
             }
         }
         else{
@@ -283,7 +283,7 @@ public abstract class Player extends MovingEntity {
     }
 
     public void updatePlayer() {
-        shape.shift(getVelocityX() * 0.01, getVelocityY() * 0.01);
+        collisionData.shift(getVelocityX() * 0.01, getVelocityY() * 0.01);
         double angle = getMovementAngle();
         if (angle >= -0.75 * PI && angle < -0.25 * PI) {
             direction = NORTH;
@@ -309,13 +309,13 @@ public abstract class Player extends MovingEntity {
 
     @Override
     public void update(long time, GameModel model) {
-        // shape.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10); TODO use the delta
+        // collisionData.shift(dx * time * 1e-9 * 10, dy * time * 1e-9 * 10); TODO use the delta
 
-        shape.shift(getVelocityX() * time * 5e-8, getVelocityY() * time * 5e-8);
+        collisionData.shift(getVelocityX() * time * 5e-8, getVelocityY() * time * 5e-8);
 
         //TODO check collision
-//        GridCell cell = model.getCell((int) (x + shape.getRadius() * vx / Math.sqrt(vx * vx)),
-//                (int) (y + shape.getRadius() * vy / Math.sqrt(vy * vy)));
+//        GridCell cell = model.getCell((int) (x + collisionData.getRadius() * vx / Math.sqrt(vx * vx)),
+//                (int) (y + collisionData.getRadius() * vy / Math.sqrt(vy * vy)));
 //        for (entity e : cell.getContents())
 //            if (!e.equals(this) && this.testCollision(e)) {
 //                setPos(x, y);

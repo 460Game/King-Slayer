@@ -1,8 +1,8 @@
-package game.model.game.model.worldObject.entity.Entities;
+package game.model.game.model.worldObject.entity.entities;
 
 import game.model.game.model.GameModel;
-import game.model.game.model.worldObject.shape.CellShape;
-import game.model.game.model.worldObject.shape.Shape;
+import game.model.game.model.worldObject.entity.shape.CellCollisionDataellShape;
+import game.model.game.model.worldObject.entity.shape.CollisionDatata.Shape;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -12,14 +12,14 @@ import javafx.scene.canvas.GraphicsContext;
 public class Metal extends Resource {
 
     /**
-     * The shape of the metal resource.
+     * The collisionData of the metal resource.
      */
-    //    private shape shape = new CircleShape(0,0,0.5);
-    private Shape shape = new CellShape(); // TODO FIX THis
+    //    private collisionData collisionData = new CircleShape(0,0,0.5);
+    private Shape collisionData = new CellShape(); // TODO FIX THis
 
     @Override
     public Shape getShape() {
-        return shape;
+        return collisionData;
     }
 
     @Override

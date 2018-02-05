@@ -1,10 +1,13 @@
 package game.model.game.map;
 
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.entities.Blockers;
+import game.model.game.model.worldObject.entity.entities.Entities;
 import util.Util;
 import util.Loc;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 /**
@@ -62,29 +65,29 @@ public class ServerMapGenerator implements MapGenerator {
     }
 
     public static enum TS {
-        river(Tile.DEEP_WATER, Blocker::new),
-        edgeWater(Tile.DEEP_WATER, Blocker::new),
+        river(Tile.DEEP_WATER, Entities::makeBlocker),
+        edgeWater(Tile.DEEP_WATER, Entities::makeBlocker),
         tresure(Tile.PATH, null),//Treasure::new),
         //tresureNoBuild(Tile.NO_BUILD, null),//Treasure::new),
-        metal(Tile.GRASS_0, Metal::new),
-        stone(Tile.GRASS_0, Stone::new),
-        tree(Tile.GRASS_0, Tree::new),//Tree::new),
-        wall(Tile.GRASS_0, BlockerWall::new),
+        metal(Tile.GRASS_0, Entities::makeMetal),
+        stone(Tile.GRASS_0, Entities::makeStone),
+        tree(Tile.GRASS_0, Entities::makeTree),//Tree::new),
+        wall(Tile.GRASS_0, Entities::makeWall),
         room(Tile.GRASS_0, null),
         grass0(Tile.GRASS_0, null),
         grass1(Tile.GRASS_1, null),
         grass2(Tile.GRASS_2, null),
-        barrier(Tile.GRASS_0, BlockerBox::new),
+        barrier(Tile.GRASS_0, Entities::makeBox),
         unset(null, null),
-        startKing(Tile.PATH, KingPlayer::new),
-        startSlayer(Tile.PATH, SlayerPlayer::new),
+        startKing(Tile.PATH, Entities::makeKing),
+        startSlayer(Tile.PATH, Entities::makeSlayer),
         bridge(Tile.SHALLOW_WATER, null),
         road(Tile.PATH, null);
 
         private Tile make;
-        private Supplier<Entity> spawner;
+        private BiFunction<Double, Double, Entity> spawner;
 
-        TS(Tile make, Supplier<Entity> spawner) {
+        TS(Tile make, BiFunction<Double, Double,Entity> spawner) {
             this.make = make; this.spawner = spawner;
         }
 
@@ -95,8 +98,7 @@ public class ServerMapGenerator implements MapGenerator {
         public Optional<Entity> makeE(int i, int j) {
             if(spawner == null)
                 return Optional.empty();
-            Entity e = spawner.get();
-            e.data.shape.setPos(i + 0.5, j + 0.5);
+            Entity e = spawner.apply(i + 0.5,j + 0.5);
             return Optional.of(e);
         }
     }

@@ -1,4 +1,4 @@
-package game.model.game.model.worldObject.entity.Entities;
+package game.model.game.model.worldObject.entity.entities;
 
 import game.model.game.model.GameModel;
 import javafx.scene.canvas.GraphicsContext;

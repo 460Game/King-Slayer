@@ -3,13 +3,12 @@ package game.view;
 import static util.Const.*;
 
 import game.AI.Astar;
-import game.message.MoveMessage;
-import game.message.MoveToMessage;
+import game.message.SetVelocityMessage;
 import game.message.StopMessage;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ClientGameModel;
-import game.model.game.model.worldObject.entity.Entities.Entity;
-import game.model.game.model.worldObject.entity.Entities.Player;
+import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.entities.Player;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -84,23 +83,23 @@ public class GameView {
                     }
                 }
                 //TEMP HACK
-                for(Entity player : model.getAllEntities()) {
-                    if(player instanceof Player) {
-                        minimapGC.setFill(player.getTeam().color);
-                        minimapGC.fillOval(player.getX(),player.getY(),3,3);
-                    }
-                }
+               // for(Entity player : model.getAllEntities()) {
+              //      if(player instanceof Player) {
+              //          minimapGC.setFill(player.getTeam().color);
+              //          minimapGC.fillOval(player.(),player.getY(),3,3);
+             //       }
+             //   }
                 minimapGC.setTransform(new Affine());
 
                 double gameW = scaleFactor[0] * window.getWidth() / TILE_PIXELS;
                 double gameH = scaleFactor[0] * window.getHeight() / TILE_PIXELS;
-                double xt = - model.getLocalPlayer().getX() * TILE_PIXELS + window.getWidth() / 2;
-                double yt = -model.getLocalPlayer().getY() * TILE_PIXELS + (window.getHeight() / 2);
+                double xt = - model.getLocalPlayer().data.x * TILE_PIXELS + window.getWidth() / 2;
+                double yt = -model.getLocalPlayer().data.y * TILE_PIXELS + (window.getHeight() / 2);
                 gc.setTransform(new Affine(Affine.translate(xt, yt)));
                 debugGC.setTransform(new Affine());
                 debugGC.clearRect(0, 0, debugCanvas.getWidth(), debugCanvas.getHeight());
                 debugGC.setTransform(new Affine(Affine.translate(xt, yt)));
-                model.draw(gc, model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), gameW, gameH);
+                model.draw(gc, model.getLocalPlayer().data.x, model.getLocalPlayer().data.y, gameW, gameH);
 
                 astar.draw(debugGC);
 
@@ -132,32 +131,32 @@ public class GameView {
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.F11) window.setFullScreen(true);
             if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.W) // Start upward movement.
-                model.processMessage(new MoveMessage(model.getLocalPlayer().getId(), "up"));
+                model.processMessage(new SetVelocityMessage(model.getLocalPlayer().id, "up"));
             if (e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.S) // Start downward movement.
-                model.processMessage(new MoveMessage(model.getLocalPlayer().getId(), "down"));
+                model.processMessage(new SetVelocityMessage(model.getLocalPlayer().id, "down"));
             if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.A) // Start leftward movement.
-                model.processMessage(new MoveMessage(model.getLocalPlayer().getId(), "left"));
+                model.processMessage(new SetVelocityMessage(model.getLocalPlayer().id, "left"));
             if (e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.D) // Start rightward movement.
-                model.processMessage(new MoveMessage(model.getLocalPlayer().getId(), "right"));
+                model.processMessage(new SetVelocityMessage(model.getLocalPlayer().id, "right"));
             // TODO remove, temp for testing
             if (e.getCode() == KeyCode.SPACE) {
                 astar.findTraversableNodes();
                 Set<GridCell> nodes = astar.getNodes();
                 GridCell end = nodes.iterator().next();
-                int startx = (int) model.getLocalPlayer().getX();
-                int starty = (int) model.getLocalPlayer().getY();
+                int startx = (int) model.getLocalPlayer().data.x;
+                int starty = (int) model.getLocalPlayer().data.y;
                 System.out.println("Start x, y: " + startx + ", " + starty);
                 System.out.println("End x, y: " + end.getTopLeftX() + ", " + end.getTopLeftY());
-                path.add(astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end));
+                path.add(astar.astar(model.getCell((int) model.getLocalPlayer().data.x, (int) model.getLocalPlayer().data.y), end));
             }
             if (e.getCode() == KeyCode.ENTER) {
                 astar.findTraversableNodes();
                 GridCell end = it.next();
-                int startx = (int) model.getLocalPlayer().getX();
-                int starty = (int) model.getLocalPlayer().getY();
+                int startx = (int) model.getLocalPlayer().data.x;
+                int starty = (int) model.getLocalPlayer().data.y;
                 System.out.println("Start x, y: " + startx + ", " + starty);
                 System.out.println("End x, y: " + end.getTopLeftX() + ", " + end.getTopLeftY());
-                path.add(astar.astar(model.getCell((int) model.getLocalPlayer().getX(), (int) model.getLocalPlayer().getY()), end));
+                path.add(astar.astar(model.getCell((int) model.getLocalPlayer().data.x, (int) model.getLocalPlayer().data.y), end));
                 it.remove();
             }
         });
@@ -167,20 +166,20 @@ public class GameView {
 //            model.processMessage(new MoveToMessage(model.getLocalPlayer().getId(), cell));
             while (!path.get(0).isEmpty()) {
                 GridCell cell = path.get(0).remove(0);
-                model.processMessage(new MoveToMessage(model.getLocalPlayer().getId(), cell));
+           //     model.processMessage(new MoveToMessage(model.getLocalPlayer().id, cell));
             }
             path.remove(0);
         });
 
         scene.setOnKeyReleased(e -> {
             if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.W) // Stop upward movement.
-                model.processMessage(new StopMessage(model.getLocalPlayer().getId(), "up"));
+                model.processMessage(new StopMessage(model.getLocalPlayer().id, "up"));
             if (e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.S) // Stop downward movement.
-                model.processMessage(new StopMessage(model.getLocalPlayer().getId(), "down"));
+                model.processMessage(new StopMessage(model.getLocalPlayer().id, "down"));
             if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.A) // Stop leftward movement.
-                model.processMessage(new StopMessage(model.getLocalPlayer().getId(), "left"));
+                model.processMessage(new StopMessage(model.getLocalPlayer().id, "left"));
             if (e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.D) // Stop rightward movement.
-                model.processMessage(new StopMessage(model.getLocalPlayer().getId(), "right"));
+                model.processMessage(new StopMessage(model.getLocalPlayer().id, "right"));
         });
 
         window.setScene(scene);

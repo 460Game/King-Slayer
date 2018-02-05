@@ -1,14 +1,13 @@
 package game.message;
 
-import game.model.game.grid.GridCell;
 import game.model.game.model.ServerGameModel;
-import game.model.game.model.worldObject.entity.Entities.Player;
+import game.model.game.model.worldObject.entity.entities.Player;
 
 /**
  * Message sent by a client to tell the server to move the player
- * to a certain cell.
+ * on the game map.
  */
-public class MoveToMessage extends ActionMessage {
+public class SetVelocityMessage extends ActionMessage {
 
     /**
      * ID to distinguish player that sent the message.
@@ -16,35 +15,35 @@ public class MoveToMessage extends ActionMessage {
     private long id;
 
     /**
-     * The cell the player wants to move to.
+     * String of the direction the player wants to move.
      */
-    private GridCell cell;
+    private String dir;
 
     /**
      * Constructor for the move message.
      * @param id player ID that send the message
-     * @param cell destination cell
+     * @param dir direction of the movement
      */
-    public MoveToMessage(long id, GridCell cell) {
+    public SetVelocityMessage(long id, String dir) {
         super();
         this.id = id;
-        this.cell = cell;
+        this.dir = dir;
     }
 
     /**
      * Default constructor needed for serialization.
      */
-    public MoveToMessage() {
+    public SetVelocityMessage() {
 
     }
 
     /**
-     * Moves the player to the specified cell.
+     * Moves the player in a certain direction.
      * @param model the game model on the game server
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        ((Player) model.getEntityById(id)).moveTo(cell);
+        model.getEntityById(id).move(dir);
         model.processMessage(new SetEntityMessage(model.getEntityById(id)));
     }
 }

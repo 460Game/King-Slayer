@@ -196,9 +196,7 @@ public abstract class GameModel implements Model {
         gc.setFill(Color.LIGHTCYAN);
         gc.fillRect(-100000, -100000, 100000000, 10000000);
 
-        List<Drawable> drawEntities = drawBox(cx,cy,w,h);
-
-        drawEntities.stream().map(DrawableZ::new).sorted().forEach(a -> a.draw(gc, this));
+        drawBox(gc, cx,cy,w,h);
     }
 
     /**
@@ -210,17 +208,17 @@ public abstract class GameModel implements Model {
      * @param h
      * @return
      */
-    private List<Drawable> drawBox(double x, double y, double w, double h) {
+    private void drawBox(GraphicsContext gc, double x, double y, double w, double h) {
         ArrayList<Drawable> drawEntities = new ArrayList<>();
 
         for (int j = Math.max(0, (int) (y - h / 2)); j < Math.min(y + h / 2, getMapHeight()); j++) {
             for (int i = Math.max(0, (int) (x - w / 2)); i < Math.min(x + w / 2, getMapWidth()); i++) {
                 GridCell cell = getCell(i, j);
-                drawEntities.add(cell);
+                cell.draw(gc,this);
                 drawEntities.addAll(cell.getContents());
             }
         }
-        return drawEntities;
+        drawEntities.stream().map(DrawableZ::new).sorted().forEach(a -> a.draw(gc, this));
     }
 
 

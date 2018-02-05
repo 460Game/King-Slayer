@@ -1,11 +1,11 @@
-package game.model.game.model.worldObject.entity.Entities;
+package game.model.game.model.worldObject.entity.entities;
 
 import game.model.game.model.worldObject.entity.EntityData;
 import util.Util;
 import game.model.game.model.GameModel;
 import game.model.game.grid.GridCell;
 import game.model.game.model.worldObject.entity.Drawable;
-import game.model.game.model.worldObject.shape.Shape;
+import game.model.game.model.worldObject.entity.shape.CollisionDatata.Shape;
 import game.model.game.model.worldObject.Team;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -163,8 +163,8 @@ public abstract class Entity implements Drawable {
     }
 
     /**
-     * Gets the shape of the entity.
-     * @return the shape of the entity
+     * Gets the collisionData of the entity.
+     * @return the collisionData of the entity
      */
     public abstract Shape getShape();
 

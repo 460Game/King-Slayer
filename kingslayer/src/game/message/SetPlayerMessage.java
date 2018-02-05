@@ -1,7 +1,7 @@
 package game.message;
 
 import game.model.game.model.ClientGameModel;
-import game.model.game.model.worldObject.entity.Entities.Player;
+import game.model.game.model.worldObject.entity.Entity;
 
 /**
  * Message sent to set a player on a client's game model. This message
@@ -33,8 +33,8 @@ public class SetPlayerMessage implements ToClientMessage {
      * Constructor for a message, given a player.
      * @param player the player to be set
      */
-    public SetPlayerMessage(Player player) {
-        this.playerId = player.getId();
+    public SetPlayerMessage(Entity player) {
+        this.playerId = player.id;
     }
 
     /**

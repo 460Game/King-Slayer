@@ -1,7 +1,7 @@
 package game.message;
 
 import game.model.game.model.ClientGameModel;
-import game.model.game.model.worldObject.entity.Entities.Entity;
+import game.model.game.model.worldObject.entity.Entity;
 
 /**
  * Message sent to remove an entity from a client's game model. This message
@@ -24,7 +24,7 @@ public class RemoveEntityMessage implements ToClientMessage {
      * @param entity entity to be removed
      */
     public RemoveEntityMessage(Entity entity) {
-        this.entityID = entity.getId();
+        this.entityID = entity.id;
     }
 
     /**
