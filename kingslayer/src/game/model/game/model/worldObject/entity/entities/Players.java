@@ -8,6 +8,7 @@ import game.model.game.model.worldObject.entity.collideStrat.HardCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.SoftCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.UnitCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CircleHitbox;
+import game.model.game.model.worldObject.entity.drawStrat.DirectionAnimationDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
 import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
 import images.Images;
@@ -24,7 +25,7 @@ public class Players {
             StillStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
-            ImageDrawStrat.make(Images.BOX_IMAGE), //TODDO draw strat
+            DirectionAnimationDrawStrat.RED_SLAYER_ANIMATION, //TODDO draw strat
             AIDoNothingStrat.SINGLETON);
     }
 
@@ -34,7 +35,7 @@ public class Players {
             StillStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
-            ImageDrawStrat.make(Images.BOX_IMAGE), //TODDO draw strat
+            DirectionAnimationDrawStrat.RED_KING_ANIMATION, //TODDO draw strat
             AIDoNothingStrat.SINGLETON);
     }
 }
