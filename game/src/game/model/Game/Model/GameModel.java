@@ -126,10 +126,9 @@ public abstract class GameModel implements Model {
 
         entities.values().forEach(e -> e.update(this));
 
-        for (GridCell cell : allCells) {// TODO collisions broken
+        for (GridCell cell : allCells) {
             cell.collideContents(this);
         }
-
     }
 
     public Collection<GridCell> getAllCells() {

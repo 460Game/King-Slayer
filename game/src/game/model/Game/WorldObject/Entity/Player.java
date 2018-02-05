@@ -273,15 +273,17 @@ public abstract class Player extends MovingEntity {
         double movementAngle = getMovementAngle();
 //        System.out.println("PLAYER: " + this.getShape().getX() + ", " + this.getShape().getY());
 //        System.out.println("CELL: " + cell.getX() + ", " + cell.getY());
-        while ((Math.abs(cell.getX() + 0.5 - this.getX()) > 0.05 || Math.abs(cell.getY() + 0.5 - this.getY()) > 0.05) &&
+        if ((Math.abs(cell.getX() - (int) this.getX()) != 0 || Math.abs(cell.getY() - (int) this.getY()) != 0) &&
                 cell.isPassable())
             updatePlayer();
-        setVelocity(0);
-        setMovementAngle(movementAngle);
+        else {
+            setVelocity(0);
+            setMovementAngle(movementAngle);
+        }
     }
 
     public void updatePlayer() {
-        shape.shift(getVelocityX() * 0.01, getVelocityY() * 0.01);
+        shape.shift(getVelocityX() * 5e-5, getVelocityY() * 5e-5);
         double angle = getMovementAngle();
         if (angle >= -0.75 * PI && angle < -0.25 * PI) {
             direction = NORTH;

@@ -15,19 +15,24 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class GameView {
 
     private ClientGameModel model;
 
     private Astar astar;
+
+    List<GridCell> next = new LinkedList<>();
 
     public GameView(ClientGameModel model) {
         this.model = model;
@@ -73,7 +78,6 @@ public class GameView {
             public void handle(long arg0) {
                 model.update();
 
-
                 minimapGC.setTransform(new Affine(Transform.scale(
                     minimapGC.getCanvas().getWidth()/model.getMapWidth(),
                     minimapGC.getCanvas().getHeight()/model.getMapHeight())));
@@ -104,6 +108,13 @@ public class GameView {
                 model.draw(gc, model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), gameW, gameH);
 
                 astar.draw(debugGC);
+
+                if (!next.isEmpty()) {
+                    model.processMessage(new MoveToMessage(model.getLocalPlayer().getId(), next.remove(0)));
+                }
+
+
+
 
                 //TODO temp for testing, doing this every frame
 //    astar.findTraversableNodes();
@@ -166,11 +177,14 @@ public class GameView {
         scene.setOnMouseClicked(e -> {
 //            GridCell cell = model.getCell((int) model.getLocalPlayer().getX() + 1, (int) model.getLocalPlayer().getY() + 1);
 //            model.processMessage(new MoveToMessage(model.getLocalPlayer().getId(), cell));
-            while (!path.get(0).isEmpty()) {
+            if (!path.get(0).isEmpty()) {
                 GridCell cell = path.get(0).remove(0);
+                next.add(cell);
                 model.processMessage(new MoveToMessage(model.getLocalPlayer().getId(), cell));
+            } else {
+                if (!path.isEmpty())
+                    path.remove(0);
             }
-            path.remove(0);
         });
 
         scene.setOnKeyReleased(e -> {
