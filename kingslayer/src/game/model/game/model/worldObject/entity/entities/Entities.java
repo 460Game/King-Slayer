@@ -24,13 +24,13 @@ public class Entities {
             AIDoNothingStrat.SINGLETON);
     }
 
-    public static Entity makeMetal(Double x, Double y) {
+    public static Entity makeTree(Double x, Double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
             StillStrat.SINGLETON,
             HardCollisionStrat.make(),
             CellHitbox.SINGLETON,
-            ImageDrawStrat.make(Images.METAL_IMAGES[0]),
+            ImageDrawStrat.TREE_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
     }
 
@@ -40,17 +40,17 @@ public class Entities {
             StillStrat.SINGLETON,
             HardCollisionStrat.make(),
             CellHitbox.SINGLETON,
-            ImageDrawStrat.make(Images.STONE_IMAGES[0]),
+            ImageDrawStrat.STONE_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
     }
 
-    public static Entity makeTree(Double x, Double y) {
+    public static Entity makeMetal(Double x, Double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
             StillStrat.SINGLETON,
             HardCollisionStrat.make(),
             CellHitbox.SINGLETON,
-            ImageDrawStrat.make(Images.TREE_IMAGES[0]),
+            ImageDrawStrat.METAL_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
     }
 
@@ -60,7 +60,7 @@ public class Entities {
             StillStrat.SINGLETON,
             HardCollisionStrat.make(),
             CellHitbox.SINGLETON,
-            ImageDrawStrat.make(Images.WALL_IMAGE),
+            ImageDrawStrat.WALL_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
     }
 
@@ -70,7 +70,7 @@ public class Entities {
             StillStrat.SINGLETON,
             HardCollisionStrat.make(),
             CellHitbox.SINGLETON,
-            ImageDrawStrat.make(Images.BOX_IMAGE),
+            ImageDrawStrat.BOX_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
     }
 }

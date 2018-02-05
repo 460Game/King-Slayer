@@ -13,6 +13,12 @@ simple draw strategy for drawing entire image on entity
  */
 public abstract class ImageDrawStrat extends DrawStrat {
 
+    public static final ImageDrawStrat TREE_IMAGE_DRAW_STRAT = make(Images.TREE_IMAGES[0]);
+    public static final ImageDrawStrat STONE_IMAGE_DRAW_STRAT = make(Images.STONE_IMAGES[0]);
+    public static final ImageDrawStrat METAL_IMAGE_DRAW_STRAT = make(Images.METAL_IMAGES[0]);
+    public static final ImageDrawStrat WALL_IMAGE_DRAW_STRAT = make(Images.WALL_IMAGE);
+    public static final ImageDrawStrat BOX_IMAGE_DRAW_STRAT = make(Images.BOX_IMAGE);
+
     @Override
     public DrawData initDrawData() {
         return null;
@@ -30,8 +36,6 @@ public abstract class ImageDrawStrat extends DrawStrat {
     public double getDrawZ(EntityData entity) {
         return entity.y;
     }
-
-    public static final ImageDrawStrat TREE_IMAGE_DRAW_STRAT = make(Images.TREE_IMAGES[0]);
 
     private static ImageDrawStrat make(Image boxImage) {
         return new ImageDrawStrat() {
