@@ -1,0 +1,40 @@
+package game.model.game.model.worldObject.entity.Entities;
+
+import game.model.game.model.GameModel;
+import game.model.game.model.worldObject.shape.CellShape;
+import game.model.game.model.worldObject.shape.Shape;
+import javafx.scene.canvas.GraphicsContext;
+
+/**
+ * Treasure that can be found in the game world. Once picked up,
+ * it immediately goes into that team's resource pool.
+ */
+public class Treasure extends StationaryEntity {
+
+    /**
+     * shape of the treasure.
+     */
+    private Shape shape = new CellShape(); // TODO FIX THis
+
+    // TODO constructor with healht/team?
+
+    @Override
+    public Shape getShape() {
+        return shape;
+    }
+
+    @Override
+    public void update(long time, GameModel model) {
+
+    }
+
+    @Override
+    public void draw(GraphicsContext gc, GameModel model) {
+
+    }
+
+    @Override
+    public double getDrawZ() {
+        return 0;
+    }
+}

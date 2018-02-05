@@ -1,0 +1,45 @@
+package game.model.game.model.worldObject.entity.Entities;
+
+import game.model.game.model.GameModel;
+import game.model.game.model.worldObject.shape.CellShape;
+import game.model.game.model.worldObject.shape.Shape;
+import javafx.scene.canvas.GraphicsContext;
+
+/**
+ * The basic resource in the game world. It produces wood
+ * and can be found all over the map.
+ */
+public class Tree extends Resource {
+
+    /**
+     * The shape of the wood resource.
+     */
+//    shape shape = new CircleShape(0,0,0.5);
+    Shape shape = new CellShape(); // TODO FIX THis
+
+    @Override
+    public Shape getShape() {
+        return shape;
+    }
+
+    @Override
+    public void update(long time, GameModel model) {
+
+    }
+
+    /**
+     * The index of the image to be drawn.
+     */
+    private int imageNum = 0;
+    }
+
+    @Override
+    public void draw(GraphicsContext gc, GameModel model) {
+        draw(gc, image[imageNum]);
+    }
+
+    @Override
+    public double getDrawZ() {
+        return getY();
+    }
+}

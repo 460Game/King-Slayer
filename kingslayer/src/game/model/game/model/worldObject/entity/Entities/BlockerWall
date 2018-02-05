@@ -1,0 +1,20 @@
+package game.model.game.model.worldObject.entity.Entities;
+
+import game.model.game.model.GameModel;
+import javafx.scene.canvas.GraphicsContext;
+
+import static util.Const.TILE_PIXELS;
+
+/**
+ * Stationary wall entity in the game world.
+ */
+public class BlockerWall extends Blocker {
+
+
+    @Override
+    public void draw(GraphicsContext gc, GameModel model) {
+        gc.drawImage(wall, (this.getX() - 0.5) * TILE_PIXELS,
+                (this.getY() - 0.5) * TILE_PIXELS - 2 * wall.getHeight() + 2 * TILE_PIXELS,
+                2 * wall.getWidth(), 2 * wall.getHeight());
+    }
+}

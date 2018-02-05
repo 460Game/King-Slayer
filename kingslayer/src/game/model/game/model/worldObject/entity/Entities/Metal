@@ -1,0 +1,47 @@
+package game.model.game.model.worldObject.entity.Entities;
+
+import game.model.game.model.GameModel;
+import game.model.game.model.worldObject.shape.CellShape;
+import game.model.game.model.worldObject.shape.Shape;
+import javafx.scene.canvas.GraphicsContext;
+
+/**
+ * The highest tier resource in the game world. It is the hardest
+ * to find but are found in bunches.
+ */
+public class Metal extends Resource {
+
+    /**
+     * The shape of the metal resource.
+     */
+    //    private shape shape = new CircleShape(0,0,0.5);
+    private Shape shape = new CellShape(); // TODO FIX THis
+
+    @Override
+    public Shape getShape() {
+        return shape;
+    }
+
+    @Override
+    public void update(long time, GameModel model) {
+
+    }
+
+
+    /**
+     * The index of the image to be drawn.
+     */
+    private int imageNum = 0;
+
+
+
+    @Override
+    public void draw(GraphicsContext gc, GameModel model) {
+        draw(gc, image[imageNum]);
+    }
+
+    @Override
+    public double getDrawZ() {
+        return getY();
+    }
+}
