@@ -1,38 +1,37 @@
-package game.model.game.model.worldObject.entity.collideStrat.collideData;
+package game.model.game.model.worldObject.entity.collideStrat.hitbox;
 
 import game.model.game.grid.GridCell;
 import game.model.game.model.GameModel;
 import game.model.game.model.worldObject.entity.Entity;
-import util.Util;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.HashSet;
 import java.util.Set;
-import static util.Const.*;
+
 import static util.Util.toDrawCoords;
 
 /**
- * A collisionData that is a circle.
+ * A hitbox that is a circle.
  */
-public class CircleCollisionData extends CollisionData {
+public class CircleHitbox extends Hitbox {
 
     /**
-     * Radius of the circular collisionData.
+     * Radius of the circular hitbox.
      */
     private double radius;
 
     /**
      * Default constructor needed for serialization.
      */
-    public CircleCollisionData() {
+    public CircleHitbox() {
 
     }
 
     /**
-     * Constructor of a circle collisionData with given coordinates and radius.
+     * Constructor of a circle hitbox with given coordinates and radius.
      * @param radius radius of the circle
      */
-    public CircleCollisionData(double radius) {
+    public CircleHitbox(double radius) {
         this.radius = radius;
     }
 

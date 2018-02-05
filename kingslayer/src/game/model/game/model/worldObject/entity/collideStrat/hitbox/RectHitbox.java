@@ -1,4 +1,4 @@
-package game.model.game.model.worldObject.entity.collideStrat.collideData;
+package game.model.game.model.worldObject.entity.collideStrat.hitbox;
 
 import game.model.game.grid.GridCell;
 import game.model.game.model.GameModel;
@@ -8,19 +8,19 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.HashSet;
 import java.util.Set;
 
-public class RectCollisionData extends CollisionData {
+public class RectHitbox extends Hitbox {
 
     //x,y are center of the rectangle
     //w,h are the width and height
     //radius is the rotation in radians
     private double w, h;
 
-    RectCollisionData(double w, double h) {
+    RectHitbox(double w, double h) {
         this.w = w;
         this.h = h;
     }
 
-    RectCollisionData() {
+    RectHitbox() {
         this(1,1);
     }
 

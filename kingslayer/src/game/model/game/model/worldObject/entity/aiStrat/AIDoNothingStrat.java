@@ -7,16 +7,12 @@ public class AIDoNothingStrat extends AIStrat {
     public static final AIDoNothingStrat SINGLETON = new AIDoNothingStrat();
 
     @Override
-    public AIData initAIData() {
+    public AIData makeAIData() {
         return null;
     }
 
     @Override
     public void updateAI(Entity entity, GameModel model) {
         //Do nothing
-    }
-
-    public static AIDoNothingStrat make() {
-        return SINGLETON;
     }
 }

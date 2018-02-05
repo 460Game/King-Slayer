@@ -4,8 +4,8 @@ import game.model.game.grid.GridCell;
 import game.model.game.model.worldObject.entity.aiStrat.AIStrat;
 import game.model.game.model.worldObject.entity.aiStrat.AIable;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
+import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import game.model.game.model.worldObject.entity.drawStrat.DrawStrat;
-import game.model.game.model.worldObject.entity.drawStrat.ShapeDrawStrat;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 import util.Util;
 import game.model.game.model.GameModel;
@@ -41,18 +41,28 @@ public class Entity implements Updatable, Drawable, AIable {
     public EntityData data;
 
     public void collision(GameModel model, Entity b) {
-        this.collisionStrat.collision(model, b);
+        this.collisionStrat.collision(model, this, b);
     }
 
-    public Entity(double x, double y, Team team, UpdateStrat updateStrat, CollisionStrat collisionStrat, DrawStrat drawStrat, AIStrat aiStrat) {
+    public Entity(double x,
+                  double y,
+                  Team team,
+                  UpdateStrat updateStrat,
+                  CollisionStrat collisionStrat,
+                  Hitbox hitbox,
+                  DrawStrat drawStrat,
+                  AIStrat aiStrat) {
         id = Util.random.nextLong();
         this.updateStrat = updateStrat;
         this.drawStrat = drawStrat;
         this.aiStrat = aiStrat;
         this.team = team;
         this.collisionStrat = collisionStrat;
-        this.data = new EntityData(collisionStrat.initCollisionData(),
-            aiStrat.initAIData(), drawStrat.initDrawData(), updateStrat.initUpdateData(), x, y);
+        this.data = new EntityData(hitbox,
+            aiStrat.makeAIData(),
+            drawStrat.initDrawData(),
+            updateStrat.initUpdateData(),
+            x, y);
     }
 
     @Override

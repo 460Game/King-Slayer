@@ -5,15 +5,22 @@ import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
 import javafx.scene.canvas.GraphicsContext;
 
-public abstract class ShapeDrawStrat extends DrawStrat {
+public class ShapeDrawStrat extends DrawStrat {
 
-    public static final DrawStrat HITBOX_DRAW_STRAT = new ShapeDrawStrat() {};
+    public static final DrawStrat SINGLETON = new ShapeDrawStrat();
 
-    public void draw(Entity entity, GraphicsContext gc) {
-        entity.data.collisionData.draw(gc);
+    private ShapeDrawStrat(){}
+
+    @Override
+    public DrawData initDrawData() {
+        return null;
     }
 
-    public double getDrawZ(EntityData entity) {
-        return entity.collisionData.getY();
+    public void draw(Entity entity, GraphicsContext gc) {
+        entity.data.hitbox.draw(gc, entity);
+    }
+
+    public double getDrawZ(EntityData entityData) {
+        return entityData.y;
     }
 }

@@ -6,7 +6,9 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class NoDrawStrat extends DrawStrat {
 
-    private static NoDrawStrat SINGLETON = new NoDrawStrat();
+    public static final NoDrawStrat SINGLETON = new NoDrawStrat();
+
+    private NoDrawStrat(){};
 
     @Override
     public DrawData initDrawData() {
@@ -14,15 +16,10 @@ public class NoDrawStrat extends DrawStrat {
     }
 
     @Override
-    public void draw(Entity entity, GraphicsContext gc) {
-    }
+    public void draw(Entity entity, GraphicsContext gc) { }
 
     @Override
     public double getDrawZ(EntityData entity) {
         return 0;
-    }
-
-    public static NoDrawStrat make() {
-        return SINGLETON;
     }
 }

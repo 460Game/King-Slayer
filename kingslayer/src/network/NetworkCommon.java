@@ -2,11 +2,10 @@ package network;
 
 
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.serializers.DefaultSerializers;
 import com.esotericsoftware.kryonet.EndPoint;
 import game.message.*;
 import game.model.game.map.Tile;
-import game.model.game.model.worldObject.entity.collideStrat.collideData.*;
+import game.model.game.model.worldObject.entity.collideStrat.hitbox.*;
 import game.model.game.model.worldObject.Team;
 
 import java.util.ArrayList;
@@ -31,11 +30,11 @@ public class NetworkCommon {
         kryo.register(ToClientMessage.class);
         kryo.register(ToServerMessage.class);
         kryo.register(SetPlayerMessage.class);
-        kryo.register(CollisionData.class);
-        kryo.register(CellCollisionData.class);
-        kryo.register(CircleCollisionData.class);
-        kryo.register(CompositeCollisionData.class);
-        kryo.register(RectCollisionData.class);
+        kryo.register(Hitbox.class);
+        kryo.register(CellHitbox.class);
+        kryo.register(CircleHitbox.class);
+        kryo.register(CompositeHitbox.class);
+        kryo.register(RectHitbox.class);
         kryo.register(Team.class);
         kryo.register(Tile.class);
         kryo.register(ClientMakeModelMsg.class);

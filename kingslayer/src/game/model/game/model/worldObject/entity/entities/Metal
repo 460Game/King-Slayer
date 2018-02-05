@@ -12,14 +12,14 @@ import javafx.scene.canvas.GraphicsContext;
 public class Metal extends Resource {
 
     /**
-     * The collisionData of the metal resource.
+     * The hitbox of the metal resource.
      */
-    //    private collisionData collisionData = new CircleShape(0,0,0.5);
-    private Shape collisionData = new CellShape(); // TODO FIX THis
+    //    private hitbox hitbox = new CircleShape(0,0,0.5);
+    private Shape hitbox = new CellShape(); // TODO FIX THis
 
     @Override
     public Shape getShape() {
-        return collisionData;
+        return hitbox;
     }
 
     @Override

@@ -5,6 +5,8 @@ import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
 import game.model.game.model.worldObject.entity.collideStrat.HardCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.SoftCollisionStrat;
+import game.model.game.model.worldObject.entity.collideStrat.hitbox.CellHitbox;
+import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.NoDrawStrat;
 import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
@@ -17,6 +19,7 @@ public class Entities {
         return new Entity(x, y, Team.NEUTRAL,
             StillStrat.make(),
             HardCollisionStrat.make(),
+            CellHitbox.SINGLETON,
             NoDrawStrat.make(),
             AIDoNothingStrat.make());
     }
@@ -26,6 +29,7 @@ public class Entities {
             Team.NEUTRAL,
             StillStrat.make(),
             HardCollisionStrat.make(),
+            CellHitbox.SINGLETON,
             ImageDrawStrat.make(Images.METAL_IMAGES[0]),
             AIDoNothingStrat.make());
     }
@@ -35,6 +39,7 @@ public class Entities {
             Team.NEUTRAL,
             StillStrat.make(),
             HardCollisionStrat.make(),
+            CellHitbox.SINGLETON,
             ImageDrawStrat.make(Images.STONE_IMAGES[0]),
             AIDoNothingStrat.make());
     }
@@ -44,6 +49,7 @@ public class Entities {
             Team.NEUTRAL,
             StillStrat.make(),
             HardCollisionStrat.make(),
+            CellHitbox.SINGLETON,
             ImageDrawStrat.make(Images.TREE_IMAGES[0]),
             AIDoNothingStrat.make());
     }
@@ -53,6 +59,7 @@ public class Entities {
             Team.NEUTRAL,
             StillStrat.make(),
             HardCollisionStrat.make(),
+            CellHitbox.SINGLETON,
             ImageDrawStrat.make(Images.WALL_IMAGE),
             AIDoNothingStrat.make());
     }
@@ -62,6 +69,7 @@ public class Entities {
             Team.NEUTRAL,
             StillStrat.make(),
             HardCollisionStrat.make(),
+            CellHitbox.SINGLETON,
             ImageDrawStrat.make(Images.BOX_IMAGE),
             AIDoNothingStrat.make());
     }

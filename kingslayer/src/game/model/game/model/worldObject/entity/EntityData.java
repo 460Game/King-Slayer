@@ -3,17 +3,17 @@ package game.model.game.model.worldObject.entity;
 import game.model.game.model.worldObject.entity.entities.Velocity;
 import game.model.game.model.worldObject.entity.aiStrat.AIData;
 import game.model.game.model.worldObject.entity.drawStrat.DrawData;
-import game.model.game.model.worldObject.entity.collideStrat.collideData.CollisionData;
+import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateData;
 
 public class EntityData {
-    public CollisionData collisionData;
+    public Hitbox hitbox;
     public AIData aiData;
     public DrawData drawData;
     public UpdateData updateData;
 
-    public EntityData(CollisionData collisionData, AIData aiData, DrawData drawData, UpdateData updateData, double x, double y) {
-        this.collisionData = collisionData;
+    public EntityData(Hitbox hitbox, AIData aiData, DrawData drawData, UpdateData updateData, double x, double y) {
+        this.hitbox = hitbox;
         this.aiData = aiData;
         this.drawData = drawData;
         this.updateData = updateData;
