@@ -72,7 +72,6 @@ public class LobbyClient extends Application {
             @Override
             public void init() {
                 Log.debug("client init");
-                clientGameModel.start();
 
                 gameView = new GameView(clientGameModel);
                 Platform.runLater(()-> {

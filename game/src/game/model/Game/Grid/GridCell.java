@@ -98,8 +98,9 @@ public class GridCell implements Drawable {
      * tile type.
      * @param gc context used to draw the cell background
      */
+    boolean rave = true;
     public void draw(GraphicsContext gc, GameModel model) {
-        tile.draw(gc, x, y, model, true);
+        tile.draw(gc, x, y, model, rave = !rave);
     }
 
     @Override

@@ -134,7 +134,7 @@ public class Main extends Application {
         window.setX(0);
         window.setY(0);
         window.setTitle("King Slayer");
-      //  window.setFullScreen(true);
+       //window.setFullScreen(true);
 
         Group root = new Group();
 
@@ -195,12 +195,12 @@ public class Main extends Application {
             bgGC.drawImage(bgImage,0,0, window.getWidth(), window.getHeight());
             menuBox.setTranslateX(window.getWidth()/2 - menuBox.getWidth()/2);
             menuBox.setTranslateY(window.getHeight() - menuBox.getHeight() - 200);
+            Log.info("w/h = " + window.getWidth() + " " + window.getHeight());
         };
 
         window.heightProperty().addListener(resize);
         window.widthProperty().addListener(resize);
         window.maximizedProperty().addListener(resize);
-        resize.invalidated(null);
 
         scene.setOnKeyPressed(e -> {
             switch(e.getCode()) {
@@ -247,6 +247,7 @@ public class Main extends Application {
         window.show();
         window.setScene(scene);
 
+        resize.invalidated(null);
 
 /*
         window.on

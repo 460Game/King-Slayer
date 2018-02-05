@@ -1,5 +1,6 @@
 package game.model.Game.Model;
 
+import com.esotericsoftware.minlog.Log;
 import game.message.*;
 import game.model.Game.Map.ServerMapGenerator;
 import game.model.Game.WorldObject.Entity.Entity;
@@ -18,8 +19,6 @@ public class ServerGameModel extends GameModel {
     }
 
     private Collection<? extends Model> clients = null;
-
-
 
     @Override
     public void processMessage(Message m) {
@@ -66,5 +65,39 @@ public class ServerGameModel extends GameModel {
     @Override
     public String toString() {
         return "Server Game Model";
+    }
+
+    private boolean running = false;
+
+    public void start() {
+        Log.info("Starting Server Model");
+        if (running) throw new RuntimeException("Cannot start server model when already running");
+        running = true;
+        (new Thread(this::run, this.toString() + " Update Thread")).start();
+    }
+
+    public void stop() {
+        running = false;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    private void run() {
+        while (running) {
+            long start = System.nanoTime();
+            this.update();
+            //want it independent of how long update take, so use the following instead
+            //of thread.sleep()...
+            long delta = System.nanoTime()- start;
+            if (UPDATE_LOOP_TIME_NANOS > delta)
+                try {
+                    Thread.yield();
+                    Thread.sleep((UPDATE_LOOP_TIME_NANOS - delta)/ 1000000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+        }
     }
 }

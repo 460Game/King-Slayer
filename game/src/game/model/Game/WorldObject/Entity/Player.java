@@ -215,7 +215,7 @@ public abstract class Player extends MovingEntity {
                 throw new RuntimeException("Unknown direction to move.");
         }
         if (dirUpdate) {    // Only update extra stuff if any direction now has movement in that direction.
-            setVelocity(0.1);
+            setVelocity(0.05);
             double oldAngle = getMovementAngle();
             setMovementAngle(Math.atan2(dy, dx));     // Update new movement angle after a direction has changed.
             if (up && down || left && right) {   // Directions cancelling out results in no speed, maintain angle.
@@ -253,7 +253,7 @@ public abstract class Player extends MovingEntity {
         if (!up && !left && !right && !down)   // No movement - set speed to 0.
             this.setVelocity(0);
         else {
-            this.setVelocity(0.1);
+            this.setVelocity(0.05);
             double oldAngle = this.getMovementAngle();
             this.setMovementAngle(Math.atan2(dy, dx)); // Update new movement angle after a direction has changed.
             if (up && down || left && right) {  // Directions cancelling out results in no speed, preserve angle.

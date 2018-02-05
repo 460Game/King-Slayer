@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public abstract class GameModel extends UpdateModel {
+public abstract class GameModel implements Model {
 
     /**
      * Grid of the game map. Each tile on the map is represented by a 1x1 cell.
@@ -119,17 +119,17 @@ public abstract class GameModel extends UpdateModel {
         grid[x][y].setTile(tile);
     }
 
-    @Override
     public void update() {
         ArrayList<Message> list = new ArrayList<>();
         messageQueue.drainTo(list);
         list.forEach(m -> m.execute(this));
 
+        entities.values().forEach(e -> e.update(this));
+
         for (GridCell cell : allCells) {// TODO collisions broken
             cell.collideContents(this);
         }
 
-        entities.values().forEach(e -> e.update(this));
     }
 
     public Collection<GridCell> getAllCells() {
@@ -179,7 +179,7 @@ public abstract class GameModel extends UpdateModel {
 //     * @param i3
 //     */
     public void draw(GraphicsContext gc, double cx, double cy, double w, double h) {
-        gc.setFill(Color.DARKBLUE);
+        gc.setFill(Color.LIGHTCYAN);
         gc.fillRect(-100000, -100000, 100000000, 10000000);
 
         List<Drawable> drawEntities = drawBox(cx,cy,w,h);

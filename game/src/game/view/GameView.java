@@ -61,8 +61,6 @@ public class GameView {
             debugCanvas.setHeight(window.getHeight());
         });
 
-        window.setFullScreen(true);
-
         root.getChildren().add(canvas);
         root.getChildren().add(debugCanvas);
         root.getChildren().add(minimapCanvas);
