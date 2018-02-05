@@ -11,10 +11,6 @@ public class MovingStrat extends UpdateStrat {
         return new UpdateData();
     }
 
-    MovingStrat(Model model) {
-        super(model);
-    }
-
     @Override
     protected void update(Entity entity, GameModel model, double seconds) {
         entity.data.x += entity.data.updateData.velocity.getVx() * seconds;

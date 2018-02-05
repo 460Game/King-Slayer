@@ -17,60 +17,60 @@ public class Entities {
 
     public static Entity makeBlocker(double x, double y) {
         return new Entity(x, y, Team.NEUTRAL,
-            StillStrat.make(),
+            StillStrat.SINGLETON,
             HardCollisionStrat.make(),
             CellHitbox.SINGLETON,
-            NoDrawStrat.make(),
-            AIDoNothingStrat.make());
+            NoDrawStrat.SINGLETON,
+            AIDoNothingStrat.SINGLETON);
     }
 
     public static Entity makeMetal(Double x, Double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
-            StillStrat.make(),
+            StillStrat.SINGLETON,
             HardCollisionStrat.make(),
             CellHitbox.SINGLETON,
             ImageDrawStrat.make(Images.METAL_IMAGES[0]),
-            AIDoNothingStrat.make());
+            AIDoNothingStrat.SINGLETON);
     }
 
     public static Entity makeStone(Double x, Double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
-            StillStrat.make(),
+            StillStrat.SINGLETON,
             HardCollisionStrat.make(),
             CellHitbox.SINGLETON,
             ImageDrawStrat.make(Images.STONE_IMAGES[0]),
-            AIDoNothingStrat.make());
+            AIDoNothingStrat.SINGLETON);
     }
 
     public static Entity makeTree(Double x, Double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
-            StillStrat.make(),
+            StillStrat.SINGLETON,
             HardCollisionStrat.make(),
             CellHitbox.SINGLETON,
             ImageDrawStrat.make(Images.TREE_IMAGES[0]),
-            AIDoNothingStrat.make());
+            AIDoNothingStrat.SINGLETON);
     }
 
     public static Entity makeWall(Double x, Double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
-            StillStrat.make(),
+            StillStrat.SINGLETON,
             HardCollisionStrat.make(),
             CellHitbox.SINGLETON,
             ImageDrawStrat.make(Images.WALL_IMAGE),
-            AIDoNothingStrat.make());
+            AIDoNothingStrat.SINGLETON);
     }
 
     public static Entity makeBox(Double x, Double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
-            StillStrat.make(),
+            StillStrat.SINGLETON,
             HardCollisionStrat.make(),
             CellHitbox.SINGLETON,
             ImageDrawStrat.make(Images.BOX_IMAGE),
-            AIDoNothingStrat.make());
+            AIDoNothingStrat.SINGLETON);
     }
 }

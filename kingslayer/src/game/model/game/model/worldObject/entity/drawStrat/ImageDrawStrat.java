@@ -13,12 +13,10 @@ simple draw strategy for drawing entire image on entity
  */
 public abstract class ImageDrawStrat extends DrawStrat {
 
-    public static ImageDrawStrat DRAW_EXMAPLE_STRAT = new ImageDrawStrat() {
-        @Override
-        Image getImage() {
-            return Images.BOX_IMAGE;
-        }
-    };
+    @Override
+    public DrawData initDrawData() {
+        return null;
+    }
 
     abstract Image getImage();
 
@@ -33,13 +31,10 @@ public abstract class ImageDrawStrat extends DrawStrat {
         return entity.y;
     }
 
-    public static DrawStrat make(Image boxImage) {
-        return new ImageDrawStrat() {
-            @Override
-            public DrawData initDrawData() {
-                return null;
-            }
+    public static final ImageDrawStrat TREE_IMAGE_DRAW_STRAT = make(Images.TREE_IMAGES[0]);
 
+    private static ImageDrawStrat make(Image boxImage) {
+        return new ImageDrawStrat() {
             @Override
             Image getImage() {
                 return boxImage;

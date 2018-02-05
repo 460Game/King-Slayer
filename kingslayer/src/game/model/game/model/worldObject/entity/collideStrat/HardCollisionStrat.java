@@ -9,11 +9,6 @@ public class HardCollisionStrat extends CollisionStrat{
 
     private static HardCollisionStrat SINGLTON = new HardCollisionStrat();
 
-    @Override
-    public Hitbox initCollisionData() {
-        return new CellHitbox();
-    }
-
     public final void collision(GameModel model, Entity a, Entity b) {
         if(a.getCollideType() == CollideType.HARD)
             throw new RuntimeException("HARD objects overlapping");

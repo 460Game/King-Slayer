@@ -8,7 +8,6 @@ import game.message.StopMessage;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.entities.Player;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;

@@ -1,7 +1,6 @@
 package game.message;
 
 import game.model.game.model.ServerGameModel;
-import game.model.game.model.worldObject.entity.entities.Player;
 
 /**
  * Message sent by a client to tell the server to move the player

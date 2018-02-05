@@ -4,6 +4,7 @@ import game.model.game.model.GameModel;
 import game.model.game.map.Tile;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
+import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.*;
@@ -41,8 +42,8 @@ public class GridCell {
      * considered unpassable f it has a cell hitbox occupying it.
      * @return true if the cell is able to be walked through
      */
-    public boolean isPassable() {
-        return contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD && e.data.hitbox.blocksCell(x, y));
+    public boolean isPassable(GameModel model) {
+        return contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD && e.containedIn.contains(model.getCell(x, y)));
     }
 
     /**
@@ -108,7 +109,7 @@ public class GridCell {
             for (int j = 0; j < i; j++) {
                 Entity a = contents.get(i);
                 Entity b = contents.get(j);
-                if(a.data.hitbox.testCollision(b.data.hitbox)) {
+                if(Hitbox.testCollision(a, b)) {
                     a.collision(model, b);
                     b.collision(model, a);
                 }

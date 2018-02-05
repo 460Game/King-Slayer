@@ -1,8 +1,8 @@
 package game.model.game.map;
 
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.entities.Blockers;
 import game.model.game.model.worldObject.entity.entities.Entities;
+import game.model.game.model.worldObject.entity.entities.Players;
 import util.Util;
 import util.Loc;
 
@@ -79,8 +79,8 @@ public class ServerMapGenerator implements MapGenerator {
         grass2(Tile.GRASS_2, null),
         barrier(Tile.GRASS_0, Entities::makeBox),
         unset(null, null),
-        startKing(Tile.PATH, Entities::makeKing),
-        startSlayer(Tile.PATH, Entities::makeSlayer),
+        startKing(Tile.PATH, Players::makeKing),
+        startSlayer(Tile.PATH, Players::makeSlayer),
         bridge(Tile.SHALLOW_WATER, null),
         road(Tile.PATH, null);
 
