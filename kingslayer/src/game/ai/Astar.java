@@ -1,4 +1,4 @@
-package game.AI;
+package game.ai;
 
 import game.model.game.grid.GridCell;
 import game.model.game.model.GameModel;

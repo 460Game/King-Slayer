@@ -14,19 +14,19 @@ public class StopMessage extends ActionMessage {
     private long id;
 
     /**
-     * String of the direction the player wants to stop.
+     * Angle of the original movement before stopping.
      */
-    private String dir;
+    private double angle;
 
     /**
      * Constructor for the stop message.
      * @param id player ID that send the message
-     * @param dir direction to stop movement
+     * @param angle original direction before stopping
      */
-    public StopMessage(long id, String dir) {
+    public StopMessage(long id, double angle) {
         super();
         this.id = id;
-        this.dir = dir;
+        this.angle = angle;
     }
 
     /**

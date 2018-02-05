@@ -2,7 +2,7 @@ package game.view;
 
 import static util.Const.*;
 
-import game.AI.Astar;
+import game.ai.Astar;
 import game.message.SetVelocityMessage;
 import game.message.StopMessage;
 import game.model.game.grid.GridCell;
@@ -171,7 +171,10 @@ public class GameView {
         });
 
         scene.setOnKeyReleased(e -> {
-            if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.W) // Stop upward movement.
+            if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.W ||
+                    e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.S ||
+                    e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.A ||
+                    e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.D) // Stop upward movement.
                 model.processMessage(new StopMessage(model.getLocalPlayer().id, "up"));
             if (e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.S) // Stop downward movement.
                 model.processMessage(new StopMessage(model.getLocalPlayer().id, "down"));

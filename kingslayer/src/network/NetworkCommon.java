@@ -21,7 +21,6 @@ public class NetworkCommon {
 
     public static void KyroRegister(Kryo kryo) {
         kryo.register(Message.class);
-        kryo.register(StopMessage.class);
         kryo.register(ActionMessage.class);
         kryo.register(SetVelocityMessage.class);
         kryo.register(RemoveEntityMessage.class);
