@@ -128,14 +128,14 @@ public class GameView {
 
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.F11) window.setFullScreen(true);
-            if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.W) // Start upward movement.
+         /*   if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.W) // Start upward movement.
                 model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, "up"));
             if (e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.S) // Start downward movement.
                 model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, "down"));
             if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.A) // Start leftward movement.
                 model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, "left"));
             if (e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.D) // Start rightward movement.
-                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, "right"));
+                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, "right"));*/
             // TODO remove, temp for testing
             if (e.getCode() == KeyCode.SPACE) {
                 astar.findTraversableNodes();
@@ -169,7 +169,7 @@ public class GameView {
             path.remove(0);
         });
 
-        scene.setOnKeyReleased(e -> {
+      /*  scene.setOnKeyReleased(e -> {
             if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.W ||
                     e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.S ||
                     e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.A ||
@@ -181,7 +181,7 @@ public class GameView {
                 model.processMessage(new StopMessage(model.getLocalPlayer().id, "left"));
             if (e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.D) // Stop rightward movement.
                 model.processMessage(new StopMessage(model.getLocalPlayer().id, "right"));
-        });
+        });*/
 
         window.setScene(scene);
         window.show();

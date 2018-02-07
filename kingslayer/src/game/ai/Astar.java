@@ -99,7 +99,7 @@ public class Astar {
     }
 
     public void findTraversableNodes() {
-        nodes = cells.stream().filter(GridCell::isPassable).collect(Collectors.toSet());
+        nodes = cells.stream().filter(cell -> cell.isPassable(model)).collect(Collectors.toSet());
 //        for (GridCell node : nodes)
 //            System.out.println("Node x,y: " + node.getTopLeftX() + ", " + node.getTopLeftY());
 //        System.out.println(nodes.size());

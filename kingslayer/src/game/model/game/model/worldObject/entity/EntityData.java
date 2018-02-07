@@ -23,6 +23,8 @@ public class EntityData {
         this.velocity = new Velocity();
     }
 
+    private EntityData() {}
+
     public double x;
     public double y;
 

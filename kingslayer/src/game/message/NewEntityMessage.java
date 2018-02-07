@@ -11,6 +11,8 @@ public class NewEntityMessage implements ToClientMessage {
         this.entity = entity;
     }
 
+    private NewEntityMessage(){}
+
     @Override
     public void executeClient(ClientGameModel model) {
         model.setEntity(entity);

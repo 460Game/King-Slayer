@@ -65,6 +65,15 @@ public class Entity implements Updatable, Drawable, AIable {
             x, y);
     }
 
+    private Entity() {
+        this.updateStrat = null;
+        this.collisionStrat = null;
+        this.drawStrat = null;
+        this.aiStrat = null;
+        team = null;
+        id = 0;
+    }
+
     @Override
     public void updateAI(GameModel model) {
         this.aiStrat.updateAI(this, model);

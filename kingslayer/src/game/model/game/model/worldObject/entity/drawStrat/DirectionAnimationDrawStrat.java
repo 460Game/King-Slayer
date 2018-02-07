@@ -10,10 +10,10 @@ import static util.Util.toDrawCoords;
 
 public abstract class DirectionAnimationDrawStrat extends DrawStrat {
 
-  public static final DirectionAnimationDrawStrat RED_KING_ANIMATION = make(Images.RED_KING_IMAGE_SHEET);
-  public static final DirectionAnimationDrawStrat BLUE_KING_ANIMATION = make(Images.BLUE_KING_IMAGE_SHEET);
-  public static final DirectionAnimationDrawStrat RED_SLAYER_ANIMATION = make(Images.RED_SLAYER_IMAGE_SHEET);
-  public static final DirectionAnimationDrawStrat BLUE_SLAYER_ANIMATION = make(Images.BLUE_SLAYER_IMAGE_SHEET);
+  public static final DirectionAnimationDrawStrat RED_KING_ANIMATION = new RedKingDirectionAnimationDrawStrat();
+  public static final DirectionAnimationDrawStrat BLUE_KING_ANIMATION = new BlueKingDirectionAnimationDrawStrat();
+  public static final DirectionAnimationDrawStrat RED_SLAYER_ANIMATION = new RedSlayerDirectionAnimationDrawStrat();
+  public static final DirectionAnimationDrawStrat BLUE_SLAYER_ANIMATION = new BlueSlayerDirectionAnimationDrawStrat();
 
   @Override
   public DrawData initDrawData() {
@@ -33,6 +33,31 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     return entity.y;
   }
 
+  private static class RedKingDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+    @Override
+    Image getImage() {
+      return Images.BOX_IMAGE;
+    }
+  }
+  private static class BlueKingDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+    @Override
+    Image getImage() {
+      return Images.BOX_IMAGE;
+    }
+  }
+  private static class RedSlayerDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+    @Override
+    Image getImage() {
+      return Images.BOX_IMAGE;
+    }
+  }
+  private static class BlueSlayerDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+    @Override
+    Image getImage() {
+      return Images.BOX_IMAGE;
+    }
+  }
+
   private static DirectionAnimationDrawStrat make(Image boxImage) {
     return new DirectionAnimationDrawStrat() {
       @Override
@@ -41,4 +66,6 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
       }
     };
   }
+
+  private DirectionAnimationDrawStrat(){}
 }

@@ -21,7 +21,7 @@ public abstract class Images {
     public static final Image BLUE_SLAYER_IMAGE_SHEET = getImage("slayer_blue_sheet.png");
 
     private static Image getImage(String s) {
-        return new Image(Image.class.getResourceAsStream(s));
+        return new Image(Images.class.getResourceAsStream(s));
     }
 
     private static Image[] getImages(String... s) {
