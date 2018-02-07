@@ -1,12 +1,13 @@
 package game.message;
 
 import game.model.game.model.ServerGameModel;
+import game.model.game.model.worldObject.entity.entities.Velocity;
 
 /**
  * Message sent by a client to tell the server to move the player
  * on the game map.
  */
-public class SetVelocityMessage extends ActionMessage {
+public class GoDirectionMessage extends ActionMessage {
 
     /**
      * ID to distinguish player that sent the message.
@@ -16,23 +17,22 @@ public class SetVelocityMessage extends ActionMessage {
     /**
      * String of the direction the player wants to move.
      */
-    private String dir;
+    private double angle;
 
     /**
      * Constructor for the move message.
      * @param id player ID that send the message
-     * @param dir direction of the movement
+     * @param angle direction of the movement
      */
-    public SetVelocityMessage(long id, String dir) {
+    public GoDirectionMessage(long id, double angle) {
         super();
-        this.id = id;
-        this.dir = dir;
+        this.angle = angle;
     }
 
     /**
      * Default constructor needed for serialization.
      */
-    public SetVelocityMessage() {
+    public GoDirectionMessage() {
 
     }
 
@@ -42,7 +42,8 @@ public class SetVelocityMessage extends ActionMessage {
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        model.getEntityById(id).move(dir);
+        model.getEntityById(id).data.updateData.velocity.setAngle(angle);
+        model.getEntityById(id).data.updateData.velocity.setMagnitude(model.getEntityById(id).data.updateData.maxSpeed);
         model.processMessage(new SetEntityMessage(model.getEntityById(id)));
     }
 }

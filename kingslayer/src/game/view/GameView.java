@@ -3,11 +3,10 @@ package game.view;
 import static util.Const.*;
 
 import game.ai.Astar;
-import game.message.SetVelocityMessage;
+import game.message.GoDirectionMessage;
 import game.message.StopMessage;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ClientGameModel;
-import game.model.game.model.worldObject.entity.Entity;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -130,13 +129,13 @@ public class GameView {
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.F11) window.setFullScreen(true);
             if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.W) // Start upward movement.
-                model.processMessage(new SetVelocityMessage(model.getLocalPlayer().id, "up"));
+                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, "up"));
             if (e.getCode() == KeyCode.DOWN || e.getCode() == KeyCode.S) // Start downward movement.
-                model.processMessage(new SetVelocityMessage(model.getLocalPlayer().id, "down"));
+                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, "down"));
             if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.A) // Start leftward movement.
-                model.processMessage(new SetVelocityMessage(model.getLocalPlayer().id, "left"));
+                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, "left"));
             if (e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.D) // Start rightward movement.
-                model.processMessage(new SetVelocityMessage(model.getLocalPlayer().id, "right"));
+                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, "right"));
             // TODO remove, temp for testing
             if (e.getCode() == KeyCode.SPACE) {
                 astar.findTraversableNodes();

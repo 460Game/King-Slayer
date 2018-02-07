@@ -42,7 +42,7 @@ public class StopMessage extends ActionMessage {
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        ((Player) model.getEntityById(id)).stop(dir);
+        model.getEntityById(id).data.updateData.velocity.setMagnitude(0);
         model.processMessage(new SetEntityMessage(model.getEntityById(id)));
     }
 }

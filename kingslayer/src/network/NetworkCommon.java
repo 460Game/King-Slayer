@@ -22,7 +22,7 @@ public class NetworkCommon {
     public static void KyroRegister(Kryo kryo) {
         kryo.register(Message.class);
         kryo.register(ActionMessage.class);
-        kryo.register(SetVelocityMessage.class);
+        kryo.register(GoDirectionMessage.class);
         kryo.register(RemoveEntityMessage.class);
         kryo.register(SetEntityMessage.class);
         kryo.register(SetTileMessage.class);
