@@ -21,7 +21,7 @@ public class CopyingModelWrapper implements Model {
 
     @Override
     public void processMessage(Message m) {
-        model.processMessage(kryo.copy(m));
+        model.processMessage(m);//kryo.copy(m));
     }
 
     @Override

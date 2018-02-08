@@ -63,6 +63,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
     abstract Image getImage();
 
     public void draw(Entity entity, GraphicsContext gc) {
+        System.out.println("DRAWING IMAGE");
         gc.drawImage(getImage(), toDrawCoords(entity.data.x),
             toDrawCoords(entity.data.y),
             toDrawCoords(entity.data.hitbox.getWidth()),

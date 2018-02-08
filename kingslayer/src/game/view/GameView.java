@@ -2,6 +2,7 @@ package game.view;
 
 import static util.Const.*;
 
+import com.esotericsoftware.minlog.Log;
 import game.ai.Astar;
 import game.message.GoDirectionMessage;
 import game.message.StopMessage;
@@ -69,38 +70,39 @@ public class GameView {
             public void handle(long arg0) {
                 model.update();
 
+                if(model.getLocalPlayer() != null) {
 
-                minimapGC.setTransform(new Affine(Transform.scale(
-                    minimapGC.getCanvas().getWidth()/model.getMapWidth(),
-                    minimapGC.getCanvas().getHeight()/model.getMapHeight())));
-                minimapGC.fillRect(0,0,minimapGC.getCanvas().getWidth(), minimapGC.getCanvas().getHeight());
-                for(int x= 0; x < model.getMapWidth(); x++){
-                    for(int y =0; y< model.getMapHeight();y++) {
-                        minimapGC.setFill(model.getTile(x,y).getColor());
-                        minimapGC.fillRect(x,y,2,2);
+                    minimapGC.setTransform(new Affine(Transform.scale(
+                        minimapGC.getCanvas().getWidth() / model.getMapWidth(),
+                        minimapGC.getCanvas().getHeight() / model.getMapHeight())));
+                    minimapGC.fillRect(0, 0, minimapGC.getCanvas().getWidth(), minimapGC.getCanvas().getHeight());
+                    for (int x = 0; x < model.getMapWidth(); x++) {
+                        for (int y = 0; y < model.getMapHeight(); y++) {
+                            minimapGC.setFill(model.getTile(x, y).getColor());
+                            minimapGC.fillRect(x, y, 2, 2);
+                        }
                     }
+                    //TEMP HACK
+                    // for(Entity player : model.getAllEntities()) {
+                    //      if(player instanceof Player) {
+                    //          minimapGC.setFill(player.getTeam().color);
+                    //          minimapGC.fillOval(player.(),player.getY(),3,3);
+                    //       }
+                    //   }
+                    minimapGC.setTransform(new Affine());
+
+                    double gameW = scaleFactor[0] * window.getWidth() / TILE_PIXELS;
+                    double gameH = scaleFactor[0] * window.getHeight() / TILE_PIXELS;
+                    double xt = -model.getLocalPlayer().data.x * TILE_PIXELS + window.getWidth() / 2;
+                    double yt = -model.getLocalPlayer().data.y * TILE_PIXELS + (window.getHeight() / 2);
+                    gc.setTransform(new Affine(Affine.translate(xt, yt)));
+                    debugGC.setTransform(new Affine());
+                    debugGC.clearRect(0, 0, debugCanvas.getWidth(), debugCanvas.getHeight());
+                    debugGC.setTransform(new Affine(Affine.translate(xt, yt)));
+                    model.draw(gc, model.getLocalPlayer().data.x, model.getLocalPlayer().data.y, gameW, gameH);
+
+                    astar.draw(debugGC);
                 }
-                //TEMP HACK
-               // for(Entity player : model.getAllEntities()) {
-              //      if(player instanceof Player) {
-              //          minimapGC.setFill(player.getTeam().color);
-              //          minimapGC.fillOval(player.(),player.getY(),3,3);
-             //       }
-             //   }
-                minimapGC.setTransform(new Affine());
-
-                double gameW = scaleFactor[0] * window.getWidth() / TILE_PIXELS;
-                double gameH = scaleFactor[0] * window.getHeight() / TILE_PIXELS;
-                double xt = - model.getLocalPlayer().data.x * TILE_PIXELS + window.getWidth() / 2;
-                double yt = -model.getLocalPlayer().data.y * TILE_PIXELS + (window.getHeight() / 2);
-                gc.setTransform(new Affine(Affine.translate(xt, yt)));
-                debugGC.setTransform(new Affine());
-                debugGC.clearRect(0, 0, debugCanvas.getWidth(), debugCanvas.getHeight());
-                debugGC.setTransform(new Affine(Affine.translate(xt, yt)));
-                model.draw(gc, model.getLocalPlayer().data.x, model.getLocalPlayer().data.y, gameW, gameH);
-
-                astar.draw(debugGC);
-
                 //TODO temp for testing, doing this every frame
 //    astar.findTraversableNodes();
 //    Set<GridCell> nodes = astar.getNodes();
@@ -162,11 +164,11 @@ public class GameView {
         scene.setOnMouseClicked(e -> {
 //            GridCell cell = model.getCell((int) model.getLocalPlayer().getTopLeftX() + 1, (int) model.getLocalPlayer().getTopLeftY() + 1);
 //            model.processMessage(new MoveToMessage(model.getLocalPlayer().getId(), cell));
-            while (!path.get(0).isEmpty()) {
-                GridCell cell = path.get(0).remove(0);
+//            while (!path.get(0).isEmpty()) {
+  //              GridCell cell = path.get(0).remove(0);
            //     model.processMessage(new MoveToMessage(model.getLocalPlayer().id, cell));
-            }
-            path.remove(0);
+   //         }
+   //         path.remove(0);
         });
 
       /*  scene.setOnKeyReleased(e -> {
