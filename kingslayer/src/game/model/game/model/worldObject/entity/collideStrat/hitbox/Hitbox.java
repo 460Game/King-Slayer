@@ -34,7 +34,7 @@ public abstract class Hitbox {
      * Return the set of all cell references this hitbox overlaps with.
      * This method should return a new set every time.
      */
-    void updateCells(Entity entity, GameModel model) {
+    public void updateCells(Entity entity, GameModel model) {
         if(entity.data.x != prevX || entity.data.y != prevY) {
             Set<GridCell> afterSet = entity.data.hitbox.getCells(entity, model);
 

@@ -1,5 +1,6 @@
 package game.message;
 
+import com.esotericsoftware.minlog.Log;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.worldObject.entity.Entity;
 
@@ -15,6 +16,7 @@ public class NewEntityMessage implements ToClientMessage {
 
     @Override
     public void executeClient(ClientGameModel model) {
+        Log.info("Received new entity " + entity.id);
         model.setEntity(entity);
     }
 }

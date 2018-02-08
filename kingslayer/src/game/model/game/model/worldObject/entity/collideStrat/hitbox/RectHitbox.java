@@ -4,6 +4,7 @@ import game.model.game.grid.GridCell;
 import game.model.game.model.GameModel;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.scene.canvas.GraphicsContext;
+import util.Const;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,8 +28,8 @@ public class RectHitbox extends Hitbox {
     @Override
     public Set<GridCell> getCells(Entity entity, GameModel gameMap) {
         Set<GridCell> set = new HashSet<>();
-            for (int i = (int) (entity.data.x - w); i <= Math.ceil(entity.data.x + w); i++)
-                for (int j = (int) (entity.data.y - h); j <= Math.ceil(entity.data.y + h); j++)
+            for (int i = Math.max(0, (int) (entity.data.x - w)); i <= Math.min(Math.ceil(entity.data.x + w), Const.GRID_X_SIZE - 1); i++)
+                for (int j = Math.max(0, (int) (entity.data.y - h)); j <= Math.min(Math.ceil(entity.data.y + h), Const.GRID_Y_SIZE - 1); j++)
                     set.add(gameMap.getCell(i, j));
         return set;
     }
@@ -40,6 +41,7 @@ public class RectHitbox extends Hitbox {
 
     @Override
     public double getRadius(double angle) {
-        throw new RuntimeException("NOt implemented yet");
+        return 0.499; //TODO NONONO
+      //  throw new RuntimeException("NOt implemented yet");
     }
 }

@@ -1,5 +1,6 @@
 package game.message;
 
+import com.esotericsoftware.minlog.Log;
 import game.model.game.model.ServerGameModel;
 
 public class RequestEntityMessage implements ToServerMessage {
@@ -14,6 +15,7 @@ public class RequestEntityMessage implements ToServerMessage {
 
     @Override
     public void executeServer(ServerGameModel model) {
+        Log.info("Client request entity " + id);
         model.processMessage(new NewEntityMessage(model.getEntityById(id)));
     }
 }
