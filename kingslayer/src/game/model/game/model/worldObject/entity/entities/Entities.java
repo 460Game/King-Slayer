@@ -18,7 +18,7 @@ public class Entities {
     public static Entity makeBlocker(double x, double y) {
         return new Entity(x, y, Team.NEUTRAL,
             StillStrat.SINGLETON,
-            HardCollisionStrat.make(),
+            HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             NoDrawStrat.SINGLETON,
             AIDoNothingStrat.SINGLETON);
@@ -28,7 +28,7 @@ public class Entities {
         return new Entity(x, y,
             Team.NEUTRAL,
             StillStrat.SINGLETON,
-            HardCollisionStrat.make(),
+            HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             ImageDrawStrat.TREE_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
@@ -38,7 +38,7 @@ public class Entities {
         return new Entity(x, y,
             Team.NEUTRAL,
             StillStrat.SINGLETON,
-            HardCollisionStrat.make(),
+            HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             ImageDrawStrat.STONE_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
@@ -48,7 +48,7 @@ public class Entities {
         return new Entity(x, y,
             Team.NEUTRAL,
             StillStrat.SINGLETON,
-            HardCollisionStrat.make(),
+            HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             ImageDrawStrat.METAL_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
@@ -58,7 +58,7 @@ public class Entities {
         return new Entity(x, y,
             Team.NEUTRAL,
             StillStrat.SINGLETON,
-            HardCollisionStrat.make(),
+            HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             ImageDrawStrat.WALL_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
@@ -68,7 +68,7 @@ public class Entities {
         return new Entity(x, y,
             Team.NEUTRAL,
             StillStrat.SINGLETON,
-            HardCollisionStrat.make(),
+            HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             ImageDrawStrat.BOX_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);

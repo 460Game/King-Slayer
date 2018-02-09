@@ -14,19 +14,12 @@ public class StopMessage extends ActionMessage {
     private long id;
 
     /**
-     * Angle of the original movement before stopping.
-     */
-    private double angle;
-
-    /**
      * Constructor for the stop message.
      * @param id player ID that send the message
-     * @param angle original direction before stopping
      */
-    public StopMessage(long id, double angle) {
+    public StopMessage(long id) {
         super();
         this.id = id;
-        this.angle = angle;
     }
 
     /**

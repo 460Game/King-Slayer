@@ -15,7 +15,6 @@ public class RequestEntityMessage implements ToServerMessage {
 
     @Override
     public void executeServer(ServerGameModel model) {
-        Log.info("Client request entity " + id);
         model.processMessage(new NewEntityMessage(model.getEntityById(id)));
     }
 }

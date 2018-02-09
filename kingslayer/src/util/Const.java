@@ -7,6 +7,7 @@ import static java.lang.Math.PI;
  */
 public abstract class Const {
 
+    public static final boolean USE_SHAPE_DRAW = true;
 
     public static final double ANGLE_RIGHT = 0;
     public static final double ANGLE_LEFT = PI;
@@ -17,8 +18,8 @@ public abstract class Const {
     public static final double ANGLE_DOWN_RIGHT = PI/4;
     public static final double ANGLE_DOWN_LEFT = 3*PI/4;
 
-    public static final double NANOS_TO_SECONDS = 1e9;
-    private static final double SECONDS_TO_NANOS = 1e-9;
+    public static final double NANOS_TO_SECONDS = 1e-9;
+    private static final double SECONDS_TO_NANOS = 1e9;
 
     /**
      * Width of the game map, in terms of number of grid cells.

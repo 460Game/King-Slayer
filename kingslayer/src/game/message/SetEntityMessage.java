@@ -39,7 +39,6 @@ public class SetEntityMessage implements ToClientMessage {
      */
     @Override
     public void executeClient(ClientGameModel model) {
-        Log.info("Client setting entity " + id);
         if(!model.setEntityData(id, data)) {
             model.requestEntityFromServer(id);
         }

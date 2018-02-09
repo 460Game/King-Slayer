@@ -7,4 +7,10 @@ public class UpdateData {
     public Velocity velocity;
     public long lastUpdate;
     public double maxSpeed;
+
+    UpdateData() {
+        velocity = new Velocity();
+        lastUpdate = -1;
+        maxSpeed = 3;
+    }
 }

@@ -102,7 +102,6 @@ public class Main extends Application {
 
         window.show();
         Image logo = LOGO_IMAGE;
-        SingleplayerController test = new SingleplayerController();
         window.getIcons().add(logo);
         window.setResizable(true);
         window.setMinHeight(800);
@@ -127,9 +126,9 @@ public class Main extends Application {
 
 
         MenuItem[] items = new MenuItem[] {
-            new MenuItem("JOIN LAN GAME"),
-            new MenuItem("NEW LAN GAME"),
-            new MenuItem("QUICK SOLO GAME"),
+            new MenuItem("JOIN GAME"),
+            new MenuItem("NEW GAME"),
+            new MenuItem("TEST GAME"),
             new MenuItem("HOW TO PLAY"),
             new MenuItem("EXIT")};
 
@@ -137,7 +136,7 @@ public class Main extends Application {
         items[1].setOnActivate(() -> System.out.println("NEW GAME"));
         items[2].setOnActivate(() -> {
             try {
-                test.start(window);
+                new SingleplayerController().start(window);
             } catch (Exception e) {
                 e.printStackTrace();
             }

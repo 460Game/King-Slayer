@@ -4,9 +4,11 @@ import game.model.game.model.GameModel;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import util.Util;
 
 import static images.Images.TILE_IMAGE;
 import static util.Const.*;
+import static util.Util.toDrawCoords;
 
 import java.awt.*;
 import java.util.*;
@@ -133,8 +135,12 @@ public enum Tile {
 
         if (!firstAnimation && this.tupleNum == 'W')
             gc.drawImage(TILE_IMAGE,
-                (maxPoint.x + 10) * TILE_IMAGE_TILE_SIZE, maxPoint.y * TILE_IMAGE_TILE_SIZE, TILE_IMAGE_TILE_SIZE, TILE_IMAGE_TILE_SIZE,
-                x * TILE_PIXELS, y * TILE_PIXELS - 2 * 32 + 2 * TILE_PIXELS, TILE_PIXELS, TILE_PIXELS);
+                (maxPoint.x + 10) * TILE_IMAGE_TILE_SIZE,
+                maxPoint.y * TILE_IMAGE_TILE_SIZE, TILE_IMAGE_TILE_SIZE, TILE_IMAGE_TILE_SIZE,
+                toDrawCoords(x),
+                toDrawCoords(y),
+                toDrawCoords(1),
+                toDrawCoords(1));
         else
             gc.drawImage(TILE_IMAGE,
                 maxPoint.x * TILE_IMAGE_TILE_SIZE, maxPoint.y * TILE_IMAGE_TILE_SIZE, TILE_IMAGE_TILE_SIZE, TILE_IMAGE_TILE_SIZE,

@@ -3,6 +3,8 @@ package util;
 import java.util.Random;
 import java.util.Set;
 
+import static util.Const.TILE_PIXELS;
+
 /**
  * Class used for various helper functions.
  */
@@ -78,10 +80,13 @@ public class Util {
     }
 
     public static int toDrawCoords(double worldPos) {
-        return (int) (worldPos * Const.TILE_PIXELS);
+        return (int) (worldPos * TILE_PIXELS);
     }
 
     public static double toWorldCoords(int drawCords) {
-        return ((double)drawCords)/Const.TILE_PIXELS;
+        return ((double)drawCords)/ TILE_PIXELS;
+    }
+    public static double toWorldCoords(double drawCords) {
+        return drawCords / TILE_PIXELS;
     }
 }

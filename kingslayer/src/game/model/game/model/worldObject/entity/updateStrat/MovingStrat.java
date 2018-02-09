@@ -6,6 +6,8 @@ import game.model.game.model.worldObject.entity.Entity;
 
 public class MovingStrat extends UpdateStrat {
 
+    public static final UpdateStrat SINGLETON = new MovingStrat();
+
     @Override
     public UpdateData initUpdateData() {
         return new UpdateData();

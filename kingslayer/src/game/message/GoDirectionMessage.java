@@ -1,6 +1,7 @@
 package game.message;
 
 import game.model.game.model.ServerGameModel;
+import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Velocity;
 
 /**
@@ -26,6 +27,7 @@ public class GoDirectionMessage extends ActionMessage {
      */
     public GoDirectionMessage(long id, double angle) {
         super();
+        this.id = id;
         this.angle = angle;
     }
 
@@ -42,8 +44,9 @@ public class GoDirectionMessage extends ActionMessage {
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        model.getEntityById(id).data.updateData.velocity.setAngle(angle);
-        model.getEntityById(id).data.updateData.velocity.setMagnitude(model.getEntityById(id).data.updateData.maxSpeed);
-        model.processMessage(new SetEntityMessage(model.getEntityById(id)));
+        Entity e = model.getEntityById(id);
+        e.data.updateData.velocity.setAngle(angle);
+        e.data.updateData.velocity.setMagnitude(e.data.updateData.maxSpeed);
+        model.processMessage(new SetEntityMessage(e));
     }
 }

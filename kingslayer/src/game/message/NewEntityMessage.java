@@ -16,7 +16,6 @@ public class NewEntityMessage implements ToClientMessage {
 
     @Override
     public void executeClient(ClientGameModel model) {
-        Log.info("Received new entity " + entity.id);
         model.setEntity(entity);
     }
 }

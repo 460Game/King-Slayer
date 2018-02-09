@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
+import com.esotericsoftware.minlog.Log;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
 import images.Images;
@@ -19,40 +20,54 @@ public abstract class ImageDrawStrat extends DrawStrat {
     public static final ImageDrawStrat WALL_IMAGE_DRAW_STRAT = new WallImageDrawStrat();
     public static final ImageDrawStrat BOX_IMAGE_DRAW_STRAT = new BoxImageDrawStrat();
 
-    private static class TreeImageDrawStrat extends  ImageDrawStrat {
+    private static class TreeImageDrawStrat extends ImageDrawStrat {
         @Override
         Image getImage() {
             return Images.TREE_IMAGES[0];
         }
-        private TreeImageDrawStrat(){}
+
+        private TreeImageDrawStrat() {
+        }
     }
-    private static class StoneImageDrawStrat extends  ImageDrawStrat {
+
+    private static class StoneImageDrawStrat extends ImageDrawStrat {
         @Override
         Image getImage() {
             return Images.STONE_IMAGES[0];
         }
-        private StoneImageDrawStrat(){}
+
+        private StoneImageDrawStrat() {
+        }
     }
-    private static class MetalImageDrawStrat extends  ImageDrawStrat {
+
+    private static class MetalImageDrawStrat extends ImageDrawStrat {
         @Override
         Image getImage() {
             return Images.METAL_IMAGES[0];
         }
-        private MetalImageDrawStrat(){}
+
+        private MetalImageDrawStrat() {
+        }
     }
-    private static class WallImageDrawStrat extends  ImageDrawStrat {
+
+    private static class WallImageDrawStrat extends ImageDrawStrat {
         @Override
         Image getImage() {
             return Images.WALL_IMAGE;
         }
-        private WallImageDrawStrat(){}
+
+        private WallImageDrawStrat() {
+        }
     }
-    private static class BoxImageDrawStrat extends  ImageDrawStrat {
+
+    private static class BoxImageDrawStrat extends ImageDrawStrat {
         @Override
         Image getImage() {
             return Images.BOX_IMAGE;
         }
-        private BoxImageDrawStrat(){}
+
+        private BoxImageDrawStrat() {
+        }
     }
 
     @Override
@@ -63,7 +78,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
     abstract Image getImage();
 
     public void draw(Entity entity, GraphicsContext gc) {
-        System.out.println("DRAWING IMAGE");
+
         gc.drawImage(getImage(), toDrawCoords(entity.data.x),
             toDrawCoords(entity.data.y),
             toDrawCoords(entity.data.hitbox.getWidth()),
@@ -74,5 +89,6 @@ public abstract class ImageDrawStrat extends DrawStrat {
         return entity.y;
     }
 
-    private ImageDrawStrat() {}
+    private ImageDrawStrat() {
+    }
 }

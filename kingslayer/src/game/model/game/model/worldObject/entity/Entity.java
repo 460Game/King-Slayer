@@ -6,6 +6,7 @@ import game.model.game.model.worldObject.entity.aiStrat.AIable;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import game.model.game.model.worldObject.entity.drawStrat.DrawStrat;
+import game.model.game.model.worldObject.entity.drawStrat.ShapeDrawStrat;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 import util.Util;
 import game.model.game.model.GameModel;
@@ -13,6 +14,8 @@ import game.model.game.model.worldObject.Team;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Set;
+
+import static util.Const.USE_SHAPE_DRAW;
 
 public class Entity implements Updatable, Drawable, AIable {
 
@@ -54,7 +57,12 @@ public class Entity implements Updatable, Drawable, AIable {
                   AIStrat aiStrat) {
         id = Util.random.nextLong();
         this.updateStrat = updateStrat;
-        this.drawStrat = drawStrat;
+
+        if(USE_SHAPE_DRAW)
+            this.drawStrat = ShapeDrawStrat.SINGLETON;
+        else
+            this.drawStrat = drawStrat;
+
         this.aiStrat = aiStrat;
         this.team = team;
         this.collisionStrat = collisionStrat;
@@ -81,7 +89,7 @@ public class Entity implements Updatable, Drawable, AIable {
 
     @Override
     public void draw(GraphicsContext gc) {
-        this.drawStrat.draw(this, gc);
+        this.data.hitbox.draw(gc, this);
     }
 
     @Override

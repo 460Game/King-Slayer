@@ -10,6 +10,7 @@ import game.model.game.model.worldObject.entity.collideStrat.UnitCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CircleHitbox;
 import game.model.game.model.worldObject.entity.drawStrat.DirectionAnimationDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
+import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
 import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
 import images.Images;
 
@@ -22,7 +23,7 @@ public class Players {
     public static Entity makeSlayer(Double x, Double y) {
         return new Entity(x, y,
             Team.ONE,
-            StillStrat.SINGLETON,
+            MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
             DirectionAnimationDrawStrat.RED_SLAYER_ANIMATION, //TODDO draw strat
@@ -32,7 +33,7 @@ public class Players {
     public static Entity makeKing(Double x, Double y) {
         return new Entity(x, y,
             Team.ONE,
-            StillStrat.SINGLETON,
+            MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
             DirectionAnimationDrawStrat.RED_KING_ANIMATION, //TODDO draw strat
