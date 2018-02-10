@@ -39,17 +39,35 @@ public class GameView {
 
         Minimap minimap = new Minimap(model);
         WorldPanel worldPanel = new WorldPanel(model);
+        InfoPanel infoPanel = new InfoPanel(model);
+        ActionPanel actionPanel = new ActionPanel(model);
+        ResourcePanel resourcePanel = new ResourcePanel(model);
 
         worldPanel.prefWidthProperty().bind(window.widthProperty());
         worldPanel.prefHeightProperty().bind(window.heightProperty());
         minimap.prefWidthProperty().bind(window.heightProperty().multiply(0.35));
         minimap.prefHeightProperty().bind(window.heightProperty().multiply(0.35));
         minimap.layoutYProperty().bind(window.heightProperty().multiply(0.65));
+
+        infoPanel.prefWidthProperty().bind(window.widthProperty().multiply(0.5));
+        infoPanel.prefHeightProperty().bind(window.heightProperty().multiply(0.1));
+        infoPanel.layoutXProperty().bind(window.widthProperty().multiply(0.5));
+        infoPanel.layoutYProperty().bind(window.heightProperty().multiply(0.9));
+
+        actionPanel.prefWidthProperty().bind(window.widthProperty().subtract(minimap.prefWidthProperty()).subtract(infoPanel.prefWidthProperty()));
+        actionPanel.prefHeightProperty().bind(window.heightProperty().multiply(0.2));
+        actionPanel.layoutXProperty().bind(minimap.widthProperty());
+        actionPanel.layoutYProperty().bind(window.heightProperty().multiply(0.8));
+
+        resourcePanel.prefWidthProperty().bind(window.widthProperty().multiply(0.15));
+        resourcePanel.prefHeightProperty().bind(window.heightProperty().multiply(0.1));
+        resourcePanel.layoutXProperty().bind(window.widthProperty().multiply(0.85));
+
      //   minimap.setTranslateY(window.getHeight() * 0.65);
      //   minimap.translateXProperty().bindBidirectional(root.layoutXProperty());
       //  minimap.translateYProperty().bindBidirectional(root.layoutYProperty());
 
-       root.getChildren().addAll(worldPanel, minimap);
+       root.getChildren().addAll(worldPanel, minimap, infoPanel, actionPanel, resourcePanel);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
