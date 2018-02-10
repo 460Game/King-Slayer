@@ -17,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
+import util.Const;
 
 import static util.Const.*;
 import static util.Util.toDrawCoords;
@@ -59,6 +60,8 @@ public class GameView {
 
         double[] scaleFactor = {1};
 
+        int tick[] = {0};
+
         AnimationTimer animator = new AnimationTimer() {
             @Override
             public void handle(long arg0) {
@@ -77,31 +80,34 @@ public class GameView {
                         }
                     }
                     //TEMP HACK
-                     for(Entity player : model.getAllEntities()) {
-                         if(player.team != Team.NEUTRAL) {
-                             minimapGC.setFill(player.team.color);
-                              minimapGC.fillOval(player.data.x,player.data.y,3,3);
-                           }
-                       }
+                    for (Entity player : model.getAllEntities()) {
+                        if (player.team != Team.NEUTRAL) {
+                            minimapGC.setFill(player.team.color);
+                            minimapGC.fillOval(player.data.x, player.data.y, 3, 3);
+                        }
+                    }
                     minimapGC.setTransform(new Affine());
 
                     double x = model.getLocalPlayer().data.x;
                     double y = model.getLocalPlayer().data.y;
-                    double gameW = toWorldCoords(window.getWidth()/scaleFactor[0]);
-                    double gameH = toWorldCoords(window.getHeight()/scaleFactor[0]);
-                    double xt = -toDrawCoords(x*scaleFactor[0]) + window.getWidth() / 2;
-                    double yt = -toDrawCoords(y*scaleFactor[0]) + window.getHeight() / 2;
+                    double gameW = toWorldCoords(window.getWidth() / scaleFactor[0]);
+                    double gameH = toWorldCoords(window.getHeight() / scaleFactor[0]);
+                    double xt = -toDrawCoords(x * scaleFactor[0]) + window.getWidth() / 2;
+                    double yt = -toDrawCoords(y * scaleFactor[0]) + window.getHeight() / 2;
                     gc.setTransform(new Affine());
-             //       fgGC.transform(new Affine(Affine.translate(CANVAS_WIDTH/2, CANVAS_HEIGHT/2)));
+                    //       fgGC.transform(new Affine(Affine.translate(CANVAS_WIDTH/2, CANVAS_HEIGHT/2)));
                     gc.transform(new Affine(Affine.scale(scaleFactor[0], scaleFactor[0])));
-              //      fgGC.transform(new Affine(Affine.translate(-CANVAS_WIDTH/2, -CANVAS_HEIGHT/2)));
+                    //      fgGC.transform(new Affine(Affine.translate(-CANVAS_WIDTH/2, -CANVAS_HEIGHT/2)));
                     gc.translate(xt, yt);
-                   // model.draw(fgGC, x, y, gameW, gameH);
+                    // model.draw(fgGC, x, y, gameW, gameH);
                     //
 
                     gc.setFill(Color.LIGHTCYAN);
                     gc.fillRect(-100000, -100000, 100000000, 10000000);
-                    model.draw(gc, GRID_X_SIZE/2, GRID_Y_SIZE/2, GRID_X_SIZE, GRID_Y_SIZE, false);
+
+                    model.draw(gc, GRID_X_SIZE / 2, GRID_Y_SIZE / 2, GRID_X_SIZE, GRID_Y_SIZE, tick[0] > WATER_ANIM_PERIOD / 2);
+                    tick[0] %= WATER_ANIM_PERIOD;
+                    tick[0]++;
                 }
             }
         };
@@ -127,7 +133,7 @@ public class GameView {
                 model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, ANGLE_DOWN));
             if (e.getCode() == KeyCode.A) // Start leftward movement.
                 model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, ANGLE_LEFT));
-            if ( e.getCode() == KeyCode.D) // Start rightward movement.
+            if (e.getCode() == KeyCode.D) // Start rightward movement.
                 model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, ANGLE_RIGHT));
         });
 

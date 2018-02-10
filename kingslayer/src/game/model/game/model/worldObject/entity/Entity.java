@@ -89,7 +89,7 @@ public class Entity implements Updatable, Drawable, AIable {
 
     @Override
     public void draw(GraphicsContext gc) {
-        this.data.hitbox.draw(gc, this);
+        this.drawStrat.draw(this, gc);
     }
 
     @Override
