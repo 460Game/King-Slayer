@@ -62,15 +62,11 @@ public class GameView {
         actionPanel.layoutXProperty().bind(minimap.widthProperty());
         actionPanel.layoutYProperty().bind(window.heightProperty().multiply(0.8));
 
-        resourcePanel.prefWidthProperty().bind(window.widthProperty().multiply(0.15));
-        resourcePanel.prefHeightProperty().bind(window.heightProperty().multiply(0.1));
-        resourcePanel.layoutXProperty().bind(window.widthProperty().multiply(0.85));
+        resourcePanel.prefWidthProperty().bind(window.widthProperty().multiply(0.2));
+        resourcePanel.prefHeightProperty().bind(window.heightProperty().multiply(0.05));
+        resourcePanel.layoutXProperty().bind(window.widthProperty().multiply(0.8));
 
-     //   minimap.setTranslateY(window.getHeight() * 0.65);
-     //   minimap.translateXProperty().bindBidirectional(root.layoutXProperty());
-      //  minimap.translateYProperty().bindBidirectional(root.layoutYProperty());
-
-       root.getChildren().addAll(worldPanel, minimap, infoPanel, actionPanel, resourcePanel);
+        root.getChildren().addAll(worldPanel, minimap, infoPanel, actionPanel, resourcePanel);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -84,7 +80,7 @@ public class GameView {
 
         Scene scene = new Scene(root);
 
-        scene.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth()/2, GAME_CURSOR_IMAGE.getHeight()/2));
+        scene.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
         scene.setOnScroll(e -> {
 
         });

@@ -3,6 +3,7 @@ package game.view;
 import game.model.game.model.GameModel;
 import game.model.game.model.worldObject.Team;
 import game.model.game.model.worldObject.entity.Entity;
+import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -11,6 +12,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
+
+import static images.Images.CURSOR_IMAGE;
 
 /**
  * panel in bottem left with the minimap
@@ -24,7 +27,7 @@ public class Minimap extends Region {
     Minimap(GameModel model) {
         this.model = model;
         minimapCanvas = new Canvas();
-
+        this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
         minimapGC = minimapCanvas.getGraphicsContext2D();
 
         this.getChildren().add(minimapCanvas);

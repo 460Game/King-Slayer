@@ -142,6 +142,7 @@ public class Main extends Application {
         window.setFullScreen(true);
 
 
+
         Canvas bgCanvas = new Canvas();
         GraphicsContext bgGC = bgCanvas.getGraphicsContext2D();
         Canvas midCanvas = new Canvas();
