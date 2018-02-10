@@ -40,7 +40,18 @@ public class Main extends Application {
 
     private static Color textColor = Color.web("b5de0f");
 
-    private static class TriCircle extends Parent {
+    private VBox menuBox;
+
+    private int currentItem = 0;
+
+    MenuItem[] items = new MenuItem[]{
+        new MenuItem("JOIN GAME"),
+        new MenuItem("NEW GAME"),
+        new MenuItem("TEST GAME"),
+        new MenuItem("HOW TO PLAY"),
+        new MenuItem("EXIT")};
+
+    private class TriCircle extends Parent {
         public TriCircle() {
             Shape shape1 = Shape.subtract(new Circle(8), new Circle(2));
             shape1.setFill(textColor);
@@ -60,7 +71,7 @@ public class Main extends Application {
         }
     }
 
-    private static class MenuItem extends HBox {
+    private class MenuItem extends HBox {
         private TriCircle c1 = new TriCircle(), c2 = new TriCircle();
         private Text text;
         private Runnable script;
@@ -77,6 +88,22 @@ public class Main extends Application {
             getChildren().addAll(c1, text, c2);
             setActive(false);
             setOnActivate(() -> System.out.println(name + " activated"));
+
+            this.setOnMouseClicked(l -> {
+                this.activate();
+            });
+
+            this.setOnMouseMoved(l -> {
+                int i = 0;
+                for(MenuItem m : items) {
+                    if(m == this)
+                        currentItem = i;
+                    else
+                        m.setActive(false);
+                    i++;
+                }
+                this.setActive(true);
+            });
         }
 
         public void setActive(boolean b) {
@@ -95,12 +122,9 @@ public class Main extends Application {
         }
     }
 
-    private int currentItem = 0;
-
     @Override
     public void start(Stage window) {
 
-        VBox menuBox;
 
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
@@ -122,13 +146,6 @@ public class Main extends Application {
         GraphicsContext bgGC = bgCanvas.getGraphicsContext2D();
         Canvas midCanvas = new Canvas();
         GraphicsContext midGC = midCanvas.getGraphicsContext2D();
-
-        MenuItem[] items = new MenuItem[]{
-            new MenuItem("JOIN GAME"),
-            new MenuItem("NEW GAME"),
-            new MenuItem("TEST GAME"),
-            new MenuItem("HOW TO PLAY"),
-            new MenuItem("EXIT")};
 
         items[0].setOnActivate(() -> System.out.println("JOIN GAME"));
         items[1].setOnActivate(() -> System.out.println("NEW GAME"));
@@ -186,13 +203,10 @@ public class Main extends Application {
                     }
                     break;
                 case ENTER:
+                case SPACE:
                     items[currentItem].activate();
                     break;
             }
-        });
-
-        scene.setOnMouseClicked(e -> {
-
         });
 
         double[] bgOpac = new double[]{2.0};
