@@ -2,7 +2,7 @@ package game.model.game.model;
 
 import com.esotericsoftware.minlog.Log;
 import game.message.Message;
-import game.message.RequestEntityMessage;
+import game.message.toServer.RequestEntityMessage;
 import game.model.game.map.ClientMapGenerator;
 import game.model.game.model.worldObject.entity.Entity;
 

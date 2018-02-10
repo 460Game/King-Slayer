@@ -1,32 +1,17 @@
 package game.view;
 
-import game.message.GoDirectionMessage;
-import game.message.StopMessage;
+import game.message.toServer.GoDirectionMessage;
+import game.message.toServer.StopMessage;
 import game.model.game.model.ClientGameModel;
-import game.model.game.model.worldObject.Team;
-import game.model.game.model.worldObject.entity.Entity;
 import javafx.animation.AnimationTimer;
-import javafx.beans.InvalidationListener;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.GaussianBlur;
-import javafx.scene.effect.Reflection;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.transform.Affine;
-import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
 
-import static images.Images.CURSOR_IMAGE;
 import static images.Images.GAME_CURSOR_IMAGE;
 import static util.Const.*;
-import static util.Util.toDrawCoords;
 import static util.Util.toWorldCoords;
 
 public class GameView {

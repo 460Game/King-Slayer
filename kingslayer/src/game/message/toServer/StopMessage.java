@@ -1,5 +1,7 @@
-package game.message;
+package game.message.toServer;
 
+import game.message.toClient.SetEntityMessage;
+import game.message.toServer.ActionMessage;
 import game.model.game.model.ServerGameModel;
 
 /**

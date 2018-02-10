@@ -1,4 +1,4 @@
-package game.message;
+package game.message.toClient;
 
 import game.model.game.model.ClientGameModel;
 

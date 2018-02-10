@@ -1,6 +1,5 @@
-package game.message;
+package game.message.toClient;
 
-import com.esotericsoftware.minlog.Log;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;

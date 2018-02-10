@@ -1,4 +1,4 @@
-package game.message;
+package game.message.toServer;
 
 /**
  * Message sent from a client to the server indicating that the client
