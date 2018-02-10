@@ -37,6 +37,8 @@ public class RemoteConnection {
     long latencty = 0;
     Long clientStartTime = null;
     Long serverStartTime = null;
+    Long t0 = null;
+    Long t1 = null;
 
     Map<Integer, LinkedBlockingQueue<Message>> messageQueues;
 
@@ -55,7 +57,6 @@ public class RemoteConnection {
 
         if (isServer) {
 //            //TODO change this later
-//            lobbyServer = (LobbyServer) lobby;
             clientList = new ConcurrentHashMap<>();
             server = new Server(10000000, 10000000 /2) {
                 protected Connection newConnection() {
@@ -64,7 +65,6 @@ public class RemoteConnection {
             };
         } else {
 //            //TODO change this later
-//            lobbyClient = (LobbyClient) lobby;
             client = new Client(10000000, 10000000 /2);
         }
         start();
@@ -133,21 +133,23 @@ public class RemoteConnection {
         } else {
             NetworkCommon.register(client);
             client.start();
-
-
-
             client.addListener(new Listener() {
                 public void connected (Connection connection) {
                     Log.info("Client " + connection.getID() + " connected");
                     client.sendTCP("Client " + connection.getID() + " connected");
                     //use client ID for the queue for client use
                     messageQueues.put(client.getID(), new LinkedBlockingQueue<>());
-//                    NetworkCommon.UserName usrName = new NetworkCommon.UserName("");
-//                    usrName.user_name = name;
-//                    client.sendTCP(usrName);
                 }
 
                 public void received (Connection connection, Object obj) {
+
+                    //arti increase latency
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                     Log.debug("Client " + client.getID() + "received " + obj.toString());
                     if (obj instanceof NetworkCommon.ClientMakeModelMsg) {
                         adaptor.makeModel(); //make clientModel
@@ -174,14 +176,13 @@ public class RemoteConnection {
                             serverStartTime = ((NetworkCommon.SyncClockMsg) obj).getServerTime();
                             client.sendTCP(new NetworkCommon.SyncClockMsg(serverStartTime));//what client think the server time is
                             Log.info("" + ((System.nanoTime() - clientStartTime + latencty) + serverStartTime));
+                            t0 = clientStartTime;
                         }
 
                         else {
-                            long serverReceiveTime = ((NetworkCommon.SyncClockMsg) obj).getServerTime();
-                            long curTime = System.nanoTime();
-                            latencty = serverReceiveTime + latencty - ((curTime - clientStartTime) + serverStartTime);
-                            client.sendTCP(new NetworkCommon.SyncClockMsg((curTime - clientStartTime) + serverStartTime + latencty));
-                            Log.info("" + ((System.nanoTime() - clientStartTime + latencty) + serverStartTime));
+                            t1 = System.nanoTime();
+                            latencty = (t1 - t0) / 2;
+                            Log.info("Clock syn done");
                         }
 
                     }
@@ -211,7 +212,6 @@ public class RemoteConnection {
                     LinkedBlockingQueue q = messageQueues.get(connectId);
                     q.drainTo(messageList);
                     if (messageList.size() <= 0) continue;
-//                    Log.info("check list: " + messageList.toString());
                     server.sendToTCP(connectId, messageList);
                 }
             } else {
@@ -220,7 +220,6 @@ public class RemoteConnection {
                 LinkedBlockingQueue q = messageQueues.get(client.getID());
                 q.drainTo(messageList);
                 if (messageList.size() <= 0) continue;
-//                Log.info("check list: " + messageList.toString());
                 client.sendTCP(messageList);
             }
         }
@@ -295,9 +294,8 @@ public class RemoteConnection {
 
         @Override
         public long nanoTime() {
-//            return System.nanoTime();
-            return (System.nanoTime() - clientStartTime + latencty) + serverStartTime;
             //clientStartTime should actually start before the received startTime, so plus the latency
+            return (System.nanoTime() - clientStartTime + latencty) + serverStartTime;
         }
 
         public int getConnectId() {
@@ -308,7 +306,6 @@ public class RemoteConnection {
         public void startGame() {
             if (isServer) { // means it is server call this method on remote model
                 Log.debug("Server click start the game");
-//                server.sendToAllTCP(new NetworkCommon.ClientMakeModelMsg());
                 server.sendToTCP(connectId, new NetworkCommon.ClientMakeModelMsg());
             }
             else {// a client should not make server to start
@@ -337,11 +334,5 @@ public class RemoteConnection {
         }
     }
 
-
-//    public void send(Message msg) {
-//        if (isServer) {
-//            server.sendToAllTCP(msg);
-//        }
-//    }
 }
 

@@ -42,7 +42,7 @@ public class LobbyClient extends Application {
         Log.info("client start!!!!!!");
 
 //        final String host = input.trim();
-        String host = "10.124.78.141";
+        String host = "localhost";
         Log.info(host);
 
         // Request the user's name.
