@@ -30,7 +30,7 @@ public class CellHitbox extends Hitbox {
     }
 
     @Override
-    public void draw(GraphicsContext gc, Entity entity) {
+    public void drawShape(GraphicsContext gc, Entity entity) {
         gc.fillRect(toDrawCoords(entity.data.x - 0.5), toDrawCoords(entity.data.y - 0.5), toDrawCoords(1), toDrawCoords(1));
     }
 

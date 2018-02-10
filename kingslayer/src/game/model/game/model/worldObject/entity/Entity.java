@@ -15,7 +15,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Set;
 
-import static util.Const.USE_SHAPE_DRAW;
+import static util.Const.DEBUG_DRAW;
 
 public class Entity implements Updatable, Drawable, AIable {
 
@@ -23,6 +23,8 @@ public class Entity implements Updatable, Drawable, AIable {
     final DrawStrat drawStrat;
     final UpdateStrat updateStrat;
     final CollisionStrat collisionStrat;
+
+    public transient boolean inCollision = false;
 
     /*
      * used to track which cells this enttiy is in in the LOCAL modal.
@@ -44,6 +46,7 @@ public class Entity implements Updatable, Drawable, AIable {
     public EntityData data;
 
     public void collision(GameModel model, Entity b) {
+        inCollision = true;
         this.collisionStrat.collision(model, this, b);
     }
 
@@ -58,10 +61,7 @@ public class Entity implements Updatable, Drawable, AIable {
         id = Util.random.nextLong();
         this.updateStrat = updateStrat;
 
-        if(USE_SHAPE_DRAW)
-            this.drawStrat = ShapeDrawStrat.SINGLETON;
-        else
-            this.drawStrat = drawStrat;
+        this.drawStrat = drawStrat;
 
         this.aiStrat = aiStrat;
         this.team = team;
@@ -99,6 +99,7 @@ public class Entity implements Updatable, Drawable, AIable {
 
     @Override
     public void update(GameModel model) {
+        inCollision = false;
         this.updateStrat.update(this, model);
     }
 

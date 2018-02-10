@@ -2,6 +2,7 @@ package game.model.game.model.worldObject.entity.collideStrat.hitbox;
 
 import com.esotericsoftware.minlog.Log;
 import game.model.game.model.worldObject.entity.Entity;
+import javafx.scene.paint.Color;
 import util.Util;
 import game.model.game.model.GameModel;
 import game.model.game.grid.GridCell;
@@ -66,7 +67,15 @@ public abstract class Hitbox {
     /**
      * for debugging hitboxes.
      */
-    public abstract void draw(GraphicsContext gc, Entity entity);
+    public void draw(GraphicsContext gc, Entity entity) {
+        if(entity.inCollision)
+           gc.setFill(Color.color(1,0,0,0.5));
+        else
+            gc.setFill(Color.color(1,1,1,0.5));
+        drawShape(gc,entity);
+    }
+
+    public abstract void drawShape(GraphicsContext gc, Entity entity);
 
     /*
     gets the distance from the center of the hitbox to the farthest edge at the given angle

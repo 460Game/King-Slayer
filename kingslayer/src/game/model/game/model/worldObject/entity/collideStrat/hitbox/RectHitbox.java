@@ -35,7 +35,7 @@ public class RectHitbox extends Hitbox {
     }
 
     @Override
-    public void draw(GraphicsContext gc, Entity entity) {
+    public void drawShape(GraphicsContext gc, Entity entity) {
         throw new RuntimeException("NOt implemented yet");
     }
 
