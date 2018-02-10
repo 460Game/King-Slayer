@@ -106,10 +106,10 @@ public class Main extends Application {
         window.setResizable(true);
         window.setMinHeight(800);
         window.setMinWidth(1200);
-        window.setWidth(bounds.getWidth());
-        window.setHeight(bounds.getHeight());
-        window.setX(0);
-        window.setY(0);
+      //  window.setWidth(bounds.getWidth());
+      //  window.setHeight(bounds.getHeight());
+        window.setX((bounds.getWidth() - window.getWidth())/2);
+        window.setY((bounds.getHeight() - window.getHeight())/2);
         window.setTitle("King Slayer");
        //window.setFullScreen(true);
 

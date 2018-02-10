@@ -23,7 +23,6 @@ public abstract class UpdateStrat {
         long current_time = model.nanoTime();
         update(entity, model, NANOS_TO_SECONDS * (current_time - entity.data.updateData.lastUpdate));
         entity.data.updateData.lastUpdate = current_time;
-        entity.data.hitbox.updateCells(entity, model);
     }
 
     protected abstract void update(Entity entity, GameModel model, double seconds);

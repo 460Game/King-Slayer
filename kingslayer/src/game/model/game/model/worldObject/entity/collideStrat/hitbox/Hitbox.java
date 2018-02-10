@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.collideStrat.hitbox;
 
+import com.esotericsoftware.minlog.Log;
 import game.model.game.model.worldObject.entity.Entity;
 import util.Util;
 import game.model.game.model.GameModel;

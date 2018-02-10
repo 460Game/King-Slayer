@@ -105,4 +105,8 @@ public class Entity implements Updatable, Drawable, AIable {
     public CollisionStrat.CollideType getCollideType() {
         return collisionStrat.getCollideType();
     }
+
+    public void updateCells(GameModel model) {
+        this.data.hitbox.updateCells(this, model);
+    }
 }
