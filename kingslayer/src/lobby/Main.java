@@ -39,14 +39,14 @@ public class Main extends Application {
     private static class TriCircle extends Parent {
         public TriCircle() {
             Shape shape1 = Shape.subtract(new Circle(5), new Circle(2));
-            shape1.setFill(Color.PEACHPUFF);
+            shape1.setFill(Color.WHITE);
 
             Shape shape2 = Shape.subtract(new Circle(5), new Circle(2));
-            shape2.setFill(Color.PEACHPUFF);
+            shape2.setFill(Color.WHITE);
             shape2.setTranslateX(5);
 
             Shape shape3 = Shape.subtract(new Circle(5), new Circle(2));
-            shape3.setFill(Color.PEACHPUFF);
+            shape3.setFill(Color.WHITE);
             shape3.setTranslateX(2.5);
             shape3.setTranslateY(-5);
 
@@ -67,8 +67,8 @@ public class Main extends Application {
 
             text = new Text(name);
             text.setFont(FONT);
-            text.setEffect(new GaussianBlur(2));
-            text.setEffect(new DropShadow());
+            text.setStyle("-fx-stroke: black; -fx-stroke-width: 2px");
+            text.setEffect(new DropShadow(5, 0, 5, Color.BLACK));
 
             getChildren().addAll(c1, text, c2);
             setActive(false);
@@ -78,7 +78,7 @@ public class Main extends Application {
         public void setActive(boolean b) {
             c1.setVisible(b);
             c2.setVisible(b);
-            text.setFill(b ? Color.MEDIUMPURPLE : Color.LIGHTGREEN);
+            text.setFill(b ? Color.WHITE : Color.LIGHTBLUE);
         }
 
         public void setOnActivate(Runnable r) {
@@ -104,8 +104,8 @@ public class Main extends Application {
         Image logo = LOGO_IMAGE;
         window.getIcons().add(logo);
         window.setResizable(true);
-        window.setMinHeight(800);
-        window.setMinWidth(1200);
+        window.setMinHeight(600);
+        window.setMinWidth(800);
       //  window.setWidth(bounds.getWidth());
       //  window.setHeight(bounds.getHeight());
         window.setX((bounds.getWidth() - window.getWidth())/2);
@@ -156,10 +156,6 @@ public class Main extends Application {
         root.getChildren().add(menuBox);
         Scene scene = new Scene(root);
 
-        midGC.setFill(Color.color(0.4,0.4,0.5,0.8));
-        midGC.fillRect(0,0,10000000,10000000);
-        midGC.drawImage(logo, 50, 50, 150, 150);
-
         InvalidationListener resize = l -> {
             if(window.isMaximized()) {
                 window.setHeight(bounds.getHeight());
@@ -167,7 +163,8 @@ public class Main extends Application {
             }
             bgCanvas.setWidth(window.getWidth());
             bgCanvas.setHeight(window.getHeight());
-            bgGC.drawImage(MENU_SPASH_BG_IMAGE,0,0, window.getWidth(), window.getHeight());
+            midCanvas.setWidth(window.getWidth());
+            midCanvas.setHeight(window.getHeight());
             menuBox.setTranslateX(window.getWidth()/2 - menuBox.getWidth()/2);
             menuBox.setTranslateY(window.getHeight() - menuBox.getHeight() - 200);
             Log.info("w/h = " + window.getWidth() + " " + window.getHeight());
@@ -207,13 +204,23 @@ public class Main extends Application {
         });
 
         bgGC.drawImage(MENU_SPASH_BG_IMAGE,0,0, bgCanvas.getWidth(), bgCanvas.getHeight());
-        bgGC.setTransform(new Affine(Affine.scale(10,10)));
-        bgGC.transform(new Affine(Affine.translate(0,bgCanvas.getHeight()/2)));
+     //   bgGC.setTransform(new Affine(Affine.scale(10,10)));
+     //   bgGC.transform(new Affine(Affine.translate(0,bgCanvas.getHeight()/2)));
+
+        double[] bgOpac = new double[]{2.0};
 
         AnimationTimer animator = new AnimationTimer() {
 
             @Override
             public void handle(long now) {
+                midGC.clearRect(0,0,window.getWidth(),window.getHeight());
+                midGC.setFill(Color.color(0.6,0.6,0.7, (Math.abs(bgOpac[0] % 2 - 1)) * (8/10) ));
+                bgOpac[0] += 0.002;
+
+                midGC.fillRect(0,0,window.getWidth(),window.getHeight());
+                midGC.drawImage(logo, 50, 50, 250, 250);
+
+                bgGC.drawImage(MENU_SPASH_BG_IMAGE,0,0, window.getWidth(), window.getHeight());
 //                bgGC.transform(new Affine(Affine.translate(10,0)));
             }
         };
