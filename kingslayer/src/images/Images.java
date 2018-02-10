@@ -6,6 +6,8 @@ public abstract class Images {
     public static final Image BOX_IMAGE = getImage("barrier.png");
     public static final Image WALL_IMAGE = getImage("wall.png");
     public static final Image LOGO_IMAGE = getImage("logo.png");
+    public static final Image LOGO_TEXT_IMAGE = getImage("logotext.png");
+
     public static Image TILE_IMAGE = getImage("tile_map.png");
     public static Image MENU_SPASH_BG_IMAGE = getImage("castleSplash.jpg");
     public static final Image[] METAL_IMAGES = getImages("iron_ingots.png",

@@ -31,23 +31,26 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 import static images.Images.LOGO_IMAGE;
+import static images.Images.LOGO_TEXT_IMAGE;
 import static images.Images.MENU_SPASH_BG_IMAGE;
 
 public class Main extends Application {
 
     private static final Font FONT = Font.font("", FontWeight.BOLD, 36);
 
+    private static Color textColor = Color.web("b5de0f");
+
     private static class TriCircle extends Parent {
         public TriCircle() {
-            Shape shape1 = Shape.subtract(new Circle(5), new Circle(2));
-            shape1.setFill(Color.WHITE);
+            Shape shape1 = Shape.subtract(new Circle(8), new Circle(2));
+            shape1.setFill(textColor);
 
-            Shape shape2 = Shape.subtract(new Circle(5), new Circle(2));
-            shape2.setFill(Color.WHITE);
+            Shape shape2 = Shape.subtract(new Circle(8), new Circle(2));
+            shape2.setFill(textColor);
             shape2.setTranslateX(5);
 
-            Shape shape3 = Shape.subtract(new Circle(5), new Circle(2));
-            shape3.setFill(Color.WHITE);
+            Shape shape3 = Shape.subtract(new Circle(8), new Circle(2));
+            shape3.setFill(textColor);
             shape3.setTranslateX(2.5);
             shape3.setTranslateY(-5);
 
@@ -79,7 +82,7 @@ public class Main extends Application {
         public void setActive(boolean b) {
             c1.setVisible(b);
             c2.setVisible(b);
-            text.setFill(b ? Color.WHITE : Color.LIGHTBLUE);
+            text.setFill(b ? Color.WHITE : textColor);
         }
 
         public void setOnActivate(Runnable r) {
@@ -103,8 +106,7 @@ public class Main extends Application {
         Rectangle2D bounds = screen.getVisualBounds();
 
         window.show();
-        Image logo = LOGO_IMAGE;
-        window.getIcons().add(logo);
+        window.getIcons().add(LOGO_IMAGE);
         window.setResizable(true);
         window.setMinHeight(600);
         window.setMinWidth(800);
@@ -204,7 +206,7 @@ public class Main extends Application {
                 bgOpac[0] += 0.002;
 
                 midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
-                midGC.drawImage(logo, 50, 50, 250, 250);
+                midGC.drawImage(LOGO_TEXT_IMAGE, window.getWidth()/4, 50, window.getWidth()/2, (153/645.0)*window.getWidth()/2);
 
                 bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, window.getWidth(), window.getHeight());
 

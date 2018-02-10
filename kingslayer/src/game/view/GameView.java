@@ -11,11 +11,13 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.effect.Reflection;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
@@ -34,109 +36,34 @@ public class GameView {
 
     public void start(Stage window) {
         Group root = new Group();
-        Canvas fgCanvas = new Canvas();
-        Canvas bgCanvas = new Canvas();
-        Canvas minimapCanvas = new Canvas();
-        GraphicsContext fgGC = fgCanvas.getGraphicsContext2D();
-        GraphicsContext bgGC = bgCanvas.getGraphicsContext2D();
-        GraphicsContext minimapGC = minimapCanvas.getGraphicsContext2D();
 
+        Minimap minimap = new Minimap(model);
+        WorldPanel worldPanel = new WorldPanel(model);
 
-        InvalidationListener resize = l -> {
-            minimapCanvas.setWidth(Math.min(window.getWidth() / 4, window.getHeight() / 4));
-            minimapCanvas.setHeight(Math.min(window.getWidth() / 4, window.getHeight() / 4));
-            bgCanvas.setWidth(window.getWidth());
-            bgCanvas.setHeight(window.getHeight());
-            fgCanvas.setWidth(window.getWidth());
-            fgCanvas.setHeight(window.getHeight());
-            bgCanvas.setWidth(window.getWidth());
-            bgCanvas.setHeight(window.getHeight());
+        worldPanel.prefWidthProperty().bind(window.widthProperty());
+        worldPanel.prefHeightProperty().bind(window.heightProperty());
+        minimap.prefWidthProperty().bind(window.heightProperty().multiply(0.35));
+        minimap.prefHeightProperty().bind(window.heightProperty().multiply(0.35));
+        minimap.translateYProperty().bind(window.widthProperty().multiply(-0.65));
+     //   minimap.translateXProperty().bindBidirectional(root.layoutXProperty());
+      //  minimap.translateYProperty().bindBidirectional(root.layoutYProperty());
+
+       root.getChildren().addAll(worldPanel, minimap);
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                minimap.draw();
+                worldPanel.draw();
+            }
         };
 
-        resize.invalidated(null);
-
-        window.widthProperty().addListener(resize);
-        window.heightProperty().addListener(resize);
-        root.getChildren().add(bgCanvas);
-        root.getChildren().add(fgCanvas);
-        root.getChildren().add(minimapCanvas);
+        timer.start();
 
         Scene scene = new Scene(root);
 
-        double[] scaleFactor = {1};
-
-        int tick[] = {0};
-
-        AnimationTimer animator = new AnimationTimer() {
-            @Override
-            public void handle(long arg0) {
-                model.update();
-
-                if (model.getLocalPlayer() != null) {
-
-                    minimapGC.setTransform(new Affine(Transform.scale(
-                        minimapGC.getCanvas().getWidth() / model.getMapWidth(),
-                        minimapGC.getCanvas().getHeight() / model.getMapHeight())));
-                    minimapGC.fillRect(0, 0, minimapGC.getCanvas().getWidth(), minimapGC.getCanvas().getHeight());
-                    for (int x = 0; x < model.getMapWidth(); x++) {
-                        for (int y = 0; y < model.getMapHeight(); y++) {
-                            minimapGC.setFill(model.getTile(x, y).getColor());
-                            minimapGC.fillRect(x, y, 2, 2);
-                        }
-                    }
-                    //TEMP HACK
-                    for (Entity player : model.getAllEntities()) {
-                        if (player.team != Team.NEUTRAL) {
-                            minimapGC.setFill(player.team.color);
-                            minimapGC.fillOval(player.data.x, player.data.y, 3, 3);
-                        }
-                    }
-                    minimapGC.setTransform(new Affine());
-
-                    double x = model.getLocalPlayer().data.x;
-                    double y = model.getLocalPlayer().data.y;
-                    double gameW = toWorldCoords(window.getWidth() / scaleFactor[0]);
-                    double gameH = toWorldCoords(window.getHeight() / scaleFactor[0]);
-                    double xt = -toDrawCoords(x * scaleFactor[0]) + window.getWidth() / 2;
-                    double yt = -toDrawCoords(y * scaleFactor[0]) + window.getHeight() / 2;
-                    fgGC.setTransform(new Affine());
-                    bgGC.setTransform(new Affine());
-                    //       fgGC.transform(new Affine(Affine.translate(CANVAS_WIDTH/2, CANVAS_HEIGHT/2)));
-                    //                    fgGC.transform(new Affine(Affine.scale(scaleFactor[0], scaleFactor[0])));
-                    //                    fgGC.transform(new Affine(Affine.scale(scaleFactor[0], scaleFactor[0])));
-                    //      fgGC.transform(new Affine(Affine.translate(-CANVAS_WIDTH/2, -CANVAS_HEIGHT/2)));
-                    fgGC.translate(xt, yt);
-                    bgGC.translate(xt, yt);
-                    // model.drawFG(fgGC, x, y, gameW, gameH);
-                    //
-
-                    bgGC.setFill(Color.LIGHTCYAN);
-                    bgGC.fillRect(0, 0, bgCanvas.getWidth(), bgCanvas.getHeight());
-                    fgGC.clearRect(0, 0, 11111111, 1111111);
-
-                    model.drawBG(bgGC, GRID_X_SIZE / 2, GRID_Y_SIZE / 2, GRID_X_SIZE, GRID_Y_SIZE, tick[0] > WATER_ANIM_PERIOD / 2);
-                    model.drawFG(fgGC, GRID_X_SIZE / 2, GRID_Y_SIZE / 2, GRID_X_SIZE, GRID_Y_SIZE);
-                       DropShadow shadow = new DropShadow();
-                    shadow.setOffsetY(toDrawCoords(0.2));
-                    shadow.setColor(Color.color(0,0,0,.25));
-                    shadow.setSpread(0.7);
-                   // Reflection reflection = new Reflection();
-                   // reflection.setFraction(0.7);
-
-                    fgGC.applyEffect(shadow);
-                    tick[0] %= WATER_ANIM_PERIOD;
-                    tick[0]++;
-                }
-            }
-        };
-
-
         scene.setOnScroll(e -> {
-            if (e.getDeltaY() > 0) {
-                scaleFactor[0] *= 1.1;
-            } else {
-                scaleFactor[0] *= 0.9;
-            }
+
         });
 
         scene.setOnMouseClicked(e -> {
@@ -169,14 +96,6 @@ public class GameView {
             if (e.getCode() == KeyCode.D) // Stop rightward movement.
                 model.processMessage(new StopMessage(model.getLocalPlayer().id));
         });
-
-        animator.start();
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         window.setScene(scene);
     }
