@@ -7,7 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 
@@ -28,9 +29,11 @@ public class Minimap extends Region {
 
         this.getChildren().add(minimapCanvas);
 
-        minimapCanvas.heightProperty().bind(this.heightProperty());
-        minimapCanvas.widthProperty().bind(this.widthProperty());
-
+        minimapCanvas.heightProperty().bind(this.heightProperty().subtract(20));
+        minimapCanvas.widthProperty().bind(this.widthProperty().subtract(20));
+        minimapCanvas.translateXProperty().setValue(10);
+        minimapCanvas.translateYProperty().setValue(10);
+        this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
      //   minimapCanvas.setHeight(100);
      //   minimapCanvas.setWidth(100);
       //  this.setHeight(100);

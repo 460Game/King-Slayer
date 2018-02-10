@@ -44,7 +44,8 @@ public class GameView {
         worldPanel.prefHeightProperty().bind(window.heightProperty());
         minimap.prefWidthProperty().bind(window.heightProperty().multiply(0.35));
         minimap.prefHeightProperty().bind(window.heightProperty().multiply(0.35));
-        minimap.translateYProperty().bind(window.widthProperty().multiply(-0.65));
+        minimap.layoutYProperty().bind(window.heightProperty().multiply(0.65));
+     //   minimap.setTranslateY(window.getHeight() * 0.65);
      //   minimap.translateXProperty().bindBidirectional(root.layoutXProperty());
       //  minimap.translateYProperty().bindBidirectional(root.layoutYProperty());
 
