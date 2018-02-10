@@ -160,6 +160,7 @@ public abstract class GameModel implements Model {
             entities.put(entity.id, entity);
         }
     }
+
     /**
      * Decorator around drable to memozie z value so can sort even while another thread mutates z values
      */
@@ -188,20 +189,27 @@ public abstract class GameModel implements Model {
      * @param y
      * @param w
      * @param h
-     * @param b
      * @return
      */
-    public void draw(GraphicsContext gc, double x, double y, double w, double h, boolean b) {
+    public void drawFG(GraphicsContext gc, double x, double y, double w, double h) {
         ArrayList<Drawable> drawEntities = new ArrayList<>();
 
         for (int j = Math.max(0, (int) (y - h / 2)); j < Math.min(y + h / 2, getMapHeight()); j++) {
             for (int i = Math.max(0, (int) (x - w / 2)); i < Math.min(x + w / 2, getMapWidth()); i++) {
                 GridCell cell = getCell(i, j);
-                cell.draw(gc, this, b);
                 drawEntities.addAll(cell.getContents());
             }
         }
         drawEntities.stream().map(DrawableZ::new).sorted().forEach(a -> a.draw(gc, this));
+    }
+
+    public void drawBG(GraphicsContext gc, int x, int y, int w, int h, boolean b) {
+        for (int j = Math.max(0, (int) (y - h / 2)); j < Math.min(y + h / 2, getMapHeight()); j++) {
+            for (int i = Math.max(0, (int) (x - w / 2)); i < Math.min(x + w / 2, getMapWidth()); i++) {
+                GridCell cell = getCell(i, j);
+                cell.draw(gc, this, b);
+            }
+        }
     }
 
 

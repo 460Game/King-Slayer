@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
 import static util.Util.toDrawCoords;
 
 /*
-simple draw strategy for drawing entire image on entity
+simple drawFG strategy for drawing entire image on entity
  */
 public abstract class ImageDrawStrat extends DrawStrat {
 

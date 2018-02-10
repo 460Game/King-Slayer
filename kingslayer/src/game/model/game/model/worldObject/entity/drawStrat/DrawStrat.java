@@ -10,7 +10,7 @@ public abstract class DrawStrat {
 
     /**
      * Draw the object on the game map.
-     * @param gc context used to draw the objects
+     * @param gc context used to drawFG the objects
      */
     public abstract void draw(Entity entity, GraphicsContext gc);
 

@@ -157,7 +157,7 @@ public class GridCell {
     /**
          * Draws the tile in a specified cell on the map.
          *
-         * @param gc context used to draw the tile
+         * @param gc context used to drawFG the tile
          */
         public void draw(GraphicsContext gc, GameModel model, boolean firstAnimation) {
             if (!firstAnimation && this.tile.tupleNum == 'W')

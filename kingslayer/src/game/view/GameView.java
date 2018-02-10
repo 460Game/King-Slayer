@@ -5,19 +5,20 @@ import game.message.StopMessage;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.worldObject.Team;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import javafx.animation.AnimationTimer;
 import javafx.beans.InvalidationListener;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.effect.Reflection;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
-import util.Const;
 
 import static util.Const.*;
 import static util.Util.toDrawCoords;
@@ -33,27 +34,31 @@ public class GameView {
 
     public void start(Stage window) {
         Group root = new Group();
-        Canvas fgCanvas = new Canvas(INIT_SCREEN_WIDTH, INIT_SCREEN_HEIGHT);
-        Canvas bgCanvas = new Canvas(INIT_SCREEN_WIDTH, INIT_SCREEN_HEIGHT);
-        Canvas minimapCanvas = new Canvas(INIT_SCREEN_WIDTH / 3, INIT_SCREEN_HEIGHT / 3);
-        GraphicsContext gc = fgCanvas.getGraphicsContext2D();
+        Canvas fgCanvas = new Canvas();
+        Canvas bgCanvas = new Canvas();
+        Canvas minimapCanvas = new Canvas();
+        GraphicsContext fgGC = fgCanvas.getGraphicsContext2D();
+        GraphicsContext bgGC = bgCanvas.getGraphicsContext2D();
         GraphicsContext minimapGC = minimapCanvas.getGraphicsContext2D();
 
 
         InvalidationListener resize = l -> {
-            minimapCanvas.setWidth(Math.min(window.getWidth() / 3, window.getHeight() / 3));
-            minimapCanvas.setHeight(Math.min(window.getWidth() / 3, window.getHeight() / 3));
+            minimapCanvas.setWidth(Math.min(window.getWidth() / 4, window.getHeight() / 4));
+            minimapCanvas.setHeight(Math.min(window.getWidth() / 4, window.getHeight() / 4));
             bgCanvas.setWidth(window.getWidth());
             bgCanvas.setHeight(window.getHeight());
             fgCanvas.setWidth(window.getWidth());
             fgCanvas.setHeight(window.getHeight());
+            bgCanvas.setWidth(window.getWidth());
+            bgCanvas.setHeight(window.getHeight());
         };
+
+        resize.invalidated(null);
 
         window.widthProperty().addListener(resize);
         window.heightProperty().addListener(resize);
-
-        root.getChildren().add(fgCanvas);
         root.getChildren().add(bgCanvas);
+        root.getChildren().add(fgCanvas);
         root.getChildren().add(minimapCanvas);
 
         Scene scene = new Scene(root);
@@ -94,18 +99,31 @@ public class GameView {
                     double gameH = toWorldCoords(window.getHeight() / scaleFactor[0]);
                     double xt = -toDrawCoords(x * scaleFactor[0]) + window.getWidth() / 2;
                     double yt = -toDrawCoords(y * scaleFactor[0]) + window.getHeight() / 2;
-                    gc.setTransform(new Affine());
+                    fgGC.setTransform(new Affine());
+                    bgGC.setTransform(new Affine());
                     //       fgGC.transform(new Affine(Affine.translate(CANVAS_WIDTH/2, CANVAS_HEIGHT/2)));
-                    gc.transform(new Affine(Affine.scale(scaleFactor[0], scaleFactor[0])));
+                    //                    fgGC.transform(new Affine(Affine.scale(scaleFactor[0], scaleFactor[0])));
+                    //                    fgGC.transform(new Affine(Affine.scale(scaleFactor[0], scaleFactor[0])));
                     //      fgGC.transform(new Affine(Affine.translate(-CANVAS_WIDTH/2, -CANVAS_HEIGHT/2)));
-                    gc.translate(xt, yt);
-                    // model.draw(fgGC, x, y, gameW, gameH);
+                    fgGC.translate(xt, yt);
+                    bgGC.translate(xt, yt);
+                    // model.drawFG(fgGC, x, y, gameW, gameH);
                     //
 
-                    gc.setFill(Color.LIGHTCYAN);
-                    gc.fillRect(-100000, -100000, 100000000, 10000000);
+                    bgGC.setFill(Color.LIGHTCYAN);
+                    bgGC.fillRect(0, 0, bgCanvas.getWidth(), bgCanvas.getHeight());
+                    fgGC.clearRect(0, 0, 11111111, 1111111);
 
-                    model.draw(gc, GRID_X_SIZE / 2, GRID_Y_SIZE / 2, GRID_X_SIZE, GRID_Y_SIZE, tick[0] > WATER_ANIM_PERIOD / 2);
+                    model.drawBG(bgGC, GRID_X_SIZE / 2, GRID_Y_SIZE / 2, GRID_X_SIZE, GRID_Y_SIZE, tick[0] > WATER_ANIM_PERIOD / 2);
+                    model.drawFG(fgGC, GRID_X_SIZE / 2, GRID_Y_SIZE / 2, GRID_X_SIZE, GRID_Y_SIZE);
+                       DropShadow shadow = new DropShadow();
+                    shadow.setOffsetY(toDrawCoords(0.2));
+                    shadow.setColor(Color.color(0,0,0,.25));
+                    shadow.setSpread(0.7);
+                   // Reflection reflection = new Reflection();
+                   // reflection.setFraction(0.7);
+
+                    fgGC.applyEffect(shadow);
                     tick[0] %= WATER_ANIM_PERIOD;
                     tick[0]++;
                 }
@@ -122,6 +140,10 @@ public class GameView {
         });
 
         scene.setOnMouseClicked(e -> {
+
+        });
+
+        scene.setOnMouseMoved(e -> {
 
         });
 
@@ -148,7 +170,14 @@ public class GameView {
                 model.processMessage(new StopMessage(model.getLocalPlayer().id));
         });
 
-        window.setScene(scene);
         animator.start();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        window.setScene(scene);
     }
 }

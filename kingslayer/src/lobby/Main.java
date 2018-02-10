@@ -13,6 +13,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Affine;
@@ -92,6 +93,7 @@ public class Main extends Application {
     }
 
     private int currentItem = 0;
+
     @Override
     public void start(Stage window) {
 
@@ -106,26 +108,20 @@ public class Main extends Application {
         window.setResizable(true);
         window.setMinHeight(600);
         window.setMinWidth(800);
-      //  window.setWidth(bounds.getWidth());
-      //  window.setHeight(bounds.getHeight());
-        window.setX((bounds.getWidth() - window.getWidth())/2);
-        window.setY((bounds.getHeight() - window.getHeight())/2);
+        window.setWidth(bounds.getWidth() - 50);
+        window.setHeight(bounds.getHeight() - 50);
+        window.setX(25);
+        window.setY(25);
         window.setTitle("King Slayer");
-       //window.setFullScreen(true);
-
-        Group root = new Group();
+        //window.setFullScreen(true);
 
 
-        Canvas bgCanvas = new Canvas(window.getWidth(), window.getHeight());
+        Canvas bgCanvas = new Canvas();
         GraphicsContext bgGC = bgCanvas.getGraphicsContext2D();
-
-
-        Canvas midCanvas = new Canvas(window.getWidth(), window.getHeight());
+        Canvas midCanvas = new Canvas();
         GraphicsContext midGC = midCanvas.getGraphicsContext2D();
 
-
-
-        MenuItem[] items = new MenuItem[] {
+        MenuItem[] items = new MenuItem[]{
             new MenuItem("JOIN GAME"),
             new MenuItem("NEW GAME"),
             new MenuItem("TEST GAME"),
@@ -144,29 +140,17 @@ public class Main extends Application {
         items[3].setOnActivate(() -> System.out.println("HOW TO PLAY"));
         items[4].setOnActivate(() -> System.exit(0));
         menuBox = new VBox(10, items);
-        menuBox.setTranslateX(window.getWidth() - menuBox.getWidth() - 200);
-        menuBox.setTranslateY(window.getHeight() - menuBox.getHeight()/2);
         items[0].setActive(true);
 
-        //  Button joinGame = new Button("button");
-        //  root.getChildren().add(joinGame);
-
-        root.getChildren().add(bgCanvas);
-        root.getChildren().add(midCanvas);
-        root.getChildren().add(menuBox);
-        Scene scene = new Scene(root);
-
         InvalidationListener resize = l -> {
-            if(window.isMaximized()) {
-                window.setHeight(bounds.getHeight());
-                window.setWidth(bounds.getWidth());
-            }
+            //  if(window.isMaximized()) {
+            //      window.setHeight(bounds.getHeight());
+            //      window.setWidth(bounds.getWidth());
+            //  }
             bgCanvas.setWidth(window.getWidth());
             bgCanvas.setHeight(window.getHeight());
             midCanvas.setWidth(window.getWidth());
             midCanvas.setHeight(window.getHeight());
-            menuBox.setTranslateX(window.getWidth()/2 - menuBox.getWidth()/2);
-            menuBox.setTranslateY(window.getHeight() - menuBox.getHeight() - 200);
             Log.info("w/h = " + window.getWidth() + " " + window.getHeight());
         };
 
@@ -174,8 +158,14 @@ public class Main extends Application {
         window.widthProperty().addListener(resize);
         window.maximizedProperty().addListener(resize);
 
+        Group root = new Group();
+        root.getChildren().add(bgCanvas);
+        root.getChildren().add(midCanvas);
+        root.getChildren().add(menuBox);
+        Scene scene = new Scene(root);
+
         scene.setOnKeyPressed(e -> {
-            switch(e.getCode()) {
+            switch (e.getCode()) {
                 case F11:
                     window.setFullScreen(true);
                     break;
@@ -203,41 +193,43 @@ public class Main extends Application {
 
         });
 
-        bgGC.drawImage(MENU_SPASH_BG_IMAGE,0,0, bgCanvas.getWidth(), bgCanvas.getHeight());
-     //   bgGC.setTransform(new Affine(Affine.scale(10,10)));
-     //   bgGC.transform(new Affine(Affine.translate(0,bgCanvas.getHeight()/2)));
-
         double[] bgOpac = new double[]{2.0};
 
         AnimationTimer animator = new AnimationTimer() {
 
             @Override
             public void handle(long now) {
-                midGC.clearRect(0,0,window.getWidth(),window.getHeight());
-                midGC.setFill(Color.color(0.6,0.6,0.7, (Math.abs(bgOpac[0] % 2 - 1)) * (8/10) ));
+                midGC.clearRect(0, 0, window.getWidth(), window.getHeight());
+                midGC.setFill(Color.color(0.6, 0.6, 0.7, 0.4 + (Math.abs(bgOpac[0] % 2 - 1)) * 0.3));
                 bgOpac[0] += 0.002;
 
-                midGC.fillRect(0,0,window.getWidth(),window.getHeight());
+                midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
                 midGC.drawImage(logo, 50, 50, 250, 250);
 
-                bgGC.drawImage(MENU_SPASH_BG_IMAGE,0,0, window.getWidth(), window.getHeight());
-//                bgGC.transform(new Affine(Affine.translate(10,0)));
+                bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, window.getWidth(), window.getHeight());
+
+                menuBox.setTranslateX(window.getWidth() / 2 - menuBox.getWidth() / 2);
+                menuBox.setTranslateY(window.getHeight() - menuBox.getHeight() - 200);
             }
         };
 
         animator.start();
-        window.show();
-        window.setScene(scene);
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         resize.invalidated(null);
+        window.setScene(scene);
+        window.show();
 
 /*
         window.on
         Group root = new Group();
         Scene scene = new Scene(root);
-        scene.setOnKeyPressed(e -> {
-                if (e.getCode() == KeyCode.F11) window.setFullScreen(true);
-            });
+
         window.show();
 
         LobbyModel model = new LobbyModel();
