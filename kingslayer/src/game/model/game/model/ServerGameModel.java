@@ -55,6 +55,8 @@ public class ServerGameModel extends GameModel {
         for(Entity entity : this.getAllEntities())
             clients.forEach(client -> client.processMessage(new SetEntityMessage(entity)));
 
+        clients.forEach(client -> client.processMessage(new InitGameMessage()));
+
         int i = 0;
         // Send player to client
         for(Model model : clients) model.processMessage(new SetPlayerMessage(players.get(i++)));
@@ -84,18 +86,18 @@ public class ServerGameModel extends GameModel {
 
     private void run() {
         while (running) {
-            long start = System.nanoTime();
+        //    long start = System.nanoTime();
             this.update();
             //want it independent of how long update take, so use the following instead
             //of thread.sleep()...
-            long delta = System.nanoTime()- start;
-            if (UPDATE_LOOP_TIME_NANOS > delta)
-                try {
+        //    long delta = System.nanoTime()- start;
+        //    if (UPDATE_LOOP_TIME_NANOS > delta)
+         //       try {
                     Thread.yield();
-                    Thread.sleep((UPDATE_LOOP_TIME_NANOS - delta)/ 1000000L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+              //      Thread.sleep((UPDATE_LOOP_TIME_NANOS - delta)/ 1000000L);
+             //   } catch (InterruptedException e) {
+             //       e.printStackTrace();
+             //   }
         }
     }
 }

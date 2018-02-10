@@ -8,7 +8,6 @@ import game.model.game.model.worldObject.entity.Drawable;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -42,7 +41,12 @@ public abstract class GameModel implements Model {
 
         for (int i = 0; i < util.Const.GRID_X_SIZE; i++)
             for (int j = 0; j < util.Const.GRID_Y_SIZE; j++)
-                grid[i][j] = new GridCell(this, i, j, generator.makeTile(i, j));
+                grid[i][j] = new GridCell(i, j);
+
+        for (int i = 0; i < util.Const.GRID_X_SIZE; i++)
+            for (int j = 0; j < util.Const.GRID_Y_SIZE; j++)
+                grid[i][j].setTile(generator.makeTile(i, j), this);
+
 
         for (int i = 0; i < util.Const.GRID_X_SIZE; i++)
             for (int j = 0; j < util.Const.GRID_Y_SIZE; j++)
@@ -117,7 +121,7 @@ public abstract class GameModel implements Model {
 
 
     public void setTile(int x, int y, Tile tile) {
-        grid[x][y].setTile(tile);
+        grid[x][y].setTile(tile, this);
     }
 
     public void update() {
@@ -126,7 +130,7 @@ public abstract class GameModel implements Model {
         list.forEach(m -> m.execute(this));
 
         entities.values().forEach(e -> e.update(this));
-
+        entities.values().forEach(e -> e.updateCells(this));
         allCells.forEach(cell -> cell.collideContents(this));
 
     }
@@ -156,7 +160,6 @@ public abstract class GameModel implements Model {
             entities.put(entity.id, entity);
         }
     }
-
     /**
      * Decorator around drable to memozie z value so can sort even while another thread mutates z values
      */
@@ -178,25 +181,6 @@ public abstract class GameModel implements Model {
             return Double.compare(this.z, o.z);
         }
     }
-
-    //    /**
-//     * @param x top left x
-//     * @param y top lefy y
-//     * @param w width in game space
-//     * @param h height in game space
-//     * @param gc
-//     * @param i
-//     * @param i1
-//     * @param i2
-//     * @param i3
-//     */
-    public void draw(GraphicsContext gc, double cx, double cy, double w, double h) {
-        gc.setFill(Color.LIGHTCYAN);
-        gc.fillRect(-100000, -100000, 100000000, 10000000);
-
-        drawBox(gc, cx,cy,w,h);
-    }
-
     /**
      * returns approximately all the entities inside of the box centered at x,y with width, height
      *
@@ -204,15 +188,16 @@ public abstract class GameModel implements Model {
      * @param y
      * @param w
      * @param h
+     * @param b
      * @return
      */
-    private void drawBox(GraphicsContext gc, double x, double y, double w, double h) {
+    public void draw(GraphicsContext gc, double x, double y, double w, double h, boolean b) {
         ArrayList<Drawable> drawEntities = new ArrayList<>();
 
         for (int j = Math.max(0, (int) (y - h / 2)); j < Math.min(y + h / 2, getMapHeight()); j++) {
             for (int i = Math.max(0, (int) (x - w / 2)); i < Math.min(x + w / 2, getMapWidth()); i++) {
                 GridCell cell = getCell(i, j);
-                cell.draw(gc,this);
+                cell.draw(gc, this, b);
                 drawEntities.addAll(cell.getContents());
             }
         }

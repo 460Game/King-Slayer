@@ -7,7 +7,7 @@ import static java.lang.Math.PI;
  */
 public abstract class Const {
 
-    public static final boolean USE_SHAPE_DRAW = true;
+    public static final boolean USE_SHAPE_DRAW = false;
 
     public static final double ANGLE_RIGHT = 0;
     public static final double ANGLE_LEFT = PI;
@@ -66,4 +66,6 @@ public abstract class Const {
      * Number of nanoseconds to optimally spend on each update loop.
      */
     public final static int UPDATE_LOOP_TIME_NANOS = 16666667;
+
+    public static final int WATER_ANIM_PERIOD = UPDATES_PER_SECOND * 5;
 }

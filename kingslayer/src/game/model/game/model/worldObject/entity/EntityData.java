@@ -31,7 +31,7 @@ public class EntityData {
     /**
      * Current health of the entity.
      */
-    double health;
+    public double health;
 
     /**
      * Current velocity of the entity.

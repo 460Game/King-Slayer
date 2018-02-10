@@ -7,7 +7,13 @@ import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
+
+import static images.Images.TILE_IMAGE;
+import static util.Const.TILE_PIXELS;
+import static util.Util.toDrawCoords;
 
 /**
  * Defines an individual cell on the game grid. Knows the entities
@@ -72,15 +78,13 @@ public class GridCell {
 
     /**
      * Constructor for a grid cell.
-     * @param model current model of the game
      * @param x x-coordinate of the top left of the cell
      * @param y y-coordinate of the top left of the cell
-     * @param tile the type of tile
      */
-    public GridCell(GameModel model, int x, int y, Tile tile) {
+    public GridCell(int x, int y) {
         this.x = x;
         this.y = y;
-        this.tile = tile;
+        this.tile = Tile.UNSET;
     }
 
     /**
@@ -90,14 +94,91 @@ public class GridCell {
 
     }
 
-    /**
-     * Renders the cell with the background determined by the current
-     * tile type.
-     * @param gc context used to draw the cell background
-     */
-    public void draw(GraphicsContext gc, GameModel model) {
-        tile.draw(gc, x, y, model, true);
+
+    private static Map<String, Point> TILE_MAP;
+    private static Map<Character, List<Character>> matches;
+    private static final int TILE_IMAGE_TILE_SIZE = 32;
+
+    static {
+
+        TILE_MAP = new HashMap<>();
+        matches = new HashMap<>();
+
+        Scanner input = new Scanner(Tile.class.getResourceAsStream("tile_map.txt"));
+
+        while (input.hasNext()) {
+            Point p = new Point(input.nextInt(), input.nextInt());
+            if (p.x == -1)
+                break;
+            input.nextLine();
+            StringBuilder str = new StringBuilder();
+            for (int i = 0; i < 3; i++)
+                str.append(input.nextLine());
+            input.nextLine();
+            TILE_MAP.put(str.toString(), p);
+        }
+
+        matches.put('G', Arrays.asList('G', 'E', 'X', 'L', 'K', '_'));
+        matches.put('D', Arrays.asList('D', 'E', 'U', 'L', 'K', '_'));
+        matches.put('W', Arrays.asList('W', 'J', 'X', 'U', 'L', '_'));
+        matches.put('B', Arrays.asList('B', 'J', 'X', 'U', 'E', '_'));
     }
+
+    private Point maxPoint = new Point(0, 0);
+
+    public void initDraw(GameModel model) {
+
+        StringBuilder hashKey = new StringBuilder();
+
+        for (int j = -1; j < 2; j++)
+            for (int i = -1; i < 2; i++)
+                hashKey.append(model.getTile(x + i, y + j).tupleNum);
+
+        int max = -1;
+        for (String key : TILE_MAP.keySet()) {
+
+            if (key.charAt(4) != hashKey.charAt(4)) // check that middle tile matches
+                continue;
+
+            int cur = 0;
+            Point curPoint = TILE_MAP.get(key);
+
+            for (int l = 0; l < 9; l++)
+                if (matches.get(hashKey.charAt(l)).contains(key.charAt(l))) // check that these two are a possible match
+                    cur++;
+
+            if (cur > max) {
+                max = cur;
+                maxPoint = curPoint;
+            }
+        }
+    }
+
+    /**
+         * Draws the tile in a specified cell on the map.
+         *
+         * @param gc context used to draw the tile
+         */
+        public void draw(GraphicsContext gc, GameModel model, boolean firstAnimation) {
+            if (!firstAnimation && this.tile.tupleNum == 'W')
+                gc.drawImage(TILE_IMAGE,
+                    (maxPoint.x + 10) * TILE_IMAGE_TILE_SIZE,
+                    maxPoint.y * TILE_IMAGE_TILE_SIZE, TILE_IMAGE_TILE_SIZE, TILE_IMAGE_TILE_SIZE,
+                    toDrawCoords(x),
+                    toDrawCoords(y),
+                    toDrawCoords(1),
+                    toDrawCoords(1));
+            else
+                gc.drawImage(TILE_IMAGE,
+                    maxPoint.x * TILE_IMAGE_TILE_SIZE,
+                    maxPoint.y * TILE_IMAGE_TILE_SIZE,
+                    TILE_IMAGE_TILE_SIZE, TILE_IMAGE_TILE_SIZE,
+                    toDrawCoords(x),
+                    toDrawCoords(y),
+                    toDrawCoords(1),
+                    toDrawCoords(1));
+
+        }
 
     /**
      * Perform collisions between the current contents of the cell.
@@ -129,7 +210,7 @@ public class GridCell {
      * Sets the tile of the cell to the specified tile
      * @param tile the new tile type of the cell
      */
-    public void setTile(Tile tile) {
+    public void setTile(Tile tile, GameModel model) {
         this.tile = tile;
     }
 
@@ -165,4 +246,14 @@ public class GridCell {
     public double getCenterY() {
         return y + 0.5;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        GridCell ot = (GridCell) o;
+        return x == ot.x && y == ot.y;
+    }
+
+    @Override
+    public int hashCode() { return (int) (0.5 * (x + y) * (x + y + 1)) + y; }
 }

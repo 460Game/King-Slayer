@@ -89,7 +89,7 @@ public class Entity implements Updatable, Drawable, AIable {
 
     @Override
     public void draw(GraphicsContext gc) {
-        this.data.hitbox.draw(gc, this);
+        this.drawStrat.draw(this, gc);
     }
 
     @Override
@@ -104,5 +104,9 @@ public class Entity implements Updatable, Drawable, AIable {
 
     public CollisionStrat.CollideType getCollideType() {
         return collisionStrat.getCollideType();
+    }
+
+    public void updateCells(GameModel model) {
+        this.data.hitbox.updateCells(this, model);
     }
 }
