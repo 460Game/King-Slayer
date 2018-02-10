@@ -87,4 +87,12 @@ public class Util {
     public static double toWorldCoords(double drawCords) {
         return drawCords / TILE_PIXELS;
     }
+
+    public static void sleep(long milis) {
+        try {
+            Thread.sleep(milis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

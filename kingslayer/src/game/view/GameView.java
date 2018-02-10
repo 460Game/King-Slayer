@@ -8,6 +8,7 @@ import game.model.game.model.worldObject.entity.Entity;
 import javafx.animation.AnimationTimer;
 import javafx.beans.InvalidationListener;
 import javafx.scene.Group;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -22,6 +23,8 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
 
+import static images.Images.CURSOR_IMAGE;
+import static images.Images.GAME_CURSOR_IMAGE;
 import static util.Const.*;
 import static util.Util.toDrawCoords;
 import static util.Util.toWorldCoords;
@@ -81,6 +84,7 @@ public class GameView {
 
         Scene scene = new Scene(root);
 
+        scene.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth()/2, GAME_CURSOR_IMAGE.getHeight()/2));
         scene.setOnScroll(e -> {
 
         });
