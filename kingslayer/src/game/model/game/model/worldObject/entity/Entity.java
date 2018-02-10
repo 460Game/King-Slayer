@@ -25,6 +25,8 @@ public class Entity implements Updatable, Drawable, AIable {
     final CollisionStrat collisionStrat;
 
     public transient boolean inCollision = false;
+    public transient double prevX = -1;
+    public transient double prevY = -1;
 
     /*
      * used to track which cells this enttiy is in in the LOCAL modal.

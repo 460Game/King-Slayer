@@ -29,15 +29,12 @@ public abstract class Hitbox {
      */
     public abstract Set<GridCell> getCells(Entity entity, GameModel gameMap);
 
-    transient double prevX = -1;
-    transient double prevY = -1;
-
     /**
      * Return the set of all cell references this hitbox overlaps with.
      * This method should return a new set every time.
      */
     public void updateCells(Entity entity, GameModel model) {
-        if(entity.data.x != prevX || entity.data.y != prevY) {
+        if(entity.data.x != entity.prevX || entity.data.y != entity.prevY) {
             Set<GridCell> afterSet = entity.data.hitbox.getCells(entity, model);
 
             if (entity.containedIn != null)
@@ -48,8 +45,8 @@ public abstract class Hitbox {
                 cell.addContents(entity);
 
             entity.containedIn = afterSet;
-            prevX = entity.data.x;
-            prevY = entity.data.y;
+            entity.prevX = entity.data.x;
+            entity.prevY = entity.data.y;
         }
     }
 
