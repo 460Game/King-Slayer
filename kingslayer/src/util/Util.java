@@ -10,8 +10,6 @@ import static util.Const.TILE_PIXELS;
  */
 public class Util {
 
-
-
     /**
      * Helper random class to generate random seeds.
      */
@@ -84,7 +82,7 @@ public class Util {
     }
 
     public static double toWorldCoords(int drawCords) {
-        return ((double)drawCords)/ TILE_PIXELS;
+        return ((double) drawCords) / TILE_PIXELS;
     }
     public static double toWorldCoords(double drawCords) {
         return drawCords / TILE_PIXELS;
