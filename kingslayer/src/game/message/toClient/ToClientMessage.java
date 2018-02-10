@@ -1,5 +1,6 @@
-package game.message;
+package game.message.toClient;
 
+import game.message.Message;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.GameModel;
 

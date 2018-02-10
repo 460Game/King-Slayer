@@ -1,6 +1,6 @@
-package game.message;
+package game.message.toServer;
 
-import com.esotericsoftware.minlog.Log;
+import game.message.toClient.NewEntityMessage;
 import game.model.game.model.ServerGameModel;
 
 public class RequestEntityMessage implements ToServerMessage {

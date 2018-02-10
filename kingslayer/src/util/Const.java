@@ -7,16 +7,16 @@ import static java.lang.Math.PI;
  */
 public abstract class Const {
 
-    public static final boolean USE_SHAPE_DRAW = false;
+    public static final boolean DEBUG_DRAW = true;
 
     public static final double ANGLE_RIGHT = 0;
     public static final double ANGLE_LEFT = PI;
-    public static final double ANGLE_DOWN = PI/2;
-    public static final double ANGLE_UP = -PI/2;
-    public static final double ANGLE_UP_RIGHT = -PI/4;
-    public static final double ANGLE_UP_LEFT = 3*PI/4;
-    public static final double ANGLE_DOWN_RIGHT = PI/4;
-    public static final double ANGLE_DOWN_LEFT = 3*PI/4;
+    public static final double ANGLE_DOWN = PI / 2;
+    public static final double ANGLE_UP = -PI / 2;
+    public static final double ANGLE_UP_RIGHT = -PI / 4;
+    public static final double ANGLE_UP_LEFT = 3 * PI / 4;
+    public static final double ANGLE_DOWN_RIGHT = PI / 4;
+    public static final double ANGLE_DOWN_LEFT = 3 * PI / 4;
 
     public static final double NANOS_TO_SECONDS = 1e-9;
     private static final double SECONDS_TO_NANOS = 1e9;
@@ -44,7 +44,7 @@ public abstract class Const {
     /**
      * Number of pixels on the side of a tile.
      */
-    public final static int TILE_PIXELS = 64;
+    public final static int TILE_PIXELS = 32;
 
     /**
      * Number of pixels on the width of the canvas.
@@ -67,5 +67,5 @@ public abstract class Const {
      */
     public final static int UPDATE_LOOP_TIME_NANOS = 16666667;
 
-    public static final int WATER_ANIM_PERIOD = UPDATES_PER_SECOND * 5;
+    public static final int WATER_ANIM_PERIOD = UPDATES_PER_SECOND * 4;
 }

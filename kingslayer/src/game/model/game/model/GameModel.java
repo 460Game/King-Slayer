@@ -7,10 +7,14 @@ import game.model.game.map.Tile;
 import game.model.game.model.worldObject.entity.Drawable;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
+import game.model.game.model.worldObject.entity.drawStrat.ShapeDrawStrat;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import static util.Const.DEBUG_DRAW;
 
 public abstract class GameModel implements Model {
 
@@ -192,7 +196,7 @@ public abstract class GameModel implements Model {
      * @return
      */
     public void drawFG(GraphicsContext gc, double x, double y, double w, double h) {
-        ArrayList<Drawable> drawEntities = new ArrayList<>();
+        ArrayList<Entity> drawEntities = new ArrayList<>();
 
         for (int j = Math.max(0, (int) (y - h / 2)); j < Math.min(y + h / 2, getMapHeight()); j++) {
             for (int i = Math.max(0, (int) (x - w / 2)); i < Math.min(x + w / 2, getMapWidth()); i++) {
@@ -201,6 +205,9 @@ public abstract class GameModel implements Model {
             }
         }
         drawEntities.stream().map(DrawableZ::new).sorted().forEach(a -> a.draw(gc, this));
+
+        if(DEBUG_DRAW)
+            drawEntities.forEach(a -> a.data.hitbox.draw(gc, a));
     }
 
     public void drawBG(GraphicsContext gc, int x, int y, int w, int h, boolean b) {

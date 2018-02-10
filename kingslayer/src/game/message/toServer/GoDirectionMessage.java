@@ -1,8 +1,8 @@
-package game.message;
+package game.message.toServer;
 
+import game.message.toClient.SetEntityMessage;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.entities.Velocity;
 
 /**
  * Message sent by a client to tell the server to move the player

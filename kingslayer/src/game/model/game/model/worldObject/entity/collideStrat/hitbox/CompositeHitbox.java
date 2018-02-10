@@ -28,7 +28,7 @@ public class CompositeHitbox extends Hitbox {
     }
 
     @Override
-    public void draw(GraphicsContext gc, Entity entity) {
+    public void drawShape(GraphicsContext gc, Entity entity) {
         a.draw(gc, entity);
         b.draw(gc, entity);
     }
