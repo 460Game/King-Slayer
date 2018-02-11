@@ -1,8 +1,10 @@
 package game.view;
 
+import game.message.toClient.NewEntityMessage;
 import game.message.toServer.GoDirectionMessage;
 import game.message.toServer.StopMessage;
 import game.model.game.model.ClientGameModel;
+import game.model.game.model.worldObject.entity.entities.Entities;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
@@ -109,8 +111,13 @@ public class GameView {
             if (e.getCode() == KeyCode.D) // Start rightward movement.
                 dir[0]++;
 
-            if(e.getCode() == KeyCode.ESCAPE)
+            if (e.getCode() == KeyCode.ESCAPE)
                 exitPrompt.setVisible(true);
+
+            if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1)
+                model.getLocalPlayer().runCommand(1, model);
+//                model.processMessage(new NewEntityMessage(Entities.makeWall(model.getLocalPlayer().data.x + 2 * dir[0],
+//                    model.getLocalPlayer().data.y + 2 * dir[1]))); // TODO make better
 
             if(dir[0] == 0 && dir[1] == 0)
                 model.processMessage(new StopMessage(model.getLocalPlayer().id));

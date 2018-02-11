@@ -10,7 +10,7 @@ import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
 
 public class Players {
 
-    private static final double PLAYER_RADIUS = 0.3;
+    private static final double PLAYER_RADIUS = 0.5;
     
     static private CircleHitbox hitbox = new CircleHitbox(PLAYER_RADIUS);
 
@@ -20,7 +20,7 @@ public class Players {
             MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
-            DirectionAnimationDrawStrat.RED_SLAYER_ANIMATION, //TODDO drawFG strat
+            DirectionAnimationDrawStrat.RED_SLAYER_ANIMATION, //TODO drawFG strat
             AIDoNothingStrat.SINGLETON);
         slayer.data.updateData.velocity.setAngle(0.5 * Math.PI);
         return slayer;
@@ -32,7 +32,7 @@ public class Players {
             MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
-            DirectionAnimationDrawStrat.RED_KING_ANIMATION, //TODDO drawFG strat
+            DirectionAnimationDrawStrat.RED_KING_ANIMATION, //TODO drawFG strat
             AIDoNothingStrat.SINGLETON);
         king.data.updateData.velocity.setAngle(0.5 * Math.PI);
         return king;

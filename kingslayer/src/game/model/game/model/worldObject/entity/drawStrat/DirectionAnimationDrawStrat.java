@@ -1,7 +1,11 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
+import game.message.toClient.NewEntityMessage;
+import game.model.game.model.GameModel;
+import game.model.game.model.Model;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
+import game.model.game.model.worldObject.entity.entities.Entities;
 import images.Images;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -57,6 +61,8 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
 
   abstract Image getImage();
 
+  public abstract void runCommand(int commandID, Entity entity, GameModel model);
+
   public void draw(Entity entity, GraphicsContext gc) {
     try {
       Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
@@ -108,11 +114,51 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     Image getImage() {
       return Images.RED_KING_IMAGE_SHEET;
     }
+
+    @Override
+    public void runCommand(int commandID, Entity entity, GameModel model) {
+      switch (commandID) {
+        case 1:
+          int[] dir = {0, 0};
+          if (drawData.direction == 'N')
+            dir[1] = -1;
+          else if (drawData.direction == 'E')
+            dir[0] = 1;
+          else if (drawData.direction == 'S')
+            dir[1] = 1;
+          else
+            dir[0] = -1;
+          model.processMessage(new NewEntityMessage(Entities.makeBuiltWall(entity.data.x + dir[0], entity.data.y + dir[1])));
+          break;
+        default:
+          System.out.println("Unknown command");
+      }
+    }
   }
   private static class BlueKingDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage() {
       return Images.BLUE_KING_IMAGE_SHEET;
+    }
+
+    @Override
+    public void runCommand(int commandID, Entity entity, GameModel model) {
+      switch (commandID) {
+        case 1:
+          int[] dir = {0, 0};
+          if (drawData.direction == 'N')
+            dir[1] = -1;
+          else if (drawData.direction == 'E')
+            dir[0] = 1;
+          else if (drawData.direction == 'S')
+            dir[1] = 1;
+          else
+            dir[0] = -1;
+          model.processMessage(new NewEntityMessage(Entities.makeBuiltWall(entity.data.x + dir[0], entity.data.y + dir[1])));
+
+        default:
+          System.out.println("Unknown command");
+      }
     }
   }
   private static class RedSlayerDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
@@ -120,11 +166,51 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     Image getImage() {
       return Images.RED_SLAYER_IMAGE_SHEET;
     }
+
+    @Override
+    public void runCommand(int commandID, Entity entity, GameModel model) {
+      switch (commandID) {
+        case 1:
+          int[] dir = {0, 0};
+          if (drawData.direction == 'N')
+            dir[1] = -1;
+          else if (drawData.direction == 'E')
+            dir[0] = 1;
+          else if (drawData.direction == 'S')
+            dir[1] = 1;
+          else
+            dir[0] = -1;
+          model.processMessage(new NewEntityMessage(Entities.makeBuiltWall(entity.data.x + dir[0], entity.data.y + dir[1])));
+
+        default:
+          System.out.println("Unknown command");
+      }
+    }
   }
   private static class BlueSlayerDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage() {
       return Images.BLUE_SLAYER_IMAGE_SHEET;
+    }
+
+    @Override
+    public void runCommand(int commandID, Entity entity, GameModel model) {
+      switch (commandID) {
+        case 1:
+          int[] dir = {0, 0};
+          if (drawData.direction == 'N')
+            dir[1] = -1;
+          else if (drawData.direction == 'E')
+            dir[0] = 1;
+          else if (drawData.direction == 'S')
+            dir[1] = 1;
+          else
+            dir[0] = -1;
+          model.processMessage(new NewEntityMessage(Entities.makeBuiltWall(entity.data.x + dir[0], entity.data.y + dir[1])));
+
+        default:
+          System.out.println("Unknown command");
+      }
     }
   }
 
@@ -133,6 +219,11 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
       @Override
       Image getImage() {
         return boxImage;
+      }
+
+      @Override
+      public void runCommand(int commandID, Entity entity, GameModel model) {
+
       }
     };
   }

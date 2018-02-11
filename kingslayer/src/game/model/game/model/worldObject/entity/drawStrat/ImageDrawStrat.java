@@ -20,6 +20,8 @@ public abstract class ImageDrawStrat extends DrawStrat {
     public static final ImageDrawStrat WALL_IMAGE_DRAW_STRAT = new WallImageDrawStrat();
     public static final ImageDrawStrat BOX_IMAGE_DRAW_STRAT = new BoxImageDrawStrat();
 
+    public static final ImageDrawStrat WALL_BUILDABLE_IMAGE_DRAW_STRAT = new WallBuildableImageDrawStrat();
+
     @Override
     public DrawData initDrawData() {
         return null;
@@ -200,6 +202,36 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
 
         private BoxImageDrawStrat() {
+        }
+    }
+
+    private static class WallBuildableImageDrawStrat extends ImageDrawStrat {
+        @Override
+        Image getImage() {
+            return Images.WALL_BUILDABLE_IMAGE;
+        }
+
+        @Override
+        double getWidth() {
+            return 1;
+        }
+
+        @Override
+        double getHeight() {
+            return 1.75;
+        }
+
+        @Override
+        double getCenterX() {
+            return 0.5;
+        }
+
+        @Override
+        double getCenterY() {
+            return 0.5;
+        }
+
+        private WallBuildableImageDrawStrat() {
         }
     }
 

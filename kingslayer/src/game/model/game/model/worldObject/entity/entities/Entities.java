@@ -70,4 +70,14 @@ public class Entities {
             ImageDrawStrat.BOX_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
     }
+
+    public static Entity makeBuiltWall(Double x, Double y) {
+        return new Entity(x, y,
+            Team.NEUTRAL,
+            StillStrat.SINGLETON,
+            HardCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            ImageDrawStrat.WALL_BUILDABLE_IMAGE_DRAW_STRAT,
+            AIDoNothingStrat.SINGLETON);
+    }
 }
