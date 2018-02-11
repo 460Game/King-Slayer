@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import static util.Util.toDrawCoords;
+import static java.lang.Math.PI;
 
 public abstract class DirectionAnimationDrawStrat extends DrawStrat {
 
@@ -59,13 +60,42 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   public void draw(Entity entity, GraphicsContext gc) {
     try {
       Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
-      gc.drawImage(getImage(),
-          toDrawCoords(entity.data.x),
-          toDrawCoords(entity.data.y),
+      gc.drawImage(this.getImage(),
+          toDrawCoords(p.x),
+          toDrawCoords(p.y),
+          width,
+          height,
+          toDrawCoords(entity.data.x) - width / 2,
+          toDrawCoords(entity.data.y) - height / 2,
           toDrawCoords(entity.data.hitbox.getWidth()),
           toDrawCoords(entity.data.hitbox.getHeight()));
     } catch (Exception e) {
       e.printStackTrace();
+    }
+  }
+
+  public void update(Entity entity) {
+    // Update direction of image
+    double angle = entity.data.updateData.velocity.getAngle();
+    if (angle >= -0.75 * PI && angle < -0.25 * PI) {
+      drawData.direction = 'N';
+    } else if (angle >= -0.25 * PI && angle < 0.25 * PI) {
+      drawData.direction = 'E';
+    } else if (angle >= 0.25 * PI && angle < 0.75 * PI) {
+      drawData.direction = 'S';
+    } else if (angle >= 0.75 * PI || angle < -0.75 * PI) {
+      drawData.direction = 'W';
+    }
+
+    // Update image being used
+    if (entity.data.updateData.velocity.getMagnitude() != 0) {
+      drawData.count++;
+      if (drawData.count > 11) {
+        drawData.count = 0;
+        drawData.imageNum = (drawData.imageNum + 1) % 3;
+      }
+    } else {
+      drawData.imageNum = 0;
     }
   }
 
@@ -78,45 +108,11 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     Image getImage() {
       return Images.RED_KING_IMAGE_SHEET;
     }
-
-    public void draw(Entity entity, GraphicsContext gc) {
-      try {
-        Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
-        gc.drawImage(this.getImage(),
-            toDrawCoords(p.x),
-            toDrawCoords(p.y),
-            width,
-            height,
-            toDrawCoords(entity.data.x),
-            toDrawCoords(entity.data.y),
-            toDrawCoords(entity.data.hitbox.getWidth()),
-            toDrawCoords(entity.data.hitbox.getHeight()));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
   }
   private static class BlueKingDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage() {
       return Images.BLUE_KING_IMAGE_SHEET;
-    }
-
-    public void draw(Entity entity, GraphicsContext gc) {
-      try {
-        Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
-        gc.drawImage(this.getImage(),
-            toDrawCoords(p.x),
-            toDrawCoords(p.y),
-            width,
-            height,
-            toDrawCoords(entity.data.x),
-            toDrawCoords(entity.data.y),
-            toDrawCoords(entity.data.hitbox.getWidth()),
-            toDrawCoords(entity.data.hitbox.getHeight()));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
     }
   }
   private static class RedSlayerDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
@@ -124,45 +120,11 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     Image getImage() {
       return Images.RED_SLAYER_IMAGE_SHEET;
     }
-
-    public void draw(Entity entity, GraphicsContext gc) {
-      try {
-        Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
-        gc.drawImage(this.getImage(),
-            toDrawCoords(p.x),
-            toDrawCoords(p.y),
-            width,
-            height,
-            toDrawCoords(entity.data.x),
-            toDrawCoords(entity.data.y),
-            toDrawCoords(entity.data.hitbox.getWidth()),
-            toDrawCoords(entity.data.hitbox.getHeight()));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
   }
   private static class BlueSlayerDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage() {
       return Images.BLUE_SLAYER_IMAGE_SHEET;
-    }
-
-    public void draw(Entity entity, GraphicsContext gc) {
-      try {
-        Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
-        gc.drawImage(this.getImage(),
-            toDrawCoords(p.x),
-            toDrawCoords(p.y),
-            width,
-            height,
-            toDrawCoords(entity.data.x),
-            toDrawCoords(entity.data.y),
-            toDrawCoords(entity.data.hitbox.getWidth()),
-            toDrawCoords(entity.data.hitbox.getHeight()));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
     }
   }
 

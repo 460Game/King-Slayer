@@ -15,22 +15,26 @@ public class Players {
     static private CircleHitbox hitbox = new CircleHitbox(PLAYER_RADIUS);
 
     public static Entity makeSlayer(Double x, Double y) {
-        return new Entity(x, y,
+        Entity slayer = new Entity(x, y,
             Team.ONE,
             MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
             DirectionAnimationDrawStrat.RED_SLAYER_ANIMATION, //TODDO drawFG strat
             AIDoNothingStrat.SINGLETON);
+        slayer.data.updateData.velocity.setAngle(0.5 * Math.PI);
+        return slayer;
     }
 
     public static Entity makeKing(Double x, Double y) {
-        return new Entity(x, y,
+        Entity king = new Entity(x, y,
             Team.ONE,
             MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
             DirectionAnimationDrawStrat.RED_KING_ANIMATION, //TODDO drawFG strat
             AIDoNothingStrat.SINGLETON);
+        king.data.updateData.velocity.setAngle(0.5 * Math.PI);
+        return king;
     }
 }

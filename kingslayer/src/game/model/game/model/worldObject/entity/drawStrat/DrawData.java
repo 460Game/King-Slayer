@@ -8,6 +8,7 @@ public class DrawData {
   boolean animated;
   int imageNum;
   char direction;
+  int count;
 
   public DrawData() {
 
@@ -17,6 +18,7 @@ public class DrawData {
     this.animated = animated;
     imageNum = 0;
     direction = 'S';
+    count = 0;
   }
 
   public static DrawData makeAnimated() {

@@ -5,6 +5,7 @@ import game.model.game.model.worldObject.entity.aiStrat.AIStrat;
 import game.model.game.model.worldObject.entity.aiStrat.AIable;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
+import game.model.game.model.worldObject.entity.drawStrat.DirectionAnimationDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.DrawStrat;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 import util.Util;
@@ -98,6 +99,9 @@ public class Entity implements Updatable, Drawable, AIable {
 
     @Override
     public void update(GameModel model) {
+        if (this.team != Team.NEUTRAL) {
+            ((DirectionAnimationDrawStrat) drawStrat).update(this);
+        }
         inCollision = false;
         this.updateStrat.update(this, model);
     }
