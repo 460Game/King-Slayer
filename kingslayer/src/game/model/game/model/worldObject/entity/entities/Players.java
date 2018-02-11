@@ -1,18 +1,12 @@
 package game.model.game.model.worldObject.entity.entities;
 
-import game.model.game.model.GameModel;
-import game.model.game.model.worldObject.Team;
+import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
-import game.model.game.model.worldObject.entity.collideStrat.HardCollisionStrat;
-import game.model.game.model.worldObject.entity.collideStrat.SoftCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.UnitCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CircleHitbox;
 import game.model.game.model.worldObject.entity.drawStrat.DirectionAnimationDrawStrat;
-import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
 import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
-import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
-import images.Images;
 
 public class Players {
 

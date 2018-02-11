@@ -6,16 +6,13 @@ import game.model.game.model.worldObject.entity.aiStrat.AIable;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import game.model.game.model.worldObject.entity.drawStrat.DrawStrat;
-import game.model.game.model.worldObject.entity.drawStrat.ShapeDrawStrat;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 import util.Util;
 import game.model.game.model.GameModel;
-import game.model.game.model.worldObject.Team;
+import game.model.game.model.team.Team;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Set;
-
-import static util.Const.DEBUG_DRAW;
 
 public class Entity implements Updatable, Drawable, AIable {
 

@@ -1,13 +1,11 @@
 package game.view;
 
 import game.model.game.model.GameModel;
-import game.model.game.model.worldObject.Team;
+import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.scene.ImageCursor;
-import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;

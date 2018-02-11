@@ -56,6 +56,7 @@ public class GameView {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                resourcePanel.updateResources();
                 minimap.draw();
                 worldPanel.draw();
             }
