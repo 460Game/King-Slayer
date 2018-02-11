@@ -10,6 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 import static images.Images.GAME_CURSOR_IMAGE;
 import static util.Const.*;
 import static util.Util.toWorldCoords;
@@ -30,6 +33,7 @@ public class GameView {
         InfoPanel infoPanel = new InfoPanel(model);
         ActionPanel actionPanel = new ActionPanel(model);
         ResourcePanel resourcePanel = new ResourcePanel(model);
+        ExitPrompt exitPrompt = new ExitPrompt(model);
 
         worldPanel.prefWidthProperty().bind(window.widthProperty());
         worldPanel.prefHeightProperty().bind(window.heightProperty());
@@ -51,11 +55,19 @@ public class GameView {
         resourcePanel.prefHeightProperty().bind(window.heightProperty().multiply(0.05));
         resourcePanel.layoutXProperty().bind(window.widthProperty().multiply(0.8));
 
-        root.getChildren().addAll(worldPanel, minimap, infoPanel, actionPanel, resourcePanel);
+        exitPrompt.prefHeightProperty().bind(window.heightProperty().multiply(0.3));
+        exitPrompt.prefWidthProperty().bind(window.widthProperty().multiply(0.3));
+        exitPrompt.layoutXProperty().bind(window.widthProperty().multiply(0.35));
+        exitPrompt.layoutYProperty().bind(window.heightProperty().multiply(0.35));
+
+        exitPrompt.setVisible(false);
+
+        root.getChildren().addAll(worldPanel, minimap, infoPanel, actionPanel, resourcePanel, exitPrompt);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                resourcePanel.updateResources();
                 minimap.draw();
                 worldPanel.draw();
             }
@@ -78,27 +90,50 @@ public class GameView {
 
         });
 
+        int[] dir = {0,0};
+
+        Set<KeyCode> currentlyPressed = new TreeSet<>();
+
         scene.setOnKeyPressed(e -> {
+            if(currentlyPressed.contains(e.getCode()))
+                return;
+            currentlyPressed.add(e.getCode());
+
             if (e.getCode() == KeyCode.F11) window.setFullScreen(true);
             if (e.getCode() == KeyCode.W) // Start upward movement.
-                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, ANGLE_UP));
+                dir[1]--;
             if (e.getCode() == KeyCode.S) // Start downward movement.
-                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, ANGLE_DOWN));
+                dir[1]++;
             if (e.getCode() == KeyCode.A) // Start leftward movement.
-                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, ANGLE_LEFT));
+                dir[0]--;
             if (e.getCode() == KeyCode.D) // Start rightward movement.
-                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, ANGLE_RIGHT));
+                dir[0]++;
+
+            if(e.getCode() == KeyCode.ESCAPE)
+                exitPrompt.setVisible(true);
+
+            if(dir[0] == 0 && dir[1] == 0)
+                model.processMessage(new StopMessage(model.getLocalPlayer().id));
+            else
+                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, Math.atan2(dir[1],dir[0])));
         });
 
         scene.setOnKeyReleased(e -> {
+            currentlyPressed.remove(e.getCode());
             if (e.getCode() == KeyCode.W) // Stop upward movement.
+                dir[1]++;
+            if (e.getCode() == KeyCode.S) // stop downward movement.
+                dir[1]--;
+            if (e.getCode() == KeyCode.A) // stop leftward movement.
+                dir[0]++;
+            if (e.getCode() == KeyCode.D) // stop rightward movement.
+                dir[0]--;
+
+
+            if(dir[0] == 0 && dir[1] == 0)
                 model.processMessage(new StopMessage(model.getLocalPlayer().id));
-            if (e.getCode() == KeyCode.S) // Stop downward movement.
-                model.processMessage(new StopMessage(model.getLocalPlayer().id));
-            if (e.getCode() == KeyCode.A) // Stop leftward movement.
-                model.processMessage(new StopMessage(model.getLocalPlayer().id));
-            if (e.getCode() == KeyCode.D) // Stop rightward movement.
-                model.processMessage(new StopMessage(model.getLocalPlayer().id));
+            else
+                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, Math.atan2(dir[1],dir[0])));
         });
 
         window.setScene(scene);

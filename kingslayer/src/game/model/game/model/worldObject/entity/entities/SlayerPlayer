@@ -2,7 +2,7 @@ package game.model.game.model.worldObject.entity.entities;
 
 import game.model.game.map.Tile;
 import game.model.game.model.GameModel;
-import game.model.game.model.worldObject.Team;
+import game.model.game.model.team.Team;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 

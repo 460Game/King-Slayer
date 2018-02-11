@@ -2,16 +2,16 @@ package game.model.game.model;
 
 import com.esotericsoftware.minlog.Log;
 import game.message.*;
-import game.message.toClient.InitGameMessage;
-import game.message.toClient.SetEntityMessage;
-import game.message.toClient.SetPlayerMessage;
-import game.message.toClient.SetTileMessage;
+import game.message.toClient.*;
 import game.model.game.map.ServerMapGenerator;
-import game.model.game.model.worldObject.Team;
+import game.model.game.model.team.Team;
+import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import static util.Const.*;
 
@@ -22,6 +22,8 @@ public class ServerGameModel extends GameModel {
     }
 
     private Collection<? extends Model> clients = null;
+
+    private Map<Team, TeamResourceData> teamData = new HashMap<>();
 
     @Override
     public void processMessage(Message m) {
@@ -61,9 +63,16 @@ public class ServerGameModel extends GameModel {
 
         clients.forEach(client -> client.processMessage(new InitGameMessage()));
 
+        teamData.put(Team.ONE, new TeamResourceData());
+        teamData.put(Team.TWO, new TeamResourceData());
+
         int i = 0;
         // Send player to client
-        for(Model model : clients) model.processMessage(new SetPlayerMessage(players.get(i++)));
+        for(Model model : clients) {
+            model.processMessage(new SetPlayerMessage(players.get(i)));
+            model.processMessage(new UpdateResourcesMessage(teamData.get(players.get(i).team)));
+            i++;
+        }
     }
 
     @Override
@@ -102,6 +111,12 @@ public class ServerGameModel extends GameModel {
              //   } catch (InterruptedException e) {
              //       e.printStackTrace();
              //   }
+
+            teamData.get(Team.ONE).increaseWood(1);
+            for(Model model : clients) {
+                model.processMessage(new UpdateResourcesMessage(teamData.get(Team.ONE))); //TEMPORARY GARBAGE
+            }
+
         }
     }
 }

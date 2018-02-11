@@ -4,9 +4,12 @@ import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.message.toServer.RequestEntityMessage;
 import game.model.game.map.ClientMapGenerator;
+import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
 
 public class ClientGameModel extends GameModel {
+
+    private TeamResourceData resourceData = new TeamResourceData();
 
     public ClientGameModel(Model server) {
         super(new ClientMapGenerator());
@@ -17,6 +20,14 @@ public class ClientGameModel extends GameModel {
 
     public Entity getLocalPlayer() {
         return this.getEntityById(localPlayer);
+    }
+
+    public void setResourceData(TeamResourceData data) {
+        resourceData = data;
+    }
+
+    public TeamResourceData getResourceData() {
+        return resourceData;
     }
 
     public void setLocalPlayer(long localPlayer) {

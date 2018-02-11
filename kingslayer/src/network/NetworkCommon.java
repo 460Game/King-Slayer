@@ -10,7 +10,7 @@ import game.message.toServer.GoDirectionMessage;
 import game.message.toServer.ToServerMessage;
 import game.model.game.map.Tile;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.*;
-import game.model.game.model.worldObject.Team;
+import game.model.game.model.team.Team;
 
 import java.util.ArrayList;
 

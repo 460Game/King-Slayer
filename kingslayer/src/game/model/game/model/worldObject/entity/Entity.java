@@ -5,17 +5,15 @@ import game.model.game.model.worldObject.entity.aiStrat.AIStrat;
 import game.model.game.model.worldObject.entity.aiStrat.AIable;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
+import game.model.game.model.worldObject.entity.drawStrat.DirectionAnimationDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.DrawStrat;
-import game.model.game.model.worldObject.entity.drawStrat.ShapeDrawStrat;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 import util.Util;
 import game.model.game.model.GameModel;
-import game.model.game.model.worldObject.Team;
+import game.model.game.model.team.Team;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Set;
-
-import static util.Const.DEBUG_DRAW;
 
 public class Entity implements Updatable, Drawable, AIable {
 
@@ -101,6 +99,9 @@ public class Entity implements Updatable, Drawable, AIable {
 
     @Override
     public void update(GameModel model) {
+        if (this.team != Team.NEUTRAL) {
+            ((DirectionAnimationDrawStrat) drawStrat).update(this);
+        }
         inCollision = false;
         this.updateStrat.update(this, model);
     }
