@@ -19,21 +19,51 @@ import java.util.Set;
 
 import static util.Util.toDrawCoords;
 
+/**
+ * Represents any entity in the game world. Each entity knows the cells it is in
+ * and knows its game-relevant data. Each entity has its own way of updating, colliding,
+ * and drawing.
+ */
 public class Entity implements Updatable, Drawable, AIable {
 
+    /**
+     * TODO
+     */
     final AIStrat aiStrat;
+
+    /**
+     * The way this entity is drawn on the game map.
+     */
     final DrawStrat drawStrat;
+
+    /**
+     * The way this entity is updated in the game.
+     */
     final UpdateStrat updateStrat;
+
+    /**
+     * The way this entity collides with other entities in the game.
+     */
     final CollisionStrat collisionStrat;
 
+    /**
+     * Checks if this entity is currently colliding with another entity.
+     */
     public transient boolean inCollision = false;
+
+    /**
+     * Records the x-coordinate when this entity was last updated.
+     */
     public transient double prevX = -1;
+
+    /**
+     * Records the y-coordinate when this entity was last updated.
+     */
     public transient double prevY = -1;
 
-    /*
-     * used to track which cells this enttiy is in in the LOCAL modal.
-     * Never sent across network!
-     * May be null (empty set)
+    /**
+     * Used to track which cells this entity is in in the LOCAL model.
+     * Never sent across the network! May be null (empty set).
      */
     public transient Set<GridCell> containedIn = null;
 
@@ -47,15 +77,23 @@ public class Entity implements Updatable, Drawable, AIable {
      */
     public final long id;
 
+    /**
+     * Holds all the game-relevant data about this entity.
+     */
     public EntityData data;
 
-    public void collision(GameModel model, Entity b) {
-        inCollision = true;
-        this.collisionStrat.collision(model, this, b);
-    }
-
-    public Entity(double x,
-                  double y,
+    /**
+     * Constructor of an entity, given all of its game data.
+     * @param x x-coordinate of the center of its position
+     * @param y y-coordinate of the center of its position
+     * @param team team corresponding to this entity
+     * @param updateStrat method with which this entity updates
+     * @param collisionStrat method with which this entity collides.
+     * @param hitbox hitbox of this entity
+     * @param drawStrat method with which this entity is drawn
+     * @param aiStrat TODO
+     */
+    public Entity(double x, double y,
                   Team team,
                   UpdateStrat updateStrat,
                   CollisionStrat collisionStrat,
@@ -63,20 +101,18 @@ public class Entity implements Updatable, Drawable, AIable {
                   DrawStrat drawStrat,
                   AIStrat aiStrat) {
         id = Util.random.nextLong();
-        this.updateStrat = updateStrat;
-
-        this.drawStrat = drawStrat;
-
-        this.aiStrat = aiStrat;
         this.team = team;
+        this.updateStrat = updateStrat;
         this.collisionStrat = collisionStrat;
-        this.data = new EntityData(hitbox,
-            aiStrat.makeAIData(),
-            drawStrat.initDrawData(),
-            updateStrat.initUpdateData(),
-            x, y);
+        this.drawStrat = drawStrat;
+        this.aiStrat = aiStrat;
+        this.data = new EntityData(hitbox, aiStrat.makeAIData(), drawStrat.initDrawData(),
+                updateStrat.initUpdateData(), x, y);
     }
 
+    /**
+     * Default constructor needed for serialization.
+     */
     private Entity() {
         this.updateStrat = null;
         this.collisionStrat = null;
@@ -101,6 +137,17 @@ public class Entity implements Updatable, Drawable, AIable {
         return this.drawStrat.getDrawZ(data);
     }
 
+    /**
+     * Performs collisions with another entity based off of this
+     * entity's colliding strategy.
+     * @param model current model of the game
+     * @param b the entity being collided with
+     */
+    public void collision(GameModel model, Entity b) {
+        inCollision = true;
+        this.collisionStrat.collision(model, this, b);
+    }
+
     @Override
     public void update(GameModel model) {
         if (this.team != Team.NEUTRAL) {
@@ -110,14 +157,27 @@ public class Entity implements Updatable, Drawable, AIable {
         this.updateStrat.update(this, model);
     }
 
+    /**
+     * Gets the collision type of this entity.
+     * @return the collision type of this entity
+     */
     public CollisionStrat.CollideType getCollideType() {
         return collisionStrat.getCollideType();
     }
 
+    /**
+     * Update the cells that this entity is currently in.
+     * @param model current model of the game
+     */
     public void updateCells(GameModel model) {
         this.data.hitbox.updateCells(this, model);
     }
 
+    /**
+     * TODO
+     * @param commandID
+     * @param model
+     */
     public void runCommand(int commandID, GameModel model) {
         if (this.team != Team.NEUTRAL) {
 //            if (drawStrat instanceof DirectionAnimationDrawStrat.RedKingDirectionAnimationDrawStrat ||
@@ -146,7 +206,10 @@ public class Entity implements Updatable, Drawable, AIable {
                 }
 //            }
 
-
         }
+    }
+
+    public String toString() {
+        return "" + this.id + ": " + this.data.x + ", " + this.data.y;
     }
 }

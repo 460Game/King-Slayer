@@ -41,11 +41,17 @@ public abstract class Hitbox {
             // Get the set of cells the entity is currently in.
             Set<GridCell> afterSet = entity.data.hitbox.getCells(entity, model);
 
+//            System.out.println("Player position: " + entity.data.x + ", " + entity.data.y);
+
 //            if (entity.containedIn != null)
 //                for (GridCell cell: entity.containedIn)
-//                    System.out.println("Before cell: " + cell.getCenterX() + ", " + cell.getCenterY());
-//            for (GridCell cell : afterSet)
-//                System.out.println("After cell: " + cell.getCenterX() + ", " + cell.getCenterY());
+//                    System.out.println("Before cell: " + cell.getTopLeftX() + ", " + cell.getTopLeftY());
+//            for (GridCell cell : afterSet) {
+////                System.out.println("After cell: " + cell.getTopLeftX() + ", " + cell.getTopLeftY());
+//                for (Entity a : cell.getContents()) {
+//                    System.out.println(a.toString());
+//                }
+//            }
 
             // Check if the entity is still currently in the same cells that it
             // was previously. If the entity is not currently in a cell it used
@@ -64,8 +70,6 @@ public abstract class Hitbox {
             entity.containedIn = afterSet;
             entity.prevX = entity.data.x;
             entity.prevY = entity.data.y;
-
-//            System.out.println("Player position: " + entity.data.x + ", " + entity.data.y);
         }
     }
 
@@ -76,7 +80,11 @@ public abstract class Hitbox {
      */
     public static boolean testCollision(Entity t, Entity o) {
         double angle = Util.angle2Points(t.data.x, t.data.y, o.data.x, o.data.y);
-        return t.data.hitbox.getRadius(angle) + o.data.hitbox.getRadius(angle + PI) <
+//        System.out.println("TESTING COLLISION BETWEEN: " + t.toString() + " and " + o.toString());
+//        System.out.println("T radius: " + t.data.hitbox.getRadius(angle));
+//        System.out.println("O radius: " + o.data.hitbox.getRadius(angle + PI));
+//        System.out.println("DISTANCE: "+  dist(t.data.x, t.data.y, o.data.x, o.data.y));
+        return t.data.hitbox.getRadius(angle) + o.data.hitbox.getRadius(angle + PI) >
                 dist(t.data.x, t.data.y, o.data.x, o.data.y);
     }
 

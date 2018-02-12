@@ -27,7 +27,7 @@ public class CellHitbox extends Hitbox {
 
     @Override
     public Set<GridCell> getCells(Entity entity, GameModel model) {
-        return Collections.singleton(model.getCell((int) Math.floor(entity.data.x), (int) Math.floor(entity.data.y)));
+        return Collections.singleton(model.getCell((int) entity.data.x, (int) entity.data.y));
     }
 
     @Override

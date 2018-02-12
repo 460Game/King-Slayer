@@ -134,9 +134,8 @@ public abstract class GameModel implements Model {
         list.forEach(m -> m.execute(this));
 
         entities.values().forEach(e -> e.update(this));
-        entities.values().forEach(e -> e.updateCells(this));
         allCells.forEach(cell -> cell.collideContents(this));
-
+        entities.values().forEach(e -> e.updateCells(this));
     }
 
     public Collection<GridCell> getAllCells() {

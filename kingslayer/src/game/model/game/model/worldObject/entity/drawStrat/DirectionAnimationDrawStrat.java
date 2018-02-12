@@ -83,14 +83,14 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     try {
       Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
       gc.drawImage(this.getImage(),
-          toDrawCoords(p.x),
-          toDrawCoords(p.y),
-          width,
-          height,
-          toDrawCoords(entity.data.x) - width / 2,
-          toDrawCoords(entity.data.y) - height / 2,
-          toDrawCoords(entity.data.hitbox.getWidth()),
-          toDrawCoords(entity.data.hitbox.getHeight()));
+              toDrawCoords(p.x),
+              toDrawCoords(p.y),
+              width,
+              height,
+              toDrawCoords(entity.data.x) - width / 2,
+              toDrawCoords(entity.data.y) - height / 2,
+              toDrawCoords(entity.data.hitbox.getWidth()),
+              toDrawCoords(entity.data.hitbox.getHeight()));
     } catch (Exception e) {
       e.printStackTrace();
     }

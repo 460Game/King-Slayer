@@ -235,6 +235,8 @@ public class Astar {
         return path;
     }
 
+
+
     /**
      * Draw the path that the search found.
      * @param gc graphics context used to draw the path

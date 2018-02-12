@@ -20,7 +20,7 @@ public abstract class Const {
     public static final double ANGLE_DOWN = PI / 2;
     public static final double ANGLE_UP = -PI / 2;
     public static final double ANGLE_UP_RIGHT = -PI / 4;
-    public static final double ANGLE_UP_LEFT = 3 * PI / 4;
+    public static final double ANGLE_UP_LEFT = -3 * PI / 4;
     public static final double ANGLE_DOWN_RIGHT = PI / 4;
     public static final double ANGLE_DOWN_LEFT = 3 * PI / 4;
 

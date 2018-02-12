@@ -47,8 +47,8 @@ public class CircleHitbox extends Hitbox {
 
         // Look at all close cells to the circle and check if the circle
         // overlaps with them.
-        for(int i = (int) (entity.data.x - radius); i <= Math.ceil(entity.data.x + radius); i++)
-            for(int j = (int) (entity.data.y - radius); j <= Math.ceil(entity.data.y + radius); j++) {
+        for(int i = (int) (entity.data.x - radius); i <= (int) (entity.data.x + radius); i++)
+            for(int j = (int) (entity.data.y - radius); j <= (int) (entity.data.y + radius); j++) {
                 double dx = entity.data.x - Math.max(i, Math.min(entity.data.x, i + 1)); // Get distance from farthest x to center
                 double dy = entity.data.y - Math.max(j, Math.min(entity.data.y, j + 1)); // Get distance from farthest y to center
 

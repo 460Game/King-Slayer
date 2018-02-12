@@ -10,7 +10,7 @@ import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
 
 public class Players {
 
-    private static final double PLAYER_RADIUS = 0.5;
+    private static final double PLAYER_RADIUS = 0.3;
     
     static private CircleHitbox hitbox = new CircleHitbox(PLAYER_RADIUS);
 
