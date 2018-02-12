@@ -72,6 +72,13 @@ public class LobbyServer { //extends Application {
                     System.exit(-1);
                 }
 
+                //TODO: change it to pingback later
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 serverModel.init(remoteModels);
                 serverModel.start();
                 System.out.println("start the server model");
@@ -87,7 +94,7 @@ public class LobbyServer { //extends Application {
 
             @Override
             public void makeModel() {
-
+                startGame();//server makes model, and ask clients make model here
             }
 
             @Override
@@ -130,12 +137,13 @@ public class LobbyServer { //extends Application {
         remoteModels = server.makeRemoteModel();
         serverModel = new ServerGameModel();
 
+        Log.info("model num: " + remoteModels.size());
+
         for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
             remoteModel.syncClock();
         }
 
         Log.info("finish syn!");
-        Log.info("model num: " + remoteModels.size());
 
         for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
             System.out.println("server wants to start");

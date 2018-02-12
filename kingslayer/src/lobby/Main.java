@@ -346,8 +346,11 @@ public class Main extends Application {
             e.printStackTrace();
             return;
         }
+
+
+        //this should be done when the all clients get connected
         //start game actually means make model
-        lobbyServer.startGame();
+//        lobbyServer.startGame();
 
         Platform.runLater(() -> window.setScene(new Scene(choiceTeamAndRoleScene())));
 //        window.setScene(new Scene(choiceTeamAndRoleScene()));
@@ -377,7 +380,8 @@ public class Main extends Application {
         lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
             @Override
             public void showChoiceTeamAndRoleScene() {
-                window.setScene(new Scene(choiceTeamAndRoleScene()));
+                Platform.runLater(() -> window.setScene(new Scene(choiceTeamAndRoleScene())));
+//                window.setScene(new Scene(choiceTeamAndRoleScene()));
             }
         });
         lobbyClient.start();

@@ -95,14 +95,21 @@ public class RemoteConnection {
                     if (!clientList.containsKey(connection.getID())) {
                         clientList.putIfAbsent(connection.getID(), connection);
                         messageQueues.put(connection.getID(), new LinkedBlockingQueue<>());
+
+                        //TODO: might need to hard code here now, change it back!!!!!
+                        if (clientList.size() == 4) {
+                            adaptor.makeModel();
+                        }
                     }
 
 
                     if (obj instanceof NetworkCommon.ClientReadyMsg) {
                         readyClient++;
+
                         if (readyClient == clientList.size()) {
                             //works fine here
                             adaptor.init();//send the map
+                            //also need to start game (make model)
                         }
                     }
 
@@ -146,7 +153,7 @@ public class RemoteConnection {
                     client.sendTCP("Client " + connection.getID() + " connected");
                     //use client ID for the queue for client use
                     messageQueues.put(client.getID(), new LinkedBlockingQueue<>());
-//                    adaptor.showLobbyTeamChoice();
+                    adaptor.showLobbyTeamChoice();
                 }
 
                 public void received (Connection connection, Object obj) {
@@ -207,13 +214,13 @@ public class RemoteConnection {
         }
         (new Thread(this::sendQueueMsg, this.toString() + " Send Batched Message Thread")).start();
         (new Thread(this::consumeReceivedMsg, this.toString() + " Consume Msg Thread")).start();
-        (new Thread(this::consumeReceivedMsg, this.toString() + " Consume Msg Thread2")).start();
+//        (new Thread(this::consumeReceivedMsg, this.toString() + " Consume Msg Thread2")).start();
     }
     private void consumeReceivedMsg() {
         while (true) {
 
             try {
-                sleep(1);
+                sleep(2);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
