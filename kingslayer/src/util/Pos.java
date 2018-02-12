@@ -30,7 +30,7 @@ public class Pos {
     @Override
     public boolean equals(Object o) {
         Pos ot = (Pos) o;
-        return Util.closeDouble(x, ot.x) && Util.closeDouble(y, ot.y);
+        return Util.closeDouble(x, ot.x, 10e-5) && Util.closeDouble(y, ot.y, 10e-5);
     }
 
     @Override
