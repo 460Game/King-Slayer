@@ -57,7 +57,7 @@ public class ServerGameModel extends GameModel {
             }
         }
 
-        //Send all entities to clients
+        // Send all entities to clients
         for(Entity entity : this.getAllEntities())
             clients.forEach(client -> client.processMessage(new SetEntityMessage(entity)));
 
@@ -118,5 +118,10 @@ public class ServerGameModel extends GameModel {
             }
 
         }
+    }
+
+    public void makeEntity(Entity e) {
+        this.setEntity(e);
+        clients.forEach(client -> client.processMessage(new SetEntityMessage(e)));
     }
 }
