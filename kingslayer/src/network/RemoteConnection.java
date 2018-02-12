@@ -20,6 +20,7 @@ public class RemoteConnection {
     static {
         Log.set(Log.LEVEL_INFO);
     }
+
     // This holds per connection state.
     public static class GameConnection extends Connection {
         public String usrName;
@@ -53,7 +54,7 @@ public class RemoteConnection {
 
 
     public RemoteConnection(boolean isServer, Object lobby, NetWork2LobbyAdaptor adaptor) throws IOException {
-        Log.set(Log.LEVEL_DEBUG);
+        Log.set(Log.LEVEL_INFO);
         this.isServer = isServer;
         this.adaptor = adaptor;
 
