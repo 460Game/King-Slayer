@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity;
 
+import game.message.toClient.NewEntityMessage;
 import game.model.game.grid.GridCell;
 import game.model.game.model.worldObject.entity.aiStrat.AIStrat;
 import game.model.game.model.worldObject.entity.aiStrat.AIable;
@@ -7,6 +8,7 @@ import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import game.model.game.model.worldObject.entity.drawStrat.DirectionAnimationDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.DrawStrat;
+import game.model.game.model.worldObject.entity.entities.Entities;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 import util.Util;
 import game.model.game.model.GameModel;
@@ -14,6 +16,8 @@ import game.model.game.model.team.Team;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Set;
+
+import static util.Util.toDrawCoords;
 
 public class Entity implements Updatable, Drawable, AIable {
 
@@ -116,7 +120,29 @@ public class Entity implements Updatable, Drawable, AIable {
 
     public void runCommand(int commandID, GameModel model) {
         if (this.team != Team.NEUTRAL) {
-            ((DirectionAnimationDrawStrat) drawStrat).runCommand(commandID, this, model);
+//            if (drawStrat instanceof DirectionAnimationDrawStrat.RedKingDirectionAnimationDrawStrat ||
+//                drawStrat instanceof DirectionAnimationDrawStrat.BlueKingDirectionAnimationDrawStrat) {
+                switch (commandID) {
+                    case 1:
+                        double[] dir = {0, 0};
+                        if (((DirectionAnimationDrawStrat) drawStrat).drawData.direction == 'N')
+                            dir[1] = -1;
+                        else if (((DirectionAnimationDrawStrat) drawStrat).drawData.direction == 'E')
+                            dir[0] = 1;
+                        else if (((DirectionAnimationDrawStrat) drawStrat).drawData.direction == 'S')
+                            dir[1] = 1;
+                        else
+                            dir[0] = -1;
+                        System.out.println("in entity: " + data.x + " " + data.y);
+                        model.processMessage(new NewEntityMessage(Entities.makeBuiltWall(data.x + dir[0],
+                            data.y + dir[1])));
+                        break;
+                    default:
+                        System.out.println("Unknown command");
+                }
+//            }
+
+
         }
     }
 }

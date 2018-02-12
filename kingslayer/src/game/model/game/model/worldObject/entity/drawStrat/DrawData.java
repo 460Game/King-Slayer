@@ -7,7 +7,7 @@ package game.model.game.model.worldObject.entity.drawStrat;
 public class DrawData {
   boolean animated;
   int imageNum;
-  char direction;
+  public char direction;
   int count;
 
   public DrawData() {
