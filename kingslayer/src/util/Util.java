@@ -77,13 +77,29 @@ public class Util {
         return Math.atan2(y2 - y1, x2 - x1);
     }
 
+    /**
+     * Converts the coordinate on the game world to a drawing coordinate.
+     * @param worldPos world coordinate of an entity
+     * @return the drawing coordinate of the corresponding world coordinate
+     */
     public static int toDrawCoords(double worldPos) {
         return (int) (worldPos * TILE_PIXELS);
     }
 
+    /**
+     * Converts the drawing coordinate to a coordinate on the game world.
+     * @param drawCords drawing coordinate of an entity
+     * @return the world coordinate of the corresponding drawing coordinate
+     */
     public static double toWorldCoords(int drawCords) {
         return ((double) drawCords) / TILE_PIXELS;
     }
+
+    /**
+     * Converts the drawing coordinates to a coordinate on the game world.
+     * @param drawCords drawing coordinate of an entity
+     * @return the world coordinate of the corresponding drawing coordinate
+     */
     public static double toWorldCoords(double drawCords) {
         return drawCords / TILE_PIXELS;
     }

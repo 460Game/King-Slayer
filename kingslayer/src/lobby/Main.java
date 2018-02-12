@@ -141,8 +141,6 @@ public class Main extends Application {
         window.setTitle("King Slayer");
         window.setFullScreen(true);
 
-
-
         Canvas bgCanvas = new Canvas();
         GraphicsContext bgGC = bgCanvas.getGraphicsContext2D();
         Canvas midCanvas = new Canvas();

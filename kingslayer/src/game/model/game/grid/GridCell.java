@@ -23,7 +23,7 @@ import static util.Util.toDrawCoords;
 public class GridCell {
 
     /**
-     * Set of entities that currently reside on the cell.
+     * List of entities that currently reside on the cell.
      */
     private ArrayList<Entity> contents = new ArrayList<>();
 
@@ -43,13 +43,31 @@ public class GridCell {
     private Tile tile;
 
     /**
+     * Constructor for a grid cell.
+     * @param x x-coordinate of the top left of the cell
+     * @param y y-coordinate of the top left of the cell
+     */
+    public GridCell(int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.tile = Tile.UNSET;
+    }
+
+    /**
+     * Default constructor needed for serialization.
+     */
+    public GridCell() {
+
+    }
+
+    /**
      * Returns true if the cell is able to be passed through, or equivalently,
      * if a pathing enemy should try to go through this tile. A cell is
-     * considered unpassable f it has a cell hitbox occupying it.
+     * considered unpassable if it has a cell hitbox occupying it.
      * @return true if the cell is able to be walked through
      */
-    public boolean isPassable(GameModel model) {
-        return contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD && e.containedIn.contains(model.getCell(x, y)));
+    public boolean isPassable() {
+        return contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD);
     }
 
     /**
@@ -75,25 +93,6 @@ public class GridCell {
     public void removeContents(Entity o) {
         contents.remove(o);
     }
-
-    /**
-     * Constructor for a grid cell.
-     * @param x x-coordinate of the top left of the cell
-     * @param y y-coordinate of the top left of the cell
-     */
-    public GridCell(int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.tile = Tile.UNSET;
-    }
-
-    /**
-     * Default constrcuctor needed for serialization.
-     */
-    public GridCell() {
-
-    }
-
 
     private static Map<String, Point> TILE_MAP;
     private static Map<Character, List<Character>> matches;
@@ -155,21 +154,22 @@ public class GridCell {
     }
 
     /**
-         * Draws the tile in a specified cell on the map.
-         *
-         * @param gc context used to drawFG the tile
-         */
-        public void draw(GraphicsContext gc, GameModel model, boolean firstAnimation) {
-            if (!firstAnimation && this.tile.tupleNum == 'W')
-                gc.drawImage(TILE_IMAGE,
+     * Draws the tile in a specified cell on the map.
+     * @param gc context used to drawFG the tile
+     * @param model current model of the game
+     * @param firstAnimation TODO
+     */
+    public void draw(GraphicsContext gc, GameModel model, boolean firstAnimation) {
+        if (!firstAnimation && this.tile.tupleNum == 'W')
+            gc.drawImage(TILE_IMAGE,
                     (maxPoint.x + 10) * TILE_IMAGE_TILE_SIZE,
                     maxPoint.y * TILE_IMAGE_TILE_SIZE, TILE_IMAGE_TILE_SIZE, TILE_IMAGE_TILE_SIZE,
                     toDrawCoords(x),
                     toDrawCoords(y),
                     toDrawCoords(1),
                     toDrawCoords(1));
-            else
-                gc.drawImage(TILE_IMAGE,
+        else
+            gc.drawImage(TILE_IMAGE,
                     maxPoint.x * TILE_IMAGE_TILE_SIZE,
                     maxPoint.y * TILE_IMAGE_TILE_SIZE,
                     TILE_IMAGE_TILE_SIZE, TILE_IMAGE_TILE_SIZE,
@@ -178,7 +178,7 @@ public class GridCell {
                     toDrawCoords(1),
                     toDrawCoords(1));
 
-        }
+    }
 
     /**
      * Perform collisions between the current contents of the cell.
@@ -190,7 +190,10 @@ public class GridCell {
             for (int j = 0; j < i; j++) {
                 Entity a = contents.get(i);
                 Entity b = contents.get(j);
-                if(Hitbox.testCollision(a, b)) {
+
+                // Check if they collide. If they do, perform collisions
+                // on both.
+                if (Hitbox.testCollision(a, b)) {
                     a.collision(model, b);
                     b.collision(model, a);
                 }
@@ -232,17 +235,25 @@ public class GridCell {
     }
 
     /**
-     * Gets the x coordinate of the top left of this grid cell.
-     * @return the x coordinate of the top left of this grid cell
+     * Gets the y coordinate of the top left of this grid cell.
+     * @return the y coordinate of the top left of this grid cell
      */
     public int getTopLeftY() {
         return y;
     }
 
+    /**
+     * Gets the x coordinate of the center of this grid cell.
+     * @return the x coordinate of the center of this grid cell
+     */
     public double getCenterX() {
         return x + 0.5;
     }
 
+    /**
+     * Gets the y coordinate of the center of this grid cell.
+     * @return the y coordinate of the center of this grid cell
+     */
     public double getCenterY() {
         return y + 0.5;
     }

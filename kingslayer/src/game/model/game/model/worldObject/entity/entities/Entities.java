@@ -11,9 +11,9 @@ import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
 
 public class Entities {
 
-
     public static Entity makeBlocker(double x, double y) {
-        return new Entity(x, y, Team.NEUTRAL,
+        return new Entity(x, y,
+            Team.NEUTRAL,
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,

@@ -7,8 +7,14 @@ import static java.lang.Math.PI;
  */
 public abstract class Const {
 
+    /**
+     * Flag that signals whether to draw in debugging mdode.
+     */
     public static final boolean DEBUG_DRAW = true;
 
+    /**
+     * Angles based on the drawing coordinate system.
+     */
     public static final double ANGLE_RIGHT = 0;
     public static final double ANGLE_LEFT = PI;
     public static final double ANGLE_DOWN = PI / 2;
@@ -18,8 +24,11 @@ public abstract class Const {
     public static final double ANGLE_DOWN_RIGHT = PI / 4;
     public static final double ANGLE_DOWN_LEFT = 3 * PI / 4;
 
+    /**
+     * Conversions between nano seconds and seconds, and vice versa.
+     */
     public static final double NANOS_TO_SECONDS = 1e-9;
-    private static final double SECONDS_TO_NANOS = 1e9;
+    public static final double SECONDS_TO_NANOS = 1e9;
 
     /**
      * Width of the game map, in terms of number of grid cells.
@@ -67,5 +76,8 @@ public abstract class Const {
      */
     public final static int UPDATE_LOOP_TIME_NANOS = 16666667;
 
+    /**
+     * The time period between different water animations.
+     */
     public static final int WATER_ANIM_PERIOD = UPDATES_PER_SECOND * 4;
 }
