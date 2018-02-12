@@ -109,7 +109,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     return entity.y;
   }
 
-  private static class RedKingDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+  public static class RedKingDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage() {
       return Images.RED_KING_IMAGE_SHEET;
@@ -135,7 +135,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
       }
     }
   }
-  private static class BlueKingDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+  public static class BlueKingDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage() {
       return Images.BLUE_KING_IMAGE_SHEET;
@@ -161,7 +161,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
       }
     }
   }
-  private static class RedSlayerDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+  public static class RedSlayerDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage() {
       return Images.RED_SLAYER_IMAGE_SHEET;
@@ -187,7 +187,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
       }
     }
   }
-  private static class BlueSlayerDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+  public static class BlueSlayerDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage() {
       return Images.BLUE_SLAYER_IMAGE_SHEET;

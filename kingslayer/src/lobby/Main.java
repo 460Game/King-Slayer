@@ -27,11 +27,16 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import network.Lobby;
+import network.LobbyClient;
+import network.LobbyServer;
 
 import static images.Images.*;
 import static util.Util.sleep;
 
 public class Main extends Application {
+    LobbyClient lobbyClient = null;
+    LobbyServer lobbyServer = null;
 
     private Font font = Font.font("", FontWeight.BOLD, 36);
     private static Color textColor = Color.web("b5de0f");
@@ -235,13 +240,39 @@ public class Main extends Application {
     }
 
     private void startGame() {
-        Log.info("START GAME SELECTED");
+        lobbyServer = new LobbyServer();
+        try {
+            lobbyServer.start();
+            lobbyClient = new LobbyClient(window);
+            lobbyClient.start();
+            lobbyClient.connectTo("localhost");
+            Thread.sleep(2000); //(connection needs time)
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
 
+        lobbyServer.startGame();
+
+        //hardcode here
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.info("before ready");
+        ready();
+    }
+
+    public void ready() {
+        lobbyClient.lobbyClientReady();
     }
 
     private void joinGame() {
         Log.info("JOIN GAME SELECTED");
-
+//        lobbyClient = new LobbyClient();
+//        lobbyClient.start();
+//        lobbyClient.connectTo(host);
     }
 
     private void testGame() {
@@ -264,6 +295,7 @@ public class Main extends Application {
     }
 
     public static void main(String args[]) {
+        Log.set(Log.LEVEL_INFO);
         Application.launch();
     }
 

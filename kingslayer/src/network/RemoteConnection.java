@@ -1,9 +1,10 @@
-package game.network;
+package network;
 
 import com.esotericsoftware.kryonet.*;
 import com.esotericsoftware.minlog.Log;
 import game.message.Message;
-import game.model.Game.Model.Model;
+import game.model.game.model.*;
+import network.NetWork2LobbyAdaptor;
 
 import java.io.IOException;
 import java.util.*;
@@ -16,6 +17,9 @@ import static java.lang.Thread.sleep;
  * For client => construct => start => connectToServer, start game: makeRemoteModels =>
  */
 public class RemoteConnection {
+    static {
+        Log.set(Log.LEVEL_INFO);
+    }
     // This holds per connection state.
     public static class GameConnection extends Connection {
         public String usrName;
@@ -41,7 +45,7 @@ public class RemoteConnection {
     Long t1 = null;
 
     Map<Integer, LinkedBlockingQueue<Message>> messageQueues;
-
+    LinkedBlockingQueue<Message> toBeConsumeMsgQueue;
     Set<RemoteModel> remoteModels;
 
     long delta = (long) 10E6;
@@ -54,6 +58,7 @@ public class RemoteConnection {
         this.adaptor = adaptor;
 
         messageQueues = new HashMap<>();
+        toBeConsumeMsgQueue = new LinkedBlockingQueue<>();
 
         if (isServer) {
 //            //TODO change this later
@@ -71,7 +76,7 @@ public class RemoteConnection {
     }
 
     public void start() throws IOException {
-        if (isServer) {
+        if (isServer) {//is server receives it
             NetworkCommon.register(server);
 
             server.addListener(new Listener() {
@@ -80,11 +85,11 @@ public class RemoteConnection {
                     GameConnection connection = (GameConnection)c;
 
                     //arti increase latency
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        Thread.sleep(10);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
 
                     //init a queue when have a new client
                     if (!clientList.containsKey(connection.getID())) {
@@ -96,6 +101,7 @@ public class RemoteConnection {
                     if (obj instanceof NetworkCommon.ClientReadyMsg) {
                         readyClient++;
                         if (readyClient == clientList.size()) {
+                            //works fine here
                             adaptor.init();//send the map
                         }
                     }
@@ -107,6 +113,7 @@ public class RemoteConnection {
                     }
 
                     if (obj instanceof Message) {
+                        Log.info("single message!!!!!!!!");
                         adaptor.getMsg((Message) obj);
                     }
 
@@ -130,7 +137,7 @@ public class RemoteConnection {
             server.bind(NetworkCommon.port);
             server.start();
             Log.debug("Server started");
-        } else {
+        } else {//if the client receives it
             NetworkCommon.register(client);
             client.start();
             client.addListener(new Listener() {
@@ -144,16 +151,16 @@ public class RemoteConnection {
                 public void received (Connection connection, Object obj) {
 
                     //arti increase latency
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        Thread.sleep(10);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
 
                     Log.debug("Client " + client.getID() + "received " + obj.toString());
                     if (obj instanceof NetworkCommon.ClientMakeModelMsg) {
                         adaptor.makeModel(); //make clientModel
-                        client.sendTCP(new NetworkCommon.ClientReadyMsg());
+//                        client.sendTCP(new NetworkCommon.ClientReadyMsg()); //trigger by sth else now
                     }
 
                     if (obj instanceof NetworkCommon.ClientStartModelMsg) {
@@ -161,9 +168,11 @@ public class RemoteConnection {
                     }
 
                     if (obj instanceof ArrayList) {
-                        for (Message msg : (ArrayList<Message>) obj) {
-                            adaptor.getMsg(msg);
-                        }
+                        //enqueue the message
+                        toBeConsumeMsgQueue.addAll((Collection<? extends Message>) obj);
+//                        for (Message msg : (ArrayList<Message>) obj) {
+//                            adaptor.getMsg(msg);
+//                        }
                     }
 
                     if (obj instanceof Message) {
@@ -195,13 +204,26 @@ public class RemoteConnection {
             });
         }
         (new Thread(this::sendQueueMsg, this.toString() + " Send Batched Message Thread")).start();
+        (new Thread(this::consumeReceivedMsg, this.toString() + " Consume Msg Thread")).start();
     }
+    private void consumeReceivedMsg() {
+        while (true) {
 
+            try {
+                sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            while (!toBeConsumeMsgQueue.isEmpty()) {
+                adaptor.getMsg(toBeConsumeMsgQueue.poll());
+            }
+        }
+    }
     private void sendQueueMsg() {
         while (true) {
 
             try {
-                sleep(3);
+                sleep(15);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -257,6 +279,11 @@ public class RemoteConnection {
 
     }
 
+//    public void clientReady() {
+//        if (isServer) Log.error("server should not do this");
+//        client.sendTCP(new NetworkCommon.ClientReadyMsg());
+//    }
+
     public void stop() {
         if (isServer) server.stop();
         else client.stop();
@@ -303,7 +330,7 @@ public class RemoteConnection {
             return connectId;
         }
 
-        public void startGame() {
+        public void clientMakeModel() {
             if (isServer) { // means it is server call this method on remote model
                 Log.debug("Server click start the game");
                 server.sendToTCP(connectId, new NetworkCommon.ClientMakeModelMsg());

@@ -5,12 +5,24 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import game.message.*;
 import game.message.toClient.*;
-import game.message.toServer.ActionMessage;
-import game.message.toServer.GoDirectionMessage;
-import game.message.toServer.ToServerMessage;
+import game.message.toServer.*;
 import game.model.game.map.Tile;
+import game.model.game.model.team.TeamResourceData;
+import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.EntityData;
+import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
+import game.model.game.model.worldObject.entity.collideStrat.GhostCollisionStrat;
+import game.model.game.model.worldObject.entity.collideStrat.HardCollisionStrat;
+import game.model.game.model.worldObject.entity.collideStrat.SoftCollisionStrat;
+import game.model.game.model.worldObject.entity.collideStrat.UnitCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.*;
 import game.model.game.model.team.Team;
+import game.model.game.model.worldObject.entity.drawStrat.*;
+import game.model.game.model.worldObject.entity.entities.Velocity;
+import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
+import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
+import game.model.game.model.worldObject.entity.updateStrat.UpdateData;
+import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 
 import java.util.ArrayList;
 
@@ -46,6 +58,69 @@ public class NetworkCommon {
         kryo.register(ClientStartModelMsg.class);
         kryo.register(ArrayList.class);
         kryo.register(SyncClockMsg.class);
+        kryo.register(EntityData.class);
+        kryo.register(UpdateData.class);
+        kryo.register(Velocity.class);
+        kryo.register(InitGameMessage.class);
+        kryo.register(UpdateResourcesMessage.class);
+        kryo.register(TeamResourceData.class);
+        kryo.register(RequestEntityMessage.class);
+        kryo.register(NewEntityMessage.class);
+        kryo.register(Entity.class);
+        kryo.register(AIDoNothingStrat.class);
+
+
+        kryo.register(ImageDrawStrat.WallImageDrawStrat.class);
+        kryo.register(ImageDrawStrat.TreeImageDrawStrat.class);
+        kryo.register(ImageDrawStrat.StoneImageDrawStrat.class);
+        kryo.register(ImageDrawStrat.MetalImageDrawStrat.class);
+        kryo.register(ImageDrawStrat.BoxImageDrawStrat.class);
+        kryo.register(ImageDrawStrat.WallImageDrawStrat.class);
+        kryo.register(ImageDrawStrat.WallBuildableImageDrawStrat.class);
+        kryo.register(UnitCollisionStrat.class);
+        kryo.register(SoftCollisionStrat.class);
+        kryo.register(HardCollisionStrat.class);
+        kryo.register(GhostCollisionStrat.class);
+        kryo.register(DirectionAnimationDrawStrat.RedSlayerDirectionAnimationDrawStrat.class);
+        kryo.register(DirectionAnimationDrawStrat.RedKingDirectionAnimationDrawStrat.class);
+        kryo.register(DirectionAnimationDrawStrat.BlueKingDirectionAnimationDrawStrat.class);
+        kryo.register(DirectionAnimationDrawStrat.BlueSlayerDirectionAnimationDrawStrat.class);
+
+        kryo.register(DrawData.class);
+        kryo.register(AnimateDrawStrat.class);
+        kryo.register(DrawStrat.class);
+        kryo.register(ImageDrawStrat.class);
+        kryo.register(NoDrawStrat.class);
+        kryo.register(ShapeDrawStrat.class);
+        kryo.register(MovingStrat.class);
+        kryo.register(StillStrat.class);
+        kryo.register(UpdateData.class);
+        kryo.register(UpdateStrat.class);
+        kryo.register(StopMessage.class);
+        kryo.register(InitGameMessage.class);
+        kryo.register(NewEntityMessage.class);
+        kryo.register(RemoveEntityMessage.class);
+        kryo.register(SetEntityMessage.class);
+        kryo.register(SetPlayerMessage.class);
+        kryo.register(SetTileMessage.class);
+        kryo.register(ToClientMessage.class);
+        kryo.register(UpdateResourcesMessage.class);
+        kryo.register(ActionMessage.class);
+        kryo.register(GoDirectionMessage.class);
+//        kryo.register(GhostCollisionStrat.class);
+//        kryo.register(GhostCollisionStrat.class);
+//        kryo.register(GhostCollisionStrat.class);
+//        kryo.register(GhostCollisionStrat.class);
+//        kryo.register(GhostCollisionStrat.class);
+//        kryo.register(GhostCollisionStrat.class);
+//        kryo.register(GhostCollisionStrat.class);
+//        kryo.register(GhostCollisionStrat.class);
+//        kryo.register(GhostCollisionStrat.class);
+//        kryo.register(GhostCollisionStrat.class);
+//        kryo.register(GhostCollisionStrat.class);
+//        kryo.register(GhostCollisionStrat.class);
+//        kryo.register(GhostCollisionStrat.class);
+//        kryo.register(GhostCollisionStrat.class);
 
     }
 

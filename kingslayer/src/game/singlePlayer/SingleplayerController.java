@@ -5,6 +5,7 @@ import game.model.game.model.ServerGameModel;
 import game.view.GameView;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import sun.rmi.runtime.Log;
 
 import java.util.Collections;
 
@@ -21,6 +22,7 @@ public class SingleplayerController extends Application {
         serverModel.init(Collections.singleton(new CopyingModelWrapper(clientModel)));
         serverModel.start();
        // clientModel.start();
+
         GameView gameView = new GameView(clientModel);
         gameView.start(primaryStage);
     }

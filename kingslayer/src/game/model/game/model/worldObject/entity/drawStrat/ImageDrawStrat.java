@@ -55,7 +55,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
     private ImageDrawStrat() {
     }
 
-    private static class TreeImageDrawStrat extends ImageDrawStrat {
+    public static class TreeImageDrawStrat extends ImageDrawStrat {
         @Override
         Image getImage() {
             return Images.TREE_IMAGES[0];
@@ -85,7 +85,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
     }
 
-    private static class StoneImageDrawStrat extends ImageDrawStrat {
+    public static class StoneImageDrawStrat extends ImageDrawStrat {
         @Override
         Image getImage() {
             return Images.STONE_IMAGES[0];
@@ -115,7 +115,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
     }
 
-    private static class MetalImageDrawStrat extends ImageDrawStrat {
+    public static class MetalImageDrawStrat extends ImageDrawStrat {
         @Override
         Image getImage() {
             return Images.METAL_IMAGES[0];
@@ -145,7 +145,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
     }
 
-    private static class WallImageDrawStrat extends ImageDrawStrat {
+    public static class WallImageDrawStrat extends ImageDrawStrat {
         @Override
         Image getImage() {
             return Images.WALL_IMAGE;
@@ -175,7 +175,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
     }
 
-    private static class BoxImageDrawStrat extends ImageDrawStrat {
+    public static class BoxImageDrawStrat extends ImageDrawStrat {
         @Override
         Image getImage() {
             return Images.BOX_IMAGE;
@@ -205,7 +205,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
     }
 
-    private static class WallBuildableImageDrawStrat extends ImageDrawStrat {
+    public static class WallBuildableImageDrawStrat extends ImageDrawStrat {
         @Override
         Image getImage() {
             return Images.WALL_BUILDABLE_IMAGE;
