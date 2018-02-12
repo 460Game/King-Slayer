@@ -346,9 +346,13 @@ public class Main extends Application {
             e.printStackTrace();
             return;
         }
-
+        //start game actually means make model
         lobbyServer.startGame();
 
+        Platform.runLater(() -> window.setScene(new Scene(choiceTeamAndRoleScene())));
+//        window.setScene(new Scene(choiceTeamAndRoleScene()));
+
+        //hardcode here
 //        try {
 //            Thread.sleep(10000);
 //        } catch (InterruptedException e) {
@@ -359,9 +363,8 @@ public class Main extends Application {
 
 
 
-//        window.setScene(new Scene(choiceTeamAndRoleScene()));
 
-        //hardcode here
+
 
     }
 
@@ -379,6 +382,8 @@ public class Main extends Application {
         });
         lobbyClient.start();
         lobbyClient.connectTo(host);
+        //TODO: change this to ping back later
+        Thread.sleep(2000);
     }
 
     private void testGame() {

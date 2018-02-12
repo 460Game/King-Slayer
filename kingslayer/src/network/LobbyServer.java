@@ -124,6 +124,7 @@ public class LobbyServer { //extends Application {
         serverModel.processMessage(msg);
     }
 
+    //start game actually means make model
     public void startGame() {
 
         remoteModels = server.makeRemoteModel();
