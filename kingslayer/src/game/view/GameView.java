@@ -147,8 +147,8 @@ public class GameView {
 //                it.remove();
 //            }
 
-            if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1)
-                //model.getLocalPlayer().runCommand(0, model);
+            if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1 ||
+                e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2)
                 new Visitor.ShowPlacement().run(model.getLocalPlayer(), model);
 
             if(dir[0] == 0 && dir[1] == 0)
@@ -170,6 +170,9 @@ public class GameView {
 
             if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1)
                 new Visitor.PlaceWall().run(model.getLocalPlayer(), model);
+
+            if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2)
+                new Visitor.PlaceResourceCollector().run(model.getLocalPlayer(), model);
 
             if(dir[0] == 0 && dir[1] == 0)
                 model.processMessage(new StopMessage(model.getLocalPlayer().id));

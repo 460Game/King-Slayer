@@ -11,6 +11,7 @@ public abstract class Images {
     public static final Image GAME_CURSOR_IMAGE = getImage("gamecursor.png");
 
     public static final Image WALL_BUILDABLE_IMAGE = getImage("wall_buildable.png");
+    public static final Image RED_RESOURCE_COLLECTOR_IMAGE = getImage("resource_collector_red.png");
 
 
     public static Image TILE_IMAGE = getImage("tile_map.png");

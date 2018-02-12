@@ -80,4 +80,14 @@ public class Entities {
             ImageDrawStrat.WALL_BUILDABLE_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
     }
+
+    public static Entity makeResourceCollectorRed(Double x, Double y) {
+        return new Entity(x, y,
+            Team.NEUTRAL,
+            StillStrat.SINGLETON,
+            HardCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            ImageDrawStrat.RED_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
+            AIDoNothingStrat.SINGLETON);
+    }
 }
