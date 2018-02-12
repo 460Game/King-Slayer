@@ -58,10 +58,11 @@ public class Util {
      * if the two numbers are within that distance. Return false otherwise.
      * @param a first number to compare
      * @param b second number to compare.
+     * @param precision how close the two numbers have to be
      * @return true if the two numbers are closer than a set distance
      */
-    public static boolean closeDouble(double a, double b) {
-        return Math.abs(a - b) < 10e-5;
+    public static boolean closeDouble(double a, double b, double precision) {
+        return Math.abs(a - b) < precision;
     }
 
     /**

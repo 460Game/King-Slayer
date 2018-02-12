@@ -134,8 +134,8 @@ public abstract class GameModel implements Model {
         list.forEach(m -> m.execute(this));
 
         entities.values().forEach(e -> e.update(this));
-        allCells.forEach(cell -> cell.collideContents(this));
         entities.values().forEach(e -> e.updateCells(this));
+        allCells.forEach(cell -> cell.collideContents(this));
     }
 
     public Collection<GridCell> getAllCells() {
@@ -218,12 +218,13 @@ public abstract class GameModel implements Model {
         }
     }
 
-
     public Collection<Entity> getAllEntities() {
         return entities.values();
     }
 
     public Entity getEntityById(long entity) {
+        if (!entities.containsKey(entity))
+            return null;
         return entities.get(entity);
     }
 }

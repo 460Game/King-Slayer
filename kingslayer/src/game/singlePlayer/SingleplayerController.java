@@ -21,7 +21,6 @@ public class SingleplayerController extends Application {
         ClientGameModel clientModel = new ClientGameModel(new CopyingModelWrapper(serverModel));
         serverModel.init(Collections.singleton(new CopyingModelWrapper(clientModel)));
         serverModel.start();
-       // clientModel.start();
 
         GameView gameView = new GameView(clientModel);
         gameView.start(primaryStage);
