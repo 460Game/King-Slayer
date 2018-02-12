@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/kingslayer/King Slayer.iml" filepath="$PROJECT_DIR$/kingslayer/King Slayer.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/gam.iml" filepath="$PROJECT_DIR$/.idea/gam.iml" />
-      <module fileurl="file://$PROJECT_DIR$/game/game.iml" filepath="$PROJECT_DIR$/game/game.iml" />
-      <module fileurl="file://$PROJECT_DIR$/network/network.iml" filepath="$PROJECT_DIR$/network/network.iml" />
     </modules>
   </component>
 </project>
