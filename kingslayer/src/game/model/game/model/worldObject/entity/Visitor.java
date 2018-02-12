@@ -1,6 +1,7 @@
 package game.model.game.model.worldObject.entity;
 
 import game.message.toClient.NewEntityMessage;
+import game.message.toServer.MakeEntityMessage;
 import game.model.game.model.Model;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.drawStrat.DirectionAnimationDrawStrat;
@@ -28,7 +29,8 @@ public interface Visitor {
         dir[1] = 1;
       else
         dir[0] = -1;
-      model.processMessage(new NewEntityMessage(Entities.makeBuiltWall(Math.floor(entity.data.x) + 0.5 + dir[0],
+      // TODO check for possible placements
+      model.processMessage(new MakeEntityMessage(Entities.makeBuiltWall(Math.floor(entity.data.x) + 0.5 + dir[0],
           Math.floor(entity.data.y) + 0.5 + dir[1])));
     }
   }

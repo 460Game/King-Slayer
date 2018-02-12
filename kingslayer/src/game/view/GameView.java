@@ -181,5 +181,7 @@ public class GameView {
         });
 
         window.setScene(scene);
+
+        window.setFullScreen(true);
     }
 }
