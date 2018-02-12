@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.entities;
 
+import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
@@ -17,6 +18,7 @@ public class Players {
     public static Entity makeSlayer(Double x, Double y) {
         Entity slayer = new Entity(x, y,
             Team.ONE,
+            Role.SLAYER,
             MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
@@ -29,6 +31,7 @@ public class Players {
     public static Entity makeKing(Double x, Double y) {
         Entity king = new Entity(x, y,
             Team.ONE,
+            Role.KING,
             MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,

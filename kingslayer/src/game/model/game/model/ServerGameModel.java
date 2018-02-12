@@ -6,6 +6,7 @@ import game.message.toClient.*;
 import game.model.game.map.ServerMapGenerator;
 import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
+import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
 
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class ServerGameModel extends GameModel {
     private Collection<? extends Model> clients = null;
 
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
+
+    private TeamRoleEntityMap map = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
 
     @Override
     public void processMessage(Message m) {
@@ -54,6 +57,7 @@ public class ServerGameModel extends GameModel {
         for (Entity entity : this.getAllEntities()) {
             if(entity.team != Team.NEUTRAL) { //TODO this is TEMPORY
                 players.add(entity);
+                map.setEntity(entity.team, entity.role, entity.id); // Only for players
             }
         }
 
@@ -61,6 +65,7 @@ public class ServerGameModel extends GameModel {
         for(Entity entity : this.getAllEntities())
             clients.forEach(client -> client.processMessage(new SetEntityMessage(entity)));
 
+        // TODO @tian set each client to the role/team the want
         clients.forEach(client -> client.processMessage(new InitGameMessage()));
 
         teamData.put(Team.ONE, new TeamResourceData());

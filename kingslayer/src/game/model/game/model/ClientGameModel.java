@@ -4,7 +4,10 @@ import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.message.toServer.RequestEntityMessage;
 import game.model.game.map.ClientMapGenerator;
+import game.model.game.model.team.Role;
+import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
+import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
 
 public class ClientGameModel extends GameModel {
@@ -45,6 +48,11 @@ public class ClientGameModel extends GameModel {
             this.queueMessage(m);
         if (m.sendToServer())
             server.processMessage(m);
+    }
+
+    public void init(Team team, Role role, TeamRoleEntityMap map) {
+        getAllCells().forEach(cell -> cell.initDraw(this));
+        this.setLocalPlayer(map.getEntity(team, role));
     }
 
     @Override

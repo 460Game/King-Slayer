@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.entities;
 
+import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
@@ -14,6 +15,7 @@ public class Entities {
     public static Entity makeBlocker(double x, double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
+            Role.NEUTRAL,
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
@@ -24,6 +26,7 @@ public class Entities {
     public static Entity makeTree(Double x, Double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
+            Role.NEUTRAL,
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
@@ -34,6 +37,7 @@ public class Entities {
     public static Entity makeStone(Double x, Double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
+            Role.NEUTRAL,
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
@@ -44,6 +48,7 @@ public class Entities {
     public static Entity makeMetal(Double x, Double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
+            Role.NEUTRAL,
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
@@ -54,6 +59,7 @@ public class Entities {
     public static Entity makeWall(Double x, Double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
+            Role.NEUTRAL,
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
@@ -64,6 +70,7 @@ public class Entities {
     public static Entity makeBox(Double x, Double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
+            Role.NEUTRAL,
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
@@ -74,6 +81,7 @@ public class Entities {
     public static Entity makeBuiltWall(Double x, Double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
+            Role.NEUTRAL,
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
@@ -83,7 +91,8 @@ public class Entities {
 
     public static Entity makeResourceCollectorRed(Double x, Double y) {
         return new Entity(x, y,
-            Team.NEUTRAL,
+            Team.NEUTRAL, // TODO team red
+            Role.NEUTRAL,
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,

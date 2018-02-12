@@ -15,7 +15,9 @@ public enum Role {
      * The slayer can attack enemy units and player to fight for
      * the king.
      */
-    SLAYER(1);
+    SLAYER(1),
+
+    NEUTRAL(2);
 
     /**
      * Holds the integer corresponding to the roles on a team.
@@ -40,6 +42,8 @@ public enum Role {
             return Role.KING;
         if (i == 1)
             return Role.SLAYER;
+        if (i == 2)
+            return Role.NEUTRAL;
         throw new RuntimeException("Invalid role");
     }
 

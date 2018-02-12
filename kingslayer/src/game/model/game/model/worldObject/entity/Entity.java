@@ -2,6 +2,7 @@ package game.model.game.model.worldObject.entity;
 
 import game.message.toClient.NewEntityMessage;
 import game.model.game.grid.GridCell;
+import game.model.game.model.team.Role;
 import game.model.game.model.worldObject.entity.aiStrat.AIStrat;
 import game.model.game.model.worldObject.entity.aiStrat.AIable;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
@@ -73,6 +74,11 @@ public class Entity implements Updatable, Drawable, AIable {
     public final Team team;
 
     /**
+     *
+     */
+    public final Role role;
+
+    /**
      * ID of this entity.
      */
     public final long id;
@@ -95,6 +101,7 @@ public class Entity implements Updatable, Drawable, AIable {
      */
     public Entity(double x, double y,
                   Team team,
+                  Role role,
                   UpdateStrat updateStrat,
                   CollisionStrat collisionStrat,
                   Hitbox hitbox,
@@ -102,6 +109,7 @@ public class Entity implements Updatable, Drawable, AIable {
                   AIStrat aiStrat) {
         id = Util.random.nextLong();
         this.team = team;
+        this.role = role;
         this.updateStrat = updateStrat;
         this.collisionStrat = collisionStrat;
         this.drawStrat = drawStrat;
@@ -119,6 +127,7 @@ public class Entity implements Updatable, Drawable, AIable {
         this.drawStrat = null;
         this.aiStrat = null;
         team = null;
+        role = null;
         id = 0;
     }
 
