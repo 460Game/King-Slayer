@@ -198,8 +198,8 @@ public class Entity implements Updatable, Drawable, AIable {
                         else
                             dir[0] = -1;
                         System.out.println("in entity: " + data.x + " " + data.y);
-                        model.processMessage(new NewEntityMessage(Entities.makeBuiltWall(data.x + dir[0],
-                            data.y + dir[1])));
+                        model.processMessage(new NewEntityMessage(Entities.makeBuiltWall(Math.floor(data.x) + 0.5 + dir[0],
+                            Math.floor(data.y) + 0.5 + dir[1])));
                         break;
                     default:
                         System.out.println("Unknown command");

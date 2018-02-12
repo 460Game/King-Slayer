@@ -76,7 +76,8 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
       else
         dir[0] = -1;
       gc.setFill(new Color(1, 0, 0, 0.4));
-      gc.fillRect(toDrawCoords(entity.data.x + dir[0]) - 16, toDrawCoords(entity.data.y + dir[1]) - 16, 32, 32);
+      gc.fillRect(toDrawCoords(Math.floor(entity.data.x) + 0.5 + dir[0]) - 16,
+          toDrawCoords(Math.floor(entity.data.y) + 0.5 + dir[1]) - 16, 32, 32);
       gc.setFill(Color.BLACK);
     }
 
