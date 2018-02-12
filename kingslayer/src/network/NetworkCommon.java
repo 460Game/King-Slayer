@@ -48,7 +48,6 @@ public class NetworkCommon {
         kryo.register(SetTileMessage.class);
         kryo.register(ToClientMessage.class);
         kryo.register(ToServerMessage.class);
-        kryo.register(SetPlayerMessage.class);
         kryo.register(Hitbox.class);
         kryo.register(CellHitbox.class);
         kryo.register(CircleHitbox.class);
@@ -105,7 +104,6 @@ public class NetworkCommon {
         kryo.register(NewEntityMessage.class);
         kryo.register(RemoveEntityMessage.class);
         kryo.register(SetEntityMessage.class);
-        kryo.register(SetPlayerMessage.class);
         kryo.register(SetTileMessage.class);
         kryo.register(ToClientMessage.class);
         kryo.register(UpdateResourcesMessage.class);

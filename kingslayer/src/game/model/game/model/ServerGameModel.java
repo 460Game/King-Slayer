@@ -4,6 +4,7 @@ import com.esotericsoftware.minlog.Log;
 import game.message.*;
 import game.message.toClient.*;
 import game.model.game.map.ServerMapGenerator;
+import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.team.TeamRoleEntityMap;
@@ -26,7 +27,7 @@ public class ServerGameModel extends GameModel {
 
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
 
-    private TeamRoleEntityMap map = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
+    private TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
 
     @Override
     public void processMessage(Message m) {
@@ -46,7 +47,7 @@ public class ServerGameModel extends GameModel {
     public void init(Collection<? extends Model> clients) {
         this.clients = clients;
 
-        // Send map to client
+        // Send teamRoleEntityMap to client
         for(Model client : clients)
             for (int i = 0; i < this.getMapWidth(); i++)
                 for (int j = 0; j < this.getMapWidth(); j++) {
@@ -57,7 +58,7 @@ public class ServerGameModel extends GameModel {
         for (Entity entity : this.getAllEntities()) {
             if(entity.team != Team.NEUTRAL) { //TODO this is TEMPORY
                 players.add(entity);
-                map.setEntity(entity.team, entity.role, entity.id); // Only for players
+                teamRoleEntityMap.setEntity(entity.team, entity.role, entity.id); // Only for players
             }
         }
 
@@ -66,7 +67,7 @@ public class ServerGameModel extends GameModel {
             clients.forEach(client -> client.processMessage(new SetEntityMessage(entity)));
 
         // TODO @tian set each client to the role/team the want
-        clients.forEach(client -> client.processMessage(new InitGameMessage()));
+        clients.forEach(client -> client.processMessage(new InitGameMessage(Team.ONE, Role.KING, teamRoleEntityMap)));
 
         teamData.put(Team.ONE, new TeamResourceData());
         teamData.put(Team.TWO, new TeamResourceData());
@@ -74,7 +75,6 @@ public class ServerGameModel extends GameModel {
         int i = 0;
         // Send player to client
         for(Model model : clients) {
-            model.processMessage(new SetPlayerMessage(players.get(i)));
             model.processMessage(new UpdateResourcesMessage(teamData.get(players.get(i).team)));
             i++;
         }

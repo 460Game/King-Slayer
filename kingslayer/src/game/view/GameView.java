@@ -126,6 +126,7 @@ public class GameView {
             if (e.getCode() == KeyCode.ESCAPE)
                 exitPrompt.setVisible(true);
 
+
 //            if (e.getCode() == KeyCode.SPACE) {
 //                GridCell end = astar.getPassable().iterator().next();
 ////                int startx = (int) model.getLocalPlayer().data.x;
