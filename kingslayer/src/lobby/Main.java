@@ -6,13 +6,20 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
@@ -21,14 +28,12 @@ import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import network.Lobby;
 import network.LobbyClient;
+import network.LobbyClient2LobbyAdaptor;
 import network.LobbyServer;
 
 import static images.Images.*;
@@ -151,7 +156,13 @@ public class Main extends Application {
         Canvas midCanvas = new Canvas();
         GraphicsContext midGC = midCanvas.getGraphicsContext2D();
 
-        items[0].setOnActivate(this::joinGame);
+//        Scene scene2 = new Scene(ipForm());
+//        items[0].setOnActivate(() -> {
+//            System.out.println("set scene2");
+//            window.setScene(scene2);
+//        });
+
+        items[0].setOnActivate(this::connectForm);
         items[1].setOnActivate(this::startGame);
         items[2].setOnActivate(this::testGame);
         items[3].setOnActivate(this::howToPlay);
@@ -181,12 +192,11 @@ public class Main extends Application {
         root.getChildren().add(bgCanvas);
         root.getChildren().add(midCanvas);
         root.getChildren().add(menuBox);
-        Scene scene = new Scene(root);
+        Scene mainMenuScene = new Scene(root);
 
+        mainMenuScene.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
 
-        scene.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
-
-        scene.setOnKeyPressed(e -> {
+        mainMenuScene.setOnKeyPressed(e -> {
             switch (e.getCode()) {
                 case F11:
                     window.setFullScreen(true);
@@ -235,15 +245,99 @@ public class Main extends Application {
         animator.start();
         resize.invalidated(null);
         sleep(100);
-        window.setScene(scene);
+        window.setScene(mainMenuScene);
         window.show();
+    }
+
+    private void connectForm() {
+        window.setScene(new Scene(ipForm(), 800, 500));
+    }
+
+    public GridPane choiceTeamAndRoleScene() {
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setVgap(5);
+        grid.setHgap(5);
+
+        ChoiceBox<TeamChoice> teamChoice = new ChoiceBox<>();
+        teamChoice.getItems().add(TeamChoice.RED_TEAM);
+        teamChoice.getItems().add(TeamChoice.BLUE_TEAM);
+        GridPane.setConstraints(teamChoice, 0, 0);
+        grid.getChildren().add(teamChoice);
+
+        ChoiceBox<RoleChoice> roleChoice = new ChoiceBox<>();
+        roleChoice.getItems().add(RoleChoice.SLAYER);
+        roleChoice.getItems().add(RoleChoice.KING);
+        GridPane.setConstraints(roleChoice, 1, 0);
+        grid.getChildren().add(roleChoice);
+
+        Button ready = new Button("Ready");
+        GridPane.setConstraints(ready, 2, 0);
+        grid.getChildren().add(ready);
+
+        ready.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Log.info("client click ready");
+                ready();
+                //the following would be done in the network part
+
+//                window.setScene(new Scene(choiceTeamAndRoleScene()));
+            }
+
+        });
+
+        return grid;
+    }
+
+    private GridPane ipForm() {
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setVgap(5);
+        grid.setHgap(5);
+
+        //Defining the Name text field
+        final TextField ip = new TextField();
+        ip.setPromptText("Enter ip.");
+        ip.setPrefColumnCount(100);
+//        ip.getText();
+        GridPane.setConstraints(ip, 0, 0);
+        grid.getChildren().add(ip);
+
+        Button connect = new Button("Connect");
+        GridPane.setConstraints(connect, 1, 0);
+        grid.getChildren().add(connect);
+
+        connect.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String ipStr = ip.getText();
+                System.out.println("Ip is: " + ipStr);
+                try {
+                    joinGame(ipStr);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                //the following would be done in the network part
+
+//                window.setScene(new Scene(choiceTeamAndRoleScene()));
+            }
+
+        });
+
+        return grid;
     }
 
     private void startGame() {
         lobbyServer = new LobbyServer();
         try {
             lobbyServer.start();
-            lobbyClient = new LobbyClient(window);
+            lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
+                @Override
+                public void showChoiceTeamAndRoleScene() {
+                    Platform.runLater(() -> window.setScene(new Scene(choiceTeamAndRoleScene())));
+                }
+            });
             lobbyClient.start();
             lobbyClient.connectTo("localhost");
             Thread.sleep(2000); //(connection needs time)
@@ -254,7 +348,6 @@ public class Main extends Application {
 
         lobbyServer.startGame();
 
-        //hardcode here
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
@@ -262,17 +355,29 @@ public class Main extends Application {
         }
         Log.info("before ready");
         ready();
+
+
+
+//        window.setScene(new Scene(choiceTeamAndRoleScene()));
+
+        //hardcode here
+
     }
 
     public void ready() {
         lobbyClient.lobbyClientReady();
     }
 
-    private void joinGame() {
+    private void joinGame(String host) throws Exception {
         Log.info("JOIN GAME SELECTED");
-//        lobbyClient = new LobbyClient();
-//        lobbyClient.start();
-//        lobbyClient.connectTo(host);
+        lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
+            @Override
+            public void showChoiceTeamAndRoleScene() {
+                window.setScene(new Scene(choiceTeamAndRoleScene()));
+            }
+        });
+        lobbyClient.start();
+        lobbyClient.connectTo(host);
     }
 
     private void testGame() {

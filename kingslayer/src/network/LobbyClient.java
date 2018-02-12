@@ -7,7 +7,9 @@ import game.model.game.model.Model;
 import game.view.GameView;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lobby.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,123 +31,16 @@ public class LobbyClient {//extends Application {
     private String name;
 //    private ChatFrame chatFrame;
     private Stage window;
+    private LobbyClient2LobbyAdaptor lobbyAdaptor;
 
-    public LobbyClient(Stage window) {
+    public LobbyClient(Stage window, LobbyClient2LobbyAdaptor lobbyAdaptor) {
         this.window = window;
+        this.lobbyAdaptor = lobbyAdaptor;
     }
-//    @Override
-//    public void start(Stage primaryStage) throws Exception {
-//        Log.info("client start!!!!!!");
-//
-//        this.window = primaryStage;
-//        Log.info("client start!!!!!!");
-//
-//        // Request the host from the user.
-////        String input = (String) JOptionPane.showInputDialog(null, "Host:", "Connect to chat server", JOptionPane.QUESTION_MESSAGE,
-////            null, null, "localhost");
-//        Log.info("client start!!!!!!");
-//
-////        if (input == null || input.trim().length() == 0) System.exit(1);
-//        Log.info("client start!!!!!!");
-//
-////        final String host = input.trim();
-//        String host = "localhost";
-//        Log.info(host);
-//
-//        // Request the user's name.
-////        input = (String) JOptionPane.showInputDialog(null, "Name:", "Connect to chat server", JOptionPane.QUESTION_MESSAGE, null,
-////            null, "Test");
-////        if (input == null || input.trim().length() == 0) System.exit(1);
-////        name = input.trim();
-//        name = "Test";
-//
-//        // All the ugly Swing stuff is hidden in ChatFrame so it doesn't clutter the KryoNet example code.
-//        chatFrame = new ChatFrame(host);
-//        // This listener is called when the send button is clicked.
-//        chatFrame.setSendListener(new Runnable() {
-//            public void run() {
-//                //do whatever we what when clicking send
-//            }
-//        });
-//        // This listener is called when the chat window is closed.
-//        chatFrame.setCloseListener(new Runnable() {
-//            public void run() {
-//                client.stop();
-//            }
-//        });
-//        chatFrame.setVisible(true);
-//        Log.info("frame should be visible");
-//        client = new RemoteConnection(false, this, new NetWork2LobbyAdaptor() {
-//            @Override
-//            public void init() {
-//                Log.debug("client init");
-//
-//                gameView = new GameView(clientGameModel);
-//                Platform.runLater(()-> {
-//                    gameView.start(window);
-//                });
-//                Log.debug("Client Started");
-//            }
-//
-//            @Override
-//            public void makeModel() {
-//                startGame();
-//            }
-//
-//            @Override
-//            public void getMsg(Message obj) {
-//                clientGetMsg(obj);
-//            }
-//        });
-//
-//        // We'll do the connect on a new thread so the ChatFrame can show a progress bar.
-//        // Connecting to localhost is usually so fast you won't see the progress bar.
-//        client.connectToServer(5000, host);
-//
-//    }
 
 
     public void start() throws Exception {
-        Log.info("client start!!!!!!");
 
-//        this.window = primaryStage;
-        Log.info("client start!!!!!!");
-
-        // Request the host from the user.
-//        String input = (String) JOptionPane.showInputDialog(null, "Host:", "Connect to chat server", JOptionPane.QUESTION_MESSAGE,
-//            null, null, "localhost");
-        Log.info("client start!!!!!!");
-
-//        if (input == null || input.trim().length() == 0) System.exit(1);
-        Log.info("client start!!!!!!");
-
-//        final String host = input.trim();
-        String host = "localhost";
-        Log.info(host);
-
-        // Request the user's name.
-//        input = (String) JOptionPane.showInputDialog(null, "Name:", "Connect to chat server", JOptionPane.QUESTION_MESSAGE, null,
-//            null, "Test");
-//        if (input == null || input.trim().length() == 0) System.exit(1);
-//        name = input.trim();
-        name = "Test";
-
-        // All the ugly Swing stuff is hidden in ChatFrame so it doesn't clutter the KryoNet example code.
-//        chatFrame = new ChatFrame(host);
-        // This listener is called when the send button is clicked.
-//        chatFrame.setSendListener(new Runnable() {
-//            public void run() {
-//                //do whatever we what when clicking send
-//            }
-//        });
-        // This listener is called when the chat window is closed.
-//        chatFrame.setCloseListener(new Runnable() {
-//            public void run() {
-//                client.stop();
-//            }
-//        });
-//        chatFrame.setVisible(true);
-        Log.info("frame should be visible");
         client = new RemoteConnection(false, this, new NetWork2LobbyAdaptor() {
             @Override
             public void init() {
@@ -161,12 +56,19 @@ public class LobbyClient {//extends Application {
 
             @Override
             public void makeModel() {
+                System.out.println("Client make model call!!!!!!!!!!");
                 lobbyClientMakeModel();
             }
 
             @Override
             public void getMsg(Message obj) {
                 clientGetMsg(obj);
+            }
+
+            @Override
+            public void showLobbyTeamChoice() {
+                Log.info("show lobby team choice");
+                lobbyAdaptor.showChoiceTeamAndRoleScene();
             }
         });
     }

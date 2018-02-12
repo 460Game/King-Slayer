@@ -146,6 +146,7 @@ public class RemoteConnection {
                     client.sendTCP("Client " + connection.getID() + " connected");
                     //use client ID for the queue for client use
                     messageQueues.put(client.getID(), new LinkedBlockingQueue<>());
+//                    adaptor.showLobbyTeamChoice();
                 }
 
                 public void received (Connection connection, Object obj) {
@@ -159,6 +160,7 @@ public class RemoteConnection {
 
                     Log.debug("Client " + client.getID() + "received " + obj.toString());
                     if (obj instanceof NetworkCommon.ClientMakeModelMsg) {
+                        System.out.println("Client Receive makeModel message!!!!!!!!!!!!!!!!!");
                         adaptor.makeModel(); //make clientModel
 //                        client.sendTCP(new NetworkCommon.ClientReadyMsg()); //trigger by sth else now
                     }
@@ -267,16 +269,17 @@ public class RemoteConnection {
             return;
         }
         Log.info("Client connect to " + host + " " + port);
-        new Thread("Connect") {
-            public void run () {
-                try {
-                    client.connect(port, host, NetworkCommon.port);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                // Server communication after connection can go here, or in Listener#connected().
-            }
-        }.start();
+//        new Thread("Connect") {
+//            public void run () {
+//                try {
+//                    client.connect(port, host, NetworkCommon.port);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                // Server communication after connection can go here, or in Listener#connected().
+//            }
+//        }.start();
+        client.connect(port, host, NetworkCommon.port);
 
     }
 
