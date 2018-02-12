@@ -1,7 +1,9 @@
 package util;
 
-/*
-like loc but uses doubles
+/**
+ * Class to represent location on the game map as points with x and
+ * y-coordinates. This is similar to the Loc class except with
+ * double coordinates instead of integer coordinates.
  */
 public class Pos {
 

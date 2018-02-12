@@ -51,6 +51,8 @@ public class CircleHitbox extends Hitbox {
             for(int j = (int) (entity.data.y - radius); j <= Math.ceil(entity.data.y + radius); j++) {
                 double dx = entity.data.x - Math.max(i, Math.min(entity.data.x, i + 1)); // Get distance from farthest x to center
                 double dy = entity.data.y - Math.max(j, Math.min(entity.data.y, j + 1)); // Get distance from farthest y to center
+
+                // 0.01 allowed for extra overlap, helps with collisions
                 if ((dx * dx + dy * dy + 0.01) < radius * radius) {
                     set.add(gameMap.getCell(i, j));
                 }

@@ -10,6 +10,8 @@ public abstract class Images {
     public static final Image CURSOR_IMAGE = getImage("cursor.png");
     public static final Image GAME_CURSOR_IMAGE = getImage("gamecursor.png");
 
+    public static final Image WALL_BUILDABLE_IMAGE = getImage("wall_buildable.png");
+
 
     public static Image TILE_IMAGE = getImage("tile_map.png");
     public static Image MENU_SPASH_BG_IMAGE = getImage("castleSplash.jpg");

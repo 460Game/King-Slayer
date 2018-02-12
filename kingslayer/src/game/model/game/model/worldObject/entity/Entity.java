@@ -113,4 +113,10 @@ public class Entity implements Updatable, Drawable, AIable {
     public void updateCells(GameModel model) {
         this.data.hitbox.updateCells(this, model);
     }
+
+    public void runCommand(int commandID, GameModel model) {
+        if (this.team != Team.NEUTRAL) {
+            ((DirectionAnimationDrawStrat) drawStrat).runCommand(commandID, this, model);
+        }
+    }
 }

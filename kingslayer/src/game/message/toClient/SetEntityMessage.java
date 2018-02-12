@@ -10,7 +10,14 @@ import game.model.game.model.worldObject.entity.EntityData;
  */
 public class SetEntityMessage implements ToClientMessage {
 
+    /**
+     * Data corresponding to the entity.
+     */
     private EntityData data;
+
+    /**
+     * ID of the entity.
+     */
     private long id;
 
     /**

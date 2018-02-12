@@ -11,9 +11,9 @@ import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
 
 public class Entities {
 
-
     public static Entity makeBlocker(double x, double y) {
-        return new Entity(x, y, Team.NEUTRAL,
+        return new Entity(x, y,
+            Team.NEUTRAL,
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
@@ -68,6 +68,16 @@ public class Entities {
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             ImageDrawStrat.BOX_IMAGE_DRAW_STRAT,
+            AIDoNothingStrat.SINGLETON);
+    }
+
+    public static Entity makeBuiltWall(Double x, Double y) {
+        return new Entity(x, y,
+            Team.NEUTRAL,
+            StillStrat.SINGLETON,
+            HardCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            ImageDrawStrat.WALL_BUILDABLE_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
     }
 }

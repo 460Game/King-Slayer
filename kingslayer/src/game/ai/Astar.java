@@ -35,7 +35,8 @@ public class Astar {
     private Collection<GridCell> cells;
 
     /**
-     *
+     * List of cells that make up the path that was found. First cell
+     * should be the start cell, and last cell should be the end cell.
      */
     private List<GridCell> path = null;
 
@@ -63,7 +64,7 @@ public class Astar {
      * in passable.
      */
     public void findTraversableNodes() {
-        passable = cells.stream().filter(cell -> cell.isPassable(model)).collect(Collectors.toSet());
+        passable = cells.stream().filter(GridCell::isPassable).collect(Collectors.toSet());
 //        for (GridCell node : passable)
 //            System.out.println("Node x,y: " + node.getTopLeftX() + ", " + node.getTopLeftY());
 //        System.out.println(passable.size());
@@ -77,8 +78,14 @@ public class Astar {
      * @return the heuristic from getting from cell a to cell b
      */
     public double heuristicValue(GridCell a, GridCell b) {
-        return (a.getTopLeftX() - b.getTopLeftX()) * (a.getTopLeftX() - b.getTopLeftX()) +
-                (a.getTopLeftY() - b.getTopLeftY()) * (a.getTopLeftY() - b.getTopLeftY());
+        return Math.sqrt((a.getTopLeftX() - b.getTopLeftX()) * (a.getTopLeftX() - b.getTopLeftX()) +
+                (a.getTopLeftY() - b.getTopLeftY()) * (a.getTopLeftY() - b.getTopLeftY()));
+
+        // CHange this to diagonal distance ?
+        // dx = abs(node.x - goal.x)
+        //dy = abs(node.y - goal.y)
+        // return D * (dx + dy) + (D2 - 2 * D) * min(dx, dy)
+        // D = 1, D2 = sqrt(2)
     }
 
     /**
@@ -157,6 +164,12 @@ public class Astar {
             for (int i = Math.max(0, current.getTopLeftX() - 1); i <= Math.min(current.getTopLeftX() + 1, model.getMapWidth() - 1); i++) {
                 for (int j = Math.max(0, current.getTopLeftY() - 1); j <= Math.min(current.getTopLeftY() + 1, model.getMapHeight() - 1); j++) {
 //                    System.out.println(" ENTERING neighborLOOP at " + i + ", " + j);
+
+                    // Check if the diagonals are passable.
+                    if (!model.getCell(i, current.getTopLeftY()).isPassable() &&
+                            !model.getCell(current.getTopLeftX(), j).isPassable())
+                        continue;
+                    // TODO may need to check for edge cases.
 
                     GridCell neighbor = model.getCell(i, j);
 

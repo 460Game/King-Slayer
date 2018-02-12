@@ -41,7 +41,6 @@ public class CellHitbox extends Hitbox {
         return 0.5 / (piAngle < Math.PI / 4 ?  Math.cos(piAngle) :
                 (piAngle > 3 * Math.PI / 4 ? -Math.cos(piAngle) : Math.sin(piAngle)));
 
-
         // TODO MAY need to dbl check
 
         // RECTANGLE: length is from left to right, width is from top to bottom
