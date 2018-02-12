@@ -340,6 +340,7 @@ public class Main extends Application {
             });
             lobbyClient.start();
             lobbyClient.connectTo("localhost");
+            //TODO: change this to Ping back later
             Thread.sleep(2000); //(connection needs time)
         } catch (Exception e) {
             e.printStackTrace();
@@ -348,13 +349,13 @@ public class Main extends Application {
 
         lobbyServer.startGame();
 
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.info("before ready");
-        ready();
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        Log.info("before ready");
+//        ready();
 
 
 
