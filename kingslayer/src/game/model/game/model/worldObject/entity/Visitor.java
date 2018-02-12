@@ -2,6 +2,7 @@ package game.model.game.model.worldObject.entity;
 
 import game.message.toClient.NewEntityMessage;
 import game.model.game.model.Model;
+import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.drawStrat.DirectionAnimationDrawStrat;
 import game.model.game.model.worldObject.entity.entities.Entities;
 
@@ -27,7 +28,6 @@ public interface Visitor {
         dir[1] = 1;
       else
         dir[0] = -1;
-      System.out.println("in entity: " + entity.data.x + " " + entity.data.y);
       model.processMessage(new NewEntityMessage(Entities.makeBuiltWall(Math.floor(entity.data.x) + 0.5 + dir[0],
           Math.floor(entity.data.y) + 0.5 + dir[1])));
     }
@@ -46,9 +46,12 @@ public interface Visitor {
         dir[1] = 1;
       else
         dir[0] = -1;
-      System.out.println("in entity: " + entity.data.x + " " + entity.data.y);
-      model.processMessage(new NewEntityMessage(Entities.makeResourceCollectorRed(Math.floor(entity.data.x) + 0.5 + dir[0],
-          Math.floor(entity.data.y) + 0.5 + dir[1])));
+      if (entity.team == Team.ONE)
+        model.processMessage(new NewEntityMessage(Entities.makeResourceCollectorRed(Math.floor(entity.data.x) + 0.5 + dir[0],
+            Math.floor(entity.data.y) + 0.5 + dir[1])));
+      else // TODO change to blue
+        model.processMessage(new NewEntityMessage(Entities.makeResourceCollectorRed(Math.floor(entity.data.x) + 0.5 + dir[0],
+            Math.floor(entity.data.y) + 0.5 + dir[1])));
     }
   }
 }
