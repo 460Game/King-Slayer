@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import javafx.scene.paint.Color;
+
 import static util.Util.toDrawCoords;
 import static java.lang.Math.PI;
 
@@ -23,6 +25,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   public DrawData drawData = DrawData.makeAnimated();
   public int height = 32;
   public int width = 32;
+  private boolean showPlacementbox = false;
 
   public static final DirectionAnimationDrawStrat RED_KING_ANIMATION = new RedKingDirectionAnimationDrawStrat();
   public static final DirectionAnimationDrawStrat BLUE_KING_ANIMATION = new BlueKingDirectionAnimationDrawStrat();
@@ -62,6 +65,21 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   abstract Image getImage();
 
   public void draw(Entity entity, GraphicsContext gc) {
+    if (showPlacementbox) {
+      double[] dir = {0, 0};
+      if (drawData.direction == 'N')
+        dir[1] = -1;
+      else if (drawData.direction == 'E')
+        dir[0] = 1;
+      else if (drawData.direction == 'S')
+        dir[1] = 1;
+      else
+        dir[0] = -1;
+      gc.setFill(new Color(1, 0, 0, 0.4));
+      gc.fillRect(toDrawCoords(entity.data.x + dir[0]) - 16, toDrawCoords(entity.data.y + dir[1]) - 16, 32, 32);
+      gc.setFill(Color.BLACK);
+    }
+
     try {
       Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
       gc.drawImage(this.getImage(),
@@ -101,6 +119,10 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     } else {
       drawData.imageNum = 0;
     }
+  }
+
+  public void togglePlacementBox() {
+    showPlacementbox = !showPlacementbox;
   }
 
   public double getDrawZ(EntityData entity) {

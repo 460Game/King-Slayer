@@ -123,7 +123,11 @@ public class Entity implements Updatable, Drawable, AIable {
 //            if (drawStrat instanceof DirectionAnimationDrawStrat.RedKingDirectionAnimationDrawStrat ||
 //                drawStrat instanceof DirectionAnimationDrawStrat.BlueKingDirectionAnimationDrawStrat) {
                 switch (commandID) {
+                    case 0:
+                        ((DirectionAnimationDrawStrat) drawStrat).togglePlacementBox();
+                        break;
                     case 1:
+                        ((DirectionAnimationDrawStrat) drawStrat).togglePlacementBox();
                         double[] dir = {0, 0};
                         if (((DirectionAnimationDrawStrat) drawStrat).drawData.direction == 'N')
                             dir[1] = -1;

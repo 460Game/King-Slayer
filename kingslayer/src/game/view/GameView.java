@@ -114,8 +114,8 @@ public class GameView {
             if (e.getCode() == KeyCode.ESCAPE)
                 exitPrompt.setVisible(true);
 
-//            if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1)
-//                model.getLocalPlayer().runCommand(1, model);
+            if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1)
+                model.getLocalPlayer().runCommand(0, model);
 
             if(dir[0] == 0 && dir[1] == 0)
                 model.processMessage(new StopMessage(model.getLocalPlayer().id));
