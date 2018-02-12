@@ -49,6 +49,7 @@ public class Astar {
         this.model = model;
         cells = model.getAllCells();
         passable = new HashSet<>();
+        findTraversableNodes();
     }
 
     /**
@@ -100,6 +101,10 @@ public class Astar {
     public List<GridCell> astar(GridCell start, GridCell end) {
         // TODO may need to include finding the traversable nodes
 //        findTraversableNodes();
+
+        if (!passable.contains(end))
+            throw new RuntimeException("Destination cell is not passable.");
+        // TODO may just pick a cell nearby.
 
         // Set of cells already considered.
         Set<GridCell> closed = new HashSet<>();
@@ -235,7 +240,14 @@ public class Astar {
         return path;
     }
 
+    public void findPath(GridCell start, GridCell end) {
+        findTraversableNodes();
+        path = astar(start, end);
+    }
 
+    public List<GridCell> pathGetter() {
+        return path;
+    }
 
     /**
      * Draw the path that the search found.

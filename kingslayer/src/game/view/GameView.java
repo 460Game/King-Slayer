@@ -1,7 +1,10 @@
 package game.view;
 
+import game.ai.Astar;
+import game.message.toClient.NewEntityMessage;
 import game.message.toServer.GoDirectionMessage;
 import game.message.toServer.StopMessage;
+import game.model.game.grid.GridCell;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.worldObject.entity.Visitor;
 import javafx.animation.AnimationTimer;
@@ -11,8 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import static images.Images.GAME_CURSOR_IMAGE;
 import static util.Util.toWorldCoords;
@@ -20,6 +22,8 @@ import static util.Util.toWorldCoords;
 public class GameView {
 
     private ClientGameModel model;
+
+//    private Astar astar = new Astar(model);
 
     public GameView(ClientGameModel model) {
         this.model = model;
@@ -83,7 +87,14 @@ public class GameView {
         });
 
         scene.setOnMouseClicked(e -> {
-
+            double xdiff = e.getX() - worldPanel.getWidth() / 2;
+            double ydiff = e.getY() - worldPanel.getHeight() / 2;
+            double xCoords = toWorldCoords(xdiff);
+            double yCoords = toWorldCoords(ydiff);
+            double actualx = model.getLocalPlayer().data.x + xCoords;
+            double actualy = model.getLocalPlayer().data.y + yCoords;
+            model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, Math.atan2(actualy -
+                    model.getLocalPlayer().data.y, actualx - model.getLocalPlayer().data.x)));
         });
 
         scene.setOnMouseMoved(e -> {
@@ -93,6 +104,9 @@ public class GameView {
         int[] dir = {0,0};
 
         Set<KeyCode> currentlyPressed = new TreeSet<>();
+
+//        Set<GridCell> nextDestination = astar.getPassable();
+//        Iterator<GridCell> it = nextDestination.iterator();
 
         scene.setOnKeyPressed(e -> {
             if(currentlyPressed.contains(e.getCode()))
@@ -111,6 +125,27 @@ public class GameView {
 
             if (e.getCode() == KeyCode.ESCAPE)
                 exitPrompt.setVisible(true);
+
+//            if (e.getCode() == KeyCode.SPACE) {
+//                GridCell end = astar.getPassable().iterator().next();
+////                int startx = (int) model.getLocalPlayer().data.x;
+////                int starty = (int) model.getLocalPlayer().data.y;
+////                System.out.println("Start x, y: " + startx + ", " + starty);
+////                System.out.println("End x, y: " + end.getTopLeftX() + ", " + end.getTopLeftY());
+//                astar.findPath(model.getCell((int) model.getLocalPlayer().data.x, (int) model.getLocalPlayer().data.y),
+//                        end);
+//            }
+
+//            if (e.getCode() == KeyCode.ENTER) {
+//                GridCell end = it.next();
+////                int startx = (int) model.getLocalPlayer().data.x;
+////                int starty = (int) model.getLocalPlayer().data.y;
+////                System.out.println("Start x, y: " + startx + ", " + starty);
+////                System.out.println("End x, y: " + end.getTopLeftX() + ", " + end.getTopLeftY());
+//                astar.findPath(model.getCell((int) model.getLocalPlayer().data.x, (int) model.getLocalPlayer().data.y),
+//                        end);
+//                it.remove();
+//            }
 
             if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1)
                 //model.getLocalPlayer().runCommand(0, model);
