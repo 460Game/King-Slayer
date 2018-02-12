@@ -1,10 +1,9 @@
 package game.view;
 
-import game.message.toClient.NewEntityMessage;
 import game.message.toServer.GoDirectionMessage;
 import game.message.toServer.StopMessage;
 import game.model.game.model.ClientGameModel;
-import game.model.game.model.worldObject.entity.entities.Entities;
+import game.model.game.model.worldObject.entity.Visitor;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
@@ -16,7 +15,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import static images.Images.GAME_CURSOR_IMAGE;
-import static util.Const.*;
 import static util.Util.toWorldCoords;
 
 public class GameView {
@@ -115,7 +113,8 @@ public class GameView {
                 exitPrompt.setVisible(true);
 
             if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1)
-                model.getLocalPlayer().runCommand(0, model);
+                //model.getLocalPlayer().runCommand(0, model);
+                new Visitor.ShowPlacement().run(model.getLocalPlayer(), model);
 
             if(dir[0] == 0 && dir[1] == 0)
                 model.processMessage(new StopMessage(model.getLocalPlayer().id));
@@ -135,7 +134,7 @@ public class GameView {
                 dir[0]--;
 
             if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1)
-                model.getLocalPlayer().runCommand(1, model);
+                new Visitor.PlaceWall().run(model.getLocalPlayer(), model);
 
             if(dir[0] == 0 && dir[1] == 0)
                 model.processMessage(new StopMessage(model.getLocalPlayer().id));

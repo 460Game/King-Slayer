@@ -173,42 +173,6 @@ public class Entity implements Updatable, Drawable, AIable {
         this.data.hitbox.updateCells(this, model);
     }
 
-    /**
-     * TODO
-     * @param commandID
-     * @param model
-     */
-    public void runCommand(int commandID, GameModel model) {
-        if (this.team != Team.NEUTRAL) {
-//            if (drawStrat instanceof DirectionAnimationDrawStrat.RedKingDirectionAnimationDrawStrat ||
-//                drawStrat instanceof DirectionAnimationDrawStrat.BlueKingDirectionAnimationDrawStrat) {
-                switch (commandID) {
-                    case 0:
-                        ((DirectionAnimationDrawStrat) drawStrat).togglePlacementBox();
-                        break;
-                    case 1:
-                        ((DirectionAnimationDrawStrat) drawStrat).togglePlacementBox();
-                        double[] dir = {0, 0};
-                        if (((DirectionAnimationDrawStrat) drawStrat).drawData.direction == 'N')
-                            dir[1] = -1;
-                        else if (((DirectionAnimationDrawStrat) drawStrat).drawData.direction == 'E')
-                            dir[0] = 1;
-                        else if (((DirectionAnimationDrawStrat) drawStrat).drawData.direction == 'S')
-                            dir[1] = 1;
-                        else
-                            dir[0] = -1;
-                        System.out.println("in entity: " + data.x + " " + data.y);
-                        model.processMessage(new NewEntityMessage(Entities.makeBuiltWall(Math.floor(data.x) + 0.5 + dir[0],
-                            Math.floor(data.y) + 0.5 + dir[1])));
-                        break;
-                    default:
-                        System.out.println("Unknown command");
-                }
-//            }
-
-        }
-    }
-
     public String toString() {
         return "" + this.id + ": " + this.data.x + ", " + this.data.y;
     }

@@ -88,8 +88,8 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
               toDrawCoords(p.y),
               width,
               height,
-              toDrawCoords(entity.data.x) - width / 2,
-              toDrawCoords(entity.data.y) - height / 2,
+              toDrawCoords(entity.data.x - entity.data.hitbox.getWidth() / 2),
+              toDrawCoords(entity.data.y - entity.data.hitbox.getHeight() / 2),
               toDrawCoords(entity.data.hitbox.getWidth()),
               toDrawCoords(entity.data.hitbox.getHeight()));
     } catch (Exception e) {
