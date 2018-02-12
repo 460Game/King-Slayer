@@ -94,6 +94,11 @@ public class LobbyServer { //extends Application {
             public void getMsg(Message obj) {
                 serverGetMsg(obj);
             }
+
+            @Override
+            public void showLobbyTeamChoice() {
+                //only used by client
+            }
         });
 
 //        window.setTitle("Chat Server");
@@ -128,13 +133,15 @@ public class LobbyServer { //extends Application {
             remoteModel.syncClock();
         }
 
-        Log.info("finish syn!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        Log.info("finish syn!");
+        Log.info("model num: " + remoteModels.size());
 
         for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
+            System.out.println("server wants to start");
             remoteModel.clientMakeModel();
         }
 
-
+        Log.info("finish make model");
     }
     public void makeServerModel() {}
 
