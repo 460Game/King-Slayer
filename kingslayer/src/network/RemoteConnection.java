@@ -205,6 +205,7 @@ public class RemoteConnection {
         }
         (new Thread(this::sendQueueMsg, this.toString() + " Send Batched Message Thread")).start();
         (new Thread(this::consumeReceivedMsg, this.toString() + " Consume Msg Thread")).start();
+        (new Thread(this::consumeReceivedMsg, this.toString() + " Consume Msg Thread2")).start();
     }
     private void consumeReceivedMsg() {
         while (true) {
@@ -223,7 +224,7 @@ public class RemoteConnection {
         while (true) {
 
             try {
-                sleep(15);
+                sleep(5);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

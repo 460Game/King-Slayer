@@ -3,6 +3,7 @@ package network;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
+import com.esotericsoftware.minlog.Log;
 import game.message.*;
 import game.message.toClient.*;
 import game.message.toServer.*;
@@ -27,6 +28,9 @@ import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 import java.util.ArrayList;
 
 public class NetworkCommon {
+    static {
+        Log.set(Log.LEVEL_INFO);
+    }
 
     public static int port = 54555;
 

@@ -18,6 +18,10 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 public class LobbyClient {//extends Application {
+    static {
+        Log.set(Log.LEVEL_INFO);
+    }
+
     private RemoteConnection client;
     private ClientGameModel clientGameModel;
     private RemoteConnection.RemoteModel serverModel;

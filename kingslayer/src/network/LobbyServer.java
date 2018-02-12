@@ -16,6 +16,10 @@ import java.util.*;
 
 public class LobbyServer { //extends Application {
 
+    static {
+        Log.set(Log.LEVEL_INFO);
+    }
+
     private ServerGameModel serverModel;
     private RemoteConnection server;
     private Set<RemoteConnection.RemoteModel> remoteModels;
