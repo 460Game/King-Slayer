@@ -100,7 +100,7 @@ public class RemoteConnection {
                         messageQueues.put(connection.getID(), new LinkedBlockingQueue<>());
 
                         //TODO: might need to hard code here now, change it back!!!!!
-                        if (clientList.size() == 4) {
+                        if (clientList.size() == 3) {
                             adaptor.makeModel();
                         }
                     }
