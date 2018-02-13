@@ -21,9 +21,9 @@ public class CompositeHitbox extends Hitbox {
     private Hitbox b;
 
     @Override
-    public Set<GridCell> getCells(Entity entity, GameModel gameMap) {
-        Set<GridCell> set = a.getCells(entity, gameMap);
-        set.addAll(b.getCells(entity, gameMap));
+    public Set<GridCell> getCells(double x, double y, GameModel gameMap) {
+        Set<GridCell> set = a.getCells(x,y, gameMap);
+        set.addAll(b.getCells(x,y, gameMap));
         return set;
     }
 

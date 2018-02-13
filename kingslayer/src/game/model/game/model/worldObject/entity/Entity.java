@@ -185,4 +185,8 @@ public class Entity implements Updatable, Drawable, AIable {
     public String toString() {
         return "" + this.id + ": " + this.data.x + ", " + this.data.y;
     }
+
+    public boolean checkCollision(Hitbox hitbox, double x, double y) {
+        return Hitbox.testCollision(this.data.x, this.data.y, this.data.hitbox, x, y, hitbox);
+    }
 }

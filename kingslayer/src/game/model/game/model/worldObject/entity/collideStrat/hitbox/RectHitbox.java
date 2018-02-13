@@ -26,10 +26,10 @@ public class RectHitbox extends Hitbox {
     }
 
     @Override
-    public Set<GridCell> getCells(Entity entity, GameModel gameMap) {
+    public Set<GridCell> getCells(double x, double y, GameModel gameMap) {
         Set<GridCell> set = new HashSet<>();
-            for (int i = Math.max(0, (int) (entity.data.x - w)); i <= Math.min(Math.ceil(entity.data.x + w), Const.GRID_X_SIZE - 1); i++)
-                for (int j = Math.max(0, (int) (entity.data.y - h)); j <= Math.min(Math.ceil(entity.data.y + h), Const.GRID_Y_SIZE - 1); j++)
+            for (int i = Math.max(0, (int) (x - w)); i <= Math.min(Math.ceil(x + w), Const.GRID_X_SIZE - 1); i++)
+                for (int j = Math.max(0, (int) (y - h)); j <= Math.min(Math.ceil(y + h), Const.GRID_Y_SIZE - 1); j++)
                     set.add(gameMap.getCell(i, j));
         return set;
     }
