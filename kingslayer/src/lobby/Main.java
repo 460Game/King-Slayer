@@ -1,6 +1,7 @@
 package lobby;
 
 import com.esotericsoftware.minlog.Log;
+import game.model.game.model.team.Team;
 import game.singlePlayer.SingleplayerController;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -372,7 +373,11 @@ public class Main extends Application {
     }
 
     public void ready() {
-        lobbyClient.lobbyClientReady();
+        //TODO: get from the view later!!!!!!!!!!!
+        Enum<TeamChoice> team = null;
+        Enum<RoleChoice> role = null;
+
+        lobbyClient.lobbyClientReady(team, role);
     }
 
     private void joinGame(String host) throws Exception {

@@ -45,6 +45,7 @@ public class ServerGameModel extends GameModel {
     }
 
     public void init(Collection<? extends Model> clients) {
+
         this.clients = clients;
 
         // Send teamRoleEntityMap to client

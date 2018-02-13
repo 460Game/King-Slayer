@@ -10,6 +10,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import lobby.RoleChoice;
+import lobby.TeamChoice;
 import network.RemoteConnection;
 
 import java.util.*;
@@ -66,11 +68,11 @@ public class LobbyServer { //extends Application {
     public void start() throws Exception {
         server = new RemoteConnection(true, this, new NetWork2LobbyAdaptor() {
             @Override
-            public void init() {//should send the map
-                if (serverModel == null) {
-                    System.out.println("ServerModel is null");
-                    System.exit(-1);
-                }
+            public void serverInit(Enum<TeamChoice> team, Enum<RoleChoice> role) {//should send the map
+//                if (serverModel == null) {
+//                    System.out.println("ServerModel is null");
+//                    System.exit(-1);
+//                }
 
                 //TODO: change it to pingback later
                 try {
@@ -79,6 +81,8 @@ public class LobbyServer { //extends Application {
                     e.printStackTrace();
                 }
 
+
+                //TODO: put the enum parameters in
                 serverModel.init(remoteModels);
                 serverModel.start();
                 System.out.println("start the server model");
@@ -90,6 +94,11 @@ public class LobbyServer { //extends Application {
                     Log.info("server start client: " + remoteModel.connectId + "!!!!!!!!!!");
                     remoteModel.startModel();
                 }
+            }
+
+            @Override
+            public void clientInit() {
+                //should not use this
             }
 
             @Override

@@ -1,9 +1,12 @@
 package network;
 
 import game.message.Message;
+import lobby.RoleChoice;
+import lobby.TeamChoice;
 
 public interface NetWork2LobbyAdaptor {
-    public void init();
+    public void serverInit(Enum<TeamChoice> team, Enum<RoleChoice> role);
+    public void clientInit();
     public void makeModel();
     public void getMsg(Message obj);
 

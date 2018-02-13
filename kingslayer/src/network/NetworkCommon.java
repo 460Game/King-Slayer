@@ -24,6 +24,8 @@ import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
 import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateData;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
+import lobby.RoleChoice;
+import lobby.TeamChoice;
 
 import java.util.ArrayList;
 
@@ -133,7 +135,19 @@ public class NetworkCommon {
     }
 
     public static class ClientReadyMsg {
+        private Enum<TeamChoice> teamChoice;
+        private Enum<RoleChoice> roleChoice;
         public ClientReadyMsg() {}
+        public ClientReadyMsg(Enum<TeamChoice> team, Enum<RoleChoice> role) {
+            teamChoice = team;
+            roleChoice = role;
+        }
+        public Enum<TeamChoice> getTeam() {
+            return teamChoice;
+        }
+        public Enum<RoleChoice> getRole() {
+            return roleChoice;
+        }
     }
 
     public static class ClientStartModelMsg {

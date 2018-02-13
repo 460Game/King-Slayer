@@ -4,6 +4,8 @@ import com.esotericsoftware.kryonet.*;
 import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.model.game.model.*;
+import lobby.RoleChoice;
+import lobby.TeamChoice;
 import network.NetWork2LobbyAdaptor;
 
 import java.io.IOException;
@@ -105,11 +107,12 @@ public class RemoteConnection {
 
 
                     if (obj instanceof NetworkCommon.ClientReadyMsg) {
+                        NetworkCommon.ClientReadyMsg readyMsg = (NetworkCommon.ClientReadyMsg) obj;
                         readyClient++;
 
                         if (readyClient == clientList.size()) {
                             //works fine here
-                            adaptor.init();//send the map
+                            adaptor.serverInit(readyMsg.getTeam(), readyMsg.getRole());//try to init, if successful send the map
                             //also need to start game (make model)
                         }
                     }
@@ -174,7 +177,7 @@ public class RemoteConnection {
                     }
 
                     if (obj instanceof NetworkCommon.ClientStartModelMsg) {
-                        adaptor.init();
+                        adaptor.clientInit();
                     }
 
                     if (obj instanceof ArrayList) {
@@ -301,6 +304,11 @@ public class RemoteConnection {
         else client.stop();
     }
 
+    public void notifyReady(Enum<TeamChoice> team, Enum<RoleChoice> role) {
+        if (isServer) System.err.println("Server should not do this");
+        else client.sendTCP(new NetworkCommon.ClientReadyMsg(team, role));
+    }
+
     //if isServer, make client remoteModel
     public Set<RemoteModel> makeRemoteModel() {
         if (remoteModels != null) return remoteModels;
@@ -352,14 +360,14 @@ public class RemoteConnection {
             }
         }
 
-        public void notifyReady() {
-            if (!isServer) {
-                Log.debug("Client is ready");
-                client.sendTCP(new NetworkCommon.ClientReadyMsg());
-            } else {
-                Log.error("ERROR: Server should not call notifyReady");
-            }
-        }
+//        public void notifyReady() {
+//            if (!isServer) {
+//                Log.debug("Client is ready");
+//                client.sendTCP(new NetworkCommon.ClientReadyMsg());
+//            } else {
+//                Log.error("ERROR: Server should not call notifyReady");
+//            }
+//        }
 
         //call by server to ask the client to start the model
         public void startModel() {

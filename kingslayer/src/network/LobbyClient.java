@@ -10,6 +10,8 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lobby.Main;
+import lobby.RoleChoice;
+import lobby.TeamChoice;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,7 +45,12 @@ public class LobbyClient {//extends Application {
 
         client = new RemoteConnection(false, this, new NetWork2LobbyAdaptor() {
             @Override
-            public void init() {
+            public void serverInit(Enum<TeamChoice> team, Enum<RoleChoice> role) {
+                //should not use this
+            }
+
+            @Override
+            public void clientInit() {
                 Log.debug("client init");
 
                 gameView = new GameView(clientGameModel);
@@ -86,10 +93,11 @@ public class LobbyClient {//extends Application {
         clientGameModel.processMessage(msg);
     }
 
-    public void lobbyClientReady() {
+    public void lobbyClientReady(Enum<TeamChoice> team, Enum<RoleChoice> role) {
         //TODO: might have a bug here
         System.out.println("check null: " + serverModel);
-        serverModel.notifyReady();
+//        serverModel.notifyReady();
+        client.notifyReady(team, role);
     }
 
     //TODO rename this to makeModel
