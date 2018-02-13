@@ -51,11 +51,12 @@ public interface Visitor {
       if (model.placing != null) {
         System.out.println("moving to: " + x + " " + y);
 //        ((DirectionAnimationDrawStrat) entity.drawStrat).movePlacementBox(x, y);
-        model.placing = Entities.makeBuiltWall(x / TILE_PIXELS, y / TILE_PIXELS);
+        model.placing = Entities.makeBuiltWall(Math.floor((toDrawCoords(entity.data.x) - sceneWidth / 2 + x) / TILE_PIXELS) + 0.5,
+            Math.floor((toDrawCoords(entity.data.y) - sceneHeight / 2 + y) / TILE_PIXELS) + 0.5);
 
         model.processMessage(new DeleteEntityMessage(model.placingGhost));
-        model.placingGhost.data.x = Math.floor((toDrawCoords(entity.data.x) - sceneWidth / 2 + x) / TILE_PIXELS);
-        model.placingGhost.data.y = Math.floor((toDrawCoords(entity.data.y) - sceneHeight / 2 + y) / TILE_PIXELS);
+        model.placingGhost.data.x = Math.floor((toDrawCoords(entity.data.x) - sceneWidth / 2 + x) / TILE_PIXELS) + 0.5;
+        model.placingGhost.data.y = Math.floor((toDrawCoords(entity.data.y) - sceneHeight / 2 + y) / TILE_PIXELS) + 0.5;
         model.processMessage(new MakeEntityMessage(model.placingGhost));
       }
     }
@@ -78,6 +79,7 @@ public interface Visitor {
 //      else
 //        dir[0] = -1;
         // TODO check for possible placements
+        model.processMessage(new DeleteEntityMessage(model.placingGhost));
         model.processMessage(new MakeEntityMessage(model.placing));
 //          Entities.makeBuiltWall(Math.floor(entity.data.x) + 0.5 + dir[0],
 //          Math.floor(entity.data.y) + 0.5 + dir[1])));
