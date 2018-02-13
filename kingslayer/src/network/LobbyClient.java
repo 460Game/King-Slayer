@@ -77,6 +77,11 @@ public class LobbyClient {//extends Application {
                 Log.info("show lobby team choice");
                 lobbyAdaptor.showChoiceTeamAndRoleScene();
             }
+
+            @Override
+            public void serverLobbyComfirmTeamAndRole(Integer connId, Enum<TeamChoice> team, Enum<RoleChoice> role) {
+                //client don't use this
+            }
         });
     }
 

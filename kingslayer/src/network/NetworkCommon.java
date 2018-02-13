@@ -8,7 +8,9 @@ import game.message.*;
 import game.message.toClient.*;
 import game.message.toServer.*;
 import game.model.game.map.Tile;
+import game.model.game.model.team.Role;
 import game.model.game.model.team.TeamResourceData;
+import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
@@ -112,11 +114,13 @@ public class NetworkCommon {
         kryo.register(UpdateResourcesMessage.class);
         kryo.register(ActionMessage.class);
         kryo.register(GoDirectionMessage.class);
-//        kryo.register(GhostCollisionStrat.class);
-//        kryo.register(GhostCollisionStrat.class);
-//        kryo.register(GhostCollisionStrat.class);
-//        kryo.register(GhostCollisionStrat.class);
-//        kryo.register(GhostCollisionStrat.class);
+
+        kryo.register(TeamRoleEntityMap.class);
+        kryo.register(long[][].class);
+
+        kryo.register(long[].class);
+        kryo.register(Role.class);
+        kryo.register(Team.class);
 //        kryo.register(GhostCollisionStrat.class);
 //        kryo.register(GhostCollisionStrat.class);
 //        kryo.register(GhostCollisionStrat.class);

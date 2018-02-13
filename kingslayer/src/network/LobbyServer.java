@@ -1,18 +1,13 @@
 package network;
 
-import java.io.IOException;
-
 
 import com.esotericsoftware.minlog.Log;
 import game.message.Message;
+import game.model.game.model.ClientGameModel;
 import game.model.game.model.ServerGameModel;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
+import javafx.util.Pair;
 import lobby.RoleChoice;
 import lobby.TeamChoice;
-import network.RemoteConnection;
 
 import java.util.*;
 
@@ -22,9 +17,14 @@ public class LobbyServer { //extends Application {
         Log.set(Log.LEVEL_INFO);
     }
 
+
     private ServerGameModel serverModel;
     private RemoteConnection server;
     private Set<RemoteConnection.RemoteModel> remoteModels;
+
+    public Map<Integer, Pair<Enum<TeamChoice>, Enum<RoleChoice>>> conn2TeamAndRole = new HashMap<>();
+    public Map<Integer, ClientGameModel> conn2ClientGameModel = new HashMap<>();
+    public Map<RemoteConnection.RemoteModel, Pair<Enum<TeamChoice>, Enum<RoleChoice>>> clientGameModelToTeamAndRole;
 
 //    @Override
 //    public void start(Stage window) throws Exception {
@@ -64,15 +64,26 @@ public class LobbyServer { //extends Application {
 //        window.show();
 //    }
 
+    public LobbyServer() {
+        conn2TeamAndRole = new HashMap<>();
+        conn2ClientGameModel = new HashMap<>();
+        clientGameModelToTeamAndRole = new HashMap<>();
+    }
 
     public void start() throws Exception {
         server = new RemoteConnection(true, this, new NetWork2LobbyAdaptor() {
             @Override
             public void serverInit(Enum<TeamChoice> team, Enum<RoleChoice> role) {//should send the map
-//                if (serverModel == null) {
-//                    System.out.println("ServerModel is null");
-//                    System.exit(-1);
-//                }
+                //actually don't use the parameter team and role here
+
+                startGame();
+
+                //init the client to team role map
+                for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
+                    clientGameModelToTeamAndRole.put(remoteModel,
+                            conn2TeamAndRole.get(remoteModel.getConnectId()));
+                }
+
 
                 //TODO: change it to pingback later
                 try {
@@ -103,7 +114,7 @@ public class LobbyServer { //extends Application {
 
             @Override
             public void makeModel() {
-                startGame();//server makes model, and ask clients make model here
+                //startGame();//server makes model, and ask clients make model here
             }
 
             @Override
@@ -113,8 +124,14 @@ public class LobbyServer { //extends Application {
 
             @Override
             public void showLobbyTeamChoice() {
-                //only used by client
+
             }
+
+            @Override
+            public void serverLobbyComfirmTeamAndRole(Integer connId, Enum<TeamChoice> team, Enum<RoleChoice> role) {
+                conn2TeamAndRole.put(connId, new Pair<>(team, role));
+            }
+
         });
 
 //        window.setTitle("Chat Server");
