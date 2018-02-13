@@ -4,6 +4,7 @@ import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
+import game.model.game.model.worldObject.entity.collideStrat.GhostCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.HardCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CellHitbox;
 import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
@@ -91,12 +92,23 @@ public class Entities {
 
     public static Entity makeResourceCollectorRed(Double x, Double y) {
         return new Entity(x, y,
-            Team.NEUTRAL, // TODO team red
+            Team.ONE,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             ImageDrawStrat.RED_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
+            AIDoNothingStrat.SINGLETON);
+    }
+
+    public static Entity makeGhostWall(Double x, Double y) {
+        return new Entity(x, y,
+            Team.NEUTRAL,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            GhostCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            ImageDrawStrat.WALL_BUILDABLE_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
     }
 }

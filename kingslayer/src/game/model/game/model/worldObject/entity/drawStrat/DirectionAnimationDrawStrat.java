@@ -25,7 +25,10 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   public DrawData drawData = DrawData.makeAnimated();
   public int height = 32;
   public int width = 32;
+
   private boolean showPlacementbox = false;
+  private double boxX;
+  private double boxY;
 
   public static final DirectionAnimationDrawStrat RED_KING_ANIMATION = new RedKingDirectionAnimationDrawStrat();
   public static final DirectionAnimationDrawStrat BLUE_KING_ANIMATION = new BlueKingDirectionAnimationDrawStrat();
@@ -76,8 +79,8 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
       else
         dir[0] = -1;
       gc.setFill(new Color(1, 0, 0, 0.4));
-      gc.fillRect(toDrawCoords(Math.floor(entity.data.x) + 0.5 + dir[0]) - 16,
-          toDrawCoords(Math.floor(entity.data.y) + 0.5 + dir[1]) - 16, 32, 32);
+      gc.fillRect(boxX + toDrawCoords(dir[0]) - 16,
+          boxY + toDrawCoords(dir[1]) - 16, 32, 32);
       gc.setFill(Color.BLACK);
     }
 
@@ -122,8 +125,19 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     }
   }
 
-  public void togglePlacementBox() {
-    showPlacementbox = !showPlacementbox;
+  public void turnOnPlacementBox(double x, double y) {
+    showPlacementbox = true;
+    boxX = x;
+    boxY = y;
+  }
+
+  public void movePlacementBox(double x, double y) {
+    boxX = x;
+    boxY = y;
+  }
+
+  public void turnOffPlacementBox() {
+    showPlacementbox = false;
   }
 
   public double getDrawZ(EntityData entity) {
