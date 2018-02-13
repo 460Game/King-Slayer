@@ -114,7 +114,7 @@ public class LobbyServer { //extends Application {
 
             @Override
             public void makeModel() {
-                //startGame();//server makes model, and ask clients make model here
+//                startGame();//server makes model, and ask clients make model here
             }
 
             @Override
