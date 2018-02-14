@@ -30,8 +30,8 @@ public abstract class Const {
     public static final double NANOS_TO_SECONDS = 1e-9;
     public static final double SECONDS_TO_NANOS = 1e9;
 
-    public static final int NUM_TEAMS = 2;
-    public static final int NUM_ROLES = 2;
+    public static final int NUM_TEAMS = 3;
+    public static final int NUM_ROLES = 3;
 
     /**
      * Width of the game map, in terms of number of grid cells.

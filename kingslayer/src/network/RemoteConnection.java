@@ -49,6 +49,8 @@ public class RemoteConnection {
     Long t0 = null;
     Long t1 = null;
 
+    int numOfPlayer = 1;
+
     Map<Integer, LinkedBlockingQueue<Message>> messageQueues;
     LinkedBlockingQueue<Message> toBeConsumeMsgQueue;
     Set<RemoteModel> remoteModels;
@@ -102,7 +104,8 @@ public class RemoteConnection {
                         messageQueues.put(connection.getID(), new LinkedBlockingQueue<>());
 
                         //TODO: might need to hard code here now, change it back!!!!!
-                        if (clientList.size() == 4) {
+                        if (clientList.size() == numOfPlayer) {
+                            server.sendToAllTCP(new NetworkCommon.AllClientConnectMsg());
                             adaptor.makeModel();
                         }
                     }
@@ -167,7 +170,6 @@ public class RemoteConnection {
                     client.sendTCP("Client " + connection.getID() + " connected");
                     //use client ID for the queue for client use
                     messageQueues.put(client.getID(), new LinkedBlockingQueue<>());
-                    adaptor.showLobbyTeamChoice();
                 }
 
                 public void received (Connection connection, Object obj) {
@@ -188,6 +190,10 @@ public class RemoteConnection {
 
                     if (obj instanceof NetworkCommon.ClientStartModelMsg) {
                         adaptor.clientInit();
+                    }
+
+                    if (obj instanceof NetworkCommon.AllClientConnectMsg) {
+                        adaptor.showLobbyTeamChoice();
                     }
 
                     if (obj instanceof ArrayList) {

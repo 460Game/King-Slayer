@@ -30,6 +30,7 @@ import lobby.RoleChoice;
 import lobby.TeamChoice;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NetworkCommon {
     static {
@@ -121,10 +122,10 @@ public class NetworkCommon {
         kryo.register(long[].class);
         kryo.register(Role.class);
         kryo.register(Team.class);
-//        kryo.register(GhostCollisionStrat.class);
-//        kryo.register(GhostCollisionStrat.class);
-//        kryo.register(GhostCollisionStrat.class);
-//        kryo.register(GhostCollisionStrat.class);
+        kryo.register(AllClientConnectMsg.class);
+        kryo.register(HashMap.class);
+        kryo.register(GhostCollisionStrat.class);
+        kryo.register(TeamResourceData.Resource.class);
 //        kryo.register(GhostCollisionStrat.class);
 //        kryo.register(GhostCollisionStrat.class);
 //        kryo.register(GhostCollisionStrat.class);
@@ -156,6 +157,10 @@ public class NetworkCommon {
 
     public static class ClientStartModelMsg {
         public ClientStartModelMsg() {}
+    }
+
+    public static class AllClientConnectMsg {
+        public AllClientConnectMsg() {}
     }
 
     public static class SyncClockMsg {
