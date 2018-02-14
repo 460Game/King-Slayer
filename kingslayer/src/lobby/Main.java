@@ -260,7 +260,23 @@ public class Main extends Application {
     }
 
     private void connectForm() {
-        window.setScene(new Scene(ipForm(), 800, 500));
+        Platform.runLater(() -> window.setScene(ipFormScene()));
+//        window.setScene(new Scene(ipForm(), 800, 500));
+    }
+
+    private Scene ipFormScene() {
+        Group newRoot = new Group();
+        newRoot.getChildren().add(bgCanvas);
+        newRoot.getChildren().add(midCanvas);
+        Pane newPane = ipForm();
+        newRoot.getChildren().add(newPane);
+
+        Scene ret = new Scene(newRoot);
+        ret.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
+
+        setAnimator(newPane);
+
+        return ret;
     }
 
     public GridPane choiceTeamAndRolePane() {
@@ -302,7 +318,7 @@ public class Main extends Application {
 
     private GridPane ipForm() {
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setPadding(new Insets(window.getHeight()/2, 100, window.getHeight()/2 + 100, 100));
         grid.setVgap(5);
         grid.setHgap(5);
 
@@ -503,7 +519,7 @@ public class Main extends Application {
         lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
             @Override
             public void showChoiceTeamAndRoleScene() {
-                Platform.runLater(() -> window.setScene(new Scene(choiceTeamAndRolePane())));
+                Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
 //                window.setScene(new Scene(choiceTeamAndRoleScene()));
             }
         });
