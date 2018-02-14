@@ -79,12 +79,18 @@ public class WorldPanel extends Region {
 
             if (model.getLocalPlayer().role == Role.SLAYER) {
 //                double angle = Math.atan2(e.getY(), e.getX());
-                double clickX = e.getX();
-                double clickY = e.getY();
 
-                model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id, model.getLocalPlayer().data.x + .56,
-                        model.getLocalPlayer().data.y, 0));
+                double xCoords = toWorldCoords(e.getX() - getWidth() / 2);
+                double yCoords = toWorldCoords(e.getY() - getHeight() / 2);
+                double angle = Math.atan2(yCoords, xCoords);
+
+//                model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id, model.getLocalPlayer().data.x + .56,
+//                        model.getLocalPlayer().data.y, angle));
                 // 0.56 = arrow radius + player radius
+                model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id, model.getLocalPlayer().data.x + 0.56 * Math.cos(angle),
+                        model.getLocalPlayer().data.y + 0.56 * Math.sin(angle), angle));
+
+                // TODO problem when player running into own arrow
             }
 //            new Visitor.PlaceEntity().run(model.getLocalPlayer(), model);
         });

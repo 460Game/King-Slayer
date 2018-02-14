@@ -52,6 +52,7 @@ public class NetworkCommon {
         kryo.register(SetTileCommand.class);
         kryo.register(ToClientCommand.class);
         kryo.register(ToServerRequest.class);
+        kryo.register(ShootArrowRequest.class);
         kryo.register(Hitbox.class);
         kryo.register(CellHitbox.class);
         kryo.register(CircleHitbox.class);

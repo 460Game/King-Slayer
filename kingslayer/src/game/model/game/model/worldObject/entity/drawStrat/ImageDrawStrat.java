@@ -4,8 +4,11 @@ import com.esotericsoftware.minlog.Log;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
 import images.Images;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 import static util.Util.toDrawCoords;
 
@@ -61,6 +64,17 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
     public static class ArrowImageDrawStrat extends ImageDrawStrat {
 
+        private double angle;
+
+//        @Override
+//        Image getImage() {
+//            ImageView iv = new ImageView(Images.ARROW_IMAGE);
+//            iv.setRotate(angle);
+//            SnapshotParameters params = new SnapshotParameters();
+//            params.setFill(Color.TRANSPARENT);
+//            return iv.snapshot(params, null);
+//        }
+
         @Override
         Image getImage() {
             return Images.ARROW_IMAGE;
@@ -84,6 +98,18 @@ public abstract class ImageDrawStrat extends DrawStrat {
         @Override
         double getCenterY() {
             return 0.2;
+        }
+
+//        public ArrowImageDrawStrat(double angle) {
+//            this.angle = angle;
+//        }
+//
+//        public ArrowImageDrawStrat() {
+//
+//        }
+
+        private ArrowImageDrawStrat() {
+
         }
     }
 
