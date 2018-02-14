@@ -237,7 +237,7 @@ public class RemoteConnection {
     private void consumeReceivedMsg() {
         while (true) {
             try {
-                sleep(2);
+                sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

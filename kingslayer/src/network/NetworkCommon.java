@@ -127,7 +127,7 @@ public class NetworkCommon {
         kryo.register(HashMap.class);
         kryo.register(GhostCollisionStrat.class);
         kryo.register(TeamResourceData.Resource.class);
-//        kryo.register(GhostCollisionStrat.class);
+        kryo.register(ImageDrawStrat.TreasureImageDrawStrat.class);
 //        kryo.register(GhostCollisionStrat.class);
 //        kryo.register(GhostCollisionStrat.class);
 //        kryo.register(GhostCollisionStrat.class);
