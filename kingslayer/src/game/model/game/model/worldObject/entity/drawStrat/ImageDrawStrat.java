@@ -23,6 +23,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
     public static final ImageDrawStrat WALL_BUILDABLE_IMAGE_DRAW_STRAT = new WallBuildableImageDrawStrat();
     public static final ImageDrawStrat RED_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT = new RedResourceCollectorImageDrawStrat();
+    public static final ImageDrawStrat BLUE_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT = new BlueResourceCollectorImageDrawStrat();
 
     @Override
     public DrawData initDrawData() {
@@ -295,6 +296,36 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
 
         private RedResourceCollectorImageDrawStrat() {
+        }
+    }
+
+    public static class BlueResourceCollectorImageDrawStrat extends ImageDrawStrat {
+        @Override
+        Image getImage() {
+            return Images.BLUE_RESOURCE_COLLECTOR_IMAGE;
+        }
+
+        @Override
+        double getWidth() {
+            return 1;
+        }
+
+        @Override
+        double getHeight() {
+            return 1.75;
+        }
+
+        @Override
+        double getCenterX() {
+            return 0.5;
+        }
+
+        @Override
+        double getCenterY() {
+            return 0.5;
+        }
+
+        private BlueResourceCollectorImageDrawStrat() {
         }
     }
 

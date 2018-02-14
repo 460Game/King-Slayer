@@ -5,6 +5,8 @@ import game.message.toClient.NewEntityMessage;
 import game.message.toClient.RemoveEntityMessage;
 import game.message.toServer.MakeEntityMessage;
 import game.model.game.model.ClientGameModel;
+import game.model.game.model.team.Role;
+import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.Visitor;
@@ -61,33 +63,34 @@ public class WorldPanel extends Region {
         uiCanvas.setFocusTraversable(true);
 
         uiCanvas.setOnMouseClicked(e -> {
-            if (placing != null) {
-                model.processMessage(new MakeEntityMessage(placing,
-                    model.getLocalPlayer().team,
-                    TeamResourceData.Resource.WOOD,
-                    cost));
-                model.processMessage(new RemoveEntityMessage(placingGhost));
+            if (model.getLocalPlayer().role == Role.KING && placing != null) {
+                if (placing.data.hitbox.getCollidesWith(model, placing.data.x, placing.data.y).findAny().isPresent()) {
+                    model.processMessage(new MakeEntityMessage(placing,
+                        model.getLocalPlayer().team,
+                        TeamResourceData.Resource.WOOD,
+                        cost));
+                    model.processMessage(new RemoveEntityMessage(placingGhost));
+                }
                 placing = null;
             }
 //            new Visitor.PlaceEntity().run(model.getLocalPlayer(), model);
         });
 
         uiCanvas.setOnMouseMoved(e -> {
-            if (placing != null) {
+            if (model.getLocalPlayer().role == Role.KING && placing != null) {
                 //System.out.println("moving to: " + e.getSceneX() + " " + e.getSceneY());
                 placing.data.x = Math.floor((toDrawCoords(model.getLocalPlayer().data.x) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS) + 0.5;
                 placing.data.y = Math.floor((toDrawCoords(model.getLocalPlayer().data.y) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS) + 0.5;
 
                 placingGhost.data.x = Math.floor((toDrawCoords(model.getLocalPlayer().data.x) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS) + 0.5;
                 placingGhost.data.y = Math.floor((toDrawCoords(model.getLocalPlayer().data.y) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS) + 0.5;
-                //model.processMessage(new NewEntityMessage(placingGhost));
             }
 //            new Visitor.MoveEntity(e.getX(), e.getY(), uiCanvas.getWidth(), uiCanvas.getHeight()).run(model.getLocalPlayer(), model);
         });
 
         uiCanvas.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1) {
-                if (placing == null) {
+                if (model.getLocalPlayer().role == Role.KING && placing == null) {
                     cost = -1000;
                     placingGhost = Entities.makeGhostWall(0, 0);
                     placing = Entities.makeBuiltWall(0, 0);
@@ -96,11 +99,18 @@ public class WorldPanel extends Region {
             }
 
             if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2) {
-                if (placing == null) {
-                    cost = -20;
-                    placingGhost = Entities.makeResourceCollectorRedGhost(0, 0);
-                    placing = Entities.makeResourceCollectorRed(0, 0);
-                    model.processMessage(new NewEntityMessage(placingGhost));
+                if (model.getLocalPlayer().role == Role.KING && placing == null) {
+                    if (model.getLocalPlayer().team == Team.ONE) {
+                        cost = -20;
+                        placingGhost = Entities.makeResourceCollectorRedGhost(0, 0);
+                        placing = Entities.makeResourceCollectorRed(0, 0);
+                        model.processMessage(new NewEntityMessage(placingGhost));
+                    } else {
+                        cost = -20;
+                        placingGhost = Entities.makeResourceCollectorBlueGhost(0, 0);
+                        placing = Entities.makeResourceCollectorBlue(0, 0);
+                        model.processMessage(new NewEntityMessage(placingGhost));
+                    }
                 }
             }
         });

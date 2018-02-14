@@ -26,6 +26,8 @@ public class ServerGameModel extends GameModel {
 
     private Collection<? extends Model> clients = null;
 
+    private Map<? extends Model, Pair<Team, Role>> clientToTeamRoleMap;
+
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
 
     private TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
@@ -56,6 +58,7 @@ public class ServerGameModel extends GameModel {
     public void init(Collection<? extends Model> clients, Map<? extends Model, Pair<Team, Role>> clientToTeamRoleMap) {
 
         this.clients = clients;
+        this.clientToTeamRoleMap = clientToTeamRoleMap;
 
         // Send teamRoleEntityMap to client
         for(Model client : clients)
@@ -137,7 +140,7 @@ public class ServerGameModel extends GameModel {
             }
 
             for(Model model : clients) {
-                model.processMessage(new UpdateResourcesMessage(teamData.get(Team.ONE))); //TEMPORARY GARBAGE
+                model.processMessage(new UpdateResourcesMessage(teamData.get(clientToTeamRoleMap.get(model).getKey()))); //TEMPORARY GARBAGE
             }
 
         }

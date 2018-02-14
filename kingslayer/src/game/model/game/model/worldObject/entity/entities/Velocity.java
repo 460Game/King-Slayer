@@ -32,7 +32,7 @@ public class Velocity {
      */
     public Velocity() {
         this(0,0);
-        angle = PI * 2;
+        angle = PI * 0.5;
     }
 
     /**
