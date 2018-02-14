@@ -11,10 +11,7 @@ import game.model.game.model.worldObject.entity.collideStrat.TreasureGhostCollis
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CellHitbox;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CircleHitbox;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
-import game.model.game.model.worldObject.entity.drawStrat.GhostDrawStrat;
-import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
-import game.model.game.model.worldObject.entity.drawStrat.NoDrawStrat;
-import game.model.game.model.worldObject.entity.drawStrat.RotatingImageDrawStrat;
+import game.model.game.model.worldObject.entity.drawStrat.*;
 import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
 import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
 
@@ -126,13 +123,13 @@ public class Entities {
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            ImageDrawStrat.RED_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
+            UpgradableImageDrawStrat.RED_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
     }
 
     public static Entity makeResourceCollectorRedGhost(double x, double y) {
         return new Entity(x, y,
-            Team.ONE,
+            Team.NEUTRAL,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
@@ -148,13 +145,13 @@ public class Entities {
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            ImageDrawStrat.BLUE_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
+            UpgradableImageDrawStrat.BLUE_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
     }
 
     public static Entity makeResourceCollectorBlueGhost(double x, double y) {
         return new Entity(x, y,
-            Team.TWO,
+            Team.NEUTRAL,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,

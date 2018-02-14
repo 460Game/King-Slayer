@@ -13,6 +13,8 @@ public abstract class Images {
     public static final Image WALL_BUILDABLE_IMAGE = getImage("wall_buildable.png");
     public static final Image RED_RESOURCE_COLLECTOR_IMAGE = getImage("resource_collector_red.png");
     public static final Image BLUE_RESOURCE_COLLECTOR_IMAGE = getImage("resource_collector_blue.png");
+    public static final Image RED_RESOURCE_COLLECTORS_IMAGE = getImage("resource_collectors_red.png");
+    public static final Image BLUE_RESOURCE_COLLECTORS_IMAGE = getImage("resource_collectors_blue.png");
 
     public static final Image TREASURE_IMAGE = getImage("treasure.png");
     public static final Image ARROW_IMAGE = getImage("arrow.png");

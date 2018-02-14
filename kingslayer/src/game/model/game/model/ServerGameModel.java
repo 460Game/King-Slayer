@@ -141,14 +141,18 @@ public class ServerGameModel extends GameModel {
              //   }
 
             counter++;
+            int resources = 0;
             for(Entity e: this.getAllEntities()) {
                 if (e.team != Team.NEUTRAL && e.role == Role.NEUTRAL) {
+                    resources++;
                     if (counter > 500) {
+                        System.out.println("Team " + e.team + " has a resource spawner");
                         changeResource(e.team, TeamResourceData.Resource.WOOD, 1);
                         counter = 0;
                     }
                 }
             }
+            //System.out.println("How much wood? " + resources);
 
             for(Model model : clients) {
                 model.processMessage(new UpdateResourceCommand(teamData.get(clientToTeamRoleMap.get(model).getKey()))); //TEMPORARY GARBAGE
