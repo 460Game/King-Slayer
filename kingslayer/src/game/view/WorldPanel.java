@@ -26,6 +26,7 @@ import javafx.scene.transform.Affine;
 
 import static util.Const.*;
 import static util.Const.TILE_PIXELS;
+import static util.Util.angle2Points;
 import static util.Util.toDrawCoords;
 import static util.Util.toWorldCoords;
 
@@ -105,12 +106,16 @@ public class WorldPanel extends Region {
 
         uiCanvas.setOnMouseMoved(e -> {
             if (model.getLocalPlayer() != null && model.getLocalPlayer().role == Role.KING && placing != null) {
-                //System.out.println("moving to: " + e.getSceneX() + " " + e.getSceneY());
-                placing.data.x = Math.floor((toDrawCoords(model.getLocalPlayer().data.x) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS) + 0.5;
-                placing.data.y = Math.floor((toDrawCoords(model.getLocalPlayer().data.y) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS) + 0.5;
+                double placingX = Math.floor((toDrawCoords(model.getLocalPlayer().data.x) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS) + 0.5;
+                double placingY = Math.floor((toDrawCoords(model.getLocalPlayer().data.y) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS) + 0.5;
+                if (Math.sqrt(Math.pow(model.getLocalPlayer().data.x - placingX, 2) + Math.pow(model.getLocalPlayer().data.y - placingY, 2)) < 5) {
+                    //System.out.println("moving to: " + e.getSceneX() + " " + e.getSceneY());
+                    placing.data.x = placingX;
+                    placing.data.y = placingY;
 
-                placingGhost.data.x = Math.floor((toDrawCoords(model.getLocalPlayer().data.x) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS) + 0.5;
-                placingGhost.data.y = Math.floor((toDrawCoords(model.getLocalPlayer().data.y) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS) + 0.5;
+                    placingGhost.data.x = placingX;
+                    placingGhost.data.y = placingY;
+                }
             }
         });
 
