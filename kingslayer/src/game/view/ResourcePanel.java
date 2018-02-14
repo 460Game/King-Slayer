@@ -2,6 +2,7 @@ package game.view;
 
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.GameModel;
+import game.model.game.model.team.TeamResourceData;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.layout.*;
@@ -31,6 +32,8 @@ public class ResourcePanel extends Region {
     }
 
     public void updateResources() {
-        text.setText("WOOD " + model.getResourceData().getWood()+ "   STONE " + model.getResourceData().getStone() + "   METAL " + model.getResourceData().getMetal());
+        text.setText("WOOD " + model.getResourceData().getResource(TeamResourceData.Resource.WOOD)+ "   STONE " +
+            model.getResourceData().getResource(TeamResourceData.Resource.STONE) + "   METAL " +
+            model.getResourceData().getResource(TeamResourceData.Resource.METAL));
     }
 }

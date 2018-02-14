@@ -1,5 +1,8 @@
 package game.model.game.model.team;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This class holds the data for the whole team. Most of this
  * data is simply the resource counter for a team. This should
@@ -7,20 +10,34 @@ package game.model.game.model.team;
  */
 public class TeamResourceData {
 
-    /**
-     * Amount of wood resources on the team.
-     */
-    private int woodAmount;
+    public enum Resource {
+        WOOD(0),
+        STONE(1),
+        METAL(2);
 
-    /**
-     * Amount of stone resources on the team.
-     */
-    private int stoneAmount;
+        public int id;
 
-    /**
-     * Amount of metal resources on the team.
-     */
-    private int metalAmount;
+        Resource(int id) {
+            this.id = id;
+        }
+    }
+
+    private Map<Resource, Integer> resources = new HashMap<>();
+
+//    /**
+//     * Amount of wood resources on the team.
+//     */
+//    private int woodAmount;
+//
+//    /**
+//     * Amount of stone resources on the team.
+//     */
+//    private int stoneAmount;
+//
+//    /**
+//     * Amount of metal resources on the team.
+//     */
+//    private int metalAmount;
 
     //Get the IDs of a player
     // so the first king would be playerIds[King.val][0]
@@ -32,40 +49,20 @@ public class TeamResourceData {
      * has 0 of all resources.
      */
     public TeamResourceData() {
-        woodAmount = 0;
-        stoneAmount = 0;
-        metalAmount = 0;
+        resources.put(Resource.WOOD, 100);
+        resources.put(Resource.STONE, 0);
+        resources.put(Resource.METAL, 0);
+
+//        woodAmount = 0;
+//        stoneAmount = 0;
+//        metalAmount = 0;
     }
 
-    /**
-     * Gets the amount of wood on the team.
-     * @return the amount of wood on the team
-     */
-    public int getWood() {
-        return woodAmount;
+    public int getResource(Resource r) {
+        return resources.get(r);
     }
 
-    /**
-     * Gets the amount of stone on the team.
-     * @return the amount of stone on the team
-     */
-    public int getStone() {
-        return stoneAmount;
-    }
-
-    /**
-     * Gets the amount of metal on the team.
-     * @return the amount of metal on the team
-     */
-    public int getMetal() {
-        return metalAmount;
-    }
-
-    /**
-     * TODO
-     * @param i
-     */
-    public void increaseWood(int i) {
-        woodAmount++;
+    public void setResource(Resource r, int num) {
+        resources.put(r, num);
     }
 }
