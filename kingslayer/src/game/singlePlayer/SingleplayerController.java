@@ -19,6 +19,7 @@ public class SingleplayerController extends Application {
     public void start(Stage primaryStage) throws Exception {
         ServerGameModel serverModel = new ServerGameModel();
         ClientGameModel clientModel = new ClientGameModel(new CopyingModelWrapper(serverModel));
+
         serverModel.init(Collections.singleton(new CopyingModelWrapper(clientModel)));
         serverModel.start();
 
