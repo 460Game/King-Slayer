@@ -1,8 +1,14 @@
 package game.view;
 
 import com.esotericsoftware.minlog.Log;
+import game.message.toClient.NewEntityMessage;
+import game.message.toClient.RemoveEntityMessage;
+import game.message.toServer.MakeEntityMessage;
 import game.model.game.model.ClientGameModel;
+import game.model.game.model.team.TeamResourceData;
+import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.Visitor;
+import game.model.game.model.worldObject.entity.entities.Entities;
 import javafx.animation.AnimationTimer;
 import javafx.beans.InvalidationListener;
 import javafx.scene.Parent;
@@ -14,9 +20,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 
-import static util.Const.GRID_X_SIZE;
-import static util.Const.GRID_Y_SIZE;
-import static util.Const.WATER_ANIM_PERIOD;
+import static util.Const.*;
+import static util.Const.TILE_PIXELS;
 import static util.Util.toDrawCoords;
 import static util.Util.toWorldCoords;
 
@@ -31,6 +36,9 @@ public class WorldPanel extends Region {
     private Canvas uiCanvas;
     private GraphicsContext fgGC;
     private GraphicsContext bgGC;
+
+    public Entity placing;
+    public Entity placingGhost;
 
     WorldPanel(ClientGameModel model) {
         this.model = model;
@@ -52,19 +60,41 @@ public class WorldPanel extends Region {
         uiCanvas.setFocusTraversable(true);
 
         uiCanvas.setOnMouseClicked(e -> {
-            new Visitor.PlaceEntity().run(model.getLocalPlayer(), model);
+            if (placing != null) {
+                model.processMessage(new MakeEntityMessage(placing,
+                    model.getLocalPlayer().team,
+                    TeamResourceData.Resource.WOOD,
+                    -10));
+                model.processMessage(new RemoveEntityMessage(placingGhost));
+                placing = null;
+            }
+//            new Visitor.PlaceEntity().run(model.getLocalPlayer(), model);
         });
 
         uiCanvas.setOnMouseMoved(e -> {
-            new Visitor.MoveEntity(e.getX(), e.getY(), uiCanvas.getWidth(), uiCanvas.getHeight()).run(model.getLocalPlayer(), model);
+            if (placing != null) {
+                //System.out.println("moving to: " + e.getSceneX() + " " + e.getSceneY());
+                placing.data.x = Math.floor((toDrawCoords(model.getLocalPlayer().data.x) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS) + 0.5;
+                placing.data.y = Math.floor((toDrawCoords(model.getLocalPlayer().data.y) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS) + 0.5;
+
+                placingGhost.data.x = Math.floor((toDrawCoords(model.getLocalPlayer().data.x) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS) + 0.5;
+                placingGhost.data.y = Math.floor((toDrawCoords(model.getLocalPlayer().data.y) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS) + 0.5;
+                //model.processMessage(new NewEntityMessage(placingGhost));
+            }
+//            new Visitor.MoveEntity(e.getX(), e.getY(), uiCanvas.getWidth(), uiCanvas.getHeight()).run(model.getLocalPlayer(), model);
         });
 
         uiCanvas.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1)
-                new Visitor.ShowPlacement(0, 0).run(model.getLocalPlayer(), model);
+            if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1) {
+                if (placing == null) {
+                    placingGhost = Entities.makeGhostWall(0, 0);
+                    placing = Entities.makeBuiltWall(0, 0);
+                    model.processMessage(new NewEntityMessage(placingGhost));
+                }
+            }
 
-            if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2)
-                new Visitor.ShowPlacement(0, 0).run(model.getLocalPlayer(), model);
+//            if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2)
+//                new Visitor.ShowPlacement(0, 0).run(model.getLocalPlayer(), model);
         });
     }
 

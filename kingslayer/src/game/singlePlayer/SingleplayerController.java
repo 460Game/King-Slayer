@@ -26,8 +26,9 @@ public class SingleplayerController extends Application {
         ServerGameModel serverModel = new ServerGameModel();
         ClientGameModel clientModel = new ClientGameModel(new CopyingModelWrapper(serverModel));
         Map<Model, Pair<Team, Role>> testingMap = new HashMap<>();
-        testingMap.put(clientModel, new Pair<>(Team.ONE, Role.KING));
-        serverModel.init(Collections.singleton(new CopyingModelWrapper(clientModel)), testingMap);
+        Model clientGameModel2 = new CopyingModelWrapper(clientModel);
+        testingMap.put(clientGameModel2, new Pair<>(Team.ONE, Role.KING));
+        serverModel.init(Collections.singleton(clientGameModel2), testingMap);
         serverModel.start();
 
         GameView gameView = new GameView(clientModel);

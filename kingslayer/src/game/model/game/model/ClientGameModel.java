@@ -21,9 +21,6 @@ public class ClientGameModel extends GameModel {
 
     private long localPlayer;
 
-    public Entity placing;
-    public Entity placingGhost;
-
     public Entity getLocalPlayer() {
         return this.getEntityById(localPlayer);
     }

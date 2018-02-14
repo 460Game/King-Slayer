@@ -19,7 +19,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
     public static final ImageDrawStrat METAL_IMAGE_DRAW_STRAT = new MetalImageDrawStrat();
     public static final ImageDrawStrat WALL_IMAGE_DRAW_STRAT = new WallImageDrawStrat();
     public static final ImageDrawStrat BOX_IMAGE_DRAW_STRAT = new BoxImageDrawStrat();
-    public static final ImageDrawStrat TREASURE_IMAGE_DRAW_STRAT = new TreasureImageDrawStrat(); //TODO implement
+    public static final ImageDrawStrat TREASURE_IMAGE_DRAW_STRAT = new TreasureImageDrawStrat();
 
     public static final ImageDrawStrat WALL_BUILDABLE_IMAGE_DRAW_STRAT = new WallBuildableImageDrawStrat();
     public static final ImageDrawStrat RED_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT = new RedResourceCollectorImageDrawStrat();
@@ -58,30 +58,29 @@ public abstract class ImageDrawStrat extends DrawStrat {
     }
 
     public static class TreasureImageDrawStrat extends ImageDrawStrat {
-        // TODO
         @Override
         Image getImage() {
-            return null;
+            return Images.TREASURE_IMAGE;
         }
 
         @Override
         double getWidth() {
-            return 0;
+            return 0.6;
         }
 
         @Override
         double getHeight() {
-            return 0;
+            return 0.6;
         }
 
         @Override
         double getCenterX() {
-            return 0;
+            return 0.5;
         }
 
         @Override
         double getCenterY() {
-            return 0;
+            return 0.5;
         }
 
         private TreasureImageDrawStrat() {
