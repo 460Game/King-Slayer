@@ -28,44 +28,6 @@ public class LobbyServer { //extends Application {
     public Map<Integer, ClientGameModel> conn2ClientGameModel = new HashMap<>();
     public Map<RemoteConnection.RemoteModel, Pair<Team, Role>> clientGameModelToTeamAndRole;
 
-//    @Override
-//    public void start(Stage window) throws Exception {
-//        server = new RemoteConnection(true, this, new NetWork2LobbyAdaptor() {
-//            @Override
-//            public void init() {//should send the map
-//                serverModel.init(remoteModels);
-//                serverModel.start();
-//
-//                Log.info(remoteModels.size() + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//                for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
-//                    Log.info("server start client: " + remoteModel.connectId + "!!!!!!!!!!");
-//                    remoteModel.startModel();
-//                }
-//            }
-//
-//            @Override
-//            public void makeModel() {
-//
-//            }
-//
-//            @Override
-//            public void getMsg(Message obj) {
-//                serverGetMsg(obj);
-//            }
-//        });
-//
-//        window.setTitle("Chat Server");
-//
-//        Button startB = new Button("start button");
-//        startB.setOnAction(a -> {
-//            startGame();
-//        });
-//
-//        Scene scene = new Scene(startB, 200, 100);
-//        window.setScene(scene);
-//        window.show();
-//    }
-
     public LobbyServer() {
         conn2TeamAndRole = new HashMap<>();
         conn2ClientGameModel = new HashMap<>();
@@ -77,16 +39,9 @@ public class LobbyServer { //extends Application {
     }
 
     public void start() throws Exception {
-        server = new RemoteConnection(true, this, new NetWork2LobbyAdaptor() {
+        server = new RemoteConnection(true, new NetWork2LobbyAdaptor() {
             @Override
-            public void serverInit(Team team, Role role) {//should send the map
-                //actually don't use the parameter team and role here
-
-//                startGame();
-
-//                for (Map.Entry<Integer, Pair<Team, Role>> entry : conn2TeamAndRole.entrySet()) {
-//                    System.out.println(entry.getValue().getKey() + " " + entry.getValue().getValue());
-//                }
+            public void serverInit() {//should send the map
 
                 //init the client to team role map
                 for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
@@ -141,24 +96,8 @@ public class LobbyServer { //extends Application {
             }
 
         });
-
-//        window.setTitle("Chat Server");
-//
-
-//        Button startB = new Button("start button");
-//        startB.setOnAction(a -> {
-//            startGame();
-//        });
-//
-//        Scene scene = new Scene(startB, 200, 100);
-//        window.setScene(scene);
-//        window.show();
     }
 
-//    public static void main(String[] args) throws IOException {
-//        Log.set(Log.LEVEL_DEBUG);
-//        Application.launch();
-//    }
 
     //TODO implement this
     public void serverGetMsg(Message msg) {

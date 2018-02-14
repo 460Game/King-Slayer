@@ -65,7 +65,7 @@ public class RemoteConnection {
         numOfPlayer = num;
     }
 
-    public RemoteConnection(boolean isServer, Object lobby, NetWork2LobbyAdaptor adaptor) throws IOException {
+    public RemoteConnection(boolean isServer, NetWork2LobbyAdaptor adaptor) throws IOException {
         Log.set(Log.LEVEL_INFO);
         this.isServer = isServer;
         this.adaptor = adaptor;
@@ -118,7 +118,7 @@ public class RemoteConnection {
                     if (obj instanceof NetworkCommon.ClientFinishMakingModelMsg) {
                         cntClientModelsMade++;
                         if (cntClientModelsMade == clientList.size()) {
-                            adaptor.serverInit(null, null);
+                            adaptor.serverInit();
                         }
                     }
 
@@ -240,7 +240,6 @@ public class RemoteConnection {
         }
         (new Thread(this::sendQueueMsg, this.toString() + " Send Batched Message Thread")).start();
         (new Thread(this::consumeReceivedMsg, this.toString() + " Consume Msg Thread")).start();
-//        (new Thread(this::consumeReceivedMsg, this.toString() + " Consume Msg Thread2")).start();
     }
     private void consumeReceivedMsg() {
         while (true) {
@@ -315,11 +314,6 @@ public class RemoteConnection {
 
     }
 
-//    public void clientReady() {
-//        if (isServer) Log.error("server should not do this");
-//        client.sendTCP(new NetworkCommon.ClientReadyMsg());
-//    }
-
     public void stop() {
         if (isServer) server.stop();
         else client.stop();
@@ -386,15 +380,6 @@ public class RemoteConnection {
                 Log.error("ERROR: client start the game");
             }
         }
-
-//        public void notifyReady() {
-//            if (!isServer) {
-//                Log.debug("Client is ready");
-//                client.sendTCP(new NetworkCommon.ClientReadyMsg());
-//            } else {
-//                Log.error("ERROR: Server should not call notifyReady");
-//            }
-//        }
 
         //call by server to ask the client to start the model
         public void startModel() {
