@@ -222,7 +222,14 @@ public class RemoteConnection {
     }
     private void consumeReceivedMsg() {
         while (true) {
-
+            if (remoteModels == null) {
+                try {
+                    sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                continue;
+            }
             try {
                 sleep(2);
             } catch (InterruptedException e) {
