@@ -106,7 +106,7 @@ public class WorldPanel extends Region {
         uiCanvas.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1) {
                 if (model.getLocalPlayer().role == Role.KING && placing == null) {
-                    cost = -1000;
+                    cost = -100;
                     placingGhost = Entities.makeGhostWall(0, 0);
                     placing = Entities.makeBuiltWall(0, 0);
                     model.processMessage(new NewEntityCommand(placingGhost));

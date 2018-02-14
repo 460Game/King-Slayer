@@ -29,6 +29,8 @@ public class ServerGameModel extends GameModel {
 
     private Map<? extends Model, Pair<Team, Role>> clientToTeamRoleMap;
 
+    private int counter = 0; // GARBAGE
+
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
 
     private TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
@@ -138,14 +140,18 @@ public class ServerGameModel extends GameModel {
              //       e.printStackTrace();
              //   }
 
+            counter++;
             for(Entity e: this.getAllEntities()) {
                 if (e.team != Team.NEUTRAL && e.role == Role.NEUTRAL) {
-                    changeResource(e.team, TeamResourceData.Resource.WOOD, 1);
+                    if (counter > 500) {
+                        changeResource(e.team, TeamResourceData.Resource.WOOD, 1);
+                        counter = 0;
+                    }
                 }
             }
 
             for(Model model : clients) {
-                model.processMessage(new UpdateResourceCommand(teamData.get(Team.ONE))); //TEMPORARY GARBAGE
+                model.processMessage(new UpdateResourceCommand(teamData.get(clientToTeamRoleMap.get(model).getKey()))); //TEMPORARY GARBAGE
             }
 
         }

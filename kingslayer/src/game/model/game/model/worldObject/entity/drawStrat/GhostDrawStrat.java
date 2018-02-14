@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 
 import static util.Util.toDrawCoords;
 
-public class GhostDrawStrat extends DrawStrat {
+public class GhostDrawStrat extends ImageDrawStrat {
 
   public static final WallGhostDrawStrat GHOSTWALL = new WallGhostDrawStrat();
 
@@ -21,18 +21,44 @@ public class GhostDrawStrat extends DrawStrat {
     return null;
   }
 
+  @Override
   public Image getImage() {
     return null;
   }
 
   @Override
+  double getWidth() {
+    return 0;
+  }
+
+  @Override
+  double getHeight() {
+    return 0;
+  }
+
+  @Override
+  double getCenterX() {
+    return 0;
+  }
+
+  @Override
+  double getCenterY() {
+    return 0;
+  }
+
+  @Override
   public void draw(Entity entity, GraphicsContext gc) {
+    double w = this.getWidth();
+    double h = this.getHeight();
+    double x = w - this.getCenterX();
+    double y = h - this.getCenterY();
+
     gc.setGlobalAlpha(0.5);
     gc.drawImage(getImage(),
-        toDrawCoords(entity.data.x - entity.data.hitbox.getWidth() / 2),
-        toDrawCoords(entity.data.y - entity.data.hitbox.getHeight() / 2),
-        toDrawCoords(entity.data.hitbox.getWidth()),
-        toDrawCoords(entity.data.hitbox.getHeight()));
+        toDrawCoords(entity.data.x - x),
+        toDrawCoords(entity.data.y - y),
+        toDrawCoords(w),
+        toDrawCoords(h));
     gc.setGlobalAlpha(1.0);
   }
 
@@ -45,6 +71,29 @@ public class GhostDrawStrat extends DrawStrat {
     @Override
     public Image getImage() {
       return Images.WALL_BUILDABLE_IMAGE;
+    }
+
+    @Override
+    double getWidth() {
+      return 1;
+    }
+
+    @Override
+    double getHeight() {
+      return 1;
+    }
+
+    @Override
+    double getCenterX() {
+      return 0.5;
+    }
+
+    @Override
+    double getCenterY() {
+      return 0.5;
+    }
+
+    private WallGhostDrawStrat() {
     }
   }
 }
