@@ -37,8 +37,9 @@ public class WorldPanel extends Region {
     private GraphicsContext fgGC;
     private GraphicsContext bgGC;
 
-    public Entity placing;
-    public Entity placingGhost;
+    private Entity placing;
+    private Entity placingGhost;
+    private int cost;
 
     WorldPanel(ClientGameModel model) {
         this.model = model;
@@ -64,7 +65,7 @@ public class WorldPanel extends Region {
                 model.processMessage(new MakeEntityMessage(placing,
                     model.getLocalPlayer().team,
                     TeamResourceData.Resource.WOOD,
-                    -10));
+                    cost));
                 model.processMessage(new RemoveEntityMessage(placingGhost));
                 placing = null;
             }
@@ -87,6 +88,7 @@ public class WorldPanel extends Region {
         uiCanvas.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1) {
                 if (placing == null) {
+                    cost = -1000;
                     placingGhost = Entities.makeGhostWall(0, 0);
                     placing = Entities.makeBuiltWall(0, 0);
                     model.processMessage(new NewEntityMessage(placingGhost));
@@ -95,6 +97,7 @@ public class WorldPanel extends Region {
 
             if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2) {
                 if (placing == null) {
+                    cost = -20;
                     placingGhost = Entities.makeResourceCollectorRedGhost(0, 0);
                     placing = Entities.makeResourceCollectorRed(0, 0);
                     model.processMessage(new NewEntityMessage(placingGhost));
