@@ -19,6 +19,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
@@ -66,29 +67,39 @@ public class WorldPanel extends Region {
         uiCanvas.setFocusTraversable(true);
 
         uiCanvas.setOnMouseClicked(e -> {
-            if (model.getLocalPlayer().role == Role.KING && placing != null) {
-                if (placingGhost.data.hitbox.getCollidesWith(model, placingGhost.data.x, placingGhost.data.y).toArray().length <= 1) {
-                    model.processMessage(new MakeEntityRequest(placing,
-                        model.getLocalPlayer().team,
-                        TeamResourceData.Resource.WOOD,
-                        cost));
-                }
-                model.removeByID(placingGhost.id);
-                placing = null;
-            } else if (model.getLocalPlayer().role == Role.SLAYER) {
+            if (e.getButton() == MouseButton.PRIMARY) {
+                if (model.getLocalPlayer().role == Role.KING && placing != null) {
+                    if (placingGhost.data.hitbox.getCollidesWith(model, placingGhost.data.x, placingGhost.data.y)
+                        .toArray().length <= 1) {
+                        model.processMessage(new MakeEntityRequest(placing,
+                            model.getLocalPlayer().team,
+                            TeamResourceData.Resource.WOOD,
+                            cost));
+                    }
+                    model.removeByID(placingGhost.id);
+                    placing = null;
+                } else if (model.getLocalPlayer().role == Role.SLAYER) {
 //                double angle = Math.atan2(e.getY(), e.getX());
 
-                double xCoords = toWorldCoords(e.getX() - getWidth() / 2);
-                double yCoords = toWorldCoords(e.getY() - getHeight() / 2);
-                double angle = Math.atan2(yCoords, xCoords);
+                    double xCoords = toWorldCoords(e.getX() - getWidth() / 2);
+                    double yCoords = toWorldCoords(e.getY() - getHeight() / 2);
+                    double angle = Math.atan2(yCoords, xCoords);
 
 //                model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id, model.getLocalPlayer().data.x + .56,
 //                        model.getLocalPlayer().data.y, angle));
-                // 0.56 = arrow radius + player radius
-                model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id, model.getLocalPlayer().data.x + 0.56 * Math.cos(angle),
-                        model.getLocalPlayer().data.y + 0.56 * Math.sin(angle), angle));
+                    // 0.56 = arrow radius + player radius
+                    model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
+                        model.getLocalPlayer().data.x + 0.56 * Math.cos(angle),
+                        model.getLocalPlayer().data.y + 0.56 * Math.sin(angle),
+                        angle));
 
-                // TODO problem when player running into own arrow
+                    // TODO problem when player running into own arrow
+                }
+            } else if (e.getButton() == MouseButton.SECONDARY) {
+                if (model.getLocalPlayer().role == Role.KING && placing != null) {
+                    model.removeByID(placingGhost.id);
+                    placing = null;
+                }
             }
         });
 
