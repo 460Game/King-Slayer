@@ -103,6 +103,17 @@ public class Entities {
             AIDoNothingStrat.SINGLETON);
     }
 
+    public static Entity makeGhostWall(double x, double y) {
+        return new Entity(x, y,
+            Team.NEUTRAL,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            GhostCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            ImageDrawStrat.WALL_BUILDABLE_IMAGE_DRAW_STRAT,//GhostDrawStrat.GHOSTWALL,
+            AIDoNothingStrat.SINGLETON);
+    }
+
     public static Entity makeResourceCollectorRed(double x, double y) {
         return new Entity(x, y,
             Team.ONE,
@@ -114,14 +125,14 @@ public class Entities {
             AIDoNothingStrat.SINGLETON);
     }
 
-    public static Entity makeGhostWall(double x, double y) {
+    public static Entity makeResourceCollectorRedGhost(double x, double y) {
         return new Entity(x, y,
-            Team.NEUTRAL,
+            Team.ONE,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            ImageDrawStrat.WALL_BUILDABLE_IMAGE_DRAW_STRAT,//GhostDrawStrat.GHOSTWALL,
+            ImageDrawStrat.RED_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
     }
 }

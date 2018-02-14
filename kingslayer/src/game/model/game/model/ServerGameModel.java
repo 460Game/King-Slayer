@@ -31,7 +31,7 @@ public class ServerGameModel extends GameModel {
     private TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
 
     public boolean changeResource(Team team, TeamResourceData.Resource r, int num) {
-        if (teamData.get(team).getResource(r) >= num) {
+        if (teamData.get(team).getResource(r) + num >= 0 || num >= 0) {
             teamData.get(team).setResource(r, teamData.get(team).getResource(r) + num);
             return true;
         }
@@ -129,6 +129,12 @@ public class ServerGameModel extends GameModel {
              //   } catch (InterruptedException e) {
              //       e.printStackTrace();
              //   }
+
+            for(Entity e: this.getAllEntities()) {
+                if (e.team != Team.NEUTRAL && e.role == Role.NEUTRAL) {
+                    changeResource(e.team, TeamResourceData.Resource.WOOD, 1);
+                }
+            }
 
             for(Model model : clients) {
                 model.processMessage(new UpdateResourcesMessage(teamData.get(Team.ONE))); //TEMPORARY GARBAGE
