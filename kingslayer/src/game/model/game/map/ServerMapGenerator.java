@@ -79,8 +79,10 @@ public class ServerMapGenerator implements MapGenerator {
         grass2(Tile.GRASS_2, null),
         barrier(Tile.GRASS_0, Entities::makeBox),
         unset(null, null),
-        startKing(Tile.PATH, Players::makeKing),
-        startSlayer(Tile.PATH, Players::makeSlayer),
+        startKingA(Tile.PATH, Players::makeKingA),
+        startSlayerA(Tile.PATH, Players::makeSlayerA),
+        startKingB(Tile.PATH, Players::makeKingB),
+        startSlayerB(Tile.PATH, Players::makeSlayerB),
         bridge(Tile.SHALLOW_WATER, null),
         road(Tile.PATH, null);
 
@@ -245,12 +247,17 @@ public class ServerMapGenerator implements MapGenerator {
 
         startingLocations = new ArrayList<>();
 
-        for (int i = 0; i < NUM_STARTS_ROOM; i++) {
-            t = rooms.poll();
-            grid[t.x-1][t.y] = TS.startKing;
-            grid[t.x+1][t.y] = TS.startSlayer;
-            startingLocations.add(t);
-        }
+
+        assert(NUM_STARTS_ROOM == 2);
+        t = rooms.poll();
+        grid[t.x-1][t.y] = TS.startKingA;
+        grid[t.x+1][t.y] = TS.startSlayerA;
+        startingLocations.add(t);
+
+        t = rooms.poll();
+        grid[t.x-1][t.y] = TS.startKingB;
+        grid[t.x+1][t.y] = TS.startSlayerB;
+        startingLocations.add(t);
 
         for (int i = 0; i < NUM_METAL_ROOM; i++) {
             t = rooms.poll();

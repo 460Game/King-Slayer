@@ -1,0 +1,34 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" build-on-make="true" name="King Slayer">
+    <output-path>$PROJECT_DIR$/bin/artifacts/King_Slayer</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="alias" value="" />
+        <option name="appClass" value="lobby.Main" />
+        <option name="convertCss2Bin" value="true" />
+        <option name="description" value="" />
+        <option name="enabledSigning" value="true" />
+        <option name="height" value="600" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="icons">
+          <JavaFxApplicationIcons>
+            <option name="linuxIcon" value="$PROJECT_DIR$/kingslayer/resources/images/logo.png" />
+          </JavaFxApplicationIcons>
+        </option>
+        <option name="keystore" value="" />
+        <option name="nativeBundle" value="all" />
+        <option name="title" value="King Slayer" />
+        <option name="vendor" value="COMP 460" />
+        <option name="version" value="" />
+        <option name="width" value="800" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="King_Slayer.jar">
+        <element id="module-output" name="King Slayer" />
+        <element id="file-copy" path="$PROJECT_DIR$/kryonet-2.21-all.jar" />
+        <element id="library" level="project" name="jfxrt" />
+      </element>
+    </root>
+  </artifact>
+</component>

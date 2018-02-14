@@ -1,5 +1,7 @@
 package game.model.game.model.worldObject.entity.entities;
 
+import static java.lang.Math.PI;
+
 /**
  * Class to keep track of the velocity of entities.
  */
@@ -30,6 +32,7 @@ public class Velocity {
      */
     public Velocity() {
         this(0,0);
+        angle = PI * 2;
     }
 
     /**
