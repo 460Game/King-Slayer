@@ -118,7 +118,7 @@ public class RemoteConnection {
                     if (obj instanceof NetworkCommon.ClientFinishMakingModelMsg) {
                         cntClientModelsMade++;
                         if (cntClientModelsMade == clientList.size()) {
-                            adaptor.serverInit(null, null);
+                            adaptor.serverInit();
                         }
                     }
 
