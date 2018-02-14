@@ -41,23 +41,30 @@ public class Minimap extends Region {
        // this.setWidth(100);
     }
 
-    public void draw() {
-       minimapGC.setTransform(new Affine(Transform.scale(
-            minimapGC.getCanvas().getWidth() / model.getMapWidth(),
-            minimapGC.getCanvas().getHeight() / model.getMapHeight())));
-        minimapGC.fillRect(0, 0, minimapCanvas.getWidth(), minimapCanvas.getHeight());
+    int count = 0;
 
-        for (int x = 0; x < model.getMapWidth(); x++) {
-            for (int y = 0; y < model.getMapHeight(); y++) {
-                minimapGC.setFill(model.getTile(x, y).getColor());
-                minimapGC.fillRect(x, y, 2, 2);
+    public void draw() {
+
+        count++;
+        if(count == 5) {
+            count = 0;
+            minimapGC.setTransform(new Affine(Transform.scale(
+                minimapGC.getCanvas().getWidth() / model.getMapWidth(),
+                minimapGC.getCanvas().getHeight() / model.getMapHeight())));
+            minimapGC.fillRect(0, 0, minimapCanvas.getWidth(), minimapCanvas.getHeight());
+
+            for (int x = 0; x < model.getMapWidth(); x++) {
+                for (int y = 0; y < model.getMapHeight(); y++) {
+                    minimapGC.setFill(model.getTile(x, y).getColor());
+                    minimapGC.fillRect(x, y, 2, 2);
+                }
             }
-        }
-        //TEMP HACK
-        for (Entity player : model.getAllEntities()) {
-            if (player.team != Team.NEUTRAL) {
-                minimapGC.setFill(player.team.color);
-                minimapGC.fillOval(player.data.x, player.data.y, 3, 3);
+            //TEMP HACK
+            for (Entity player : model.getAllEntities()) {
+                if (player.team != Team.NEUTRAL) {
+                    minimapGC.setFill(player.team.color);
+                    minimapGC.fillOval(player.data.x, player.data.y, 3, 3);
+                }
             }
         }
     }
