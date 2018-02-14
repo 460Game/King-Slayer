@@ -1,6 +1,7 @@
 package game.view;
 
 import game.model.game.model.GameModel;
+import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.scene.ImageCursor;
@@ -61,7 +62,7 @@ public class Minimap extends Region {
             }
             //TEMP HACK
             for (Entity player : model.getAllEntities()) {
-                if (player.team != Team.NEUTRAL) {
+                if (player.role != Role.NEUTRAL) {
                     minimapGC.setFill(player.team.color);
                     minimapGC.fillOval(player.data.x, player.data.y, 3, 3);
                 }

@@ -138,6 +138,28 @@ public class Entities {
             AIDoNothingStrat.SINGLETON);
     }
 
+    public static Entity makeResourceCollectorBlue(double x, double y) {
+        return new Entity(x, y,
+            Team.TWO,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            HardCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            ImageDrawStrat.BLUE_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
+            AIDoNothingStrat.SINGLETON);
+    }
+
+    public static Entity makeResourceCollectorBlueGhost(double x, double y) {
+        return new Entity(x, y,
+            Team.TWO,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            GhostCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            ImageDrawStrat.BLUE_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
+            AIDoNothingStrat.SINGLETON);
+    }
+
 //    public static Entity makeArrow(double x, double y) {
 //        return new Entity(x, y,
 //                Team.NEUTRAL,

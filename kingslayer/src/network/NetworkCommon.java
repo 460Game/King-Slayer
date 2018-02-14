@@ -85,6 +85,7 @@ public class NetworkCommon {
         kryo.register(ImageDrawStrat.WallImageDrawStrat.class);
         kryo.register(ImageDrawStrat.WallBuildableImageDrawStrat.class);
         kryo.register(ImageDrawStrat.RedResourceCollectorImageDrawStrat.class);
+        kryo.register(ImageDrawStrat.BlueResourceCollectorImageDrawStrat.class);
         kryo.register(UnitCollisionStrat.class);
         kryo.register(SoftCollisionStrat.class);
         kryo.register(HardCollisionStrat.class);
