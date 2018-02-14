@@ -3,11 +3,11 @@ package game.message.toClient;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.TeamResourceData;
 
-public class UpdateResourcesMessage implements ToClientMessage {
+public class UpdateResourceCommand implements ToClientCommand {
 
     private TeamResourceData data;
 
-    public UpdateResourcesMessage(TeamResourceData teamResourceData) {
+    public UpdateResourceCommand(TeamResourceData teamResourceData) {
         this.data = teamResourceData;
     }
 
@@ -16,5 +16,5 @@ public class UpdateResourcesMessage implements ToClientMessage {
         model.setResourceData(data);
     }
 
-    private UpdateResourcesMessage() {}
+    private UpdateResourceCommand() {}
 }

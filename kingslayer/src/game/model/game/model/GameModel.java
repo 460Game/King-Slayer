@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.function.Consumer;
 
 import static util.Const.DEBUG_DRAW;
 
@@ -32,6 +33,8 @@ public abstract class GameModel implements Model {
     protected void queueMessage(Message message) {
         messageQueue.add(message);
     }
+
+    public abstract void execute(Consumer<ServerGameModel> serverAction, Consumer<ClientGameModel> clientAction);
 
     /**
      * Constructor for the game model.

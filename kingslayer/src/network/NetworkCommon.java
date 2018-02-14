@@ -44,15 +44,15 @@ public class NetworkCommon {
 
     public static void KyroRegister(Kryo kryo) {
         kryo.register(Message.class);
-        kryo.register(ActionMessage.class);
-        kryo.register(GoDirectionMessage.class);
-        kryo.register(RemoveEntityMessage.class);
+        kryo.register(ActionRequest.class);
+        kryo.register(GoDirectionRequest.class);
+        kryo.register(RemoveEntityCommand.class);
         kryo.register(DeleteEntityMessage.class);
-        kryo.register(MakeEntityMessage.class);
-        kryo.register(SetEntityMessage.class);
-        kryo.register(SetTileMessage.class);
-        kryo.register(ToClientMessage.class);
-        kryo.register(ToServerMessage.class);
+        kryo.register(MakeEntityRequest.class);
+        kryo.register(SetEntityCommand.class);
+        kryo.register(SetTileCommand.class);
+        kryo.register(ToClientCommand.class);
+        kryo.register(ToServerRequest.class);
         kryo.register(Hitbox.class);
         kryo.register(CellHitbox.class);
         kryo.register(CircleHitbox.class);
@@ -69,11 +69,11 @@ public class NetworkCommon {
         kryo.register(EntityData.class);
         kryo.register(UpdateData.class);
         kryo.register(Velocity.class);
-        kryo.register(InitGameMessage.class);
-        kryo.register(UpdateResourcesMessage.class);
+        kryo.register(InitGameCommand.class);
+        kryo.register(UpdateResourceCommand.class);
         kryo.register(TeamResourceData.class);
-        kryo.register(RequestEntityMessage.class);
-        kryo.register(NewEntityMessage.class);
+        kryo.register(RequestEntityRequest.class);
+        kryo.register(NewEntityCommand.class);
         kryo.register(Entity.class);
         kryo.register(AIDoNothingStrat.class);
 
@@ -105,16 +105,16 @@ public class NetworkCommon {
         kryo.register(StillStrat.class);
         kryo.register(UpdateData.class);
         kryo.register(UpdateStrat.class);
-        kryo.register(StopMessage.class);
-        kryo.register(InitGameMessage.class);
-        kryo.register(NewEntityMessage.class);
-        kryo.register(RemoveEntityMessage.class);
-        kryo.register(SetEntityMessage.class);
-        kryo.register(SetTileMessage.class);
-        kryo.register(ToClientMessage.class);
-        kryo.register(UpdateResourcesMessage.class);
-        kryo.register(ActionMessage.class);
-        kryo.register(GoDirectionMessage.class);
+        kryo.register(StopRequest.class);
+        kryo.register(InitGameCommand.class);
+        kryo.register(NewEntityCommand.class);
+        kryo.register(RemoveEntityCommand.class);
+        kryo.register(SetEntityCommand.class);
+        kryo.register(SetTileCommand.class);
+        kryo.register(ToClientCommand.class);
+        kryo.register(UpdateResourceCommand.class);
+        kryo.register(ActionRequest.class);
+        kryo.register(GoDirectionRequest.class);
 
         kryo.register(TeamRoleEntityMap.class);
         kryo.register(long[][].class);

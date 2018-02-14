@@ -9,7 +9,7 @@ import game.model.game.model.team.TeamRoleEntityMap;
  * This message is sent to the client after the server has sent
  * all the initial data.
  */
-public class InitGameMessage implements ToClientMessage {
+public class InitGameCommand implements ToClientCommand {
 
     private Team team;
 
@@ -17,13 +17,13 @@ public class InitGameMessage implements ToClientMessage {
 
     private TeamRoleEntityMap map;
 
-    public InitGameMessage(Team team, Role role, TeamRoleEntityMap map) {
+    public InitGameCommand(Team team, Role role, TeamRoleEntityMap map) {
         this.team = team;
         this.role = role;
         this.map = map;
     }
 
-    public InitGameMessage() {
+    public InitGameCommand() {
 
     }
 

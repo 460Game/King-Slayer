@@ -7,19 +7,19 @@ public class GhostCollisionStrat extends CollisionStrat{
 
     public static GhostCollisionStrat SINGLETON = new GhostCollisionStrat();
 
-    public void collisionSoft(GameModel model, Entity b){
+    public void collisionSoft(GameModel model, Entity a, Entity b){
 
     }
 
-    public void collisionHard(GameModel model, Entity b) {
+    public void collisionHard(GameModel model, Entity a, Entity b) {
 
     }
 
     public final void collision(GameModel model, Entity a, Entity b) {
         if(a.getCollideType() == CollideType.HARD) {
-            collisionHard(model, a);
+            collisionHard(model, a, b);
         } else if(a.getCollideType() == CollideType.SOFT) {
-            collisionSoft(model, a);
+            collisionSoft(model, a, b);
         }
     }
 

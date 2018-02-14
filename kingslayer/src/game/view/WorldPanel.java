@@ -1,17 +1,12 @@
 package game.view;
 
-import com.esotericsoftware.minlog.Log;
-import game.message.toClient.NewEntityMessage;
-import game.message.toClient.RemoveEntityMessage;
-import game.message.toServer.MakeEntityMessage;
+import game.message.toClient.NewEntityCommand;
+import game.message.toClient.RemoveEntityCommand;
+import game.message.toServer.MakeEntityRequest;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.Visitor;
 import game.model.game.model.worldObject.entity.entities.Entities;
-import javafx.animation.AnimationTimer;
-import javafx.beans.InvalidationListener;
-import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;
@@ -62,11 +57,11 @@ public class WorldPanel extends Region {
 
         uiCanvas.setOnMouseClicked(e -> {
             if (placing != null) {
-                model.processMessage(new MakeEntityMessage(placing,
+                model.processMessage(new MakeEntityRequest(placing,
                     model.getLocalPlayer().team,
                     TeamResourceData.Resource.WOOD,
                     cost));
-                model.processMessage(new RemoveEntityMessage(placingGhost));
+                model.processMessage(new RemoveEntityCommand(placingGhost));
                 placing = null;
             }
 //            new Visitor.PlaceEntity().run(model.getLocalPlayer(), model);
@@ -80,7 +75,7 @@ public class WorldPanel extends Region {
 
                 placingGhost.data.x = Math.floor((toDrawCoords(model.getLocalPlayer().data.x) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS) + 0.5;
                 placingGhost.data.y = Math.floor((toDrawCoords(model.getLocalPlayer().data.y) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS) + 0.5;
-                //model.processMessage(new NewEntityMessage(placingGhost));
+                //model.processMessage(new NewEntityCommand(placingGhost));
             }
 //            new Visitor.MoveEntity(e.getX(), e.getY(), uiCanvas.getWidth(), uiCanvas.getHeight()).run(model.getLocalPlayer(), model);
         });
@@ -91,7 +86,7 @@ public class WorldPanel extends Region {
                     cost = -1000;
                     placingGhost = Entities.makeGhostWall(0, 0);
                     placing = Entities.makeBuiltWall(0, 0);
-                    model.processMessage(new NewEntityMessage(placingGhost));
+                    model.processMessage(new NewEntityCommand(placingGhost));
                 }
             }
 
@@ -100,7 +95,7 @@ public class WorldPanel extends Region {
                     cost = -20;
                     placingGhost = Entities.makeResourceCollectorRedGhost(0, 0);
                     placing = Entities.makeResourceCollectorRed(0, 0);
-                    model.processMessage(new NewEntityMessage(placingGhost));
+                    model.processMessage(new NewEntityCommand(placingGhost));
                 }
             }
         });

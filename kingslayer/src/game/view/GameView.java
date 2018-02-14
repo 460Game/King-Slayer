@@ -1,12 +1,8 @@
 package game.view;
 
-import game.ai.Astar;
-import game.message.toClient.NewEntityMessage;
-import game.message.toServer.GoDirectionMessage;
-import game.message.toServer.StopMessage;
-import game.model.game.grid.GridCell;
+import game.message.toServer.GoDirectionRequest;
+import game.message.toServer.StopRequest;
 import game.model.game.model.ClientGameModel;
-import game.model.game.model.worldObject.entity.Visitor;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
@@ -93,7 +89,7 @@ public class GameView {
 //            double yCoords = toWorldCoords(ydiff);
 //            double actualx = model.getLocalPlayer().data.x + xCoords;
 //            double actualy = model.getLocalPlayer().data.y + yCoords;
-//            model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, Math.atan2(actualy -
+//            model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(actualy -
 //                    model.getLocalPlayer().data.y, actualx - model.getLocalPlayer().data.x)));
 //        });
 
@@ -159,9 +155,9 @@ public class GameView {
 //                new Visitor.ShowPlacement(0, 0).run(model.getLocalPlayer(), model);
 
             if(dir[0] == 0 && dir[1] == 0)
-                model.processMessage(new StopMessage(model.getLocalPlayer().id));
+                model.processMessage(new StopRequest(model.getLocalPlayer().id));
             else
-                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, Math.atan2(dir[1],dir[0])));
+                model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(dir[1],dir[0])));
         });
 
         scene.setOnKeyReleased(e -> {
@@ -182,9 +178,9 @@ public class GameView {
 //                new Visitor.PlaceResourceCollector().run(model.getLocalPlayer(), model);
 
             if(dir[0] == 0 && dir[1] == 0)
-                model.processMessage(new StopMessage(model.getLocalPlayer().id));
+                model.processMessage(new StopRequest(model.getLocalPlayer().id));
             else
-                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, Math.atan2(dir[1],dir[0])));
+                model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(dir[1],dir[0])));
         });
 
         window.setScene(scene);
