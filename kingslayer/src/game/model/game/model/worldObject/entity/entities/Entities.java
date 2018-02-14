@@ -137,7 +137,7 @@ public class Entities {
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            ImageDrawStrat.RED_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
+            GhostDrawStrat.GHOST_RED_COLLECTOR,
             AIDoNothingStrat.SINGLETON);
     }
 
@@ -159,7 +159,7 @@ public class Entities {
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            ImageDrawStrat.BLUE_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
+            GhostDrawStrat.GHOST_BLUE_COLLECTOR,
             AIDoNothingStrat.SINGLETON);
     }
 

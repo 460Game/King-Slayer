@@ -12,6 +12,8 @@ import static util.Util.toDrawCoords;
 public class GhostDrawStrat extends ImageDrawStrat {
 
   public static final WallGhostDrawStrat GHOSTWALL = new WallGhostDrawStrat();
+  public static final ResourceCollectorRedGhostDrawStrat GHOST_RED_COLLECTOR = new ResourceCollectorRedGhostDrawStrat();
+  public static final ResourceCollectorBlueGhostDrawStrat GHOST_BLUE_COLLECTOR = new ResourceCollectorBlueGhostDrawStrat();
 
   private int width = 32;
   private int height = 32;
@@ -28,22 +30,22 @@ public class GhostDrawStrat extends ImageDrawStrat {
 
   @Override
   double getWidth() {
-    return 0;
+    return 1.0;
   }
 
   @Override
   double getHeight() {
-    return 0;
+    return 1.75;
   }
 
   @Override
   double getCenterX() {
-    return 0;
+    return 0.5;
   }
 
   @Override
   double getCenterY() {
-    return 0;
+    return 0.5;
   }
 
   @Override
@@ -73,27 +75,27 @@ public class GhostDrawStrat extends ImageDrawStrat {
       return Images.WALL_BUILDABLE_IMAGE;
     }
 
-    @Override
-    double getWidth() {
-      return 1;
-    }
-
-    @Override
-    double getHeight() {
-      return 1.75;
-    }
-
-    @Override
-    double getCenterX() {
-      return 0.5;
-    }
-
-    @Override
-    double getCenterY() {
-      return 0.5;
-    }
-
     private WallGhostDrawStrat() {
+    }
+  }
+
+  public static class ResourceCollectorRedGhostDrawStrat extends GhostDrawStrat {
+    @Override
+    public Image getImage() {
+      return Images.RED_RESOURCE_COLLECTOR_IMAGE;
+    }
+
+    private ResourceCollectorRedGhostDrawStrat() {
+    }
+  }
+
+  public static class ResourceCollectorBlueGhostDrawStrat extends GhostDrawStrat {
+    @Override
+    public Image getImage() {
+      return Images.BLUE_RESOURCE_COLLECTOR_IMAGE;
+    }
+
+    private ResourceCollectorBlueGhostDrawStrat() {
     }
   }
 }
