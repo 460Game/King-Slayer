@@ -67,17 +67,15 @@ public class WorldPanel extends Region {
 
         uiCanvas.setOnMouseClicked(e -> {
             if (model.getLocalPlayer().role == Role.KING && placing != null) {
-                if (placing.data.hitbox.getCollidesWith(model, placing.data.x, placing.data.y).findAny().isPresent()) {
+                if (placingGhost.data.hitbox.getCollidesWith(model, placingGhost.data.x, placingGhost.data.y).toArray().length <= 1) {
                     model.processMessage(new MakeEntityRequest(placing,
                         model.getLocalPlayer().team,
                         TeamResourceData.Resource.WOOD,
                         cost));
-                    model.processMessage(new RemoveEntityCommand(placingGhost.id));
                 }
+                model.removeByID(placingGhost.id);
                 placing = null;
-            }
-
-            if (model.getLocalPlayer().role == Role.SLAYER) {
+            } else if (model.getLocalPlayer().role == Role.SLAYER) {
 //                double angle = Math.atan2(e.getY(), e.getX());
 
                 double xCoords = toWorldCoords(e.getX() - getWidth() / 2);
@@ -92,7 +90,6 @@ public class WorldPanel extends Region {
 
                 // TODO problem when player running into own arrow
             }
-//            new Visitor.PlaceEntity().run(model.getLocalPlayer(), model);
         });
 
         uiCanvas.setOnMouseMoved(e -> {
@@ -104,7 +101,6 @@ public class WorldPanel extends Region {
                 placingGhost.data.x = Math.floor((toDrawCoords(model.getLocalPlayer().data.x) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS) + 0.5;
                 placingGhost.data.y = Math.floor((toDrawCoords(model.getLocalPlayer().data.y) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS) + 0.5;
             }
-//            new Visitor.MoveEntity(e.getX(), e.getY(), uiCanvas.getWidth(), uiCanvas.getHeight()).run(model.getLocalPlayer(), model);
         });
 
         uiCanvas.setOnKeyPressed(e -> {
