@@ -4,6 +4,8 @@ import com.esotericsoftware.kryonet.*;
 import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.model.game.model.*;
+import game.model.game.model.team.Role;
+import game.model.game.model.team.Team;
 import lobby.RoleChoice;
 import lobby.TeamChoice;
 import network.NetWork2LobbyAdaptor;
@@ -100,7 +102,7 @@ public class RemoteConnection {
                         messageQueues.put(connection.getID(), new LinkedBlockingQueue<>());
 
                         //TODO: might need to hard code here now, change it back!!!!!
-                        if (clientList.size() == 2) {
+                        if (clientList.size() == 4) {
                             adaptor.makeModel();
                         }
                     }
@@ -108,6 +110,14 @@ public class RemoteConnection {
 
                     if (obj instanceof NetworkCommon.ClientReadyMsg) {
                         NetworkCommon.ClientReadyMsg readyMsg = (NetworkCommon.ClientReadyMsg) obj;
+
+                        //TODO: change it to be defensive here
+                        //TODO: important line added here!!!!!!!!!!!!!!!!
+                        connection.getID();
+                        readyMsg.getTeam();
+                        readyMsg.getRole();
+                        adaptor.serverLobbyComfirmTeamAndRole(connection.getID(), readyMsg.getTeam(), readyMsg.getRole());
+
                         readyClient++;
 
                         if (readyClient == clientList.size()) {
@@ -222,7 +232,6 @@ public class RemoteConnection {
     }
     private void consumeReceivedMsg() {
         while (true) {
-
             try {
                 sleep(2);
             } catch (InterruptedException e) {
@@ -304,7 +313,7 @@ public class RemoteConnection {
         else client.stop();
     }
 
-    public void notifyReady(Enum<TeamChoice> team, Enum<RoleChoice> role) {
+    public void notifyReady(Team team, Role role) {
         if (isServer) System.err.println("Server should not do this");
         else client.sendTCP(new NetworkCommon.ClientReadyMsg(team, role));
     }
@@ -315,6 +324,7 @@ public class RemoteConnection {
         remoteModels = new HashSet<>();
         if (isServer) {
             for (int id : clientList.keySet()) {
+//                System.out.println("server remote model id: " + id);
                 remoteModels.add(new RemoteModel(id));
             }
         } else {
@@ -345,8 +355,13 @@ public class RemoteConnection {
             return (System.nanoTime() - clientStartTime + latencty) + serverStartTime;
         }
 
-        public int getConnectId() {
-            if (isServer) return -1;
+        /**
+         *
+         * @return the connect id of this connection
+         */
+        public int getConnectId() {//TODO: need to double what connect id means
+//            if (isServer) return -1;
+//            return connectId;
             return connectId;
         }
 

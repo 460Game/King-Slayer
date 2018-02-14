@@ -4,6 +4,8 @@ import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.Model;
+import game.model.game.model.team.Role;
+import game.model.game.model.team.Team;
 import game.view.GameView;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -45,7 +47,7 @@ public class LobbyClient {//extends Application {
 
         client = new RemoteConnection(false, this, new NetWork2LobbyAdaptor() {
             @Override
-            public void serverInit(Enum<TeamChoice> team, Enum<RoleChoice> role) {
+            public void serverInit(Team team, Role role) {
                 //should not use this
             }
 
@@ -79,9 +81,10 @@ public class LobbyClient {//extends Application {
             }
 
             @Override
-            public void serverLobbyComfirmTeamAndRole(Integer connId, Enum<TeamChoice> team, Enum<RoleChoice> role) {
-                //client don't use this
+            public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role) {
+                //client should not call
             }
+
         });
     }
 
@@ -98,7 +101,7 @@ public class LobbyClient {//extends Application {
         clientGameModel.processMessage(msg);
     }
 
-    public void lobbyClientReady(Enum<TeamChoice> team, Enum<RoleChoice> role) {
+    public void lobbyClientReady(Team team, Role role) {
         //TODO: might have a bug here
         System.out.println("check null: " + serverModel);
 //        serverModel.notifyReady();

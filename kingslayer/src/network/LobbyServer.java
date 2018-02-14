@@ -5,6 +5,8 @@ import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.ServerGameModel;
+import game.model.game.model.team.Role;
+import game.model.game.model.team.Team;
 import javafx.util.Pair;
 import lobby.RoleChoice;
 import lobby.TeamChoice;
@@ -22,9 +24,9 @@ public class LobbyServer { //extends Application {
     private RemoteConnection server;
     private Set<RemoteConnection.RemoteModel> remoteModels;
 
-    public Map<Integer, Pair<Enum<TeamChoice>, Enum<RoleChoice>>> conn2TeamAndRole = new HashMap<>();
+    public Map<Integer, Pair<Team, Role>> conn2TeamAndRole = new HashMap<>();
     public Map<Integer, ClientGameModel> conn2ClientGameModel = new HashMap<>();
-    public Map<RemoteConnection.RemoteModel, Pair<Enum<TeamChoice>, Enum<RoleChoice>>> clientGameModelToTeamAndRole;
+    public Map<RemoteConnection.RemoteModel, Pair<Team, Role>> clientGameModelToTeamAndRole;
 
 //    @Override
 //    public void start(Stage window) throws Exception {
@@ -73,13 +75,17 @@ public class LobbyServer { //extends Application {
     public void start() throws Exception {
         server = new RemoteConnection(true, this, new NetWork2LobbyAdaptor() {
             @Override
-            public void serverInit(Enum<TeamChoice> team, Enum<RoleChoice> role) {//should send the map
+            public void serverInit(Team team, Role role) {//should send the map
                 //actually don't use the parameter team and role here
 
-                startGame();
-
+//                startGame();
+                for (Map.Entry<Integer, Pair<Team, Role>> entry : conn2TeamAndRole.entrySet()) {
+                    System.out.println(entry.getValue().getKey() + " " + entry.getValue().getValue());
+                }
                 //init the client to team role map
                 for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
+                    System.out.println("check serverInit: " + remoteModel.getConnectId());
+                    System.out.println(conn2TeamAndRole.get(remoteModel.getConnectId()));
                     clientGameModelToTeamAndRole.put(remoteModel,
                             conn2TeamAndRole.get(remoteModel.getConnectId()));
                 }
@@ -94,7 +100,7 @@ public class LobbyServer { //extends Application {
 
 
                 //TODO: put the enum parameters in
-                serverModel.init(remoteModels);
+                serverModel.init(remoteModels, clientGameModelToTeamAndRole);
                 serverModel.start();
                 System.out.println("start the server model");
 
@@ -114,7 +120,7 @@ public class LobbyServer { //extends Application {
 
             @Override
             public void makeModel() {
-                //startGame();//server makes model, and ask clients make model here
+                startGame();//server makes model, and ask clients make model here
             }
 
             @Override
@@ -128,7 +134,8 @@ public class LobbyServer { //extends Application {
             }
 
             @Override
-            public void serverLobbyComfirmTeamAndRole(Integer connId, Enum<TeamChoice> team, Enum<RoleChoice> role) {
+            public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role) {
+                System.out.println("Did put team and role in the map: " + connId);
                 conn2TeamAndRole.put(connId, new Pair<>(team, role));
             }
 
