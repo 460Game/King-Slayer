@@ -1,7 +1,5 @@
 package game.model.game.model.worldObject.entity;
 
-import game.message.toServer.DeleteEntityMessage;
-
 public interface Visitor {
 //  public void run(Entity entity, ClientGameModel model);
 //

@@ -1,9 +1,9 @@
 package game.view;
 
 import com.esotericsoftware.minlog.Log;
-import game.message.toClient.NewEntityMessage;
-import game.message.toClient.RemoveEntityMessage;
-import game.message.toServer.MakeEntityMessage;
+import game.message.toClient.NewEntityCommand;
+import game.message.toClient.RemoveEntityCommand;
+import game.message.toServer.MakeEntityRequest;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
@@ -65,11 +65,11 @@ public class WorldPanel extends Region {
         uiCanvas.setOnMouseClicked(e -> {
             if (model.getLocalPlayer().role == Role.KING && placing != null) {
                 if (placing.data.hitbox.getCollidesWith(model, placing.data.x, placing.data.y).findAny().isPresent()) {
-                    model.processMessage(new MakeEntityMessage(placing,
+                    model.processMessage(new MakeEntityRequest(placing,
                         model.getLocalPlayer().team,
                         TeamResourceData.Resource.WOOD,
                         cost));
-                    model.processMessage(new RemoveEntityMessage(placingGhost));
+                    model.processMessage(new RemoveEntityCommand(placingGhost));
                 }
                 placing = null;
             }
@@ -94,7 +94,7 @@ public class WorldPanel extends Region {
                     cost = -1000;
                     placingGhost = Entities.makeGhostWall(0, 0);
                     placing = Entities.makeBuiltWall(0, 0);
-                    model.processMessage(new NewEntityMessage(placingGhost));
+                    model.processMessage(new NewEntityCommand(placingGhost));
                 }
             }
 
@@ -104,12 +104,12 @@ public class WorldPanel extends Region {
                         cost = -20;
                         placingGhost = Entities.makeResourceCollectorRedGhost(0, 0);
                         placing = Entities.makeResourceCollectorRed(0, 0);
-                        model.processMessage(new NewEntityMessage(placingGhost));
+                        model.processMessage(new NewEntityCommand(placingGhost));
                     } else {
                         cost = -20;
                         placingGhost = Entities.makeResourceCollectorBlueGhost(0, 0);
                         placing = Entities.makeResourceCollectorBlue(0, 0);
-                        model.processMessage(new NewEntityMessage(placingGhost));
+                        model.processMessage(new NewEntityCommand(placingGhost));
                     }
                 }
             }
