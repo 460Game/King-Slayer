@@ -1,7 +1,5 @@
 package game.message.toServer;
 
-import com.esotericsoftware.kryonet.Server;
-import game.model.game.model.ClientGameModel;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
@@ -11,7 +9,7 @@ import game.model.game.model.worldObject.entity.Entity;
  * Message sent to create an entity in a client's game model. This message
  * is sent by the server.
  */
-public class MakeEntityMessage implements ToServerMessage {
+public class MakeEntityRequest implements ToServerRequest {
 
     /**
      * Entity to be made.
@@ -28,7 +26,7 @@ public class MakeEntityMessage implements ToServerMessage {
      * Constructor of a message, given an entity to be created.
      * @param entity entity to be created
      */
-    public MakeEntityMessage(Entity entity, Team creator, TeamResourceData.Resource resource, int change) {
+    public MakeEntityRequest(Entity entity, Team creator, TeamResourceData.Resource resource, int change) {
         this.entity = entity;
         this.creator = creator;
         this.resource = resource;
@@ -38,7 +36,7 @@ public class MakeEntityMessage implements ToServerMessage {
     /**
      * Default constructor needed for serialization.
      */
-    public MakeEntityMessage(){}
+    public MakeEntityRequest(){}
 
     /**
      * Make the entity in the server model.

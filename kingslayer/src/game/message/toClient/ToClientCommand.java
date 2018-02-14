@@ -7,7 +7,7 @@ import game.model.game.model.GameModel;
 /**
  * Interface for a message to be sent from the server to a client.
  */
-public interface ToClientMessage extends Message {
+public interface ToClientCommand extends Message {
 
     /**
      * Return true because this is a message sent from the server

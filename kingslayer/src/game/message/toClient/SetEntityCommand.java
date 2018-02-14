@@ -8,7 +8,7 @@ import game.model.game.model.worldObject.entity.EntityData;
  * Message sent to set an entity on a client's game model. This message
  * is sent by the server.
  */
-public class SetEntityMessage implements ToClientMessage {
+public class SetEntityCommand implements ToClientCommand {
 
     /**
      * Data corresponding to the entity.
@@ -23,7 +23,7 @@ public class SetEntityMessage implements ToClientMessage {
     /**
      * Default constructor needed for serialization.
      */
-    public SetEntityMessage() {
+    public SetEntityCommand() {
 
     }
 
@@ -31,7 +31,7 @@ public class SetEntityMessage implements ToClientMessage {
      * Constructor for a message, given an entity.
      * @param entity entity to be set
      */
-    public SetEntityMessage(Entity entity) {
+    public SetEntityCommand(Entity entity) {
         this.data = entity.data;
         this.id = entity.id;
     }

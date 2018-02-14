@@ -11,6 +11,7 @@ import game.model.game.model.worldObject.entity.collideStrat.hitbox.CircleHitbox
 import game.model.game.model.worldObject.entity.drawStrat.GhostDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.NoDrawStrat;
+import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
 import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
 
 public class Entities {
@@ -157,4 +158,12 @@ public class Entities {
             ImageDrawStrat.BLUE_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
     }
+
+//    public static Entity makeArrow(double x, double y) {
+//        return new Entity(x, y,
+//                Team.NEUTRAL,
+//                Role.NEUTRAL,
+//                MovingStrat.SINGLETON,
+//                GhostCollisionStrat.SINGLETON, );
+//    }
 }

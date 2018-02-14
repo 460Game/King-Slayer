@@ -5,6 +5,6 @@ package game.message.toServer;
  * performed an action. The server should process the message and
  * synchronize the action among all clients.
  */
-public abstract class ActionMessage implements ToServerMessage {
+public abstract class ActionRequest implements ToServerRequest {
 
 }
