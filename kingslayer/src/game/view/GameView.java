@@ -1,5 +1,7 @@
 package game.view;
 
+import game.message.toServer.GoDirectionRequest;
+import game.message.toServer.StopRequest;
 import game.model.game.model.ClientGameModel;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
