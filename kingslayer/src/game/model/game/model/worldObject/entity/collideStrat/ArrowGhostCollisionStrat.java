@@ -19,8 +19,8 @@ public class ArrowGhostCollisionStrat extends GhostCollisionStrat {
         Consumer<ServerGameModel> serverConsumer = (server) -> {
             a.data.updateData.velocity.setMagnitude(0);
             server.removeByID(a.id);
-            server.getEntityById(b.id).data.health -= 10;
-            server.getClients().forEach(client -> client.processMessage(new SetEntityCommand(server.getEntityById(b.id))));
+            b.data.health -= 5;
+            server.getClients().forEach(client -> client.processMessage(new SetEntityCommand(b)));
         };
         model.execute(serverConsumer, (client) -> {
             a.data.updateData.velocity.setMagnitude(0);

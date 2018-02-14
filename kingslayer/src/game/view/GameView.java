@@ -68,6 +68,7 @@ public class GameView {
                 resourcePanel.updateResources();
                 minimap.draw();
                 worldPanel.draw();
+                infoPanel.update();
             }
         };
 

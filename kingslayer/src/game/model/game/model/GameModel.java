@@ -34,7 +34,7 @@ public abstract class GameModel implements Model {
 
     private LinkedBlockingQueue<Message> messageQueue = new LinkedBlockingQueue<>();
 
-    private Map<Long, Entity> entities;
+    private final Map<Long, Entity> entities;
 
     protected void queueMessage(Message message) {
         messageQueue.add(message);
@@ -166,9 +166,8 @@ public abstract class GameModel implements Model {
     }
 
     public void setEntity(Entity entity) {
-        assert (entity != null);
-        if(entities.containsKey(entity.id)) {
-            Entity e = entities.get(entity.id);
+        Entity e = entities.get(entity.id);
+        if(e != null) {
             e.data = entity.data;
         } else {
             entities.put(entity.id, entity);

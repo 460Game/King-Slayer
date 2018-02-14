@@ -2,6 +2,7 @@ package game.message.toServer;
 
 import game.message.toClient.NewEntityCommand;
 import game.model.game.model.ServerGameModel;
+import game.model.game.model.worldObject.entity.Entity;
 
 /**
  * Message sent by a client to ask the server for an entity
@@ -33,6 +34,8 @@ public class RequestEntityRequest implements ToServerRequest {
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        model.processMessage(new NewEntityCommand(model.getEntityById(id)));
+        Entity entity = model.getEntityById(id);
+       if(entity != null)
+            model.processMessage(new NewEntityCommand(entity));
     }
 }

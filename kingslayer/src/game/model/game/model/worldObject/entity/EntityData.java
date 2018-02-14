@@ -68,7 +68,7 @@ public class EntityData {
         this.updateData = updateData;
         this.x = x;
         this.y = y;
-        this.health = 1;
+        this.health = 100;
         this.velocity = new Velocity();
     }
 

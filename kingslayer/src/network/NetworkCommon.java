@@ -14,10 +14,7 @@ import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
-import game.model.game.model.worldObject.entity.collideStrat.GhostCollisionStrat;
-import game.model.game.model.worldObject.entity.collideStrat.HardCollisionStrat;
-import game.model.game.model.worldObject.entity.collideStrat.SoftCollisionStrat;
-import game.model.game.model.worldObject.entity.collideStrat.UnitCollisionStrat;
+import game.model.game.model.worldObject.entity.collideStrat.*;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.*;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.drawStrat.*;
@@ -95,6 +92,10 @@ public class NetworkCommon {
         kryo.register(DirectionAnimationDrawStrat.RedKingDirectionAnimationDrawStrat.class);
         kryo.register(DirectionAnimationDrawStrat.BlueKingDirectionAnimationDrawStrat.class);
         kryo.register(DirectionAnimationDrawStrat.BlueSlayerDirectionAnimationDrawStrat.class);
+
+        kryo.register(TreasureGhostCollisionStrat.class);
+        kryo.register(ArrowGhostCollisionStrat.class);
+        kryo.register(RotatingImageDrawStrat.ArrowImageDrawStrat.class);
 
         kryo.register(DrawData.class);
         kryo.register(AnimateDrawStrat.class);

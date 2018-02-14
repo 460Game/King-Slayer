@@ -64,6 +64,14 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   abstract Image getImage();
 
   public void draw(Entity entity, GraphicsContext gc) {
+
+
+    //TEMPORARY!!!!!!!!!
+    gc.setFill(Color.RED);
+    gc.fillRect(toDrawCoords(entity.data.x) - 10, toDrawCoords(entity.data.y)-30, 20, 3);
+    gc.setFill(Color.GREEN);
+    gc.fillRect(toDrawCoords(entity.data.x) - 10, toDrawCoords(entity.data.y)-30, (entity.data.health/100)*20, 3);
+
     if (showPlacementbox) {
       double[] dir = {0, 0};
       if (drawData.direction == 'N')
