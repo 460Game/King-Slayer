@@ -90,8 +90,7 @@ public class LobbyServer { //extends Application {
 
                 //init the client to team role map
                 for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
-                    System.out.println("check serverInit: " + remoteModel.getConnectId());
-                    System.out.println(conn2TeamAndRole.get(remoteModel.getConnectId()));
+//                    System.out.println("check serverInit: " + remoteModel.getConnectId())a
                     clientGameModelToTeamAndRole.put(remoteModel,
                             conn2TeamAndRole.get(remoteModel.getConnectId()));
                 }
@@ -108,11 +107,7 @@ public class LobbyServer { //extends Application {
                 //TODO: put the enum parameters in
                 serverModel.init(remoteModels, clientGameModelToTeamAndRole);
                 serverModel.start();
-                System.out.println("start the server model");
 
-
-                Log.info(remoteModels.size() + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//                System.exit(0);
                 for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
                     Log.info("server start client: " + remoteModel.connectId + "!!!!!!!!!!");
                     remoteModel.startModel();

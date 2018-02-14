@@ -26,8 +26,6 @@ import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
 import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateData;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
-import lobby.RoleChoice;
-import lobby.TeamChoice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,7 +126,7 @@ public class NetworkCommon {
         kryo.register(GhostCollisionStrat.class);
         kryo.register(TeamResourceData.Resource.class);
         kryo.register(ImageDrawStrat.TreasureImageDrawStrat.class);
-//        kryo.register(GhostCollisionStrat.class);
+        kryo.register(ClientFinishMakingModelMsg.class);
 //        kryo.register(GhostCollisionStrat.class);
 //        kryo.register(GhostCollisionStrat.class);
 //        kryo.register(GhostCollisionStrat.class);
@@ -162,6 +160,10 @@ public class NetworkCommon {
 
     public static class AllClientConnectMsg {
         public AllClientConnectMsg() {}
+    }
+
+    public static class ClientFinishMakingModelMsg {
+        public ClientFinishMakingModelMsg() {}
     }
 
     public static class SyncClockMsg {

@@ -65,8 +65,8 @@ public class LobbyClient {//extends Application {
 
             @Override
             public void makeModel() {
-                System.out.println("Client make model call!!!!!!!!!!");
                 lobbyClientMakeModel();
+                client.notifyMadeModel();
             }
 
             @Override
@@ -102,9 +102,6 @@ public class LobbyClient {//extends Application {
     }
 
     public void lobbyClientReady(Team team, Role role) {
-        //TODO: might have a bug here
-        System.out.println("check null: " + serverModel);
-//        serverModel.notifyReady();
         client.notifyReady(team, role);
     }
 

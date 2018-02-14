@@ -6,9 +6,6 @@ import game.message.Message;
 import game.model.game.model.*;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
-import lobby.RoleChoice;
-import lobby.TeamChoice;
-import network.NetWork2LobbyAdaptor;
 
 import java.io.IOException;
 import java.util.*;
@@ -23,6 +20,11 @@ import static java.lang.Thread.sleep;
 public class RemoteConnection {
     static {
         Log.set(Log.LEVEL_INFO);
+    }
+
+    public void notifyMadeModel() {
+        if (isServer) return;//server should not use this
+        client.sendTCP(new NetworkCommon.ClientFinishMakingModelMsg());
     }
 
     // This holds per connection state.
@@ -40,6 +42,7 @@ public class RemoteConnection {
     ConcurrentHashMap<Integer, GameConnection> clientList;
 
     int readyClient = 0;
+    int cntClientModelsMade = 0;
 
     Client client;
 
@@ -106,13 +109,18 @@ public class RemoteConnection {
                         clientList.putIfAbsent(connection.getID(), connection);
                         messageQueues.put(connection.getID(), new LinkedBlockingQueue<>());
 
-                        //TODO: might need to hard code here now, change it back!!!!!
-                        if (clientList.size() == numOfPlayer) {
+                        if (clientList.size() == numOfPlayer) {//all clients connected
                             server.sendToAllTCP(new NetworkCommon.AllClientConnectMsg());
-                            adaptor.makeModel();
+//                            adaptor.makeModel();
                         }
                     }
 
+                    if (obj instanceof NetworkCommon.ClientFinishMakingModelMsg) {
+                        cntClientModelsMade++;
+                        if (cntClientModelsMade == clientList.size()) {
+                            adaptor.serverInit(null, null);
+                        }
+                    }
 
                     if (obj instanceof NetworkCommon.ClientReadyMsg) {
                         NetworkCommon.ClientReadyMsg readyMsg = (NetworkCommon.ClientReadyMsg) obj;
@@ -125,7 +133,7 @@ public class RemoteConnection {
 
                         if (readyClient == clientList.size()) {
                             //works fine here
-                            adaptor.serverInit(readyMsg.getTeam(), readyMsg.getRole());//try to init, if successful send the map
+                            adaptor.makeModel();//server make model and tells client make models
                             //also need to start game (make model)
                         }
                     }
