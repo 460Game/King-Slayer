@@ -7,7 +7,7 @@ import game.model.game.model.worldObject.entity.Entity;
  * Message sent to create an entity in a client's game model. This message
  * is sent by the server.
  */
-public class NewEntityMessage implements ToClientMessage {
+public class NewEntityCommand implements ToClientCommand {
 
     /**
      * Entity to be created.
@@ -18,14 +18,14 @@ public class NewEntityMessage implements ToClientMessage {
      * Constructor of a message, given an entity to be created.
      * @param entity entity to be created
      */
-    public NewEntityMessage(Entity entity) {
+    public NewEntityCommand(Entity entity) {
         this.entity = entity;
     }
 
     /**
      * Default constructor needed for serialization.
      */
-    private NewEntityMessage(){}
+    private NewEntityCommand(){}
 
     /**
      * Add the entity to the client model.

@@ -1,11 +1,7 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
-import game.message.toClient.NewEntityMessage;
-import game.model.game.model.GameModel;
-import game.model.game.model.Model;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
-import game.model.game.model.worldObject.entity.entities.Entities;
 import images.Images;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;

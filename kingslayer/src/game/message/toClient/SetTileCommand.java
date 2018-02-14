@@ -7,7 +7,7 @@ import game.model.game.map.Tile;
  * Message sent to set a tile on a client's game model. This message
  * is sent by the server.
  */
-public class SetTileMessage implements ToClientMessage {
+public class SetTileCommand implements ToClientCommand {
 
     /**
      * X-coordinate of the upper left corner of the cell.
@@ -27,7 +27,7 @@ public class SetTileMessage implements ToClientMessage {
     /**
      * Default constructor needed for serialization.
      */
-    public SetTileMessage() {
+    public SetTileCommand() {
 
     }
 
@@ -37,7 +37,7 @@ public class SetTileMessage implements ToClientMessage {
      * @param y y-coordinate of the upper left corner of the cell
      * @param tile tile type
      */
-    public SetTileMessage(int x, int y, Tile tile) {
+    public SetTileCommand(int x, int y, Tile tile) {
         this.tile = tile;
         this.x = x;
         this.y = y;

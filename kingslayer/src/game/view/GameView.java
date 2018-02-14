@@ -1,12 +1,6 @@
 package game.view;
 
-import game.ai.Astar;
-import game.message.toClient.NewEntityMessage;
-import game.message.toServer.GoDirectionMessage;
-import game.message.toServer.StopMessage;
-import game.model.game.grid.GridCell;
 import game.model.game.model.ClientGameModel;
-import game.model.game.model.worldObject.entity.Visitor;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
@@ -28,7 +22,6 @@ public class GameView {
     }
 
     public void start(Stage window) {
-
         Group root = new Group();
 
         Minimap minimap = new Minimap(model);
@@ -85,6 +78,7 @@ public class GameView {
 
         });
 
+
         int[] dir = {0,0};
 
         Set<KeyCode> currentlyPressed = new TreeSet<>();
@@ -112,9 +106,9 @@ public class GameView {
 
 
             if(dir[0] == 0 && dir[1] == 0)
-                model.processMessage(new StopMessage(model.getLocalPlayer().id));
+                model.processMessage(new StopRequest(model.getLocalPlayer().id));
             else
-                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, Math.atan2(dir[1],dir[0])));
+                model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(dir[1],dir[0])));
         });
 
         scene.setOnKeyReleased(e -> {
@@ -129,9 +123,9 @@ public class GameView {
                 dir[0]--;
 
             if(dir[0] == 0 && dir[1] == 0)
-                model.processMessage(new StopMessage(model.getLocalPlayer().id));
+                model.processMessage(new StopRequest(model.getLocalPlayer().id));
             else
-                model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, Math.atan2(dir[1],dir[0])));
+                model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(dir[1],dir[0])));
         });
 
         window.setScene(scene);

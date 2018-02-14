@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import static util.Const.*;
 
@@ -26,9 +27,15 @@ public class ServerGameModel extends GameModel {
 
     private Collection<? extends Model> clients = null;
 
+    private Map<? extends Model, Pair<Team, Role>> clientToTeamRoleMap;
+
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
 
     private TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
+
+    public Collection<? extends Model> getClients() {
+        return clients;
+    }
 
     public boolean changeResource(Team team, TeamResourceData.Resource r, int num) {
         if (teamData.get(team).getResource(r) + num >= 0 || num >= 0) {
@@ -56,12 +63,13 @@ public class ServerGameModel extends GameModel {
     public void init(Collection<? extends Model> clients, Map<? extends Model, Pair<Team, Role>> clientToTeamRoleMap) {
 
         this.clients = clients;
+        this.clientToTeamRoleMap = clientToTeamRoleMap;
 
         // Send teamRoleEntityMap to client
         for(Model client : clients)
             for (int i = 0; i < this.getMapWidth(); i++)
                 for (int j = 0; j < this.getMapWidth(); j++) {
-                    client.processMessage(new SetTileMessage(i, j, this.getTile(i, j)));
+                    client.processMessage(new SetTileCommand(i, j, this.getTile(i, j)));
                 }
 
         ArrayList<Entity> players = new ArrayList<>();
@@ -74,11 +82,11 @@ public class ServerGameModel extends GameModel {
 
         // Send all entities to clients
         for(Entity entity : this.getAllEntities())
-            clients.forEach(client -> client.processMessage(new SetEntityMessage(entity)));
+            clients.forEach(client -> client.processMessage(new SetEntityCommand(entity)));
 
         // TODO @tian set each client to the role/team the want
         clients.forEach(client -> {
-            client.processMessage(new InitGameMessage(clientToTeamRoleMap.get(client).getKey(),
+            client.processMessage(new InitGameCommand(clientToTeamRoleMap.get(client).getKey(),
                     clientToTeamRoleMap.get(client).getValue(), teamRoleEntityMap));
         });
 
@@ -88,7 +96,7 @@ public class ServerGameModel extends GameModel {
         int i = 0;
         // Send player to client
         for(Model model : clients) {
-            model.processMessage(new UpdateResourcesMessage(teamData.get(players.get(i).team)));
+            model.processMessage(new UpdateResourceCommand(teamData.get(players.get(i).team)));
             i++;
         }
     }
@@ -137,7 +145,7 @@ public class ServerGameModel extends GameModel {
             }
 
             for(Model model : clients) {
-                model.processMessage(new UpdateResourcesMessage(teamData.get(Team.ONE))); //TEMPORARY GARBAGE
+                model.processMessage(new UpdateResourceCommand(teamData.get(Team.ONE))); //TEMPORARY GARBAGE
             }
 
         }
@@ -145,6 +153,16 @@ public class ServerGameModel extends GameModel {
 
     public void makeEntity(Entity e) {
         this.setEntity(e);
-        clients.forEach(client -> client.processMessage(new SetEntityMessage(e)));
+        clients.forEach(client -> client.processMessage(new SetEntityCommand(e)));
+    }
+
+    @Override
+    public void execute(Consumer<ServerGameModel> serverAction, Consumer<ClientGameModel> clientAction) {
+        serverAction.accept(this);
+    }
+
+    public void removeByID(long entityID) {
+        super.removeByID(entityID);
+        clients.forEach(client -> client.processMessage(new RemoveEntityCommand(entityID)));
     }
 }

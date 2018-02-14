@@ -1,6 +1,5 @@
 package game.model.game.model.worldObject.entity;
 
-import game.message.toClient.NewEntityMessage;
 import game.model.game.grid.GridCell;
 import game.model.game.model.team.Role;
 import game.model.game.model.worldObject.entity.aiStrat.AIStrat;
@@ -9,7 +8,6 @@ import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import game.model.game.model.worldObject.entity.drawStrat.DirectionAnimationDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.DrawStrat;
-import game.model.game.model.worldObject.entity.entities.Entities;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 import util.Util;
 import game.model.game.model.GameModel;
@@ -17,8 +15,6 @@ import game.model.game.model.team.Team;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Set;
-
-import static util.Util.toDrawCoords;
 
 /**
  * Represents any entity in the game world. Each entity knows the cells it is in

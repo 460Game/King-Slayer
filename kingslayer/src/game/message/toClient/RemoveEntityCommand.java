@@ -7,7 +7,7 @@ import game.model.game.model.worldObject.entity.Entity;
  * Message sent to remove an entity from a client's game model. This message
  * is sent by the server.
  */
-public class RemoveEntityMessage implements ToClientMessage {
+public class RemoveEntityCommand implements ToClientCommand {
 
     /**
      * ID of the entity to be removed.
@@ -17,14 +17,14 @@ public class RemoveEntityMessage implements ToClientMessage {
     /**
      * Default constructor needed for serialization.
      */
-    public RemoveEntityMessage() {}
+    public RemoveEntityCommand() {}
 
     /**
-     * Constructor of a message, given an entity to be removed.
-     * @param entity entity to be removed
+     * Constructor of a message, given an entity ID to be removed.
+     * @param id ID of the entity to be removed
      */
-    public RemoveEntityMessage(Entity entity) {
-        this.entityID = entity.id;
+    public RemoveEntityCommand(long id) {
+        this.entityID = id;
     }
 
     /**

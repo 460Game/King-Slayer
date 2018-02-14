@@ -17,6 +17,7 @@ import javafx.scene.paint.Color;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.function.Consumer;
 
 import static util.Const.CANVAS_HEIGHT;
 import static util.Const.CANVAS_WIDTH;
@@ -38,6 +39,8 @@ public abstract class GameModel implements Model {
     protected void queueMessage(Message message) {
         messageQueue.add(message);
     }
+
+    public abstract void execute(Consumer<ServerGameModel> serverAction, Consumer<ClientGameModel> clientAction);
 
     /**
      * Constructor for the game model.
@@ -126,6 +129,7 @@ public abstract class GameModel implements Model {
         for (GridCell[] arr : grid)
             for (GridCell tile : arr)
                 tile.removeByID(entityID);
+        entities.remove(entityID);
         //TODO why doesnt this remove it from the entity map and players list
     }
 
