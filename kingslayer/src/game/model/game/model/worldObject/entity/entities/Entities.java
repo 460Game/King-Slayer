@@ -4,6 +4,7 @@ import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
+import game.model.game.model.worldObject.entity.collideStrat.ArrowGhostCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.GhostCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.HardCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.TreasureGhostCollisionStrat;
@@ -160,11 +161,17 @@ public class Entities {
             AIDoNothingStrat.SINGLETON);
     }
 
-//    public static Entity makeArrow(double x, double y) {
-//        return new Entity(x, y,
-//                Team.NEUTRAL,
-//                Role.NEUTRAL,
-//                MovingStrat.SINGLETON,
-//                GhostCollisionStrat.SINGLETON, );
-//    }
+    public static Entity makeArrow(double x, double y, double angle) {
+        Entity arrow = new Entity(x, y,
+                Team.NEUTRAL,
+                Role.NEUTRAL,
+                MovingStrat.SINGLETON,
+                ArrowGhostCollisionStrat.SINGLETON,
+                new CircleHitbox(0.2),
+                ImageDrawStrat.ARROW_IMAGE_DRAW_STRAT,
+                AIDoNothingStrat.SINGLETON);
+        arrow.data.updateData.velocity.setMagnitude(1.5);
+        arrow.data.updateData.velocity.setAngle(angle);
+        return arrow;
+    }
 }

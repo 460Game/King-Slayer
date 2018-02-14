@@ -202,6 +202,7 @@ public class GridCell {
                 // Check if they collide. If they do, perform collisions
                 // on both.
                 if (Hitbox.testCollision(a, b)) {
+//                    System.out.println("COLLIDING");
                     a.collision(model, b);
                     b.collision(model, a);
                 }

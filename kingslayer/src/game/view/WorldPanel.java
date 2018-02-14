@@ -4,6 +4,7 @@ import com.esotericsoftware.minlog.Log;
 import game.message.toClient.NewEntityCommand;
 import game.message.toClient.RemoveEntityCommand;
 import game.message.toServer.MakeEntityRequest;
+import game.message.toServer.ShootArrowRequest;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
@@ -74,6 +75,16 @@ public class WorldPanel extends Region {
                     model.processMessage(new RemoveEntityCommand(placingGhost.id));
                 }
                 placing = null;
+            }
+
+            if (model.getLocalPlayer().role == Role.SLAYER) {
+//                double angle = Math.atan2(e.getY(), e.getX());
+                double clickX = e.getX();
+                double clickY = e.getY();
+
+                model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id, model.getLocalPlayer().data.x + .56,
+                        model.getLocalPlayer().data.y, 0));
+                // 0.56 = arrow radius + player radius
             }
 //            new Visitor.PlaceEntity().run(model.getLocalPlayer(), model);
         });

@@ -15,6 +15,7 @@ public abstract class Images {
     public static final Image BLUE_RESOURCE_COLLECTOR_IMAGE = getImage("resource_collector_blue.png");
 
     public static final Image TREASURE_IMAGE = getImage("treasure.png");
+    public static final Image ARROW_IMAGE = getImage("arrow.png");
 
     public static Image TILE_IMAGE = getImage("tile_map.png");
     public static Image MENU_SPASH_BG_IMAGE = getImage("castleSplash.jpg");
