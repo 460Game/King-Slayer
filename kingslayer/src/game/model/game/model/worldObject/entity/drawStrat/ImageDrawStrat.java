@@ -4,8 +4,11 @@ import com.esotericsoftware.minlog.Log;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
 import images.Images;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 import static util.Util.toDrawCoords;
 
@@ -55,7 +58,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
         return entity.y;
     }
 
-    private ImageDrawStrat() {
+    public ImageDrawStrat() {
     }
 
     public static class TreasureImageDrawStrat extends ImageDrawStrat {
@@ -76,12 +79,12 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
         @Override
         double getCenterX() {
-            return 0.5;
+            return 0.3;
         }
 
         @Override
         double getCenterY() {
-            return 0.5;
+            return 0.3;
         }
 
         private TreasureImageDrawStrat() {

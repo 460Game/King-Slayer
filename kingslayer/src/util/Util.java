@@ -1,8 +1,16 @@
 package util;
 
+import com.esotericsoftware.minlog.Log;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.transform.Affine;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
+
 import java.util.Random;
 import java.util.Set;
 
+import static java.lang.Math.PI;
 import static util.Const.TILE_PIXELS;
 
 /**
@@ -111,5 +119,27 @@ public class Util {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Draws an image on a graphics context.
+     *
+     * The image is drawn at (tlpx, tlpy) rotated by angle pivoted around the point:
+     *   (tlpx + image.getWidth() / 2, tlpy + image.getHeight() / 2)
+     *https://stackoverflow.com/questions/18260421/how-to-draw-image-rotated-on-javafx-canvas
+     *
+     *
+     * @param gc the graphics context the image is to be drawn on.
+     * @param angle the angle of rotation.
+     * @param tlpx the top left x co-ordinate where the image will be plotted (in canvas co-ordinates).
+     * @param tlpy the top left y co-ordinate where the image will be plotted (in canvas co-ordinates).
+     */
+    public static void drawRotatedImage(GraphicsContext gc, Image image, double angle, double tlpx, double tlpy, double destw, double desth) {
+      //  gc.save(); // saves the current state on stack, including the current transform
+        angle = angle/(2*PI) * 360;
+        gc.transform(new Affine(Transform.rotate(angle, tlpx + destw / 2, tlpy + desth / 2)));
+        gc.drawImage(image, tlpx, tlpy, destw, desth);
+        gc.transform(new Affine(Transform.rotate(-angle, tlpx + destw / 2, tlpy + desth / 2)));
+      //  gc.restore(); // back to original state (before rotation)
     }
 }

@@ -4,14 +4,17 @@ import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
+import game.model.game.model.worldObject.entity.collideStrat.ArrowGhostCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.GhostCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.HardCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.TreasureGhostCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CellHitbox;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CircleHitbox;
+import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import game.model.game.model.worldObject.entity.drawStrat.GhostDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.NoDrawStrat;
+import game.model.game.model.worldObject.entity.drawStrat.RotatingImageDrawStrat;
 import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
 import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
 
@@ -160,11 +163,20 @@ public class Entities {
             AIDoNothingStrat.SINGLETON);
     }
 
-//    public static Entity makeArrow(double x, double y) {
-//        return new Entity(x, y,
-//                Team.NEUTRAL,
-//                Role.NEUTRAL,
-//                MovingStrat.SINGLETON,
-//                GhostCollisionStrat.SINGLETON, );
-//    }
+    static Hitbox ARROW_HITBOX =  new CircleHitbox(0.2);
+    public static Entity makeArrow(double x, double y, double angle) {
+        Entity arrow = new Entity(x, y,
+                Team.NEUTRAL,
+                Role.NEUTRAL,
+                MovingStrat.SINGLETON,
+                ArrowGhostCollisionStrat.SINGLETON,
+            ARROW_HITBOX,
+            RotatingImageDrawStrat.ARROW_IMAGE_DRAW_STRAT,
+//                ImageDrawStrat.ARROW_IMAGE_DRAW_STRAT,
+                AIDoNothingStrat.SINGLETON);
+        arrow.data.updateData.maxSpeed = 7;
+        arrow.data.updateData.velocity.setMagnitude(7);
+        arrow.data.updateData.velocity.setAngle(angle);
+        return arrow;
+    }
 }

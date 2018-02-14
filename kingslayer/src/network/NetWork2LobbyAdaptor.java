@@ -7,7 +7,7 @@ import lobby.RoleChoice;
 import lobby.TeamChoice;
 
 public interface NetWork2LobbyAdaptor {
-    public void serverInit(Team team, Role role);
+    public void serverInit();
     public void clientInit();
     public void makeModel();
     public void getMsg(Message obj);

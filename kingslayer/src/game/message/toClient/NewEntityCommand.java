@@ -19,6 +19,7 @@ public class NewEntityCommand implements ToClientCommand {
      * @param entity entity to be created
      */
     public NewEntityCommand(Entity entity) {
+        assert(entity != null);
         this.entity = entity;
     }
 

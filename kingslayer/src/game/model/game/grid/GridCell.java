@@ -154,9 +154,6 @@ public class GridCell {
                 maxPoint = curPoint;
             }
         }
-
-
-        Log.info(maxPoint.x + " AND "+ maxPoint.y);
     }
 
     /**
@@ -196,14 +193,17 @@ public class GridCell {
         // TODO fix collisions in different cells (2 objects in 2 cells will collide twice)
         for(int i = 0; i < contents.size(); i++) {
             for (int j = 0; j < i; j++) {
-                Entity a = contents.get(i);
-                Entity b = contents.get(j);
+                if (i < contents.size() && j < contents.size()) { //Here maybe because the elements removed during this loop (arrows)
+                    Entity a = contents.get(i);
+                    Entity b = contents.get(j);
 
-                // Check if they collide. If they do, perform collisions
-                // on both.
-                if (Hitbox.testCollision(a, b)) {
-                    a.collision(model, b);
-                    b.collision(model, a);
+                    // Check if they collide. If they do, perform collisions
+                    // on both.
+                    if (Hitbox.testCollision(a, b)) {
+//                    System.out.println("COLLIDING");
+                        a.collision(model, b);
+                        b.collision(model, a);
+                    }
                 }
             }
         }

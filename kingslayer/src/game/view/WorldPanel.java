@@ -4,6 +4,7 @@ import com.esotericsoftware.minlog.Log;
 import game.message.toClient.NewEntityCommand;
 import game.message.toClient.RemoveEntityCommand;
 import game.message.toServer.MakeEntityRequest;
+import game.message.toServer.ShootArrowRequest;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
@@ -75,11 +76,27 @@ public class WorldPanel extends Region {
                 }
                 placing = null;
             }
+
+            if (model.getLocalPlayer().role == Role.SLAYER) {
+//                double angle = Math.atan2(e.getY(), e.getX());
+
+                double xCoords = toWorldCoords(e.getX() - getWidth() / 2);
+                double yCoords = toWorldCoords(e.getY() - getHeight() / 2);
+                double angle = Math.atan2(yCoords, xCoords);
+
+//                model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id, model.getLocalPlayer().data.x + .56,
+//                        model.getLocalPlayer().data.y, angle));
+                // 0.56 = arrow radius + player radius
+                model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id, model.getLocalPlayer().data.x + 0.56 * Math.cos(angle),
+                        model.getLocalPlayer().data.y + 0.56 * Math.sin(angle), angle));
+
+                // TODO problem when player running into own arrow
+            }
 //            new Visitor.PlaceEntity().run(model.getLocalPlayer(), model);
         });
 
         uiCanvas.setOnMouseMoved(e -> {
-            if (model.getLocalPlayer().role == Role.KING && placing != null) {
+            if (model.getLocalPlayer() != null && model.getLocalPlayer().role == Role.KING && placing != null) {
                 //System.out.println("moving to: " + e.getSceneX() + " " + e.getSceneY());
                 placing.data.x = Math.floor((toDrawCoords(model.getLocalPlayer().data.x) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS) + 0.5;
                 placing.data.y = Math.floor((toDrawCoords(model.getLocalPlayer().data.y) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS) + 0.5;
