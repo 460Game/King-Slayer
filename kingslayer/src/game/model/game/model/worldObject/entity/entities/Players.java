@@ -33,7 +33,7 @@ public class Players {
             MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
-            DirectionAnimationDrawStrat.RED_SLAYER_ANIMATION, //TODO drawFG strat
+            DirectionAnimationDrawStrat.BLUE_SLAYER_ANIMATION, //TODO drawFG strat
             AIDoNothingStrat.SINGLETON);
     }
 
@@ -55,7 +55,7 @@ public class Players {
             MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
-            DirectionAnimationDrawStrat.RED_KING_ANIMATION, //TODO drawFG strat
+            DirectionAnimationDrawStrat.BLUE_KING_ANIMATION, //TODO drawFG strat
             AIDoNothingStrat.SINGLETON);
     }
 }
