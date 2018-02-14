@@ -69,7 +69,7 @@ public class ServerGameModel extends GameModel {
         for(Model client : clients)
             for (int i = 0; i < this.getMapWidth(); i++)
                 for (int j = 0; j < this.getMapWidth(); j++) {
-                    client.processMessage(new SetTileMessage(i, j, this.getTile(i, j)));
+                    client.processMessage(new SetTileCommand(i, j, this.getTile(i, j)));
                 }
 
         ArrayList<Entity> players = new ArrayList<>();
