@@ -11,7 +11,7 @@ import static util.Util.toDrawCoords;
 
 public class GhostDrawStrat extends DrawStrat {
 
-  public static final WallGhostDrawStrat ghostWall = new WallGhostDrawStrat();
+  public static final WallGhostDrawStrat GHOSTWALL = new WallGhostDrawStrat();
 
   private int width = 32;
   private int height = 32;
@@ -27,7 +27,7 @@ public class GhostDrawStrat extends DrawStrat {
 
   @Override
   public void draw(Entity entity, GraphicsContext gc) {
-    gc.setGlobalAlpha(0.2);
+    gc.setGlobalAlpha(0.5);
     gc.drawImage(getImage(),
         toDrawCoords(entity.data.x - entity.data.hitbox.getWidth() / 2),
         toDrawCoords(entity.data.y - entity.data.hitbox.getHeight() / 2),
@@ -38,7 +38,7 @@ public class GhostDrawStrat extends DrawStrat {
 
   @Override
   public double getDrawZ(EntityData entity) {
-    return 0;
+    return entity.y;
   }
 
   public static class WallGhostDrawStrat extends GhostDrawStrat {

@@ -2,12 +2,14 @@ package game.view;
 
 import com.esotericsoftware.minlog.Log;
 import game.model.game.model.ClientGameModel;
+import game.model.game.model.worldObject.entity.Visitor;
 import javafx.animation.AnimationTimer;
 import javafx.beans.InvalidationListener;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
@@ -26,6 +28,7 @@ public class WorldPanel extends Region {
     private ClientGameModel model;
     private Canvas fgCanvas;
     private Canvas bgCanvas;
+    private Canvas uiCanvas;
     private GraphicsContext fgGC;
     private GraphicsContext bgGC;
 
@@ -33,15 +36,36 @@ public class WorldPanel extends Region {
         this.model = model;
         fgCanvas = new Canvas();
         bgCanvas = new Canvas();
+        uiCanvas = new Canvas();
         fgGC = fgCanvas.getGraphicsContext2D();
         bgGC = bgCanvas.getGraphicsContext2D();
 
-        this.getChildren().addAll(bgCanvas, fgCanvas);
+        this.getChildren().addAll(bgCanvas, fgCanvas, uiCanvas);
 
         fgCanvas.heightProperty().bind(this.heightProperty());
         fgCanvas.widthProperty().bind(this.widthProperty());
         bgCanvas.heightProperty().bind(this.heightProperty());
         bgCanvas.widthProperty().bind(this.widthProperty());
+        uiCanvas.heightProperty().bind(this.heightProperty());
+        uiCanvas.widthProperty().bind(this.widthProperty());
+
+        uiCanvas.setFocusTraversable(true);
+
+        uiCanvas.setOnMouseClicked(e -> {
+            new Visitor.PlaceEntity().run(model.getLocalPlayer(), model);
+        });
+
+        uiCanvas.setOnMouseMoved(e -> {
+            new Visitor.MoveEntity(e.getX(), e.getY(), uiCanvas.getWidth(), uiCanvas.getHeight()).run(model.getLocalPlayer(), model);
+        });
+
+        uiCanvas.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1)
+                new Visitor.ShowPlacement(0, 0).run(model.getLocalPlayer(), model);
+
+            if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2)
+                new Visitor.ShowPlacement(0, 0).run(model.getLocalPlayer(), model);
+        });
     }
 
     double[] scaleFactor = {1};

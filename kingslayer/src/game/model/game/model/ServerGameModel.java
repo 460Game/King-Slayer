@@ -30,6 +30,14 @@ public class ServerGameModel extends GameModel {
 
     private TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
 
+    public boolean changeResource(Team team, TeamResourceData.Resource r, int num) {
+        if (teamData.get(team).getResource(r) >= num) {
+            teamData.get(team).setResource(r, teamData.get(team).getResource(r) + num);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void processMessage(Message m) {
         if(clients == null)
@@ -58,7 +66,7 @@ public class ServerGameModel extends GameModel {
 
         ArrayList<Entity> players = new ArrayList<>();
         for (Entity entity : this.getAllEntities()) {
-            if(entity.team != Team.NEUTRAL) { //TODO this is TEMPORY
+            if(entity.team != Team.NEUTRAL) { //TODO this is TEMPORARY
                 players.add(entity);
                 teamRoleEntityMap.setEntity(entity.team, entity.role, entity.id); // Only for players
             }
@@ -122,7 +130,6 @@ public class ServerGameModel extends GameModel {
              //       e.printStackTrace();
              //   }
 
-            teamData.get(Team.ONE).increaseWood(1);
             for(Model model : clients) {
                 model.processMessage(new UpdateResourcesMessage(teamData.get(Team.ONE))); //TEMPORARY GARBAGE
             }

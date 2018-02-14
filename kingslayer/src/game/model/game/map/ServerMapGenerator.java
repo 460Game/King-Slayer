@@ -68,7 +68,7 @@ public class ServerMapGenerator implements MapGenerator {
         river(Tile.DEEP_WATER, Entities::makeBlocker),
         edgeWater(Tile.DEEP_WATER, Entities::makeBlocker),
         tresure(Tile.PATH, null),//Treasure::new),
-        //tresureNoBuild(Tile.NO_BUILD, null),//Treasure::new),
+        //tresureNoBuild(Tile.NO_BUILD, Entities::makeTreasure),//Treasure::new), // TODO
         metal(Tile.GRASS_0, Entities::makeMetal),
         stone(Tile.GRASS_0, Entities::makeStone),
         tree(Tile.GRASS_0, Entities::makeTree),//Tree::new),

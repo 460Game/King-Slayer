@@ -7,6 +7,7 @@ import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
 import game.model.game.model.worldObject.entity.collideStrat.GhostCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.HardCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CellHitbox;
+import game.model.game.model.worldObject.entity.drawStrat.GhostDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.NoDrawStrat;
 import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
@@ -108,7 +109,7 @@ public class Entities {
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            ImageDrawStrat.WALL_BUILDABLE_IMAGE_DRAW_STRAT,
+            GhostDrawStrat.GHOSTWALL,
             AIDoNothingStrat.SINGLETON);
     }
 }

@@ -186,6 +186,7 @@ public class GridCell {
      * @param model current model of the game
      */
     public void collideContents(GameModel model) {
+        // TODO fix collisions in different cells (2 objects in 2 cells will collide twice)
         for(int i = 0; i < contents.size(); i++) {
             for (int j = 0; j < i; j++) {
                 Entity a = contents.get(i);

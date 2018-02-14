@@ -86,24 +86,24 @@ public class GameView {
 
         });
 
-        scene.setOnMouseClicked(e -> {
-            double xdiff = e.getX() - worldPanel.getWidth() / 2;
-            double ydiff = e.getY() - worldPanel.getHeight() / 2;
-            double xCoords = toWorldCoords(xdiff);
-            double yCoords = toWorldCoords(ydiff);
-            double actualx = model.getLocalPlayer().data.x + xCoords;
-            double actualy = model.getLocalPlayer().data.y + yCoords;
-            model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, Math.atan2(actualy -
-                    model.getLocalPlayer().data.y, actualx - model.getLocalPlayer().data.x)));
-        });
+//        scene.setOnMouseClicked(e -> {
+//            double xdiff = e.getX() - worldPanel.getWidth() / 2;
+//            double ydiff = e.getY() - worldPanel.getHeight() / 2;
+//            double xCoords = toWorldCoords(xdiff);
+//            double yCoords = toWorldCoords(ydiff);
+//            double actualx = model.getLocalPlayer().data.x + xCoords;
+//            double actualy = model.getLocalPlayer().data.y + yCoords;
+//            model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, Math.atan2(actualy -
+//                    model.getLocalPlayer().data.y, actualx - model.getLocalPlayer().data.x)));
+//        });
 
-        scene.setOnMouseMoved(e -> {
-            new Visitor.MoveEntity(e.getX(), e.getY(), scene.getWidth(), scene.getHeight()).run(model.getLocalPlayer(), model);
-        });
+//        scene.setOnMouseMoved(e -> {
+//            new Visitor.MoveEntity(e.getX(), e.getY(), scene.getWidth(), scene.getHeight()).run(model.getLocalPlayer(), model);
+//        });
 
-        scene.setOnMouseClicked(e -> {
-            new Visitor.PlaceWall().run(model.getLocalPlayer(), model);
-        });
+//        scene.setOnMouseClicked(e -> {
+//            new Visitor.PlaceEntity().run(model.getLocalPlayer(), model);
+//        });
 
         int[] dir = {0,0};
 
@@ -152,11 +152,11 @@ public class GameView {
 //                it.remove();
 //            }
 
-            if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1)
-                new Visitor.ShowPlacement(0, 0).run(model.getLocalPlayer(), model);
-
-            if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2)
-                new Visitor.ShowPlacement(0, 0).run(model.getLocalPlayer(), model);
+//            if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1)
+//                new Visitor.ShowPlacement(0, 0).run(model.getLocalPlayer(), model);
+//
+//            if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2)
+//                new Visitor.ShowPlacement(0, 0).run(model.getLocalPlayer(), model);
 
             if(dir[0] == 0 && dir[1] == 0)
                 model.processMessage(new StopMessage(model.getLocalPlayer().id));
