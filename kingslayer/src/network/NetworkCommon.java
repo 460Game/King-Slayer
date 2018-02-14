@@ -50,6 +50,7 @@ public class NetworkCommon {
         kryo.register(GoDirectionMessage.class);
         kryo.register(RemoveEntityMessage.class);
         kryo.register(DeleteEntityMessage.class);
+        kryo.register(MakeEntityMessage.class);
         kryo.register(SetEntityMessage.class);
         kryo.register(SetTileMessage.class);
         kryo.register(ToClientMessage.class);

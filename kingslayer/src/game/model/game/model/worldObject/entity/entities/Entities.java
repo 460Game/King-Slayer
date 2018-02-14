@@ -109,7 +109,7 @@ public class Entities {
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            GhostDrawStrat.GHOSTWALL,
+            ImageDrawStrat.WALL_BUILDABLE_IMAGE_DRAW_STRAT,//GhostDrawStrat.GHOSTWALL,
             AIDoNothingStrat.SINGLETON);
     }
 }

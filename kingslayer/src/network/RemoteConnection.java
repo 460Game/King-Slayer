@@ -49,7 +49,7 @@ public class RemoteConnection {
     Long t0 = null;
     Long t1 = null;
 
-    int numOfPlayer = 1;
+    int numOfPlayer = 4;
 
     Map<Integer, LinkedBlockingQueue<Message>> messageQueues;
     LinkedBlockingQueue<Message> toBeConsumeMsgQueue;
