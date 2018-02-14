@@ -130,6 +130,12 @@ public class ServerGameModel extends GameModel {
              //       e.printStackTrace();
              //   }
 
+            for(Entity e: this.getAllEntities()) {
+                if (e.team != Team.NEUTRAL && e.role == Role.NEUTRAL) {
+                    changeResource(e.team, TeamResourceData.Resource.WOOD, 1);
+                }
+            }
+
             for(Model model : clients) {
                 model.processMessage(new UpdateResourcesMessage(teamData.get(Team.ONE))); //TEMPORARY GARBAGE
             }

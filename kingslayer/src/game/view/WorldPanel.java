@@ -93,8 +93,13 @@ public class WorldPanel extends Region {
                 }
             }
 
-//            if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2)
-//                new Visitor.ShowPlacement(0, 0).run(model.getLocalPlayer(), model);
+            if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2) {
+                if (placing == null) {
+                    placingGhost = Entities.makeResourceCollectorRedGhost(0, 0);
+                    placing = Entities.makeResourceCollectorRed(0, 0);
+                    model.processMessage(new NewEntityMessage(placingGhost));
+                }
+            }
         });
     }
 
