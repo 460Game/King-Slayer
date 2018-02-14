@@ -157,4 +157,9 @@ public class ServerGameModel extends GameModel {
     public void execute(Consumer<ServerGameModel> serverAction, Consumer<ClientGameModel> clientAction) {
         serverAction.accept(this);
     }
+
+    public void removeByID(long entityID) {
+        super.removeByID(entityID);
+        clients.forEach(client -> client.processMessage(new RemoveEntityCommand(entityID)));
+    }
 }

@@ -6,6 +6,7 @@ import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
 import game.model.game.model.worldObject.entity.collideStrat.GhostCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.HardCollisionStrat;
+import game.model.game.model.worldObject.entity.collideStrat.TreasureGhostCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CellHitbox;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CircleHitbox;
 import game.model.game.model.worldObject.entity.drawStrat.GhostDrawStrat;
@@ -32,7 +33,7 @@ public class Entities {
             Team.NEUTRAL,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
-            GhostCollisionStrat.SINGLETON,
+            TreasureGhostCollisionStrat.SINGLETON,
             new CircleHitbox(0.3),
             ImageDrawStrat.TREASURE_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);

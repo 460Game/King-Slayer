@@ -16,6 +16,9 @@ import java.util.function.Consumer;
  */
 public class TreasureGhostCollisionStrat extends GhostCollisionStrat{
 
+    public static TreasureGhostCollisionStrat SINGLETON = new TreasureGhostCollisionStrat();
+
+    @Override
     public void collisionSoft(GameModel model, Entity a, Entity b) {
         Consumer<ServerGameModel> serverConsumer = (server) -> {
             server.removeByID(a.id);
@@ -23,5 +26,6 @@ public class TreasureGhostCollisionStrat extends GhostCollisionStrat{
         };
         Consumer<ClientGameModel> clientConsumer = (client) -> {};
         model.execute(serverConsumer, clientConsumer);
+        System.out.println("Colliding with treasure!");
     }
 }

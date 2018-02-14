@@ -61,7 +61,7 @@ public class WorldPanel extends Region {
                     model.getLocalPlayer().team,
                     TeamResourceData.Resource.WOOD,
                     cost));
-                model.processMessage(new RemoveEntityCommand(placingGhost));
+                model.processMessage(new RemoveEntityCommand(placingGhost.id));
                 placing = null;
             }
 //            new Visitor.PlaceEntity().run(model.getLocalPlayer(), model);

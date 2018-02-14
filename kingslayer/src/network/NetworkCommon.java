@@ -47,7 +47,6 @@ public class NetworkCommon {
         kryo.register(ActionRequest.class);
         kryo.register(GoDirectionRequest.class);
         kryo.register(RemoveEntityCommand.class);
-        kryo.register(DeleteEntityMessage.class);
         kryo.register(MakeEntityRequest.class);
         kryo.register(SetEntityCommand.class);
         kryo.register(SetTileCommand.class);

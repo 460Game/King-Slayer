@@ -123,6 +123,7 @@ public abstract class GameModel implements Model {
         for (GridCell[] arr : grid)
             for (GridCell tile : arr)
                 tile.removeByID(entityID);
+        entities.remove(entityID);
         //TODO why doesnt this remove it from the entity map and players list
     }
 
