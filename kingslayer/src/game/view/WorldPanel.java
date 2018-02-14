@@ -9,7 +9,6 @@ import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.Visitor;
 import game.model.game.model.worldObject.entity.entities.Entities;
 import javafx.animation.AnimationTimer;
 import javafx.beans.InvalidationListener;
@@ -69,7 +68,7 @@ public class WorldPanel extends Region {
                         model.getLocalPlayer().team,
                         TeamResourceData.Resource.WOOD,
                         cost));
-                    model.processMessage(new RemoveEntityCommand(placingGhost));
+                    model.processMessage(new RemoveEntityCommand(placingGhost.id));
                 }
                 placing = null;
             }
