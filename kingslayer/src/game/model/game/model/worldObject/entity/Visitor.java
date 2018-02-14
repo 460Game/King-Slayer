@@ -58,8 +58,10 @@ public interface Visitor {
             Math.floor((toDrawCoords(entity.data.y) - sceneHeight / 2 + y) / TILE_PIXELS) + 0.5);
 
         model.processMessage(new DeleteEntityMessage(model.placingGhost));
-        model.placingGhost.data.x = Math.floor((toDrawCoords(entity.data.x) - sceneWidth / 2 + x) / TILE_PIXELS) + 0.5;
-        model.placingGhost.data.y = Math.floor((toDrawCoords(entity.data.y) - sceneHeight / 2 + y) / TILE_PIXELS) + 0.5;
+        model.placingGhost = Entities.makeGhostWall(Math.floor((toDrawCoords(entity.data.x) - sceneWidth / 2 + x) / TILE_PIXELS) + 0.5,
+            Math.floor((toDrawCoords(entity.data.y) - sceneHeight / 2 + y) / TILE_PIXELS) + 0.5);
+//        model.placingGhost.data.x = Math.floor((toDrawCoords(entity.data.x) - sceneWidth / 2 + x) / TILE_PIXELS) + 0.5;
+//        model.placingGhost.data.y = Math.floor((toDrawCoords(entity.data.y) - sceneHeight / 2 + y) / TILE_PIXELS) + 0.5;
         model.processMessage(new MakeEntityMessage(model.placingGhost, entity.team, TeamResourceData.Resource.WOOD, 0));
       }
     }
