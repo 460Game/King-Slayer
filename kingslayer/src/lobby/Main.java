@@ -1,6 +1,7 @@
 package lobby;
 
 import com.esotericsoftware.minlog.Log;
+import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.singlePlayer.SingleplayerController;
 import javafx.animation.AnimationTimer;
@@ -51,6 +52,10 @@ public class Main extends Application {
 
     private int currentItem = 0;
     private AnimationTimer animator;
+
+    ChoiceBox<Team> teamChoice;
+    ChoiceBox<Role> roleChoice;
+
 
     MenuItem[] items = new MenuItem[]{
         new MenuItem("JOIN GAME"),
@@ -260,15 +265,15 @@ public class Main extends Application {
         grid.setVgap(5);
         grid.setHgap(5);
 
-        ChoiceBox<TeamChoice> teamChoice = new ChoiceBox<>();
-        teamChoice.getItems().add(TeamChoice.RED_TEAM);
-        teamChoice.getItems().add(TeamChoice.BLUE_TEAM);
+        teamChoice = new ChoiceBox<>();
+        teamChoice.getItems().add(Team.ONE);
+        teamChoice.getItems().add(Team.TWO);
         GridPane.setConstraints(teamChoice, 0, 0);
         grid.getChildren().add(teamChoice);
 
-        ChoiceBox<RoleChoice> roleChoice = new ChoiceBox<>();
-        roleChoice.getItems().add(RoleChoice.SLAYER);
-        roleChoice.getItems().add(RoleChoice.KING);
+        roleChoice = new ChoiceBox<>();
+        roleChoice.getItems().add(Role.KING);
+        roleChoice.getItems().add(Role.SLAYER);
         GridPane.setConstraints(roleChoice, 1, 0);
         grid.getChildren().add(roleChoice);
 
@@ -374,8 +379,8 @@ public class Main extends Application {
 
     public void ready() {
         //TODO: get from the view later!!!!!!!!!!!
-        Enum<TeamChoice> team = null;
-        Enum<RoleChoice> role = null;
+        Team team = teamChoice.getValue();
+        Role role = roleChoice.getValue();
 
         lobbyClient.lobbyClientReady(team, role);
     }

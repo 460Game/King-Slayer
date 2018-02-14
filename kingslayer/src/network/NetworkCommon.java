@@ -139,17 +139,17 @@ public class NetworkCommon {
     }
 
     public static class ClientReadyMsg {
-        private Enum<TeamChoice> teamChoice;
-        private Enum<RoleChoice> roleChoice;
+        private Team teamChoice;
+        private Role roleChoice;
         public ClientReadyMsg() {}
-        public ClientReadyMsg(Enum<TeamChoice> team, Enum<RoleChoice> role) {
+        public ClientReadyMsg(Team team, Role role) {
             teamChoice = team;
             roleChoice = role;
         }
-        public Enum<TeamChoice> getTeam() {
+        public Team getTeam() {
             return teamChoice;
         }
-        public Enum<RoleChoice> getRole() {
+        public Role getRole() {
             return roleChoice;
         }
     }
