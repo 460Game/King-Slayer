@@ -15,6 +15,8 @@ public abstract class Images {
 
     // TODO treasure image
 
+    public static final Image TREASURE_IMAGE = getImage("treasure.png");
+
     public static Image TILE_IMAGE = getImage("tile_map.png");
     public static Image MENU_SPASH_BG_IMAGE = getImage("castleSplash.jpg");
     public static final Image[] METAL_IMAGES = getImages("iron_ingots.png",

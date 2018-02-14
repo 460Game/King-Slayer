@@ -7,6 +7,7 @@ import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
 import game.model.game.model.worldObject.entity.collideStrat.GhostCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.HardCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CellHitbox;
+import game.model.game.model.worldObject.entity.collideStrat.hitbox.CircleHitbox;
 import game.model.game.model.worldObject.entity.drawStrat.GhostDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.NoDrawStrat;
@@ -25,7 +26,18 @@ public class Entities {
             AIDoNothingStrat.SINGLETON);
     }
 
-    public static Entity makeTree(Double x, Double y) {
+    public static Entity makeTreasure(double x, double y) {
+        return new Entity(x, y,
+            Team.NEUTRAL,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            GhostCollisionStrat.SINGLETON,
+            new CircleHitbox(0.5),
+            ImageDrawStrat.TREASURE_IMAGE_DRAW_STRAT,
+            AIDoNothingStrat.SINGLETON);
+    }
+
+    public static Entity makeTree(double x, double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
             Role.NEUTRAL,
@@ -36,7 +48,7 @@ public class Entities {
             AIDoNothingStrat.SINGLETON);
     }
 
-    public static Entity makeStone(Double x, Double y) {
+    public static Entity makeStone(double x, double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
             Role.NEUTRAL,
@@ -47,7 +59,7 @@ public class Entities {
             AIDoNothingStrat.SINGLETON);
     }
 
-    public static Entity makeMetal(Double x, Double y) {
+    public static Entity makeMetal(double x, double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
             Role.NEUTRAL,
@@ -58,7 +70,7 @@ public class Entities {
             AIDoNothingStrat.SINGLETON);
     }
 
-    public static Entity makeWall(Double x, Double y) {
+    public static Entity makeWall(double x, double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
             Role.NEUTRAL,
@@ -69,7 +81,7 @@ public class Entities {
             AIDoNothingStrat.SINGLETON);
     }
 
-    public static Entity makeBox(Double x, Double y) {
+    public static Entity makeBox(double x, double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
             Role.NEUTRAL,
@@ -80,7 +92,7 @@ public class Entities {
             AIDoNothingStrat.SINGLETON);
     }
 
-    public static Entity makeBuiltWall(Double x, Double y) {
+    public static Entity makeBuiltWall(double x, double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
             Role.NEUTRAL,
@@ -91,7 +103,7 @@ public class Entities {
             AIDoNothingStrat.SINGLETON);
     }
 
-    public static Entity makeResourceCollectorRed(Double x, Double y) {
+    public static Entity makeResourceCollectorRed(double x, double y) {
         return new Entity(x, y,
             Team.ONE,
             Role.NEUTRAL,
@@ -102,7 +114,7 @@ public class Entities {
             AIDoNothingStrat.SINGLETON);
     }
 
-    public static Entity makeGhostWall(Double x, Double y) {
+    public static Entity makeGhostWall(double x, double y) {
         return new Entity(x, y,
             Team.NEUTRAL,
             Role.NEUTRAL,

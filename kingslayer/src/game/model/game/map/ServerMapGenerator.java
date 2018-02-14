@@ -8,7 +8,6 @@ import util.Loc;
 
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
 
 /**
  * map generator for the server side of the game.
@@ -67,8 +66,8 @@ public class ServerMapGenerator implements MapGenerator {
     public static enum TS {
         river(Tile.DEEP_WATER, Entities::makeBlocker),
         edgeWater(Tile.DEEP_WATER, Entities::makeBlocker),
-        tresure(Tile.PATH, null),//Treasure::new),
-        //tresureNoBuild(Tile.NO_BUILD, Entities::makeTreasure),//Treasure::new), // TODO
+        treasure(Tile.PATH, Entities::makeTreasure),//Treasure::new),
+        //tresureNoBuild(Tile.NO_BUILD, Entities::makeTreasure),//Treasure::new),
         metal(Tile.GRASS_0, Entities::makeMetal),
         stone(Tile.GRASS_0, Entities::makeStone),
         tree(Tile.GRASS_0, Entities::makeTree),//Tree::new),
@@ -232,7 +231,7 @@ public class ServerMapGenerator implements MapGenerator {
                             if (random.nextDouble() < 0.98)
                                 grid[loc.x][loc.y] = TS.road;
                             else
-                                grid[loc.x][loc.y] = TS.tresure;
+                                grid[loc.x][loc.y] = TS.treasure;
                             if(grid[loc.x][loc.y] == TS.room)
                                 grid[loc.x][loc.y] = TS.road;
 
