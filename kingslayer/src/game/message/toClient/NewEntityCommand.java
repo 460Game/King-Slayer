@@ -19,7 +19,8 @@ public class NewEntityCommand implements ToClientCommand {
      * @param entity entity to be created
      */
     public NewEntityCommand(Entity entity) {
-        assert(entity != null);
+        if(entity == null)
+            throw new RuntimeException("Server cannot tell client to add null entity");
         this.entity = entity;
     }
 
@@ -34,6 +35,8 @@ public class NewEntityCommand implements ToClientCommand {
      */
     @Override
     public void executeClient(ClientGameModel model) {
+        if(entity == null)
+            throw new RuntimeException("Cleint Cannot add null entity");
         model.setEntity(entity);
     }
 }
