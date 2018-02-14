@@ -32,7 +32,7 @@ public class Entities {
             Role.NEUTRAL,
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
-            new CircleHitbox(0.5),
+            new CircleHitbox(0.3),
             ImageDrawStrat.TREASURE_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON);
     }

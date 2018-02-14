@@ -65,12 +65,12 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
         @Override
         double getWidth() {
-            return 0.2;
+            return 0.6;
         }
 
         @Override
         double getHeight() {
-            return 0.2;
+            return 0.6;
         }
 
         @Override
