@@ -38,7 +38,7 @@ public class MakeEntityMessage implements ToServerMessage {
     /**
      * Default constructor needed for serialization.
      */
-    private MakeEntityMessage(){}
+    public MakeEntityMessage(){}
 
     /**
      * Make the entity in the server model.
