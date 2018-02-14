@@ -23,7 +23,6 @@ public abstract class ImageDrawStrat extends DrawStrat {
     public static final ImageDrawStrat WALL_IMAGE_DRAW_STRAT = new WallImageDrawStrat();
     public static final ImageDrawStrat BOX_IMAGE_DRAW_STRAT = new BoxImageDrawStrat();
     public static final ImageDrawStrat TREASURE_IMAGE_DRAW_STRAT = new TreasureImageDrawStrat();
-    public static final ImageDrawStrat ARROW_IMAGE_DRAW_STRAT = new ArrowImageDrawStrat();
 
     public static final ImageDrawStrat WALL_BUILDABLE_IMAGE_DRAW_STRAT = new WallBuildableImageDrawStrat();
     public static final ImageDrawStrat RED_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT = new RedResourceCollectorImageDrawStrat();
@@ -59,56 +58,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
         return entity.y;
     }
 
-    private ImageDrawStrat() {
-    }
-
-    public static class ArrowImageDrawStrat extends ImageDrawStrat {
-
-        private double angle;
-
-        @Override
-        Image getImage() {
-            ImageView iv = new ImageView(Images.ARROW_IMAGE);
-            iv.setRotate(180 * angle / Math.PI);
-            return iv.getImage();
-        }
-
-//        @Override
-//        Image getImage() {
-//            return Images.ARROW_IMAGE;
-//        }
-
-        @Override
-        double getWidth() {
-            return 0.4;
-        }
-
-        @Override
-        double getHeight() {
-            return 0.4;
-        }
-
-        @Override
-        double getCenterX() {
-            return 0.2;
-        }
-
-        @Override
-        double getCenterY() {
-            return 0.2;
-        }
-
-        public ArrowImageDrawStrat(double angle) {
-            this.angle = angle;
-        }
-
-        public ArrowImageDrawStrat() {
-
-        }
-
-//        private ArrowImageDrawStrat() {
-//
-//        }
+    public ImageDrawStrat() {
     }
 
     public static class TreasureImageDrawStrat extends ImageDrawStrat {

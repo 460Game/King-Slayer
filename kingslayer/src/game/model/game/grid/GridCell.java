@@ -154,9 +154,6 @@ public class GridCell {
                 maxPoint = curPoint;
             }
         }
-
-
-        Log.info(maxPoint.x + " AND "+ maxPoint.y);
     }
 
     /**

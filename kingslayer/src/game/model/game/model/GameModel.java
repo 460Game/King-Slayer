@@ -166,6 +166,7 @@ public abstract class GameModel implements Model {
     }
 
     public void setEntity(Entity entity) {
+        assert (entity != null);
         if(entities.containsKey(entity.id)) {
             Entity e = entities.get(entity.id);
             e.data = entity.data;
