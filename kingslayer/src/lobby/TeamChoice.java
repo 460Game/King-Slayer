@@ -3,11 +3,12 @@ package lobby;
 import javafx.scene.paint.Color;
 
 public enum TeamChoice {
-    RED_TEAM(Color.RED),
-    BLUE_TEAM(Color.BLUE);
+    TEAM_ONE(1),
+    TEAM_TWO(2);
 
-    public Color teamColor;
-    TeamChoice(Color color) {
-        teamColor = color;
+//    public Color teamColor;
+    public int teamNum;
+    TeamChoice(int num) {
+        teamNum = num;
     }
 }

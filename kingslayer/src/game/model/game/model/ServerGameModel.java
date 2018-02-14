@@ -9,6 +9,7 @@ import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +45,7 @@ public class ServerGameModel extends GameModel {
         return System.nanoTime();
     }
 
-    public void init(Collection<? extends Model> clients) {
+    public void init(Collection<? extends Model> clients, Map<? extends Model, Pair<Team, Role>> clientToTeamRoleMap) {
 
         this.clients = clients;
 
@@ -68,7 +69,10 @@ public class ServerGameModel extends GameModel {
             clients.forEach(client -> client.processMessage(new SetEntityMessage(entity)));
 
         // TODO @tian set each client to the role/team the want
-        clients.forEach(client -> client.processMessage(new InitGameMessage(Team.ONE, Role.KING, teamRoleEntityMap)));
+        clients.forEach(client -> {
+            client.processMessage(new InitGameMessage(clientToTeamRoleMap.get(client).getKey(),
+                    clientToTeamRoleMap.get(client).getValue(), teamRoleEntityMap));
+        });
 
         teamData.put(Team.ONE, new TeamResourceData());
         teamData.put(Team.TWO, new TeamResourceData());
