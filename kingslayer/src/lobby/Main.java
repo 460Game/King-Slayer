@@ -58,6 +58,11 @@ public class Main extends Application {
 
     boolean connected = false;
 
+    Canvas bgCanvas = new Canvas();
+    GraphicsContext bgGC = bgCanvas.getGraphicsContext2D();
+    Canvas midCanvas = new Canvas();
+    GraphicsContext midGC = midCanvas.getGraphicsContext2D();
+
 
     MenuItem[] items = new MenuItem[]{
         new MenuItem("JOIN GAME"),
@@ -159,16 +164,11 @@ public class Main extends Application {
         window.setTitle("King Slayer");
         window.setFullScreen(true);
 
-        Canvas bgCanvas = new Canvas();
-        GraphicsContext bgGC = bgCanvas.getGraphicsContext2D();
-        Canvas midCanvas = new Canvas();
-        GraphicsContext midGC = midCanvas.getGraphicsContext2D();
+//        Canvas bgCanvas = new Canvas();
+//        GraphicsContext bgGC = bgCanvas.getGraphicsContext2D();
+//        Canvas midCanvas = new Canvas();
+//        GraphicsContext midGC = midCanvas.getGraphicsContext2D();
 
-//        Scene scene2 = new Scene(ipForm());
-//        items[0].setOnActivate(() -> {
-//            System.out.println("set scene2");
-//            window.setScene(scene2);
-//        });
 
         items[0].setOnActivate(this::connectForm);
         items[1].setOnActivate(this::guiSetNumOfPlayer);
@@ -250,6 +250,8 @@ public class Main extends Application {
             }
         };
 
+
+
         animator.start();
         resize.invalidated(null);
         sleep(100);
@@ -261,9 +263,9 @@ public class Main extends Application {
         window.setScene(new Scene(ipForm(), 800, 500));
     }
 
-    public GridPane choiceTeamAndRoleScene() {
+    public GridPane choiceTeamAndRolePane() {
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setPadding(new Insets(window.getHeight()/2, 100, window.getHeight()/2 + 100, 100));
         grid.setVgap(5);
         grid.setHgap(5);
 
@@ -340,10 +342,90 @@ public class Main extends Application {
         return grid;
     }
 
+    public Scene inputNumOfPlayersScene() {
+
+//        Canvas bgCanvas = new Canvas();
+//        GraphicsContext bgGC = bgCanvas.getGraphicsContext2D();
+//        Canvas midCanvas = new Canvas();
+//        GraphicsContext midGC = midCanvas.getGraphicsContext2D();
+
+        Group newRoot = new Group();
+        newRoot.getChildren().add(bgCanvas);
+        newRoot.getChildren().add(midCanvas);
+        Pane inputPane = inputNumOfPlayers();
+        newRoot.getChildren().add(inputPane);
+
+        Scene ret = new Scene(newRoot);
+        ret.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
+
+        setAnimator(inputPane);
+
+        return ret;
+    }
+
+    public Scene chooseTeamAndRoleScene() {
+
+        Group newRoot = new Group();
+        newRoot.getChildren().add(bgCanvas);
+        newRoot.getChildren().add(midCanvas);
+        Pane inputPane = choiceTeamAndRolePane();
+        newRoot.getChildren().add(inputPane);
+
+        Scene ret = new Scene(newRoot);
+        ret.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
+
+        setAnimator(inputPane);
+
+        return ret;
+    }
+
+    private void setAnimator(Pane addedPane) {
+
+        InvalidationListener resize = l -> {
+            //  if(window.isMaximized()) {
+            //      window.setHeight(bounds.getHeight());
+            //      window.setWidth(bounds.getWidth());
+            //  }
+            bgCanvas.setWidth(window.getWidth());
+            bgCanvas.setHeight(window.getHeight());
+            midCanvas.setWidth(window.getWidth());
+            midCanvas.setHeight(window.getHeight());
+            font = Font.font("", FontWeight.BOLD, window.getHeight()/400 * 18);
+            for(MenuItem item : items)
+                item.updateSize();
+        };
+
+
+            window.heightProperty().addListener(resize);
+            window.widthProperty().addListener(resize);
+            window.maximizedProperty().addListener(resize);
+
+
+            double[] bgOpac = new double[]{2.0};
+            animator = new AnimationTimer() {
+
+            @Override
+            public void handle(long now) {
+                midGC.clearRect(0, 0, window.getWidth(), window.getHeight());
+                midGC.setFill(Color.color(0.6, 0.6, 0.7, 0.4 + (Math.abs(bgOpac[0] % 2 - 1)) * 0.3));
+                bgOpac[0] += 0.002;
+
+                midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
+                midGC.drawImage(LOGO_TEXT_IMAGE, window.getWidth()/4, 50, window.getWidth()/2, (153/645.0)*window.getWidth()/2);
+
+                bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, window.getWidth(), window.getHeight());
+
+                addedPane.setTranslateX(window.getWidth() / 2 - addedPane.getWidth() / 2);
+                addedPane.setTranslateY(window.getHeight() - addedPane.getHeight() + 200);
+            }
+        };
+
+        animator.start();
+    }
 
     private GridPane inputNumOfPlayers() {
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setPadding(new Insets(window.getHeight()/2, 100, window.getHeight()/2 + 100, 100));
         grid.setVgap(5);
         grid.setHgap(5);
 
@@ -384,10 +466,14 @@ public class Main extends Application {
         lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
             @Override
             public void showChoiceTeamAndRoleScene() {
-                Platform.runLater(() -> window.setScene(new Scene(choiceTeamAndRoleScene())));
+                Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
             }
         });
-        Platform.runLater(() -> window.setScene(new Scene(inputNumOfPlayers())));
+
+//        window.getScene().getRoot().getChildrenUnmodifiable().remove(0, 1);
+
+        Platform.runLater(() -> window.setScene(inputNumOfPlayersScene()));
+//        Platform.runLater(() -> window.setScene(new Scene(inputNumOfPlayers())));
     }
 
     private void startGame() {
@@ -402,29 +488,6 @@ public class Main extends Application {
             e.printStackTrace();
             return;
         }
-
-
-        //this should be done when the all clients get connected
-        //start game actually means make model
-//        lobbyServer.startGame();
-
-
-//        window.setScene(new Scene(choiceTeamAndRoleScene()));
-
-        //hardcode here
-//        try {
-//            Thread.sleep(10000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        Log.info("before ready");
-//        ready();
-
-
-
-
-
-
     }
 
     public void ready() {
@@ -440,7 +503,7 @@ public class Main extends Application {
         lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
             @Override
             public void showChoiceTeamAndRoleScene() {
-                Platform.runLater(() -> window.setScene(new Scene(choiceTeamAndRoleScene())));
+                Platform.runLater(() -> window.setScene(new Scene(choiceTeamAndRolePane())));
 //                window.setScene(new Scene(choiceTeamAndRoleScene()));
             }
         });
