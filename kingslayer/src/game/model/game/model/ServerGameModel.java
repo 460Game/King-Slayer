@@ -57,7 +57,7 @@ public class ServerGameModel extends GameModel {
 
         ArrayList<Entity> players = new ArrayList<>();
         for (Entity entity : this.getAllEntities()) {
-            if(entity.team != Team.NEUTRAL) { //TODO this is TEMPORY
+            if(entity.team != Team.NEUTRAL) { //TODO this is TEMPORARY
                 players.add(entity);
                 teamRoleEntityMap.setEntity(entity.team, entity.role, entity.id); // Only for players
             }
