@@ -96,7 +96,7 @@ public class WorldPanel extends Region {
         });
 
         uiCanvas.setOnMouseMoved(e -> {
-            if (model.getLocalPlayer().role == Role.KING && placing != null) {
+            if (model.getLocalPlayer() != null && model.getLocalPlayer().role == Role.KING && placing != null) {
                 //System.out.println("moving to: " + e.getSceneX() + " " + e.getSceneY());
                 placing.data.x = Math.floor((toDrawCoords(model.getLocalPlayer().data.x) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS) + 0.5;
                 placing.data.y = Math.floor((toDrawCoords(model.getLocalPlayer().data.y) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS) + 0.5;

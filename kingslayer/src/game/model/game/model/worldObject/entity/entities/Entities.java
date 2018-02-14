@@ -168,8 +168,8 @@ public class Entities {
                 MovingStrat.SINGLETON,
                 ArrowGhostCollisionStrat.SINGLETON,
                 new CircleHitbox(0.2),
-//                new ImageDrawStrat.ArrowImageDrawStrat(angle),
-                ImageDrawStrat.ARROW_IMAGE_DRAW_STRAT,
+                new ImageDrawStrat.ArrowImageDrawStrat(angle),
+//                ImageDrawStrat.ARROW_IMAGE_DRAW_STRAT,
                 AIDoNothingStrat.SINGLETON);
         arrow.data.updateData.velocity.setMagnitude(3.5);
         arrow.data.updateData.velocity.setAngle(angle);

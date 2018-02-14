@@ -66,19 +66,17 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
         private double angle;
 
-//        @Override
-//        Image getImage() {
-//            ImageView iv = new ImageView(Images.ARROW_IMAGE);
-//            iv.setRotate(angle);
-//            SnapshotParameters params = new SnapshotParameters();
-//            params.setFill(Color.TRANSPARENT);
-//            return iv.snapshot(params, null);
-//        }
-
         @Override
         Image getImage() {
-            return Images.ARROW_IMAGE;
+            ImageView iv = new ImageView(Images.ARROW_IMAGE);
+            iv.setRotate(180 * angle / Math.PI);
+            return iv.getImage();
         }
+
+//        @Override
+//        Image getImage() {
+//            return Images.ARROW_IMAGE;
+//        }
 
         @Override
         double getWidth() {
@@ -100,17 +98,17 @@ public abstract class ImageDrawStrat extends DrawStrat {
             return 0.2;
         }
 
-//        public ArrowImageDrawStrat(double angle) {
-//            this.angle = angle;
-//        }
-//
-//        public ArrowImageDrawStrat() {
-//
-//        }
+        public ArrowImageDrawStrat(double angle) {
+            this.angle = angle;
+        }
 
-        private ArrowImageDrawStrat() {
+        public ArrowImageDrawStrat() {
 
         }
+
+//        private ArrowImageDrawStrat() {
+//
+//        }
     }
 
     public static class TreasureImageDrawStrat extends ImageDrawStrat {
