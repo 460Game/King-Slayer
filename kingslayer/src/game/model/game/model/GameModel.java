@@ -9,11 +9,17 @@ import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
 import game.model.game.model.worldObject.entity.drawStrat.ShapeDrawStrat;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static util.Const.CANVAS_HEIGHT;
+import static util.Const.CANVAS_WIDTH;
 import static util.Const.DEBUG_DRAW;
 
 public abstract class GameModel implements Model {
@@ -209,13 +215,15 @@ public abstract class GameModel implements Model {
             drawEntities.forEach(a -> a.data.hitbox.draw(gc, a));
     }
 
-    public void drawBG(GraphicsContext gc, int x, int y, int w, int h, boolean b) {
-        for (int j = Math.max(0, (int) (y - h / 2)); j < Math.min(y + h / 2, getMapHeight()); j++) {
-            for (int i = Math.max(0, (int) (x - w / 2)); i < Math.min(x + w / 2, getMapWidth()); i++) {
+    public Image getBG(WritableImage image, boolean b) {
+        for (int j = 0; j < getMapHeight(); j++) {
+            for (int i = 0; i < getMapWidth(); i++) {
                 GridCell cell = getCell(i, j);
-                cell.draw(gc, this, b);
+                cell.initDraw(this);
+                cell.draw(image.getPixelWriter(), true);
             }
         }
+        return image;
     }
 
     public Collection<Entity> getAllEntities() {

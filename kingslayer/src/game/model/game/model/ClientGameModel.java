@@ -9,6 +9,7 @@ import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
+import javafx.scene.image.WritableImage;
 
 public class ClientGameModel extends GameModel {
 
@@ -68,4 +69,5 @@ public class ClientGameModel extends GameModel {
     public void requestEntityFromServer(long id) {
         server.processMessage(new RequestEntityMessage(id));
     }
+
 }

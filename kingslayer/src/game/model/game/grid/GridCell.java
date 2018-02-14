@@ -1,11 +1,14 @@
 package game.model.game.grid;
 
+import com.esotericsoftware.minlog.Log;
 import game.model.game.model.GameModel;
 import game.model.game.map.Tile;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
 
 import java.awt.*;
 import java.util.*;
@@ -151,32 +154,36 @@ public class GridCell {
                 maxPoint = curPoint;
             }
         }
+
+
+        Log.info(maxPoint.x + " AND "+ maxPoint.y);
     }
 
     /**
      * Draws the tile in a specified cell on the map.
-     * @param gc context used to drawFG the tile
-     * @param model current model of the game
      * @param firstAnimation TODO
      */
-    public void draw(GraphicsContext gc, GameModel model, boolean firstAnimation) {
+    public void draw(PixelWriter writer, boolean firstAnimation) {
+        PixelReader reader = TILE_IMAGE.getPixelReader();
         if (!firstAnimation && this.tile.tupleNum == 'W')
-            gc.drawImage(TILE_IMAGE,
-                    (maxPoint.x + 10) * TILE_IMAGE_TILE_SIZE,
-                    maxPoint.y * TILE_IMAGE_TILE_SIZE, TILE_IMAGE_TILE_SIZE, TILE_IMAGE_TILE_SIZE,
-                    toDrawCoords(x),
-                    toDrawCoords(y),
-                    toDrawCoords(1),
-                    toDrawCoords(1));
+            writer.setPixels(
+                toDrawCoords(x),
+                toDrawCoords(y),
+                TILE_IMAGE_TILE_SIZE,
+                TILE_IMAGE_TILE_SIZE,
+                reader,
+                (maxPoint.x + 10) * TILE_IMAGE_TILE_SIZE,
+                maxPoint.y * TILE_IMAGE_TILE_SIZE);
         else
-            gc.drawImage(TILE_IMAGE,
-                    maxPoint.x * TILE_IMAGE_TILE_SIZE,
-                    maxPoint.y * TILE_IMAGE_TILE_SIZE,
-                    TILE_IMAGE_TILE_SIZE, TILE_IMAGE_TILE_SIZE,
-                    toDrawCoords(x),
-                    toDrawCoords(y),
-                    toDrawCoords(1),
-                    toDrawCoords(1));
+            writer.setPixels(
+                toDrawCoords(x),
+                toDrawCoords(y),
+                TILE_IMAGE_TILE_SIZE,
+                TILE_IMAGE_TILE_SIZE,
+                reader,
+                maxPoint.x * TILE_IMAGE_TILE_SIZE,
+                maxPoint.y * TILE_IMAGE_TILE_SIZE);
+
 
     }
 

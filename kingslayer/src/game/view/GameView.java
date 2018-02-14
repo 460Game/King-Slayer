@@ -23,13 +23,12 @@ public class GameView {
 
     private ClientGameModel model;
 
-//    private Astar astar = new Astar(model);
-
     public GameView(ClientGameModel model) {
         this.model = model;
     }
 
     public void start(Stage window) {
+
         Group root = new Group();
 
         Minimap minimap = new Minimap(model);
@@ -86,25 +85,6 @@ public class GameView {
 
         });
 
-//        scene.setOnMouseClicked(e -> {
-//            double xdiff = e.getX() - worldPanel.getWidth() / 2;
-//            double ydiff = e.getY() - worldPanel.getHeight() / 2;
-//            double xCoords = toWorldCoords(xdiff);
-//            double yCoords = toWorldCoords(ydiff);
-//            double actualx = model.getLocalPlayer().data.x + xCoords;
-//            double actualy = model.getLocalPlayer().data.y + yCoords;
-//            model.processMessage(new GoDirectionMessage(model.getLocalPlayer().id, Math.atan2(actualy -
-//                    model.getLocalPlayer().data.y, actualx - model.getLocalPlayer().data.x)));
-//        });
-
-//        scene.setOnMouseMoved(e -> {
-//            new Visitor.MoveEntity(e.getX(), e.getY(), scene.getWidth(), scene.getHeight()).run(model.getLocalPlayer(), model);
-//        });
-
-//        scene.setOnMouseClicked(e -> {
-//            new Visitor.PlaceEntity().run(model.getLocalPlayer(), model);
-//        });
-
         int[] dir = {0,0};
 
         Set<KeyCode> currentlyPressed = new TreeSet<>();
@@ -131,33 +111,6 @@ public class GameView {
                 exitPrompt.setVisible(true);
 
 
-//            if (e.getCode() == KeyCode.SPACE) {
-//                GridCell end = astar.getPassable().iterator().next();
-////                int startx = (int) model.getLocalPlayer().data.x;
-////                int starty = (int) model.getLocalPlayer().data.y;
-////                System.out.println("Start x, y: " + startx + ", " + starty);
-////                System.out.println("End x, y: " + end.getTopLeftX() + ", " + end.getTopLeftY());
-//                astar.findPath(model.getCell((int) model.getLocalPlayer().data.x, (int) model.getLocalPlayer().data.y),
-//                        end);
-//            }
-
-//            if (e.getCode() == KeyCode.ENTER) {
-//                GridCell end = it.next();
-////                int startx = (int) model.getLocalPlayer().data.x;
-////                int starty = (int) model.getLocalPlayer().data.y;
-////                System.out.println("Start x, y: " + startx + ", " + starty);
-////                System.out.println("End x, y: " + end.getTopLeftX() + ", " + end.getTopLeftY());
-//                astar.findPath(model.getCell((int) model.getLocalPlayer().data.x, (int) model.getLocalPlayer().data.y),
-//                        end);
-//                it.remove();
-//            }
-
-//            if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1)
-//                new Visitor.ShowPlacement(0, 0).run(model.getLocalPlayer(), model);
-//
-//            if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2)
-//                new Visitor.ShowPlacement(0, 0).run(model.getLocalPlayer(), model);
-
             if(dir[0] == 0 && dir[1] == 0)
                 model.processMessage(new StopMessage(model.getLocalPlayer().id));
             else
@@ -174,12 +127,6 @@ public class GameView {
                 dir[0]++;
             if (e.getCode() == KeyCode.D) // stop rightward movement.
                 dir[0]--;
-
-//            if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1)
-//                new Visitor.PlaceWall().run(model.getLocalPlayer(), model);
-//
-//            if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2)
-//                new Visitor.PlaceResourceCollector().run(model.getLocalPlayer(), model);
 
             if(dir[0] == 0 && dir[1] == 0)
                 model.processMessage(new StopMessage(model.getLocalPlayer().id));

@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -30,6 +31,8 @@ import static util.Util.toWorldCoords;
  */
 public class WorldPanel extends Region {
 
+
+    WritableImage BGImage;
     private ClientGameModel model;
     private Canvas fgCanvas;
     private Canvas bgCanvas;
@@ -104,6 +107,18 @@ public class WorldPanel extends Region {
                 }
             }
         });
+
+        new java.util.Timer().schedule(
+            new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    BGImage = new WritableImage(CANVAS_WIDTH, CANVAS_HEIGHT);
+                    model.getBG(BGImage,true);
+                }
+            },
+            3000
+        );
+
     }
 
     double[] scaleFactor = {1};
@@ -136,7 +151,8 @@ public class WorldPanel extends Region {
             bgGC.fillRect(0, 0, bgCanvas.getWidth(), bgCanvas.getHeight());
             fgGC.clearRect(-1111, -11111, 11111111, 1111111);
 
-            model.drawBG(bgGC, GRID_X_SIZE / 2, GRID_Y_SIZE / 2, GRID_X_SIZE, GRID_Y_SIZE, tick[0] > WATER_ANIM_PERIOD / 2);
+            //TODO
+            bgGC.drawImage(BGImage, 0, 0);
             model.drawFG(fgGC, GRID_X_SIZE / 2, GRID_Y_SIZE / 2, GRID_X_SIZE, GRID_Y_SIZE);
             DropShadow shadow = new DropShadow();
             shadow.setOffsetY(toDrawCoords(0.2));
