@@ -80,7 +80,7 @@ public class GhostDrawStrat extends ImageDrawStrat {
 
     @Override
     double getHeight() {
-      return 1;
+      return 1.75;
     }
 
     @Override
