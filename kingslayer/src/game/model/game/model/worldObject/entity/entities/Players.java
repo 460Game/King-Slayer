@@ -50,7 +50,7 @@ public class Players {
 
     public static Entity makeKingB(double x, double y) {
         return new Entity(x, y,
-            Team.ONE,
+            Team.TWO,
             Role.KING,
             MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
