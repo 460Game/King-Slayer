@@ -56,6 +56,8 @@ public class Main extends Application {
     ChoiceBox<Team> teamChoice;
     ChoiceBox<Role> roleChoice;
 
+    boolean connected = false;
+
 
     MenuItem[] items = new MenuItem[]{
         new MenuItem("JOIN GAME"),
@@ -169,7 +171,7 @@ public class Main extends Application {
 //        });
 
         items[0].setOnActivate(this::connectForm);
-        items[1].setOnActivate(this::startGame);
+        items[1].setOnActivate(this::guiSetNumOfPlayer);
         items[2].setOnActivate(this::testGame);
         items[3].setOnActivate(this::howToPlay);
         items[4].setOnActivate(this::exit);
@@ -317,13 +319,17 @@ public class Main extends Application {
         connect.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                if (connected) {
+                    return;
+                }
                 String ipStr = ip.getText();
-                System.out.println("Ip is: " + ipStr);
                 try {
                     joinGame(ipStr);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                //TODO: Change here to ping back later
+                connected = true;
                 //the following would be done in the network part
 
 //                window.setScene(new Scene(choiceTeamAndRoleScene()));
@@ -334,16 +340,60 @@ public class Main extends Application {
         return grid;
     }
 
-    private void startGame() {
+
+    private GridPane inputNumOfPlayers() {
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setVgap(5);
+        grid.setHgap(5);
+
+        //Defining the Name text field
+        final TextField numOfPlayer = new TextField();
+        numOfPlayer.setPromptText("Enter Number Of Players.");
+        numOfPlayer.setPrefColumnCount(100);
+
+        GridPane.setConstraints(numOfPlayer, 0, 0);
+        grid.getChildren().add(numOfPlayer);
+
+        Button set = new Button("set");
+        GridPane.setConstraints(set, 1, 0);
+        grid.getChildren().add(set);
+
+        set.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                lobbyServer.setNumOfPlayers(Integer.parseInt(numOfPlayer.getText()));
+                startGame();
+                //the following would be done in the network part
+
+//                window.setScene(new Scene(choiceTeamAndRoleScene()));
+            }
+
+        });
+
+        return grid;
+    }
+
+    private void guiSetNumOfPlayer() {
         lobbyServer = new LobbyServer();
         try {
             lobbyServer.start();
-            lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
-                @Override
-                public void showChoiceTeamAndRoleScene() {
-                    Platform.runLater(() -> window.setScene(new Scene(choiceTeamAndRoleScene())));
-                }
-            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
+            @Override
+            public void showChoiceTeamAndRoleScene() {
+                Platform.runLater(() -> window.setScene(new Scene(choiceTeamAndRoleScene())));
+            }
+        });
+        Platform.runLater(() -> window.setScene(new Scene(inputNumOfPlayers())));
+    }
+
+    private void startGame() {
+
+        try {
+
             lobbyClient.start();
             lobbyClient.connectTo("localhost");
             //TODO: change this to Ping back later
@@ -358,7 +408,7 @@ public class Main extends Application {
         //start game actually means make model
 //        lobbyServer.startGame();
 
-        Platform.runLater(() -> window.setScene(new Scene(choiceTeamAndRoleScene())));
+
 //        window.setScene(new Scene(choiceTeamAndRoleScene()));
 
         //hardcode here

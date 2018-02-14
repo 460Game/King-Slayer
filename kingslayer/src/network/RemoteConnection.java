@@ -58,6 +58,9 @@ public class RemoteConnection {
     long delta = (long) 10E6;
 
 
+    public void setNumOfPlayer(int num) {
+        numOfPlayer = num;
+    }
 
     public RemoteConnection(boolean isServer, Object lobby, NetWork2LobbyAdaptor adaptor) throws IOException {
         Log.set(Log.LEVEL_INFO);
@@ -116,9 +119,6 @@ public class RemoteConnection {
 
                         //TODO: change it to be defensive here
                         //TODO: important line added here!!!!!!!!!!!!!!!!
-                        connection.getID();
-                        readyMsg.getTeam();
-                        readyMsg.getRole();
                         adaptor.serverLobbyComfirmTeamAndRole(connection.getID(), readyMsg.getTeam(), readyMsg.getRole());
 
                         readyClient++;
@@ -137,7 +137,6 @@ public class RemoteConnection {
                     }
 
                     if (obj instanceof Message) {
-                        Log.info("single message!!!!!!!!");
                         adaptor.getMsg((Message) obj);
                     }
 
@@ -183,7 +182,6 @@ public class RemoteConnection {
 
                     Log.debug("Client " + client.getID() + "received " + obj.toString());
                     if (obj instanceof NetworkCommon.ClientMakeModelMsg) {
-                        System.out.println("Client Receive makeModel message!!!!!!!!!!!!!!!!!");
                         adaptor.makeModel(); //make clientModel
 //                        client.sendTCP(new NetworkCommon.ClientReadyMsg()); //trigger by sth else now
                     }

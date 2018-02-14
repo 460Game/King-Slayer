@@ -72,6 +72,10 @@ public class LobbyServer { //extends Application {
         clientGameModelToTeamAndRole = new HashMap<>();
     }
 
+    public void setNumOfPlayers(int numOfPlayers) {
+        server.setNumOfPlayer(numOfPlayers);
+    }
+
     public void start() throws Exception {
         server = new RemoteConnection(true, this, new NetWork2LobbyAdaptor() {
             @Override
@@ -79,9 +83,11 @@ public class LobbyServer { //extends Application {
                 //actually don't use the parameter team and role here
 
 //                startGame();
-                for (Map.Entry<Integer, Pair<Team, Role>> entry : conn2TeamAndRole.entrySet()) {
-                    System.out.println(entry.getValue().getKey() + " " + entry.getValue().getValue());
-                }
+
+//                for (Map.Entry<Integer, Pair<Team, Role>> entry : conn2TeamAndRole.entrySet()) {
+//                    System.out.println(entry.getValue().getKey() + " " + entry.getValue().getValue());
+//                }
+
                 //init the client to team role map
                 for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
                     System.out.println("check serverInit: " + remoteModel.getConnectId());
