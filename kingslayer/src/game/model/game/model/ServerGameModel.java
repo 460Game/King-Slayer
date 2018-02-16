@@ -149,7 +149,7 @@ public class ServerGameModel extends GameModel {
                         resourcesRed++;
                     }
                 }
-                System.out.println("Red: " + resourcesRed);
+//                System.out.println("Red: " + resourcesRed);
                 changeResource(Team.ONE, TeamResourceData.Resource.WOOD, resourcesRed);
 
                 int resourcesBlue = 0;
@@ -158,7 +158,7 @@ public class ServerGameModel extends GameModel {
                         resourcesBlue++;
                     }
                 }
-                System.out.println("Blue: " + resourcesBlue);
+//                System.out.println("Blue: " + resourcesBlue);
                 changeResource(Team.TWO, TeamResourceData.Resource.WOOD, resourcesBlue);
 
                 counter = 0;
