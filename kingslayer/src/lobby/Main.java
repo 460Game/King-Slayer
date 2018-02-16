@@ -151,6 +151,10 @@ public class Main extends Application {
 
     private Stage window;
 
+    public void restart(Stage window) {
+        window.setScene(chooseTeamAndRoleScene());
+    }
+
     @Override
     public void start(Stage window) {
         this.window = window;
@@ -487,7 +491,7 @@ public class Main extends Application {
             public void showChoiceTeamAndRoleScene() {
                 Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
             }
-        });
+        }, this);
 
 //        window.getScene().getRoot().getChildrenUnmodifiable().remove(0, 1);
 
@@ -525,7 +529,7 @@ public class Main extends Application {
                 Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
 //                window.setScene(new Scene(choiceTeamAndRoleScene()));
             }
-        });
+        }, this);
         lobbyClient.start();
         lobbyClient.connectTo(host);
         //TODO: change this to ping back later
@@ -535,7 +539,7 @@ public class Main extends Application {
     private void testGame() {
         Log.info("TEST GAME SELECTED");
         try {
-            new SingleplayerController().start(window);
+            new SingleplayerController(this).start(window);
         } catch (Exception e) {
             e.printStackTrace();
         }
