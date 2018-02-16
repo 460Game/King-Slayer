@@ -41,7 +41,7 @@ public class RectHitbox extends Hitbox {
 
     @Override
     public double getRadius(double angle) {
-        return 0.499; //TODO NONONO
-      //  throw new RuntimeException("NOt implemented yet");
+     //   return 0.499; //TODO NONONO
+        throw new RuntimeException("NOt implemented yet");
     }
 }
