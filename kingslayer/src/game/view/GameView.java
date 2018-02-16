@@ -89,27 +89,30 @@ public class GameView {
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (model.getWinningTeam() == Team.NEUTRAL) {
-                    //nop
-                }
-                else if (model.getWinningTeam() == model.getLocalPlayer().team) {
-                    teamWinPrompt.setVisible(true);
-                }
+                model.update();
 
+                if(model.getLocalPlayer() != null) {
+                    worldPanel.update();
+                    resourcePanel.update();
+                    minimap.draw();
+                    infoPanel.update();
+
+                    if (model.getWinningTeam() == Team.NEUTRAL) {
+                        //nop
+                    } else if (model.getWinningTeam() == model.getLocalPlayer().team) {
+                        teamWinPrompt.setVisible(true);
+                    } else {
+                        teamLosePrompt.setVisible(true);
+                    }
+                    // TODO set color only once, not every update.
+                    if (model.getLocalPlayer().team != null) {
+                        resourcePanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+                        infoPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+                        actionPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+                    }
+                }
                 else {
                     teamLosePrompt.setVisible(true);
-                }
-
-                worldPanel.update();
-                resourcePanel.update();
-                minimap.draw();
-                infoPanel.update();
-
-                // TODO set color only once, not every update.
-                if (model.getLocalPlayer() != null) {
-                    resourcePanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-                    infoPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-                    actionPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
                 }
             }
         };

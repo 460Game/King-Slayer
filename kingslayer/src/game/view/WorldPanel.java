@@ -63,9 +63,6 @@ public class WorldPanel extends Region {
     private int tick[] = {0};
 
     public void update() {
-        model.update();
-
-        if (model.getLocalPlayer() != null) {
 
             double x = model.getLocalPlayer().data.x;
             double y = model.getLocalPlayer().data.y;
@@ -92,6 +89,5 @@ public class WorldPanel extends Region {
             model.drawForeground(fgGC, GRID_X_SIZE / 2, GRID_Y_SIZE / 2, GRID_X_SIZE, GRID_Y_SIZE);
 
             tick[0] = (tick[0] + 1) % (WATER_ANIM_PERIOD);
-        }
     }
 }
