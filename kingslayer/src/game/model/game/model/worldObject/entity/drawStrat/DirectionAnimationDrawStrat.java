@@ -22,10 +22,6 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   public int height = 32;
   public int width = 32;
 
-  private boolean showPlacementbox = false;
-  private double boxX;
-  private double boxY;
-
   public static final DirectionAnimationDrawStrat RED_KING_ANIMATION = new RedKingDirectionAnimationDrawStrat();
   public static final DirectionAnimationDrawStrat BLUE_KING_ANIMATION = new BlueKingDirectionAnimationDrawStrat();
   public static final DirectionAnimationDrawStrat RED_SLAYER_ANIMATION = new RedSlayerDirectionAnimationDrawStrat();
