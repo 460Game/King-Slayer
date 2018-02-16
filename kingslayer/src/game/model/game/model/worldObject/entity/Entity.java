@@ -44,6 +44,9 @@ public class Entity implements Updatable, Drawable, AIable {
      */
     final CollisionStrat collisionStrat;
 
+    /**
+     * The way this entity dies in the game.
+     */
     final DeathStrat deathStrat;
 
     /**
@@ -98,7 +101,7 @@ public class Entity implements Updatable, Drawable, AIable {
      * @param drawStrat method with which this entity is drawn
      * @param aiStrat TODO
      */
-    public Entity(double x, double y,
+    public Entity(double x, double y, double health,
                   Team team,
                   Role role,
                   UpdateStrat updateStrat,
@@ -115,7 +118,7 @@ public class Entity implements Updatable, Drawable, AIable {
         this.drawStrat = drawStrat;
         this.aiStrat = aiStrat;
         this.data = new EntityData(hitbox, aiStrat.makeAIData(), drawStrat.initDrawData(),
-                updateStrat.initUpdateData(), x, y);
+                updateStrat.initUpdateData(), x, y, health);
         this.deathStrat = deathStrat;
     }
 
@@ -166,8 +169,10 @@ public class Entity implements Updatable, Drawable, AIable {
 
         if (this.role != Role.NEUTRAL) {
             ((DirectionAnimationDrawStrat) drawStrat).update(this);
-        } else if (this.data.getHealth() <= 0) {
-            model.removeByID(this.id);
+        }
+        if (this.data.getHealth() <= 0) {
+//            model.removeByID(this.id);
+            this.deathStrat.handleDeath(model, this);
         }
     }
 

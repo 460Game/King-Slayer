@@ -17,8 +17,10 @@ public class Players {
     
     static private CircleHitbox hitbox = new CircleHitbox(PLAYER_RADIUS);
 
+    // TODO scale health appropriately
+
     public static Entity makeSlayerA(Double x, Double y) {
-        return new Entity(x, y,
+        return new Entity(x, y, 100,
             Team.ONE,
             Role.SLAYER,
             MovingStrat.SINGLETON,
@@ -30,7 +32,7 @@ public class Players {
     }
 
     public static Entity makeSlayerB(Double x, Double y) {
-        return new Entity(x, y,
+        return new Entity(x, y, 100,
             Team.TWO,
             Role.SLAYER,
             MovingStrat.SINGLETON,
@@ -42,7 +44,7 @@ public class Players {
     }
 
     public static Entity makeKingA(double x, double y) {
-        return new Entity(x, y,
+        return new Entity(x, y, 100,
             Team.ONE,
             Role.KING,
             MovingStrat.SINGLETON,
@@ -54,7 +56,7 @@ public class Players {
     }
 
     public static Entity makeKingB(double x, double y) {
-        return new Entity(x, y,
+        return new Entity(x, y, 100,
             Team.TWO,
             Role.KING,
             MovingStrat.SINGLETON,
