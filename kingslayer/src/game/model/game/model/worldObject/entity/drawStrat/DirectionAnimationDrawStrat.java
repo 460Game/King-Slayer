@@ -18,7 +18,7 @@ import static java.lang.Math.PI;
 
 public abstract class DirectionAnimationDrawStrat extends DrawStrat {
 
-  public DrawData drawData = DrawData.makeAnimated();
+  public AnimationDrawData drawData = AnimationDrawData.makeAnimated();
   public int height = 32;
   public int width = 32;
 
