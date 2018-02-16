@@ -35,6 +35,6 @@ public class InfoPanel extends Region {
     }
 
     public void update() {
-        text.setText("HP: " + model.getLocalPlayer().data.getHealth());
+        text.setText("HP: " + model.getLocalPlayer().getHealth());
     }
 }

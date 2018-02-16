@@ -79,7 +79,7 @@ public class EntityData {
      */
     private EntityData() {}
 
-    public double getHealth() {
+    protected double getHealth() {
         return health;
     }
 

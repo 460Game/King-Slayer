@@ -167,13 +167,8 @@ public class Entity implements Updatable, Drawable, AIable {
         inCollision = false;
         this.updateStrat.update(this, model);
 
-        if (this.role != Role.NEUTRAL) {
+        if (this.role != Role.NEUTRAL)
             ((DirectionAnimationDrawStrat) drawStrat).update(this);
-        }
-        if (this.data.getHealth() <= 0) {
-//            model.removeByID(this.id);
-            this.deathStrat.handleDeath(model, this);
-        }
     }
 
     /**
@@ -206,8 +201,11 @@ public class Entity implements Updatable, Drawable, AIable {
 
     public void decreaseHealthBy(GameModel model, double decrement) {
         data.setHealth(data.getHealth() - decrement);
-        if (Math.abs(data.getHealth()) < 0.01) {
-            deathStrat.handleDeath(model, this);
-        }
+        if (data.getHealth() <= 0)
+            entityDie(model);
+    }
+
+    public double getHealth() {
+        return data.getHealth();
     }
 }
