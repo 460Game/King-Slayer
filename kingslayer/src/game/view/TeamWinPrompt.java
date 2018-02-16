@@ -34,7 +34,7 @@ public class TeamWinPrompt extends Region {
         rematch.setTranslateY(100);
         back_to_lobby.setOnAction(l -> {
             //TODO: change this to be another class
-            Platform.runLater(() -> view.);
+
         });
         rematch.setOnAction(l-> {
             TeamWinPrompt.this.setVisible(false);

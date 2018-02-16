@@ -37,7 +37,7 @@ public class GameView {
         ActionPanel actionPanel = new ActionPanel(model);
         ResourcePanel resourcePanel = new ResourcePanel(model);
         ExitPrompt exitPrompt = new ExitPrompt(model);
-        TeamWinPrompt teamWinPrompt = new TeamWinPrompt(model);
+        TeamWinPrompt teamWinPrompt = new TeamWinPrompt(model, this);
         TeamLosePrompt teamLosePrompt = new TeamLosePrompt(model);
 
         worldPanel.prefWidthProperty().bind(window.widthProperty());
@@ -85,7 +85,6 @@ public class GameView {
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                resourcePanel.update();
                 if (model.getWinningTeam() == Team.NEUTRAL) {
                     //nop
                 }
@@ -97,7 +96,7 @@ public class GameView {
                     teamLosePrompt.setVisible(true);
                 }
 
-                resourcePanel.updateResources();
+                resourcePanel.update();
                 minimap.draw();
                 worldPanel.draw();
                 infoPanel.update();
@@ -127,13 +126,13 @@ public class GameView {
 
             if (kc == F11)
                 window.setFullScreen(true);
-            else if ((kc == W || kc == UP) && dir[1] >= 0) // Start upward movement.
+            else if (kc == W || kc == UP) // Start upward movement.
                 dir[1]--;
-            else if ((kc == S || kc == DOWN) && dir[1] <= 0) // Start downward movement.
+            else if (kc == S || kc == DOWN) // Start downward movement.
                 dir[1]++;
-            else if ((kc == A || kc == LEFT) && dir[0] >= 0) // Start leftward movement.
+            else if (kc == A || kc == LEFT) // Start leftward movement.
                 dir[0]--;
-            else if ((kc == D || kc == RIGHT) && dir[0] <= 0) // Start rightward movement.
+            else if (kc == D || kc == RIGHT) // Start rightward movement.
                 dir[0]++;
             else if (kc == KeyCode.ESCAPE)
                 exitPrompt.setVisible(true);
@@ -150,13 +149,13 @@ public class GameView {
 
             currentlyPressed.remove(e.getCode());
 
-            if ((kc == W || kc == UP) && dir[1] < 0) // Stop upward movement.
+            if (kc == W || kc == UP) // Stop upward movement.
                 dir[1]++;
-            if ((kc == S || kc == DOWN) && dir[1] > 0) // stop downward movement.
+            if (kc == S || kc == DOWN) // stop downward movement.
                 dir[1]--;
-            if ((kc == A || kc == LEFT) && dir[0] < 0) // stop leftward movement.
+            if (kc == A || kc == LEFT) // stop leftward movement.
                 dir[0]++;
-            if ((kc == D || kc == RIGHT) && dir[0] > 0) // stop rightward movement.
+            if (kc == D || kc == RIGHT) // stop rightward movement.
                 dir[0]--;
 
             if (dir[0] == 0 && dir[1] == 0)
