@@ -17,6 +17,8 @@ import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
 import game.model.game.model.worldObject.entity.collideStrat.*;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.*;
 import game.model.game.model.team.Team;
+import game.model.game.model.worldObject.entity.deathStrat.NopDeathStrat;
+import game.model.game.model.worldObject.entity.deathStrat.SlayerDeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
 import game.model.game.model.worldObject.entity.entities.Velocity;
 import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
@@ -132,8 +134,8 @@ public class NetworkCommon {
         kryo.register(ClientFinishMakingModelMsg.class);
 
         kryo.register(TeamWinCommand.class);
-//        kryo.register(GhostCollisionStrat.class);
-//        kryo.register(GhostCollisionStrat.class);
+        kryo.register(NopDeathStrat.class);
+        kryo.register(SlayerDeathStrat.class);
 
     }
 
