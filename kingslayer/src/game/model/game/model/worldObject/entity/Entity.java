@@ -161,11 +161,14 @@ public class Entity implements Updatable, Drawable, AIable {
 
     @Override
     public void update(GameModel model) {
-        if (this.role != Role.NEUTRAL) {
-            ((DirectionAnimationDrawStrat) drawStrat).update(this);
-        }
         inCollision = false;
         this.updateStrat.update(this, model);
+
+        if (this.role != Role.NEUTRAL) {
+            ((DirectionAnimationDrawStrat) drawStrat).update(this);
+        } else if (this.data.health <= 0) {
+            model.removeByID(this.id);
+        }
     }
 
     /**
