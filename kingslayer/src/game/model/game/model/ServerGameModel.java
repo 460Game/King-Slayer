@@ -21,6 +21,8 @@ import static util.Const.*;
 
 public class ServerGameModel extends GameModel {
 
+    private boolean terminate = false;
+
     public ServerGameModel() {
         super(new ServerMapGenerator(GRID_X_SIZE, GRID_Y_SIZE));
     }
@@ -127,6 +129,9 @@ public class ServerGameModel extends GameModel {
 
     private void run() {
         while (running) {
+            if (terminate) { //destroy the model
+                break;
+            }
         //    long start = System.nanoTime();
             this.update();
             //want it independent of how long update take, so use the following instead

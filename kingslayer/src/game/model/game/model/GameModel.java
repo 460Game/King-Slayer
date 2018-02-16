@@ -4,6 +4,7 @@ import game.message.Message;
 import game.model.game.grid.GridCell;
 import game.model.game.map.MapGenerator;
 import game.model.game.map.Tile;
+import game.model.game.model.gameState.GameState;
 import game.model.game.model.worldObject.entity.Drawable;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
@@ -238,5 +239,9 @@ public abstract class GameModel implements Model {
         if (!entities.containsKey(entity))
             return null;
         return entities.get(entity);
+    }
+
+    public void updateGameState(GameState gameState) {
+
     }
 }
