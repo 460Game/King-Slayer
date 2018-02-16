@@ -166,7 +166,7 @@ public class Entity implements Updatable, Drawable, AIable {
 
         if (this.role != Role.NEUTRAL) {
             ((DirectionAnimationDrawStrat) drawStrat).update(this);
-        } else if (this.data.health <= 0) {
+        } else if (this.data.getHealth() <= 0) {
             model.removeByID(this.id);
         }
     }
