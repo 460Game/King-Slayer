@@ -9,6 +9,8 @@ import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lobby.Main;
 
@@ -102,6 +104,13 @@ public class GameView {
                 resourcePanel.update();
                 minimap.draw();
                 infoPanel.update();
+
+                // TODO set color only once, not every update.
+                if (model.getLocalPlayer() != null) {
+                    resourcePanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+                    infoPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+                    actionPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+                }
             }
         };
 
