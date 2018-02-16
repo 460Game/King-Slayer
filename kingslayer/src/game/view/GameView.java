@@ -87,21 +87,22 @@ public class GameView {
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (model.getWinningTeam() == Team.NEUTRAL) {
-                    //nop
-                }
-                else if (model.getWinningTeam() == model.getLocalPlayer().team) {
-                    teamWinPrompt.setVisible(true);
-                }
+                model.update();
 
-                else {
-                    teamLosePrompt.setVisible(true);
-                }
+                if(model.getLocalPlayer() != null) {
+                    worldPanel.update();
+                    resourcePanel.update();
+                    minimap.draw();
+                    infoPanel.update();
 
-                worldPanel.update();
-                resourcePanel.update();
-                minimap.draw();
-                infoPanel.update();
+                    if (model.getWinningTeam() == Team.NEUTRAL) {
+                        //nop
+                    } else if (model.getWinningTeam() == model.getLocalPlayer().team) {
+                        teamWinPrompt.setVisible(true);
+                    } else {
+                        teamLosePrompt.setVisible(true);
+                    }
+                }
             }
         };
 
