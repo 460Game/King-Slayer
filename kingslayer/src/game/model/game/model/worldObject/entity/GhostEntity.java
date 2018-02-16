@@ -33,6 +33,7 @@ public class GhostEntity extends Entity {
    */
   public GhostEntity(double x,
                      double y,
+                     double health,
                      Team team,
                      Role role,
                      UpdateStrat updateStrat,
@@ -41,6 +42,6 @@ public class GhostEntity extends Entity {
                      DrawStrat drawStrat,
                      AIStrat aiStrat,
                      DeathStrat deathStrat) {
-    super(x, y, team, role, updateStrat, collisionStrat, hitbox, drawStrat, aiStrat, deathStrat);
+    super(x, y, health, team, role, updateStrat, collisionStrat, hitbox, drawStrat, aiStrat, deathStrat);
   }
 }

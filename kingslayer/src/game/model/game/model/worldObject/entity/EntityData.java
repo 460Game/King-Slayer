@@ -63,14 +63,14 @@ public class EntityData {
      * @param x x-coordinate of center of the entity
      * @param y y-coordinate of center of the enitty
      */
-    public EntityData(Hitbox hitbox, AIData aiData, DrawData drawData, UpdateData updateData, double x, double y) {
+    public EntityData(Hitbox hitbox, AIData aiData, DrawData drawData, UpdateData updateData, double x, double y, double health) {
         this.hitbox = hitbox;
         this.aiData = aiData;
         this.drawData = drawData;
         this.updateData = updateData;
         this.x = x;
         this.y = y;
-        this.health = 100;
+        this.health = health;
         this.velocity = new Velocity();
     }
 
