@@ -19,7 +19,7 @@ public class CellHitbox extends Hitbox {
 
     //TODO no reason this cant just be a 1x1 box
 
-    public static final Hitbox SINGLETON = new CellHitbox();
+    public static final Hitbox SINGLETON = new CircleHitbox(0.5);
 
     private CellHitbox() {
 

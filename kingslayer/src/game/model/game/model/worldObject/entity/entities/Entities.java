@@ -15,18 +15,6 @@ import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
 
 public class Entities {
 
-    public static Entity makeBlocker(double x, double y) {
-        return new Entity(x, y,
-            Team.NEUTRAL,
-            Role.NEUTRAL,
-            StillStrat.SINGLETON,
-            HardCollisionStrat.SINGLETON,
-            CellHitbox.SINGLETON,
-            NoDrawStrat.SINGLETON,
-            AIDoNothingStrat.SINGLETON,
-                NopDeathStrat.SINGLETON);
-    }
-
     public static Entity makeWater(double x, double y) {
         return new Entity(x, y,
                 Team.NEUTRAL,

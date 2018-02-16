@@ -45,7 +45,7 @@ public class CircleHitbox extends Hitbox {
     public Set<GridCell> getCells(double x, double y, GameModel gameMap) {
         Set<GridCell> set = new HashSet<>();
 
-        double r = radius + 0.01;
+        double r = radius ;//+ 0.01;
         // Look at all close cells to the circle and check if the circle
         // overlaps with them.
         for(int i = (int) (x - r); i <= (int) (x + r); i++)

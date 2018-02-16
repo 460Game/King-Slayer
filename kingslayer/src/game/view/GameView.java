@@ -148,7 +148,7 @@ public class GameView {
             else if (kc == D || kc == RIGHT) // Start rightward movement.
                 dir[0]++;
             else if (kc == KeyCode.ESCAPE)
-                exitPrompt.setVisible(true);
+                exitPrompt.setVisible(!exitPrompt.isVisible());
 
 
             if (dir[0] == 0 && dir[1] == 0)
