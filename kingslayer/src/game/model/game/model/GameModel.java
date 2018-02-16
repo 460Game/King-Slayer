@@ -120,7 +120,8 @@ public abstract class GameModel implements Model {
     }
 
     public void remove(Entity entity) {
-        entity.containedIn.forEach(cell -> cell.removeContents(entity));
+        if(entity.containedIn != null)
+            entity.containedIn.forEach(cell -> cell.removeContents(entity));
         entities.remove(entity);
     }
 
