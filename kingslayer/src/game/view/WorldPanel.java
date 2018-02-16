@@ -62,7 +62,7 @@ public class WorldPanel extends Region {
     private double[] scaleFactor = {1};
     private int tick[] = {0};
 
-    public void draw() {
+    public void update() {
         model.update();
 
         if (model.getLocalPlayer() != null) {

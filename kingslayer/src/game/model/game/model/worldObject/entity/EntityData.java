@@ -24,7 +24,7 @@ public class EntityData {
     public AIData aiData;
 
     /**
-     * The data needed to draw the entity.
+     * The data needed to update the entity.
      */
     public DrawData drawData;
 
@@ -58,7 +58,7 @@ public class EntityData {
      * Constructor for the data of an entity, given all of the relevant information.
      * @param hitbox hitbox of the entity
      * @param aiData data needed for the AI of this entity
-     * @param drawData data needed to draw this entity in the game
+     * @param drawData data needed to update this entity in the game
      * @param updateData data needed to update this entity
      * @param x x-coordinate of center of the entity
      * @param y y-coordinate of center of the enitty

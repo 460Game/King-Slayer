@@ -5,7 +5,6 @@ import game.message.toServer.StopRequest;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.Team;
 import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -84,11 +83,10 @@ public class GameView {
 
         root.getChildren().addAll(worldPanel, minimap, infoPanel, actionPanel, resourcePanel,
                 exitPrompt, teamLosePrompt, teamWinPrompt);
-        AnimationTimer timer = null;
+        AnimationTimer timer;
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                resourcePanel.update();
                 if (model.getWinningTeam() == Team.NEUTRAL) {
                     //nop
                 }
@@ -100,9 +98,9 @@ public class GameView {
                     teamLosePrompt.setVisible(true);
                 }
 
+                worldPanel.update();
                 resourcePanel.update();
                 minimap.draw();
-                worldPanel.draw();
                 infoPanel.update();
             }
         };

@@ -251,7 +251,7 @@ public class Astar {
 
     /**
      * Draw the path that the search found.
-     * @param gc graphics context used to draw the path
+     * @param gc graphics context used to update the path
      */
     public void draw(GraphicsContext gc) {
         if(path != null) {

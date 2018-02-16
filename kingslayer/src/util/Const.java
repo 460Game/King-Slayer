@@ -8,7 +8,7 @@ import static java.lang.Math.PI;
 public abstract class Const {
 
     /**
-     * Flag that signals whether to draw in debugging mdode.
+     * Flag that signals whether to update in debugging mdode.
      */
     public static final boolean DEBUG_DRAW = true;//true;
 
