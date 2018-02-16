@@ -60,11 +60,16 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
     public void collisionHard(GameModel model, Entity a, Entity b) {
         // Both the client and server stops the arrow and removes it from the game.
         model.execute((server) -> {
+            if (b.data.getHealth() != Double.POSITIVE_INFINITY)
+                b.decreaseHealthBy(model, 100); // TODO CHANGE THIS
             a.data.updateData.velocity.setMagnitude(0);
             server.removeByID(a.id);
         }, (client) -> {
+            if (b.data.getHealth() != Double.POSITIVE_INFINITY)
+                b.decreaseHealthBy(model, 100);
             a.data.updateData.velocity.setMagnitude(0);
             client.removeByID(a.id);
+            System.out.println(b.data.getHealth());
         });
     }
 }
