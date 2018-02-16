@@ -11,6 +11,7 @@ import javafx.util.Pair;
 import lobby.RoleChoice;
 import lobby.TeamChoice;
 
+import java.rmi.Remote;
 import java.util.*;
 
 public class LobbyServer { //extends Application {
@@ -45,7 +46,7 @@ public class LobbyServer { //extends Application {
 
                 //init the client to team role map
                 for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
-//                    System.out.println("check serverInit: " + remoteModel.getConnectId())a
+                    System.out.println("check serverInit: " + remoteModel.getConnectId());
                     clientGameModelToTeamAndRole.put(remoteModel,
                             conn2TeamAndRole.get(remoteModel.getConnectId()));
                 }
@@ -131,6 +132,10 @@ public class LobbyServer { //extends Application {
         conn2TeamAndRole = new HashMap<>();
         conn2ClientGameModel = new HashMap<>();
         clientGameModelToTeamAndRole = new HashMap<>();
+        serverModel.stop();
+
+        remoteModels = null;
+        serverModel = null;
         server.restartFromReadyPage();
     }
 

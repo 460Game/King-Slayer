@@ -25,6 +25,7 @@ public class GameView {
     private ClientGameModel model;
     Stage window;
     Main mainApp;
+    AnimationTimer timer;
 
     public GameView(ClientGameModel model, Main mainApp) {
         this.model = model;
@@ -85,7 +86,7 @@ public class GameView {
 
         root.getChildren().addAll(worldPanel, minimap, infoPanel, actionPanel, resourcePanel,
                 exitPrompt, teamLosePrompt, teamWinPrompt);
-        AnimationTimer timer;
+
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -190,5 +191,10 @@ public class GameView {
 
     public void restart() {
         mainApp.restart(window);
+        timer.stop();
+        timer = null;
+        model = null;
+        mainApp = null;
+        window = null;
     }
 }

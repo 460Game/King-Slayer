@@ -31,6 +31,8 @@ public class ServerGameModel extends GameModel {
 
     private int counter = 0; // GARBAGE
 
+    Thread updateThread;
+
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
 
     public TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
@@ -114,11 +116,13 @@ public class ServerGameModel extends GameModel {
         Log.info("Starting Server model");
         if (running) throw new RuntimeException("Cannot start server model when already running");
         running = true;
-        (new Thread(this::run, this.toString() + " Update Thread")).start();
+        updateThread = new Thread(this::run, this.toString() + " Update Thread");
+        updateThread.start();
     }
 
     public void stop() {
         running = false;
+//        updateThread.stop();
     }
 
     public void teamWin(Team winTeam) {

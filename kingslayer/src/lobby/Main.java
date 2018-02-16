@@ -155,11 +155,9 @@ public class Main extends Application {
         window.setScene(chooseTeamAndRoleScene());
         if (lobbyServer != null) {
             lobbyServer.restartFromReadyPage();
-            return;
         }
         if (lobbyClient != null) {
             lobbyClient.restartFromReadyPage();
-            return;
         }
     }
 

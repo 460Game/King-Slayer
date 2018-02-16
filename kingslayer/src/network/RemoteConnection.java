@@ -31,6 +31,7 @@ public class RemoteConnection {
     public void restartFromReadyPage() {
         if (isServer) {
             readyClients.clear();
+            cntClientModelsMade = 0;
             server.sendToAllTCP(new NetworkCommon.AllClientConnectMsg());
         }
         else {

@@ -65,6 +65,11 @@ public class LobbyClient {//extends Application {
             @Override
             public void makeModel() {
                 lobbyClientMakeModel();
+//                try {
+//                    Thread.sleep(5000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
                 client.notifyMadeModel();
             }
 
@@ -126,6 +131,11 @@ public class LobbyClient {//extends Application {
 
     public void restartFromReadyPage() {
         //nop for now
+        gameView = null;
+
+        clientGameModel = null;
+        serverModel = null;
+        System.out.println("want it to be null: " + gameView);
     }
 }
 
