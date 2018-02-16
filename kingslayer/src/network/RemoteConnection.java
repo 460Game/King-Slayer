@@ -135,6 +135,7 @@ public class RemoteConnection {
                         adaptor.serverLobbyComfirmTeamAndRole(connection.getID(), readyMsg.getTeam(), readyMsg.getRole());
                         
                         readyClients.put(connection.getID(), connection);
+                        System.out.println("READY CLIENTS: " + readyClients.size());
 
                         if (readyClients.size() == clientList.size()) {
                             //works fine here
