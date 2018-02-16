@@ -5,6 +5,7 @@ import game.message.toServer.StopRequest;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.Team;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -22,9 +23,11 @@ public class GameView {
 
     private ClientGameModel model;
     Stage window;
+    Main mainApp;
 
-    public GameView(ClientGameModel model) {
+    public GameView(ClientGameModel model, Main mainApp) {
         this.model = model;
+        this.mainApp = mainApp;
     }
 
     public void start(Stage window) {
@@ -38,7 +41,7 @@ public class GameView {
         ResourcePanel resourcePanel = new ResourcePanel(model);
         ExitPrompt exitPrompt = new ExitPrompt(model);
         TeamWinPrompt teamWinPrompt = new TeamWinPrompt(model, this);
-        TeamLosePrompt teamLosePrompt = new TeamLosePrompt(model);
+        TeamLosePrompt teamLosePrompt = new TeamLosePrompt(model, this);
 
         worldPanel.prefWidthProperty().bind(window.widthProperty());
         worldPanel.prefHeightProperty().bind(window.heightProperty());
@@ -85,6 +88,7 @@ public class GameView {
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                resourcePanel.update();
                 if (model.getWinningTeam() == Team.NEUTRAL) {
                     //nop
                 }
@@ -169,6 +173,13 @@ public class GameView {
     }
 
     public void goBackToMain() {
-//        window.setScene(Main.mainMenuScene);
+//        Main newMain = new Main();
+//        newMain.start(window);
+//        window.setScene(mainApp.mainMenuScene);
+        mainApp.start(window);
+    }
+
+    public void restart() {
+        mainApp.restart(window);
     }
 }

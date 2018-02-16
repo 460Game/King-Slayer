@@ -3,8 +3,15 @@ package game.model.game.model.worldObject.entity.collideStrat;
 import game.model.game.model.GameModel;
 import game.model.game.model.worldObject.entity.Entity;
 
+/**
+ * Defines how water collides with other entities.
+ */
 public class WaterCollisionStrat extends CollisionStrat {
 
+    /**
+     * Only one instance of a water collision strategy is created. All water
+     * uses this strategy to collide.
+     */
     public static WaterCollisionStrat SINGLETON = new WaterCollisionStrat();
 
     @Override

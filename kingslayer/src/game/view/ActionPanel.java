@@ -12,7 +12,7 @@ import javafx.scene.text.TextAlignment;
 
 import static images.Images.CURSOR_IMAGE;
 
-/** panel in bottem middle with actions user can take
+/** panel in bottom middle with actions user can take
  */
 public class ActionPanel extends Region {
     private GameModel model;

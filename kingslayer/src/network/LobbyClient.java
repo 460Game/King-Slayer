@@ -34,10 +34,11 @@ public class LobbyClient {//extends Application {
     private GameView gameView;
     private Stage window;
     private LobbyClient2LobbyAdaptor lobbyAdaptor;
-
-    public LobbyClient(Stage window, LobbyClient2LobbyAdaptor lobbyAdaptor) {
+    public Main mainApp;
+    public LobbyClient(Stage window, LobbyClient2LobbyAdaptor lobbyAdaptor, Main mainApp) {
         this.window = window;
         this.lobbyAdaptor = lobbyAdaptor;
+        this.mainApp = mainApp;
     }
 
 
@@ -53,7 +54,7 @@ public class LobbyClient {//extends Application {
             public void clientInit() {
                 Log.debug("client init");
 
-                gameView = new GameView(clientGameModel);
+                gameView = new GameView(clientGameModel, mainApp);
                 Platform.runLater(()-> {
                     gameView.start(window);
                 });
@@ -123,5 +124,8 @@ public class LobbyClient {//extends Application {
         });
     }
 
+    public void restartFromReadyPage() {
+        //nop for now
+    }
 }
 

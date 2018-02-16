@@ -14,7 +14,7 @@ import static images.Images.CURSOR_IMAGE;
 
 public class TeamLosePrompt extends Region {
     private ClientGameModel model;
-    TeamLosePrompt(ClientGameModel model) {
+    TeamLosePrompt(ClientGameModel model, GameView view) {
         this.model = model;
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
         this.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
@@ -27,19 +27,19 @@ public class TeamLosePrompt extends Region {
         text.setLayoutY(50);
 
         Button confirm = new Button("Back To Lobby");
-        Button cancle = new Button("Rematch");
+        Button rematch = new Button("Rematch");
         confirm.setTranslateX(100);
         confirm.setTranslateY(100);
-        cancle.setTranslateX(400);
-        cancle.setTranslateY(100);
+        rematch.setTranslateX(400);
+        rematch.setTranslateY(100);
 
         confirm.setOnAction(l -> {
-            Platform.exit();
+            Platform.runLater(() -> view.goBackToMain());
         });
-        cancle.setOnAction(l-> {
-            TeamLosePrompt.this.setVisible(false);
+        rematch.setOnAction(l-> {
+            Platform.runLater(() -> view.restart());
         });
 
-        this.getChildren().addAll(text, confirm, cancle);
+        this.getChildren().addAll(text, confirm, rematch);
     }
 }
