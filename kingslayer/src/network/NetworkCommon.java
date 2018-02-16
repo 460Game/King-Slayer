@@ -137,6 +137,8 @@ public class NetworkCommon {
         kryo.register(NopDeathStrat.class);
         kryo.register(SlayerDeathStrat.class);
 
+        kryo.register(WaterCollisionStrat.class);
+
     }
 
     public static class ClientMakeModelMsg {
