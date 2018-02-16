@@ -128,6 +128,9 @@ public class LobbyServer { //extends Application {
     public void makeServerModel() {}
 
     public void restartFromReadyPage() {
+        conn2TeamAndRole = new HashMap<>();
+        conn2ClientGameModel = new HashMap<>();
+        clientGameModelToTeamAndRole = new HashMap<>();
         server.restartFromReadyPage();
     }
 
