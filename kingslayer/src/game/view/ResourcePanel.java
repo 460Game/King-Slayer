@@ -15,8 +15,8 @@ import static images.Images.CURSOR_IMAGE;
 
 public class ResourcePanel extends Region {
     private ClientGameModel model;
+    private Text text;
 
-    Text text;
     public ResourcePanel(ClientGameModel model) {
         this.model = model;
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
@@ -31,7 +31,7 @@ public class ResourcePanel extends Region {
         this.getChildren().add(text);
     }
 
-    public void updateResources() {
+    public void update() {
         text.setText("WOOD " + model.getResourceData().getResource(TeamResourceData.Resource.WOOD)+ "   STONE " +
             model.getResourceData().getResource(TeamResourceData.Resource.STONE) + "   METAL " +
             model.getResourceData().getResource(TeamResourceData.Resource.METAL));

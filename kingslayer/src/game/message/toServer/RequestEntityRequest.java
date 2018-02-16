@@ -34,7 +34,7 @@ public class RequestEntityRequest implements ToServerRequest {
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        Entity entity = model.getEntityById(id);
+        Entity entity = model.getEntity(id);
        if(entity != null)
             model.processMessage(new NewEntityCommand(entity));
     }

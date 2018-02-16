@@ -46,7 +46,7 @@ public class ShootArrowRequest extends ActionRequest {
     public void executeServer(ServerGameModel model) {
         Entity arrow = Entities.makeArrow(x + 0.5* Math.cos(angle), y + 0.5*Math.sin(angle), angle);
         model.makeEntity(arrow);
-      // model.processMessage(new NewEntityCommand(model.getEntityById(arrow.id)));
-    //    model.getClients().forEach(client -> client.processMessage(new NewEntityCommand(model.getEntityById(arrow.id))));
+      // model.processMessage(new NewEntityCommand(model.getEntity(arrow.id)));
+    //    model.getClients().forEach(client -> client.processMessage(new NewEntityCommand(model.getEntity(arrow.id))));
     }
 }

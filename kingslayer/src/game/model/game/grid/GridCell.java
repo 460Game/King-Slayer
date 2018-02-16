@@ -13,6 +13,7 @@ import javafx.scene.image.PixelWriter;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static images.Images.TILE_IMAGE;
 import static util.Const.TILE_PIXELS;
@@ -82,6 +83,14 @@ public class GridCell {
     }
 
     /**
+     * Gets the contents of the cell.
+     * @return the current contents of the cell
+     */
+    public Stream<Entity> streamContents() {
+        return contents.stream();
+    }
+
+    /**
      * Adds the specified entity to this cell.
      * @param o the entity to be added to this cell
      */
@@ -128,7 +137,11 @@ public class GridCell {
 
     private Point maxPoint = new Point(0, 0);
 
-    public void initDraw(GameModel model) {
+    /**
+     * Draws the tile in a specified cell on the map.
+     * @param firstAnimation TODO
+     */
+    public void draw(PixelWriter writer, GameModel model, boolean firstAnimation) {
 
         StringBuilder hashKey = new StringBuilder();
 
@@ -154,13 +167,7 @@ public class GridCell {
                 maxPoint = curPoint;
             }
         }
-    }
 
-    /**
-     * Draws the tile in a specified cell on the map.
-     * @param firstAnimation TODO
-     */
-    public void draw(PixelWriter writer, boolean firstAnimation) {
         PixelReader reader = TILE_IMAGE.getPixelReader();
         if (!firstAnimation && this.tile.tupleNum == 'W')
             writer.setPixels(

@@ -2,7 +2,6 @@ package game.view;
 
 import game.model.game.model.GameModel;
 import game.model.game.model.team.Role;
-import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.scene.ImageCursor;
 import javafx.scene.canvas.Canvas;
@@ -36,19 +35,15 @@ public class Minimap extends Region {
         minimapCanvas.translateXProperty().setValue(10);
         minimapCanvas.translateYProperty().setValue(10);
         this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-     //   minimapCanvas.setHeight(100);
-     //   minimapCanvas.setWidth(100);
-      //  this.setHeight(100);
-       // this.setWidth(100);
     }
 
-    int count = 0;
+    private int tick = 0;
 
     public void draw() {
 
-        count++;
-        if(count == 5) {
-            count = 0;
+        tick++;
+        if(tick == 5) {
+            tick = 0;
             minimapGC.setTransform(new Affine(Transform.scale(
                 minimapGC.getCanvas().getWidth() / model.getMapWidth(),
                 minimapGC.getCanvas().getHeight() / model.getMapHeight())));
