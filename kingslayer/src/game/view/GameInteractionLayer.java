@@ -42,13 +42,13 @@ public class GameInteractionLayer extends Region  {
         uiCanvas.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
                 if (model.getLocalPlayer().role == Role.KING && placing != null) {
-                    if (placingGhost.data.hitbox.getCollidesWith(model, placingGhost.data.x, placingGhost.data.y).skip(1).findAny().isPresent()) {
+                    if (!placingGhost.data.hitbox.getCollidesWith(model, placingGhost.data.x, placingGhost.data.y).skip(1).findAny().isPresent()) {
                         model.processMessage(new MakeEntityRequest(placing,
                             model.getLocalPlayer().team,
                             TeamResourceData.Resource.WOOD,
                             cost));
                     }
-                    model.removeByID(placingGhost.id);
+                    model.remove(placingGhost);
                     placing = null;
                 } else if (model.getLocalPlayer().role == Role.SLAYER) {
 
@@ -64,7 +64,7 @@ public class GameInteractionLayer extends Region  {
                 }
             } else if (e.getButton() == MouseButton.SECONDARY) {
                 if (model.getLocalPlayer().role == Role.KING && placing != null) {
-                    model.removeByID(placingGhost.id);
+                    model.remove(placingGhost);
                     placing = null;
                 }
             }
@@ -87,7 +87,7 @@ public class GameInteractionLayer extends Region  {
         uiCanvas.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1) {
                 if (model.getLocalPlayer().role == Role.KING && placing == null) {
-                    cost = -100;
+                    cost = -10;
                     placingGhost = Entities.makeGhostWall(0, 0);
                     placing = Entities.makeBuiltWall(0, 0);
                     model.processMessage(new NewEntityCommand(placingGhost));
@@ -97,12 +97,12 @@ public class GameInteractionLayer extends Region  {
             if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2) {
                 if (model.getLocalPlayer().role == Role.KING && placing == null) {
                     if (model.getLocalPlayer().team == Team.ONE) {
-                        cost = -20;
+                        cost = -2;
                         placingGhost = Entities.makeResourceCollectorRedGhost(0, 0);
                         placing = Entities.makeResourceCollectorRed(0, 0);
                         model.processMessage(new NewEntityCommand(placingGhost));
                     } else {
-                        cost = -20;
+                        cost = -2;
                         placingGhost = Entities.makeResourceCollectorBlueGhost(0, 0);
                         placing = Entities.makeResourceCollectorBlue(0, 0);
                         model.processMessage(new NewEntityCommand(placingGhost));

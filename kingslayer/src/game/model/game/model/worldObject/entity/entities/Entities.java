@@ -133,7 +133,7 @@ public class Entities {
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.RED_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON,
-                NopDeathStrat.SINGLETON); // TODO DEATH
+                BuiltWallDeathStrat.SINGLETON); // TODO DEATH
     }
 
     public static Entity makeResourceCollectorRedGhost(double x, double y) {
@@ -157,7 +157,7 @@ public class Entities {
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.BLUE_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON,
-                NopDeathStrat.SINGLETON); // TODO death
+                BuiltWallDeathStrat.SINGLETON); // TODO death
     }
 
     public static Entity makeResourceCollectorBlueGhost(double x, double y) {
