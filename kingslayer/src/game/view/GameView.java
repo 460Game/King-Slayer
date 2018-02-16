@@ -100,7 +100,7 @@ public class GameView {
                     teamLosePrompt.setVisible(true);
                 }
 
-                resourcePanel.updateResources();
+                resourcePanel.update();
                 minimap.draw();
                 worldPanel.draw();
                 infoPanel.update();

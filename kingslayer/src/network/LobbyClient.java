@@ -124,5 +124,8 @@ public class LobbyClient {//extends Application {
         });
     }
 
+    public void restartFromReadyPage() {
+        //nop for now
+    }
 }
 
