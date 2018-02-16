@@ -31,7 +31,7 @@ public class SingleplayerController {
         ClientGameModel clientModel = new ClientGameModel(new CopyingModelWrapper(serverModel));
         Map<Model, Pair<Team, Role>> testingMap = new HashMap<>();
         Model clientGameModel2 = new CopyingModelWrapper(clientModel);
-        testingMap.put(clientGameModel2, new Pair<>(Team.ONE, Role.KING));
+        testingMap.put(clientGameModel2, new Pair<>(Team.ONE, Role.SLAYER));
         serverModel.init(Collections.singleton(clientGameModel2), testingMap);
         serverModel.start();
 

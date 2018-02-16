@@ -139,5 +139,9 @@ public class LobbyServer { //extends Application {
         server.restartFromReadyPage();
     }
 
+    public void closeServer() {
+        server.server.stop();
+//        server.server.close();
+    }
 }
 

@@ -30,6 +30,7 @@ public class RemoteConnection {
 
     public void restartFromReadyPage() {
         if (isServer) {
+            System.out.println("clear and send all client connect");
             readyClients.clear();
             cntClientModelsMade = 0;
             server.sendToAllTCP(new NetworkCommon.AllClientConnectMsg());
@@ -169,7 +170,6 @@ public class RemoteConnection {
                 //TODO: implement disconnected
                 public void disconnected (Connection c) {
                     server.stop();
-                    System.exit(0);
                 }
             });
 

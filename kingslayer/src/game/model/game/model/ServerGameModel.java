@@ -122,7 +122,13 @@ public class ServerGameModel extends GameModel {
 
     public void stop() {
         running = false;
-//        updateThread.stop();
+        updateThread.stop();
+        clientToTeamRoleMap = null;
+        teamData = null;
+        teamRoleEntityMap = null;
+        clients = null;
+        updateThread = null;
+        System.out.println("old server model stop");
     }
 
     public void teamWin(Team winTeam) {

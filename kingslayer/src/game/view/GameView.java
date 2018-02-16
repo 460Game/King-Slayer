@@ -183,15 +183,24 @@ public class GameView {
     }
 
     public void goBackToMain() {
+        mainApp.closeServer();
+//        timer.stop();
 //        Main newMain = new Main();
 //        newMain.start(window);
-//        window.setScene(mainApp.mainMenuScene);
+        window.setScene(mainApp.mainMenuScene);
         mainApp.start(window);
+        timer.stop();
+
+        timer = null;
+        model = null;
+        mainApp = null;
+        window = null;
     }
 
     public void restart() {
         mainApp.restart(window);
         timer.stop();
+
         timer = null;
         model = null;
         mainApp = null;

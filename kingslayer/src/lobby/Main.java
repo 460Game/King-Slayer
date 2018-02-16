@@ -38,6 +38,8 @@ import network.LobbyClient;
 import network.LobbyClient2LobbyAdaptor;
 import network.LobbyServer;
 
+import java.io.IOException;
+
 import static images.Images.*;
 import static util.Util.sleep;
 
@@ -73,6 +75,12 @@ public class Main extends Application {
         new MenuItem("TEST GAME"),
         new MenuItem("HOW TO PLAY"),
         new MenuItem("EXIT")};
+
+    public void closeServer() {
+        if (lobbyServer != null) {
+            lobbyServer.closeServer();
+        }
+    }
 
     private class TriCircle extends Parent {
         private TriCircle() {
@@ -152,12 +160,24 @@ public class Main extends Application {
     private Stage window;
 
     public void restart(Stage window) {
-        window.setScene(chooseTeamAndRoleScene());
+//        window.setScene(chooseTeamAndRoleScene());
         if (lobbyServer != null) {
+            System.out.println("server lobby restartFromReadyPage");
             lobbyServer.restartFromReadyPage();
+
+            lobbyServer.closeServer();
+
         }
         if (lobbyClient != null) {
+            System.out.println("client lobby restartFromReadyPage");
             lobbyClient.restartFromReadyPage();
+
+//            lobbyClient = newRoot LobbyClient(window, new LobbyClient2LobbyAdaptor() {
+//                @Override
+//                public void showChoiceTeamAndRoleScene() {
+//                    Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
+//                }
+//            }, this);
         }
     }
 
