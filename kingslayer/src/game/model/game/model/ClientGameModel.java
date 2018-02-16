@@ -17,6 +17,9 @@ public class ClientGameModel extends GameModel {
 
     private TeamResourceData resourceData = new TeamResourceData();
 
+    Team winningTeam = Team.NEUTRAL;
+    Team losingTeam = Team.NEUTRAL;
+
     public ClientGameModel(Model server) {
         super(new ClientMapGenerator());
         this.server = server;
@@ -77,4 +80,21 @@ public class ClientGameModel extends GameModel {
         clientAction.accept(this);
     }
 
+    public void changeWinningTeam(Team team) {
+        if (winningTeam == getLocalPlayer().team) return; //already won
+        winningTeam = team;
+    }
+
+    public void changeLosingTeam(Team team) {
+        if (losingTeam == getLocalPlayer().team) return; //already lost
+        losingTeam = team;
+    }
+
+    public Team getWinningTeam() {
+        return winningTeam;
+    }
+
+    public Team getLosingTeam() {
+        return losingTeam;
+    }
 }

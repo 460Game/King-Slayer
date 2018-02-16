@@ -3,12 +3,14 @@ package game.view;
 import game.message.toServer.GoDirectionRequest;
 import game.message.toServer.StopRequest;
 import game.model.game.model.ClientGameModel;
+import game.model.game.model.team.Team;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import lobby.Main;
 
 import java.util.*;
 
@@ -18,12 +20,14 @@ import static util.Util.toWorldCoords;
 public class GameView {
 
     private ClientGameModel model;
+    Stage window;
 
     public GameView(ClientGameModel model) {
         this.model = model;
     }
 
     public void start(Stage window) {
+        this.window = window;
         Group root = new Group();
 
         Minimap minimap = new Minimap(model);
@@ -32,6 +36,8 @@ public class GameView {
         ActionPanel actionPanel = new ActionPanel(model);
         ResourcePanel resourcePanel = new ResourcePanel(model);
         ExitPrompt exitPrompt = new ExitPrompt(model);
+        TeamWinPrompt teamWinPrompt = new TeamWinPrompt(model);
+        TeamLosePrompt teamLosePrompt = new TeamLosePrompt(model);
 
         worldPanel.prefWidthProperty().bind(window.widthProperty());
         worldPanel.prefHeightProperty().bind(window.heightProperty());
@@ -58,13 +64,37 @@ public class GameView {
         exitPrompt.layoutXProperty().bind(window.widthProperty().multiply(0.35));
         exitPrompt.layoutYProperty().bind(window.heightProperty().multiply(0.35));
 
+        teamWinPrompt.prefHeightProperty().bind(window.heightProperty().multiply(0.3));
+        teamWinPrompt.prefWidthProperty().bind(window.widthProperty().multiply(0.3));
+        teamWinPrompt.layoutXProperty().bind(window.widthProperty().multiply(0.35));
+        teamWinPrompt.layoutYProperty().bind(window.heightProperty().multiply(0.35));
+
+        teamLosePrompt.prefHeightProperty().bind(window.heightProperty().multiply(0.3));
+        teamLosePrompt.prefWidthProperty().bind(window.widthProperty().multiply(0.3));
+        teamLosePrompt.layoutXProperty().bind(window.widthProperty().multiply(0.35));
+        teamLosePrompt.layoutYProperty().bind(window.heightProperty().multiply(0.35));
+
         exitPrompt.setVisible(false);
+        teamLosePrompt.setVisible(false);
+        teamWinPrompt.setVisible(false);
 
-        root.getChildren().addAll(worldPanel, minimap, infoPanel, actionPanel, resourcePanel, exitPrompt);
-
-        AnimationTimer timer = new AnimationTimer() {
+        root.getChildren().addAll(worldPanel, minimap, infoPanel, actionPanel, resourcePanel,
+                exitPrompt, teamLosePrompt, teamWinPrompt);
+        AnimationTimer timer = null;
+        timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                if (model.getWinningTeam() == Team.NEUTRAL) {
+                    //nop
+                }
+                else if (model.getWinningTeam() == model.getLocalPlayer().team) {
+                    teamWinPrompt.setVisible(true);
+                }
+
+                else {
+                    teamLosePrompt.setVisible(true);
+                }
+
                 resourcePanel.updateResources();
                 minimap.draw();
                 worldPanel.draw();
@@ -134,5 +164,9 @@ public class GameView {
         window.setScene(scene);
 
         window.setFullScreen(true);
+    }
+
+    public void goBackToMain() {
+//        window.setScene(Main.mainMenuScene);
     }
 }

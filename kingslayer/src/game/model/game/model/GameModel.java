@@ -240,8 +240,4 @@ public abstract class GameModel implements Model {
             return null;
         return entities.get(entity);
     }
-
-    public void updateGameState(GameState gameState) {
-
-    }
 }

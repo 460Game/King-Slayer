@@ -130,7 +130,8 @@ public class NetworkCommon {
         kryo.register(TeamResourceData.Resource.class);
         kryo.register(ImageDrawStrat.TreasureImageDrawStrat.class);
         kryo.register(ClientFinishMakingModelMsg.class);
-//        kryo.register(GhostCollisionStrat.class);
+
+        kryo.register(TeamWinCommand.class);
 //        kryo.register(GhostCollisionStrat.class);
 //        kryo.register(GhostCollisionStrat.class);
 
