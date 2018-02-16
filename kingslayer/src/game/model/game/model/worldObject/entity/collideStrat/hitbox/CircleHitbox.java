@@ -45,15 +45,16 @@ public class CircleHitbox extends Hitbox {
     public Set<GridCell> getCells(double x, double y, GameModel gameMap) {
         Set<GridCell> set = new HashSet<>();
 
+        double r = radius ;//+ 0.01;
         // Look at all close cells to the circle and check if the circle
         // overlaps with them.
-        for(int i = (int) (x - radius); i <= (int) (x + radius); i++)
-            for(int j = (int) (y - radius); j <= (int) (y + radius); j++) {
+        for(int i = (int) (x - r); i <= (int) (x + r); i++)
+            for(int j = (int) (y - r); j <= (int) (y + r); j++) {
                 double dx = x - Math.max(i, Math.min(x, i + 1)); // Get distance from farthest x to center
                 double dy = y - Math.max(j, Math.min(y, j + 1)); // Get distance from farthest y to center
 
                 // 0.01 allowed for extra overlap, helps with collisions
-                if ((dx * dx + dy * dy + 0.01) < radius * radius) {
+                if ((dx * dx + dy * dy) < r * r) {
                     set.add(gameMap.getCell(i, j));
                 }
             }

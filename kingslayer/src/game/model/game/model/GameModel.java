@@ -116,11 +116,13 @@ public abstract class GameModel implements Model {
      * @param entityID ID of the entity to be removed
      */
     public void removeByID(long entityID) {
-        remove(entities.get(entityID));
+        if(entities.containsKey(entityID))
+            remove(entities.get(entityID));
     }
 
     public void remove(Entity entity) {
-        entity.containedIn.forEach(cell -> cell.removeContents(entity));
+        if(entity.containedIn != null)
+            entity.containedIn.forEach(cell -> cell.removeContents(entity));
         entities.remove(entity);
     }
 
