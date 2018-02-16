@@ -24,7 +24,7 @@ public class Players {
             MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
-            DirectionAnimationDrawStrat.RED_SLAYER_ANIMATION, //TODO drawFG strat
+            DirectionAnimationDrawStrat.RED_SLAYER_ANIMATION, //TODO drawForeground strat
             AIDoNothingStrat.SINGLETON,
                 SlayerDeathStrat.SINGLETON);
     }
@@ -36,7 +36,7 @@ public class Players {
             MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
-            DirectionAnimationDrawStrat.BLUE_SLAYER_ANIMATION, //TODO drawFG strat
+            DirectionAnimationDrawStrat.BLUE_SLAYER_ANIMATION, //TODO drawForeground strat
             AIDoNothingStrat.SINGLETON,
                 SlayerDeathStrat.SINGLETON);
     }
@@ -48,7 +48,7 @@ public class Players {
             MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
-            DirectionAnimationDrawStrat.RED_KING_ANIMATION, //TODO drawFG strat
+            DirectionAnimationDrawStrat.RED_KING_ANIMATION, //TODO drawForeground strat
             AIDoNothingStrat.SINGLETON,
                 KingDeathStrat.SINGLETON);
     }
@@ -60,7 +60,7 @@ public class Players {
             MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
-            DirectionAnimationDrawStrat.BLUE_KING_ANIMATION, //TODO drawFG strat
+            DirectionAnimationDrawStrat.BLUE_KING_ANIMATION, //TODO drawForeground strat
             AIDoNothingStrat.SINGLETON,
                 KingDeathStrat.SINGLETON);
     }

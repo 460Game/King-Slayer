@@ -3,13 +3,13 @@ package game.model.game.model.worldObject.entity;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
- * Interface used to drawFG objects on the map.
+ * Interface used to drawForeground objects on the map.
  */
 public interface Drawable {
 
     /**
      * Draw the object on the game map.
-     * @param gc context used to drawFG the objects
+     * @param gc context used to drawForeground the objects
      */
     void draw(GraphicsContext gc);
 

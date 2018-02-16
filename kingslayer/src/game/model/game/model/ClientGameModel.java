@@ -9,7 +9,6 @@ import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
-import javafx.scene.image.WritableImage;
 
 import java.util.function.Consumer;
 
@@ -25,7 +24,7 @@ public class ClientGameModel extends GameModel {
     private long localPlayer;
 
     public Entity getLocalPlayer() {
-        return this.getEntityById(localPlayer);
+        return this.getEntity(localPlayer);
     }
 
     public void setResourceData(TeamResourceData data) {
@@ -54,7 +53,6 @@ public class ClientGameModel extends GameModel {
     }
 
     public void init(Team team, Role role, TeamRoleEntityMap map) {
-        getAllCells().forEach(cell -> cell.initDraw(this));
         this.setLocalPlayer(map.getEntity(team, role));
     }
 

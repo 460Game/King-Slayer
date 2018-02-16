@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.util.*;
 
 import static images.Images.GAME_CURSOR_IMAGE;
+import static javafx.scene.input.KeyCode.*;
 import static util.Util.toWorldCoords;
 
 public class GameView {
@@ -65,7 +66,7 @@ public class GameView {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                resourcePanel.updateResources();
+                resourcePanel.update();
                 minimap.draw();
                 worldPanel.draw();
                 infoPanel.update();
@@ -82,57 +83,58 @@ public class GameView {
         });
 
 
-        int[] dir = {0,0};
+        int[] dir = {0, 0};
 
         Set<KeyCode> currentlyPressed = new TreeSet<>();
 
-//        Set<GridCell> nextDestination = astar.getPassable();
-//        Iterator<GridCell> it = nextDestination.iterator();
-
         scene.setOnKeyPressed(e -> {
-            if(currentlyPressed.contains(e.getCode()))
+            KeyCode kc = e.getCode();
+
+            if (currentlyPressed.contains(kc))
                 return;
-            currentlyPressed.add(e.getCode());
+            currentlyPressed.add(kc);
 
-            if (e.getCode() == KeyCode.F11) window.setFullScreen(true);
-            if (e.getCode() == KeyCode.W) // Start upward movement.
+            if (kc == F11)
+                window.setFullScreen(true);
+            else if ((kc == W || kc == UP) && dir[1] >= 0) // Start upward movement.
                 dir[1]--;
-            if (e.getCode() == KeyCode.S) // Start downward movement.
+            else if ((kc == S || kc == DOWN) && dir[1] <= 0) // Start downward movement.
                 dir[1]++;
-            if (e.getCode() == KeyCode.A) // Start leftward movement.
+            else if ((kc == A || kc == LEFT) && dir[0] >= 0) // Start leftward movement.
                 dir[0]--;
-            if (e.getCode() == KeyCode.D) // Start rightward movement.
+            else if ((kc == D || kc == RIGHT) && dir[0] <= 0) // Start rightward movement.
                 dir[0]++;
-
-            if (e.getCode() == KeyCode.ESCAPE)
+            else if (kc == KeyCode.ESCAPE)
                 exitPrompt.setVisible(true);
 
 
-            if(dir[0] == 0 && dir[1] == 0)
+            if (dir[0] == 0 && dir[1] == 0)
                 model.processMessage(new StopRequest(model.getLocalPlayer().id));
             else
-                model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(dir[1],dir[0])));
+                model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(dir[1], dir[0])));
         });
 
         scene.setOnKeyReleased(e -> {
+            KeyCode kc = e.getCode();
+
             currentlyPressed.remove(e.getCode());
-            if (e.getCode() == KeyCode.W) // Stop upward movement.
+
+            if ((kc == W || kc == UP) && dir[1] < 0) // Stop upward movement.
                 dir[1]++;
-            if (e.getCode() == KeyCode.S) // stop downward movement.
+            if ((kc == S || kc == DOWN) && dir[1] > 0) // stop downward movement.
                 dir[1]--;
-            if (e.getCode() == KeyCode.A) // stop leftward movement.
+            if ((kc == A || kc == LEFT) && dir[0] < 0) // stop leftward movement.
                 dir[0]++;
-            if (e.getCode() == KeyCode.D) // stop rightward movement.
+            if ((kc == D || kc == RIGHT) && dir[0] > 0) // stop rightward movement.
                 dir[0]--;
 
-            if(dir[0] == 0 && dir[1] == 0)
+            if (dir[0] == 0 && dir[1] == 0)
                 model.processMessage(new StopRequest(model.getLocalPlayer().id));
             else
-                model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(dir[1],dir[0])));
+                model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(dir[1], dir[0])));
         });
 
         window.setScene(scene);
-
         window.setFullScreen(true);
     }
 }
