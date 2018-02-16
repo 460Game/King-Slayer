@@ -3,27 +3,35 @@ package game.view;
 import game.message.toServer.GoDirectionRequest;
 import game.message.toServer.StopRequest;
 import game.model.game.model.ClientGameModel;
+import game.model.game.model.team.Team;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import lobby.Main;
 
 import java.util.*;
 
 import static images.Images.GAME_CURSOR_IMAGE;
+import static javafx.scene.input.KeyCode.*;
 import static util.Util.toWorldCoords;
 
 public class GameView {
 
     private ClientGameModel model;
+    Stage window;
+    Main mainApp;
 
-    public GameView(ClientGameModel model) {
+    public GameView(ClientGameModel model, Main mainApp) {
         this.model = model;
+        this.mainApp = mainApp;
     }
 
     public void start(Stage window) {
+        this.window = window;
         Group root = new Group();
 
         Minimap minimap = new Minimap(model);
@@ -32,6 +40,8 @@ public class GameView {
         ActionPanel actionPanel = new ActionPanel(model);
         ResourcePanel resourcePanel = new ResourcePanel(model);
         ExitPrompt exitPrompt = new ExitPrompt(model);
+        TeamWinPrompt teamWinPrompt = new TeamWinPrompt(model, this);
+        TeamLosePrompt teamLosePrompt = new TeamLosePrompt(model, this);
 
         worldPanel.prefWidthProperty().bind(window.widthProperty());
         worldPanel.prefHeightProperty().bind(window.heightProperty());
@@ -58,13 +68,38 @@ public class GameView {
         exitPrompt.layoutXProperty().bind(window.widthProperty().multiply(0.35));
         exitPrompt.layoutYProperty().bind(window.heightProperty().multiply(0.35));
 
+        teamWinPrompt.prefHeightProperty().bind(window.heightProperty().multiply(0.3));
+        teamWinPrompt.prefWidthProperty().bind(window.widthProperty().multiply(0.3));
+        teamWinPrompt.layoutXProperty().bind(window.widthProperty().multiply(0.35));
+        teamWinPrompt.layoutYProperty().bind(window.heightProperty().multiply(0.35));
+
+        teamLosePrompt.prefHeightProperty().bind(window.heightProperty().multiply(0.3));
+        teamLosePrompt.prefWidthProperty().bind(window.widthProperty().multiply(0.3));
+        teamLosePrompt.layoutXProperty().bind(window.widthProperty().multiply(0.35));
+        teamLosePrompt.layoutYProperty().bind(window.heightProperty().multiply(0.35));
+
         exitPrompt.setVisible(false);
+        teamLosePrompt.setVisible(false);
+        teamWinPrompt.setVisible(false);
 
-        root.getChildren().addAll(worldPanel, minimap, infoPanel, actionPanel, resourcePanel, exitPrompt);
-
-        AnimationTimer timer = new AnimationTimer() {
+        root.getChildren().addAll(worldPanel, minimap, infoPanel, actionPanel, resourcePanel,
+                exitPrompt, teamLosePrompt, teamWinPrompt);
+        AnimationTimer timer = null;
+        timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                resourcePanel.update();
+                if (model.getWinningTeam() == Team.NEUTRAL) {
+                    //nop
+                }
+                else if (model.getWinningTeam() == model.getLocalPlayer().team) {
+                    teamWinPrompt.setVisible(true);
+                }
+
+                else {
+                    teamLosePrompt.setVisible(true);
+                }
+
                 resourcePanel.updateResources();
                 minimap.draw();
                 worldPanel.draw();
@@ -82,57 +117,69 @@ public class GameView {
         });
 
 
-        int[] dir = {0,0};
+        int[] dir = {0, 0};
 
         Set<KeyCode> currentlyPressed = new TreeSet<>();
 
-//        Set<GridCell> nextDestination = astar.getPassable();
-//        Iterator<GridCell> it = nextDestination.iterator();
-
         scene.setOnKeyPressed(e -> {
-            if(currentlyPressed.contains(e.getCode()))
+            KeyCode kc = e.getCode();
+
+            if (currentlyPressed.contains(kc))
                 return;
-            currentlyPressed.add(e.getCode());
+            currentlyPressed.add(kc);
 
-            if (e.getCode() == KeyCode.F11) window.setFullScreen(true);
-            if (e.getCode() == KeyCode.W) // Start upward movement.
+            if (kc == F11)
+                window.setFullScreen(true);
+            else if ((kc == W || kc == UP) && dir[1] >= 0) // Start upward movement.
                 dir[1]--;
-            if (e.getCode() == KeyCode.S) // Start downward movement.
+            else if ((kc == S || kc == DOWN) && dir[1] <= 0) // Start downward movement.
                 dir[1]++;
-            if (e.getCode() == KeyCode.A) // Start leftward movement.
+            else if ((kc == A || kc == LEFT) && dir[0] >= 0) // Start leftward movement.
                 dir[0]--;
-            if (e.getCode() == KeyCode.D) // Start rightward movement.
+            else if ((kc == D || kc == RIGHT) && dir[0] <= 0) // Start rightward movement.
                 dir[0]++;
-
-            if (e.getCode() == KeyCode.ESCAPE)
+            else if (kc == KeyCode.ESCAPE)
                 exitPrompt.setVisible(true);
 
 
-            if(dir[0] == 0 && dir[1] == 0)
+            if (dir[0] == 0 && dir[1] == 0)
                 model.processMessage(new StopRequest(model.getLocalPlayer().id));
             else
-                model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(dir[1],dir[0])));
+                model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(dir[1], dir[0])));
         });
 
         scene.setOnKeyReleased(e -> {
+            KeyCode kc = e.getCode();
+
             currentlyPressed.remove(e.getCode());
-            if (e.getCode() == KeyCode.W) // Stop upward movement.
+
+            if ((kc == W || kc == UP) && dir[1] < 0) // Stop upward movement.
                 dir[1]++;
-            if (e.getCode() == KeyCode.S) // stop downward movement.
+            if ((kc == S || kc == DOWN) && dir[1] > 0) // stop downward movement.
                 dir[1]--;
-            if (e.getCode() == KeyCode.A) // stop leftward movement.
+            if ((kc == A || kc == LEFT) && dir[0] < 0) // stop leftward movement.
                 dir[0]++;
-            if (e.getCode() == KeyCode.D) // stop rightward movement.
+            if ((kc == D || kc == RIGHT) && dir[0] > 0) // stop rightward movement.
                 dir[0]--;
 
-            if(dir[0] == 0 && dir[1] == 0)
+            if (dir[0] == 0 && dir[1] == 0)
                 model.processMessage(new StopRequest(model.getLocalPlayer().id));
             else
-                model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(dir[1],dir[0])));
+                model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(dir[1], dir[0])));
         });
 
         window.setScene(scene);
-
         window.setFullScreen(true);
+    }
+
+    public void goBackToMain() {
+//        Main newMain = new Main();
+//        newMain.start(window);
+//        window.setScene(mainApp.mainMenuScene);
+        mainApp.start(window);
+    }
+
+    public void restart() {
+        mainApp.restart(window);
     }
 }

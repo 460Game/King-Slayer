@@ -111,29 +111,18 @@ public abstract class GameModel implements Model {
     }
 
     /**
-     * Returns true if the cell at the given coordinates has been explored.
-     * The coordinates represent the upper left corner of the cell.
-     * @param x x-coordinate
-     * @param y y-coordinate
-     * @return true if the cell at the given coordinates has been explored
-     */
-    public boolean explored(int x, int y) {
-        return true; //TODO LOS
-    }
-
-    /**
      * Removes the entity with the given ID from every tile on the game map.
      *
      * @param entityID ID of the entity to be removed
      */
     public void removeByID(long entityID) {
-        for (GridCell[] arr : grid)
-            for (GridCell tile : arr)
-                tile.removeByID(entityID);
-        entities.remove(entityID);
-        //TODO why doesnt this remove it from the entity map and players list
+        remove(entities.get(entityID));
     }
 
+    public void remove(Entity entity) {
+        entity.containedIn.forEach(cell -> cell.removeContents(entity));
+        entities.remove(entity);
+    }
 
     public void setTile(int x, int y, Tile tile) {
         grid[x][y].setTile(tile, this);
@@ -157,7 +146,7 @@ public abstract class GameModel implements Model {
     returns true on success
     returns false if unknown entity
      */
-    public boolean setEntityData(long id, EntityData data) {
+    public boolean trySetEntityData(long id, EntityData data) {
         if(entities.containsKey(id)) {
             entities.get(id).data = data;
             return true;
@@ -168,34 +157,12 @@ public abstract class GameModel implements Model {
 
     public void setEntity(Entity entity) {
         Entity e = entities.get(entity.id);
-        if(e != null) {
+        if(e != null)
             e.data = entity.data;
-        } else {
+        else
             entities.put(entity.id, entity);
-        }
     }
 
-    /**
-     * Decorator around drable to memozie z value so can sort even while another thread mutates z values
-     */
-   private static class DrawableZ implements Comparable<DrawableZ>{
-        private Drawable drawable;
-        private double z;
-
-        DrawableZ(Drawable drawable) {
-            this.drawable = drawable;
-            this.z = drawable.getDrawZ();
-        }
-
-       public void draw(GraphicsContext gc, GameModel model) {
-           drawable.draw(gc);
-       }
-
-        @Override
-        public int compareTo(DrawableZ o) {
-            return Double.compare(this.z, o.z);
-        }
-    }
     /**
      * returns approximately all the entities inside of the box centered at x,y with width, height
      *
@@ -205,43 +172,24 @@ public abstract class GameModel implements Model {
      * @param h
      * @return
      */
-    public void drawFG(GraphicsContext gc, double x, double y, double w, double h) {
-        ArrayList<Entity> drawEntities = new ArrayList<>();
-
-        for (int j = Math.max(0, (int) (y - h / 2)); j < Math.min(y + h / 2, getMapHeight()); j++) {
-            for (int i = Math.max(0, (int) (x - w / 2)); i < Math.min(x + w / 2, getMapWidth()); i++) {
-                GridCell cell = getCell(i, j);
-                drawEntities.addAll(cell.getContents());
-            }
-        }
-        drawEntities.stream().map(DrawableZ::new).sorted().forEach(a -> a.draw(gc, this));
+    public void drawForeground(GraphicsContext gc, double x, double y, double w, double h) {
+        allCells.stream().flatMap(GridCell::streamContents).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc));
 
         if(DEBUG_DRAW)
-            drawEntities.forEach(a -> a.data.hitbox.draw(gc, a));
+            allCells.stream().flatMap(GridCell::streamContents).forEach(a -> a.data.hitbox.draw(gc, a));
     }
 
-    public Image getBG(WritableImage image, boolean b) {
-        for (int j = 0; j < getMapHeight(); j++) {
-            for (int i = 0; i < getMapWidth(); i++) {
-                GridCell cell = getCell(i, j);
-                cell.initDraw(this);
-                cell.draw(image.getPixelWriter(), true);
-            }
-        }
-        return image;
+    public void writeBackground(WritableImage image, boolean b) {
+        allCells.forEach(cell -> cell.draw(image.getPixelWriter(), this, true));
     }
 
     public Collection<Entity> getAllEntities() {
         return entities.values();
     }
 
-    public Entity getEntityById(long entity) {
+    public Entity getEntity(long entity) {
         if (!entities.containsKey(entity))
             return null;
         return entities.get(entity);
-    }
-
-    public void updateGameState(GameState gameState) {
-
     }
 }

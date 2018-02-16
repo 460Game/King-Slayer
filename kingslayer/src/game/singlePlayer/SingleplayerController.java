@@ -9,6 +9,7 @@ import game.view.GameView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import lobby.Main;
 import sun.rmi.runtime.Log;
 
 import java.util.Collections;
@@ -19,24 +20,27 @@ import java.util.Map;
  * Class that allows for single player running of the game. This is
  * mainly used for testing and debugging.
  */
-public class SingleplayerController extends Application {
+public class SingleplayerController {
+    Main mainApp;
+    public SingleplayerController(Main mainApp) {
+        this.mainApp = mainApp;
+    }
 
-    @Override
     public void start(Stage primaryStage) throws Exception {
         ServerGameModel serverModel = new ServerGameModel();
         ClientGameModel clientModel = new ClientGameModel(new CopyingModelWrapper(serverModel));
         Map<Model, Pair<Team, Role>> testingMap = new HashMap<>();
         Model clientGameModel2 = new CopyingModelWrapper(clientModel);
-        testingMap.put(clientGameModel2, new Pair<>(Team.ONE, Role.SLAYER));
+        testingMap.put(clientGameModel2, new Pair<>(Team.ONE, Role.KING));
         serverModel.init(Collections.singleton(clientGameModel2), testingMap);
         serverModel.start();
 
-        GameView gameView = new GameView(clientModel);
+        GameView gameView = new GameView(clientModel, mainApp);
         gameView.start(primaryStage);
     }
 
-    public static void main(String args[]) {
-        Application.launch();
-    }
+//    public static void main(String args[]) {
+//        Application.launch();
+//    }
 
 }

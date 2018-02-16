@@ -45,7 +45,7 @@ public class SetEntityCommand implements ToClientCommand {
      */
     @Override
     public void executeClient(ClientGameModel model) {
-        if(!model.setEntityData(id, data)) {
+        if(!model.trySetEntityData(id, data)) {
             model.requestEntityFromServer(id);
         }
     }
