@@ -127,5 +127,9 @@ public class LobbyServer { //extends Application {
     }
     public void makeServerModel() {}
 
+    public void restartFromReadyPage() {
+        server.restartFromReadyPage();
+    }
+
 }
 

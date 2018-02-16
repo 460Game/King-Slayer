@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.LinkedTransferQueue;
 
 import static java.lang.Thread.sleep;
 
@@ -27,6 +28,17 @@ public class RemoteConnection {
         client.sendTCP(new NetworkCommon.ClientFinishMakingModelMsg());
     }
 
+    public void restartFromReadyPage() {
+        if (isServer) {
+            readyClients.clear();
+            server.sendToAllTCP(new NetworkCommon.AllClientConnectMsg());
+        }
+        else {
+            Log.error("Client should not call restartFromReadyPage");
+            return;
+        }
+    }
+
     // This holds per connection state.
     public static class GameConnection extends Connection {
         public String usrName;
@@ -41,7 +53,7 @@ public class RemoteConnection {
     Server server;
     ConcurrentHashMap<Integer, GameConnection> clientList;
 
-    int readyClient = 0;
+    ConcurrentHashMap<Integer, GameConnection> readyClients = new ConcurrentHashMap<>();
     int cntClientModelsMade = 0;
 
     Client client;
@@ -97,13 +109,6 @@ public class RemoteConnection {
                     Log.info("Server received from " + c.getID() + " " + obj.toString());
                     GameConnection connection = (GameConnection)c;
 
-                    //arti increase latency
-//                    try {
-//                        Thread.sleep(10);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-
                     //init a queue when have a new client
                     if (!clientList.containsKey(connection.getID())) {
                         clientList.putIfAbsent(connection.getID(), connection);
@@ -128,10 +133,10 @@ public class RemoteConnection {
                         //TODO: change it to be defensive here
                         //TODO: important line added here!!!!!!!!!!!!!!!!
                         adaptor.serverLobbyComfirmTeamAndRole(connection.getID(), readyMsg.getTeam(), readyMsg.getRole());
+                        
+                        readyClients.put(connection.getID(), connection);
 
-                        readyClient++;
-
-                        if (readyClient == clientList.size()) {
+                        if (readyClients.size() == clientList.size()) {
                             //works fine here
                             adaptor.makeModel();//server make model and tells client make models
                             //also need to start game (make model)
@@ -161,7 +166,8 @@ public class RemoteConnection {
 
                 //TODO: implement disconnected
                 public void disconnected (Connection c) {
-
+                    server.stop();
+                    System.exit(0);
                 }
             });
 
@@ -181,12 +187,6 @@ public class RemoteConnection {
 
                 public void received (Connection connection, Object obj) {
 
-                    //arti increase latency
-//                    try {
-//                        Thread.sleep(10);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
 
                     Log.debug("Client " + client.getID() + "received " + obj.toString());
                     if (obj instanceof NetworkCommon.ClientMakeModelMsg) {
@@ -205,9 +205,6 @@ public class RemoteConnection {
                     if (obj instanceof ArrayList) {
                         //enqueue the message
                         toBeConsumeMsgQueue.addAll((Collection<? extends Message>) obj);
-//                        for (Message msg : (ArrayList<Message>) obj) {
-//                            adaptor.getMsg(msg);
-//                        }
                     }
 
                     if (obj instanceof Message) {
@@ -226,9 +223,7 @@ public class RemoteConnection {
                         else {
                             t1 = System.nanoTime();
                             latencty = (t1 - t0) / 2;
-                            Log.info("Clock syn done");
                         }
-
                     }
 
                 }

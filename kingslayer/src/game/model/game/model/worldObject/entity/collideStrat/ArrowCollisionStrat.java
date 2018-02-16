@@ -20,7 +20,7 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
         Consumer<ServerGameModel> serverConsumer = (server) -> {
             a.data.updateData.velocity.setMagnitude(0);
             server.removeByID(a.id);
-            b.data.health -= 5;
+            b.decreaseHealthBy(model, 5);
             server.getClients().forEach(client -> client.processMessage(new SetEntityCommand(b)));
         };
         model.execute(serverConsumer, (client) -> {

@@ -5,6 +5,7 @@ import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.aiStrat.AIStrat;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
+import game.model.game.model.worldObject.entity.deathStrat.DeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.DrawStrat;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 
@@ -38,7 +39,8 @@ public class GhostEntity extends Entity {
                      CollisionStrat collisionStrat,
                      Hitbox hitbox,
                      DrawStrat drawStrat,
-                     AIStrat aiStrat) {
-    super(x, y, team, role, updateStrat, collisionStrat, hitbox, drawStrat, aiStrat);
+                     AIStrat aiStrat,
+                     DeathStrat deathStrat) {
+    super(x, y, team, role, updateStrat, collisionStrat, hitbox, drawStrat, aiStrat, deathStrat);
   }
 }

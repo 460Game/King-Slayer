@@ -6,6 +6,8 @@ import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
 import game.model.game.model.worldObject.entity.collideStrat.UnitCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CircleHitbox;
+import game.model.game.model.worldObject.entity.deathStrat.KingDeathStrat;
+import game.model.game.model.worldObject.entity.deathStrat.SlayerDeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.DirectionAnimationDrawStrat;
 import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
 
@@ -23,7 +25,8 @@ public class Players {
             UnitCollisionStrat.SINGLETON,
             hitbox,
             DirectionAnimationDrawStrat.RED_SLAYER_ANIMATION, //TODO drawFG strat
-            AIDoNothingStrat.SINGLETON);
+            AIDoNothingStrat.SINGLETON,
+                SlayerDeathStrat.SINGLETON);
     }
 
     public static Entity makeSlayerB(Double x, Double y) {
@@ -34,7 +37,8 @@ public class Players {
             UnitCollisionStrat.SINGLETON,
             hitbox,
             DirectionAnimationDrawStrat.BLUE_SLAYER_ANIMATION, //TODO drawFG strat
-            AIDoNothingStrat.SINGLETON);
+            AIDoNothingStrat.SINGLETON,
+                SlayerDeathStrat.SINGLETON);
     }
 
     public static Entity makeKingA(double x, double y) {
@@ -45,7 +49,8 @@ public class Players {
             UnitCollisionStrat.SINGLETON,
             hitbox,
             DirectionAnimationDrawStrat.RED_KING_ANIMATION, //TODO drawFG strat
-            AIDoNothingStrat.SINGLETON);
+            AIDoNothingStrat.SINGLETON,
+                KingDeathStrat.SINGLETON);
     }
 
     public static Entity makeKingB(double x, double y) {
@@ -56,6 +61,7 @@ public class Players {
             UnitCollisionStrat.SINGLETON,
             hitbox,
             DirectionAnimationDrawStrat.BLUE_KING_ANIMATION, //TODO drawFG strat
-            AIDoNothingStrat.SINGLETON);
+            AIDoNothingStrat.SINGLETON,
+                KingDeathStrat.SINGLETON);
     }
 }

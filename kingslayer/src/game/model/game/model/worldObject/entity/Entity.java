@@ -6,6 +6,7 @@ import game.model.game.model.worldObject.entity.aiStrat.AIStrat;
 import game.model.game.model.worldObject.entity.aiStrat.AIable;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
+import game.model.game.model.worldObject.entity.deathStrat.DeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.DirectionAnimationDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.DrawStrat;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
@@ -42,6 +43,8 @@ public class Entity implements Updatable, Drawable, AIable {
      * The way this entity collides with other entities in the game.
      */
     final CollisionStrat collisionStrat;
+
+    final DeathStrat deathStrat;
 
     /**
      * Checks if this entity is currently colliding with another entity.
@@ -102,7 +105,8 @@ public class Entity implements Updatable, Drawable, AIable {
                   CollisionStrat collisionStrat,
                   Hitbox hitbox,
                   DrawStrat drawStrat,
-                  AIStrat aiStrat) {
+                  AIStrat aiStrat,
+                  DeathStrat deathStrat) {
         id = Util.random.nextLong();
         this.team = team;
         this.role = role;
@@ -112,6 +116,7 @@ public class Entity implements Updatable, Drawable, AIable {
         this.aiStrat = aiStrat;
         this.data = new EntityData(hitbox, aiStrat.makeAIData(), drawStrat.initDrawData(),
                 updateStrat.initUpdateData(), x, y);
+        this.deathStrat = deathStrat;
     }
 
     /**
@@ -122,6 +127,7 @@ public class Entity implements Updatable, Drawable, AIable {
         this.collisionStrat = null;
         this.drawStrat = null;
         this.aiStrat = null;
+        this.deathStrat = null;
         team = null;
         role = null;
         id = 0;
@@ -184,5 +190,16 @@ public class Entity implements Updatable, Drawable, AIable {
 
     public boolean checkCollision(Hitbox hitbox, double x, double y) {
         return Hitbox.testCollision(this.data.x, this.data.y, this.data.hitbox, x, y, hitbox);
+    }
+
+    public void entityDie(GameModel model) {
+        deathStrat.handleDeath(model, this);
+    }
+
+    public void decreaseHealthBy(GameModel model, double decrement) {
+        data.setHealth(data.getHealth() - decrement);
+        if (Math.abs(data.getHealth()) < 0.01) {
+            deathStrat.handleDeath(model, this);
+        }
     }
 }

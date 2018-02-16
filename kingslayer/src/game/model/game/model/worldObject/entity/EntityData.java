@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity;
 
+import game.model.game.model.GameModel;
 import game.model.game.model.worldObject.entity.entities.Velocity;
 import game.model.game.model.worldObject.entity.aiStrat.AIData;
 import game.model.game.model.worldObject.entity.drawStrat.DrawData;
@@ -44,8 +45,9 @@ public class EntityData {
 
     /**
      * Current health of the entity.
+     * Please don't change it back to public
      */
-    public double health;
+    private double health;
 
     /**
      * Current velocity of the entity.
@@ -76,4 +78,13 @@ public class EntityData {
      * Default constructor needed for serialization.
      */
     private EntityData() {}
+
+    public double getHealth() {
+        return health;
+    }
+
+    public void setHealth(double health) {
+        this.health = health;
+    }
+
 }
