@@ -21,8 +21,6 @@ import static util.Const.*;
 
 public class ServerGameModel extends GameModel {
 
-    private boolean terminate = false;
-
     public ServerGameModel() {
         super(new ServerMapGenerator(GRID_X_SIZE, GRID_Y_SIZE));
     }
@@ -35,7 +33,7 @@ public class ServerGameModel extends GameModel {
 
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
 
-    private TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
+    public TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
 
     public Collection<? extends Model> getClients() {
         return clients;
@@ -123,15 +121,19 @@ public class ServerGameModel extends GameModel {
         running = false;
     }
 
+    public void teamWin(Team winTeam) {
+        for (Model clientModel : clients) {
+            clientModel.processMessage(new TeamWinCommand(winTeam));
+        }
+        stop();
+    }
+
     public boolean isRunning() {
         return running;
     }
 
     private void run() {
         while (running) {
-            if (terminate) { //destroy the model
-                break;
-            }
         //    long start = System.nanoTime();
             this.update();
             //want it independent of how long update take, so use the following instead

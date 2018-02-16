@@ -45,6 +45,9 @@ public class Main extends Application {
     LobbyClient lobbyClient = null;
     LobbyServer lobbyServer = null;
 
+    public Scene mainMenuScene;
+
+
     private Font font = Font.font("", FontWeight.BOLD, 36);
     private static Color textColor = Color.web("b5de0f");
 
@@ -200,7 +203,7 @@ public class Main extends Application {
         root.getChildren().add(bgCanvas);
         root.getChildren().add(midCanvas);
         root.getChildren().add(menuBox);
-        Scene mainMenuScene = new Scene(root);
+        mainMenuScene = new Scene(root);
 
         mainMenuScene.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
 
