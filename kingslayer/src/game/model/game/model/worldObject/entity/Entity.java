@@ -10,12 +10,15 @@ import game.model.game.model.worldObject.entity.deathStrat.DeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.DirectionAnimationDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.DrawStrat;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
+import javafx.scene.paint.Color;
 import util.Util;
 import game.model.game.model.GameModel;
 import game.model.game.model.team.Team;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Set;
+
+import static util.Util.toDrawCoords;
 
 /**
  * Represents any entity in the game world. Each entity knows the cells it is in
@@ -144,6 +147,18 @@ public class Entity implements Updatable, Drawable, AIable {
     @Override
     public void draw(GraphicsContext gc) {
         this.drawStrat.draw(this, gc);
+
+        if(!this.invincible()) {
+            //TEMPORARY!!!!!!!!!
+            gc.setFill(Color.RED);
+            gc.fillRect(toDrawCoords(data.x) - 10, toDrawCoords(data.y) - 30, 20, 3);
+            gc.setFill(Color.GREEN);
+            gc.fillRect(toDrawCoords(data.x) - 10, toDrawCoords(data.y) - 30, (getHealth() / 100) * 20, 3);
+        }
+    }
+
+    private boolean invincible() {
+        return getHealth() == Double.POSITIVE_INFINITY;
     }
 
     @Override

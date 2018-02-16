@@ -61,12 +61,21 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
 
   public void draw(Entity entity, GraphicsContext gc) {
 
-
-    //TEMPORARY!!!!!!!!!
-    gc.setFill(Color.RED);
-    gc.fillRect(toDrawCoords(entity.data.x) - 10, toDrawCoords(entity.data.y)-30, 20, 3);
-    gc.setFill(Color.GREEN);
-    gc.fillRect(toDrawCoords(entity.data.x) - 10, toDrawCoords(entity.data.y)-30, (entity.getHealth()/100)*20, 3);
+    if (showPlacementbox) {
+      double[] dir = {0, 0};
+      if (drawData.direction == 'N')
+        dir[1] = -1;
+      else if (drawData.direction == 'E')
+        dir[0] = 1;
+      else if (drawData.direction == 'S')
+        dir[1] = 1;
+      else
+        dir[0] = -1;
+      gc.setFill(new Color(1, 0, 0, 0.4));
+      gc.fillRect(boxX + toDrawCoords(dir[0]) - 16,
+          boxY + toDrawCoords(dir[1]) - 16, 32, 32);
+      gc.setFill(Color.BLACK);
+    }
 
     try {
       Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
@@ -107,6 +116,21 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     } else {
       drawData.imageNum = 0;
     }
+  }
+
+  public void turnOnPlacementBox(double x, double y) {
+    showPlacementbox = true;
+    boxX = x;
+    boxY = y;
+  }
+
+  public void movePlacementBox(double x, double y) {
+    boxX = x;
+    boxY = y;
+  }
+
+  public void turnOffPlacementBox() {
+    showPlacementbox = false;
   }
 
   public double getDrawZ(EntityData entity) {

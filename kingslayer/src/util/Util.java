@@ -144,6 +144,6 @@ public class Util {
     }
 
     public static boolean checkBounds(double x, double y) {
-        return x > 0 && y > 0 && x < GRID_X_SIZE && x < GRID_Y_SIZE;
+        return x > 1 && y > 1 && x < GRID_X_SIZE - 1 && x < GRID_Y_SIZE - 1;
     }
 }
