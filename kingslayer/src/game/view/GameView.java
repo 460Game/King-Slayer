@@ -91,7 +91,7 @@ public class GameView {
             public void handle(long now) {
                 model.update();
 
-                if(model.getLocalPlayer() != null) {
+                if (model.getLocalPlayer() != null) {
                     worldPanel.update();
                     resourcePanel.update();
                     minimap.draw();
