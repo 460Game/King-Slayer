@@ -32,8 +32,8 @@ public class ResourcePanel extends Region {
     }
 
     public void update() {
-        text.setText("     " + model.getResourceData().getResource(TeamResourceData.Resource.WOOD)+ "         " +
-            model.getResourceData().getResource(TeamResourceData.Resource.STONE) + "         " +
+        text.setText("WOOD " + model.getResourceData().getResource(TeamResourceData.Resource.WOOD)+ "   STONE " +
+            model.getResourceData().getResource(TeamResourceData.Resource.STONE) + "   METAL " +
             model.getResourceData().getResource(TeamResourceData.Resource.METAL));
     }
 }
