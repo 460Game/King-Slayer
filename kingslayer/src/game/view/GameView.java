@@ -102,6 +102,7 @@ public class GameView {
                     } else if (model.getWinningTeam() == model.getLocalPlayer().team) {
                         teamWinPrompt.setVisible(true);
                     } else {
+//                        System.err.println(model.getLocalPlayer().team);
                         teamLosePrompt.setVisible(true);
                     }
                     // TODO set color only once, not every update.
@@ -111,9 +112,7 @@ public class GameView {
                         actionPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
                     }
                 }
-                else {
-                    teamLosePrompt.setVisible(true);
-                }
+
             }
         };
 
