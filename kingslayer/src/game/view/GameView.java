@@ -85,35 +85,42 @@ public class GameView {
         teamWinPrompt.setVisible(false);
 
         root.getChildren().addAll(worldPanel, minimap, infoPanel, actionPanel, resourcePanel,
-                exitPrompt, teamLosePrompt, teamWinPrompt);
+            exitPrompt, teamLosePrompt, teamWinPrompt);
 
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                model.update();
+                if (model.getWinningTeam() == Team.NEUTRAL) {
+                    model.update();
+                    if (model.getLocalPlayer() != null) {
+                        worldPanel.update();
+                        resourcePanel.update();
+                        minimap.draw();
+                        infoPanel.update();
+                        actionPanel.update();
 
-                if (model.getLocalPlayer() != null) {
-                    worldPanel.update();
-                    resourcePanel.update();
-                    minimap.draw();
-                    infoPanel.update();
-
-                    if (model.getWinningTeam() == Team.NEUTRAL) {
-                        //nop
-                    } else if (model.getWinningTeam() == model.getLocalPlayer().team) {
-                        teamWinPrompt.setVisible(true);
-                    } else {
-//                        System.err.println(model.getLocalPlayer().team);
-                        teamLosePrompt.setVisible(true);
-                    }
-                    // TODO set color only once, not every update.
-                    if (model.getLocalPlayer().team != null) {
+                        //TODO dont do this
                         resourcePanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+                        minimap.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
                         infoPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
                         actionPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-                    }
-                }
 
+                    }
+                } else if (model.getWinningTeam() == model.getLocalPlayer().team) {
+                    teamWinPrompt.setVisible(true);
+                    worldPanel.setVisible(false);
+                    resourcePanel.setVisible(false);
+                    minimap.setVisible(false);
+                    infoPanel.setVisible(false);
+                    actionPanel.setVisible(false);
+                } else {
+                    worldPanel.setVisible(false);
+                    resourcePanel.setVisible(false);
+                    minimap.setVisible(false);
+                    infoPanel.setVisible(false);
+                    teamLosePrompt.setVisible(true);
+                    actionPanel.setVisible(false);
+                }
             }
         };
 
