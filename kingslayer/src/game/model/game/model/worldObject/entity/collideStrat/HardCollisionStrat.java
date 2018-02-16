@@ -10,7 +10,7 @@ public class HardCollisionStrat extends CollisionStrat {
     public static HardCollisionStrat SINGLETON = new HardCollisionStrat();
 
     public final void collision(GameModel model, Entity t, Entity o) {
-        if(o.getCollideType() == CollideType.HARD) {
+        if(o.getCollideType() == CollideType.HARD || o.getCollideType() == CollideType.WATER) {
             throw new RuntimeException("Hard objects colliding " + t.data.hitbox + " and " + o.data.hitbox);
         }
     }

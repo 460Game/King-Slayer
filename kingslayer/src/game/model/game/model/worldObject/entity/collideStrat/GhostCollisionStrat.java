@@ -15,8 +15,8 @@ public class GhostCollisionStrat extends CollisionStrat{
 
     }
 
-    public final void collision(GameModel model, Entity a, Entity b) {
-        if(b.getCollideType() == CollideType.HARD) {
+    public void collision(GameModel model, Entity a, Entity b) {
+        if(b.getCollideType() == CollideType.HARD || b.getCollideType() == CollideType.WATER) {
             collisionHard(model, a, b);
         } else if(b.getCollideType() == CollideType.SOFT) {
             collisionSoft(model, a, b);

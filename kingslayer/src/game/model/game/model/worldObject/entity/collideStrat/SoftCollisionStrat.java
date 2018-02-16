@@ -9,7 +9,7 @@ public abstract class SoftCollisionStrat extends CollisionStrat {
     protected abstract void collisionHard(GameModel model, Entity a, Entity b);
 
     public final void collision(GameModel model, Entity t, Entity o) {
-        if(o.getCollideType() == CollideType.HARD) {
+        if(o.getCollideType() == CollideType.HARD || o.getCollideType() == CollideType.WATER) {
             collisionHard(model, t, o);
         } else if(t.getCollideType() == CollideType.SOFT) {
             collisionSoft(model, t, o);

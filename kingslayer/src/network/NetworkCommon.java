@@ -94,7 +94,7 @@ public class NetworkCommon {
         kryo.register(DirectionAnimationDrawStrat.BlueSlayerDirectionAnimationDrawStrat.class);
 
         kryo.register(TreasureGhostCollisionStrat.class);
-        kryo.register(ArrowGhostCollisionStrat.class);
+        kryo.register(ArrowCollisionStrat.class);
         kryo.register(RotatingImageDrawStrat.ArrowImageDrawStrat.class);
 
         kryo.register(DrawData.class);

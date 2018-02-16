@@ -11,7 +11,7 @@ import java.util.Random;
 import java.util.Set;
 
 import static java.lang.Math.PI;
-import static util.Const.TILE_PIXELS;
+import static util.Const.*;
 
 /**
  * Class used for various helper functions.
@@ -136,10 +136,14 @@ public class Util {
      */
     public static void drawRotatedImage(GraphicsContext gc, Image image, double angle, double tlpx, double tlpy, double destw, double desth) {
       //  gc.save(); // saves the current state on stack, including the current transform
-        angle = angle/(2*PI) * 360;
+        angle = 180 * angle/ PI;
         gc.transform(new Affine(Transform.rotate(angle, tlpx + destw / 2, tlpy + desth / 2)));
         gc.drawImage(image, tlpx, tlpy, destw, desth);
         gc.transform(new Affine(Transform.rotate(-angle, tlpx + destw / 2, tlpy + desth / 2)));
       //  gc.restore(); // back to original state (before rotation)
+    }
+
+    public static boolean checkBounds(double x, double y) {
+        return x > 0 && y > 0 && x < GRID_X_SIZE && x < GRID_Y_SIZE;
     }
 }

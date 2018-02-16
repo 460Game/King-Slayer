@@ -4,10 +4,7 @@ import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
-import game.model.game.model.worldObject.entity.collideStrat.ArrowGhostCollisionStrat;
-import game.model.game.model.worldObject.entity.collideStrat.GhostCollisionStrat;
-import game.model.game.model.worldObject.entity.collideStrat.HardCollisionStrat;
-import game.model.game.model.worldObject.entity.collideStrat.TreasureGhostCollisionStrat;
+import game.model.game.model.worldObject.entity.collideStrat.*;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CellHitbox;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CircleHitbox;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
@@ -26,6 +23,17 @@ public class Entities {
             CellHitbox.SINGLETON,
             NoDrawStrat.SINGLETON,
             AIDoNothingStrat.SINGLETON);
+    }
+
+    public static Entity makeWater(double x, double y) {
+        return new Entity(x, y,
+                Team.NEUTRAL,
+                Role.NEUTRAL,
+                StillStrat.SINGLETON,
+                WaterCollisionStrat.SINGLETON,
+                CellHitbox.SINGLETON,
+                NoDrawStrat.SINGLETON,
+                AIDoNothingStrat.SINGLETON);
     }
 
     public static Entity makeTreasure(double x, double y) {
@@ -166,13 +174,13 @@ public class Entities {
                 Team.NEUTRAL,
                 Role.NEUTRAL,
                 MovingStrat.SINGLETON,
-                ArrowGhostCollisionStrat.SINGLETON,
+                ArrowCollisionStrat.SINGLETON,
             ARROW_HITBOX,
             RotatingImageDrawStrat.ARROW_IMAGE_DRAW_STRAT,
 //                ImageDrawStrat.ARROW_IMAGE_DRAW_STRAT,
                 AIDoNothingStrat.SINGLETON);
         arrow.data.updateData.maxSpeed = 7;
-        arrow.data.updateData.velocity.setMagnitude(7);
+        arrow.data.updateData.velocity.setMagnitude(arrow.data.updateData.maxSpeed);
         arrow.data.updateData.velocity.setAngle(angle);
         return arrow;
     }
