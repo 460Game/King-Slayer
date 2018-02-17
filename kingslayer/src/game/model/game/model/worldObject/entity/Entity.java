@@ -10,12 +10,15 @@ import game.model.game.model.worldObject.entity.deathStrat.DeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.DirectionAnimationDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.DrawStrat;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
+import javafx.scene.paint.Color;
 import util.Util;
 import game.model.game.model.GameModel;
 import game.model.game.model.team.Team;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Set;
+
+import static util.Util.toDrawCoords;
 
 /**
  * Represents any entity in the game world. Each entity knows the cells it is in
@@ -144,6 +147,18 @@ public class Entity implements Updatable, Drawable, AIable {
     @Override
     public void draw(GraphicsContext gc) {
         this.drawStrat.draw(this, gc);
+
+        if(!this.invincible()) {
+            //TEMPORARY!!!!!!!!!
+            gc.setFill(Color.RED);
+            gc.fillRect(toDrawCoords(data.x) - 10, toDrawCoords(data.y) - 30, 20, 3);
+            gc.setFill(Color.GREEN);
+            gc.fillRect(toDrawCoords(data.x) - 10, toDrawCoords(data.y) - 30, (getHealth() / 100) * 20, 3);
+        }
+    }
+
+    private boolean invincible() {
+        return getHealth() == Double.POSITIVE_INFINITY;
     }
 
     @Override
@@ -167,13 +182,7 @@ public class Entity implements Updatable, Drawable, AIable {
         inCollision = false;
         this.updateStrat.update(this, model);
 
-        if (this.role != Role.NEUTRAL) {
-            ((DirectionAnimationDrawStrat) drawStrat).update(this);
-        }
-        if (this.data.getHealth() <= 0) {
-//            model.removeByID(this.id);
-            this.deathStrat.handleDeath(model, this);
-        }
+        drawStrat.update(this);
     }
 
     /**
@@ -206,8 +215,11 @@ public class Entity implements Updatable, Drawable, AIable {
 
     public void decreaseHealthBy(GameModel model, double decrement) {
         data.setHealth(data.getHealth() - decrement);
-        if (Math.abs(data.getHealth()) < 0.01) {
-            deathStrat.handleDeath(model, this);
-        }
+        if (data.getHealth() <= 0)
+            entityDie(model);
+    }
+
+    public double getHealth() {
+        return data.getHealth();
     }
 }

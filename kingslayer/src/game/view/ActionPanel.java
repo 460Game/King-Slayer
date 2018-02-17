@@ -28,4 +28,7 @@ public class ActionPanel extends Region {
         text.setLayoutY(28);
         this.getChildren().add(text);
     }
+
+    public void update() {
+    }
 }

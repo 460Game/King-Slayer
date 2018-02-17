@@ -41,7 +41,7 @@ public class Entities {
     }
 
     public static Entity makeTree(double x, double y) {
-        return new Entity(x, y, 100,
+        return new Entity(x, y, Double.POSITIVE_INFINITY,
             Team.NEUTRAL,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
@@ -53,7 +53,7 @@ public class Entities {
     }
 
     public static Entity makeStone(double x, double y) {
-        return new Entity(x, y, 100,
+        return new Entity(x, y, Double.POSITIVE_INFINITY,
             Team.NEUTRAL,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
@@ -65,7 +65,7 @@ public class Entities {
     }
 
     public static Entity makeMetal(double x, double y) {
-        return new Entity(x, y, 100,
+        return new Entity(x, y, Double.POSITIVE_INFINITY,
             Team.NEUTRAL,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
