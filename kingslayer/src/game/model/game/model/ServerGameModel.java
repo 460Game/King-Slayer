@@ -11,10 +11,7 @@ import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static util.Const.*;
@@ -23,6 +20,7 @@ public class ServerGameModel extends GameModel {
 
     public ServerGameModel() {
         super(new ServerMapGenerator(GRID_X_SIZE, GRID_Y_SIZE));
+        tmpMark = new Random().nextInt();
     }
 
     private Collection<? extends Model> clients = null;
@@ -32,6 +30,8 @@ public class ServerGameModel extends GameModel {
     private int counter = 0; // GARBAGE
 
     Thread updateThread;
+
+    int tmpMark;
 
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
 
@@ -107,7 +107,7 @@ public class ServerGameModel extends GameModel {
 
     @Override
     public String toString() {
-        return "Server game model";
+        return "Server game model " + tmpMark;
     }
 
     private boolean running = false;
@@ -146,6 +146,7 @@ public class ServerGameModel extends GameModel {
         while (running) {
         //    long start = System.nanoTime();
             this.update();
+//            System.err.println("server game model running " + toString());
             //want it independent of how long update take, so use the following instead
             //of thread.sleep()...
         //    long delta = System.nanoTime()- start;

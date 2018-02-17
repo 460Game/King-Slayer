@@ -29,11 +29,11 @@ public abstract class GameModel implements Model {
     /**
      * grid of the game map. Each tile on the map is represented by a 1x1 cell.
      */
-    private GridCell[][] grid = new GridCell[util.Const.GRID_X_SIZE][util.Const.GRID_Y_SIZE];
+    private GridCell[][] grid;// = new GridCell[util.Const.GRID_X_SIZE][util.Const.GRID_Y_SIZE];
 
     private Collection<GridCell> allCells;
 
-    private LinkedBlockingQueue<Message> messageQueue = new LinkedBlockingQueue<>();
+    private LinkedBlockingQueue<Message> messageQueue;
 
     private final Map<Long, Entity> entities;
 
@@ -49,6 +49,9 @@ public abstract class GameModel implements Model {
      */
     public GameModel(MapGenerator generator) {
         super();
+
+        messageQueue = new LinkedBlockingQueue<>();
+        grid = new GridCell[util.Const.GRID_X_SIZE][util.Const.GRID_Y_SIZE];
 
         entities = new HashMap<>();
         allCells = new ArrayList<>();
