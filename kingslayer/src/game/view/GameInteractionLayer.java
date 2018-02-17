@@ -86,8 +86,12 @@ public class GameInteractionLayer extends Region  {
         });
 
         uiCanvas.setOnKeyPressed(e -> {
+            if (placingGhost != null) {
+                model.removeByID(placingGhost.id);
+                placingGhost = null;
+            }
+
             if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1) {
-                System.out.println("You pressed 1");
                 if (model.getLocalPlayer().role == Role.KING) {
                     cost = -10;
                     placingGhost = Entities.makeGhostWall(0, 0);
@@ -98,7 +102,6 @@ public class GameInteractionLayer extends Region  {
 
             if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2) {
                 if (model.getLocalPlayer().role == Role.KING) {
-                    System.out.println("You pressed 2");
                     if (model.getLocalPlayer().team == Team.ONE) {
                         cost = -2;
                         placingGhost = Entities.makeResourceCollectorRedGhost(0, 0);
