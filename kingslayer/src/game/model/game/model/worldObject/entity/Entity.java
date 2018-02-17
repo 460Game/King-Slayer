@@ -182,7 +182,7 @@ public class Entity implements Updatable, Drawable, AIable {
         inCollision = false;
         this.updateStrat.update(this, model);
 
-        drawStrat.update(this);
+        drawStrat.update(this, model);
     }
 
     /**

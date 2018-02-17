@@ -5,6 +5,7 @@ import game.model.game.model.Model;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
+import game.view.GameInteractionLayer;
 import game.view.GameView;
 import javafx.application.Application;
 import javafx.stage.Stage;

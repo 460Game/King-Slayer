@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
+import game.model.game.model.Model;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
 import images.Images;
@@ -26,6 +27,8 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   public static final DirectionAnimationDrawStrat BLUE_KING_ANIMATION = new BlueKingDirectionAnimationDrawStrat();
   public static final DirectionAnimationDrawStrat RED_SLAYER_ANIMATION = new RedSlayerDirectionAnimationDrawStrat();
   public static final DirectionAnimationDrawStrat BLUE_SLAYER_ANIMATION = new BlueSlayerDirectionAnimationDrawStrat();
+  public static final DirectionAnimationDrawStrat RED_RANGED_ANIMATION = new RedRangedMinionDirectionAnimationDrawStrat();
+  public static final DirectionAnimationDrawStrat BLUE_RANGED_ANIMATION = new BlueRangedMinionDirectionAnimationDrawStrat();
 
   /**
    * Key for figuring out which piece of the character sheet is needed for
@@ -76,7 +79,8 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     }
   }
 
-  public void update(Entity entity) {
+  @Override
+  public void update(Entity entity, Model model) {
     // Update direction of image
     double angle = entity.data.updateData.velocity.getAngle();
     if (angle >= -0.75 * PI && angle < -0.25 * PI) {
@@ -124,6 +128,18 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     }
   }
   public static class BlueSlayerDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+    @Override
+    Image getImage() {
+      return Images.BLUE_SLAYER_IMAGE_SHEET;
+    }
+  }
+  public static class RedRangedMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+    @Override
+    Image getImage() {
+      return Images.RED_SLAYER_IMAGE_SHEET;
+    }
+  }
+  public static class BlueRangedMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage() {
       return Images.BLUE_SLAYER_IMAGE_SHEET;

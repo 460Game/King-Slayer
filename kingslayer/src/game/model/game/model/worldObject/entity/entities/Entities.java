@@ -172,6 +172,18 @@ public class Entities {
                 NopDeathStrat.SINGLETON);
     }
 
+    public static Entity makeRedBarracks(double x, double y) {
+        return new Entity(x, y, Double.POSITIVE_INFINITY,
+            Team.ONE,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            GhostCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            UpgradableImageDrawStrat.RED_BARRACKS_DRAW_STRAT,
+            AIDoNothingStrat.SINGLETON,
+            NopDeathStrat.SINGLETON);
+    }
+
     static Hitbox ARROW_HITBOX =  new CircleHitbox(0.2);
     public static Entity makeArrow(double x, double y, double angle) {
         Entity arrow = new Entity(x, y, Double.POSITIVE_INFINITY,
