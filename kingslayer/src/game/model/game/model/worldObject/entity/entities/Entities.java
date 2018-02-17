@@ -12,7 +12,11 @@ import game.model.game.model.worldObject.entity.deathStrat.BuiltWallDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.NopDeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
 import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
+import game.model.game.model.worldObject.entity.updateStrat.SpawningStrat;
 import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
+import javafx.util.Pair;
+
+import java.util.function.Function;
 
 public class Entities {
 
@@ -176,7 +180,13 @@ public class Entities {
         return new Entity(x, y, Double.POSITIVE_INFINITY,
             Team.ONE,
             Role.NEUTRAL,
-            StillStrat.SINGLETON,
+            new SpawningStrat(10000, 10, new Function<Pair<Integer, Integer>, Entity>() {
+                @Override
+                public Entity apply(Pair<Integer, Integer> coords) {
+                    System.out.println("Creating a new red minion");
+                    return Minions.makeRangedMinionOne(coords.getKey(), coords.getValue() + 1);
+                }
+            }),
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.RED_BARRACKS_DRAW_STRAT,

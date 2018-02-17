@@ -23,10 +23,7 @@ import game.model.game.model.worldObject.entity.deathStrat.NopDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.SlayerDeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
 import game.model.game.model.worldObject.entity.entities.Velocity;
-import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
-import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
-import game.model.game.model.worldObject.entity.updateStrat.UpdateData;
-import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
+import game.model.game.model.worldObject.entity.updateStrat.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,6 +108,7 @@ public class NetworkCommon {
         kryo.register(StillStrat.class);
         kryo.register(UpdateData.class);
         kryo.register(UpdateStrat.class);
+        kryo.register(SpawningStrat.class);
         kryo.register(StopRequest.class);
         kryo.register(InitGameCommand.class);
         kryo.register(NewEntityCommand.class);

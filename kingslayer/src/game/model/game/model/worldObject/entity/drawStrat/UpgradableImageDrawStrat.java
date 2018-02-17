@@ -88,34 +88,9 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
   }
 
   public static class RedRangedBarracksImageDrawStrat extends UpgradableImageDrawStrat {
-    int counter = 9000;
-    int maxMinions = 10;
-    int minionCounter = 0;
-
     @Override
     Image getImage() {
       return Images.RED_BARRACKS_IMAGE;
-    }
-
-    @Override
-    public void update(Entity entity, Model model) {
-      // TODO this should occur somewhere else
-      // Add in a ranged red fighter
-      counter++;
-      if (counter > 10000) {
-        if (minionCounter < maxMinions) {
-          model.processMessage(new MakeEntityRequest(Minions.makeRangedMinionOne(entity.data.x, entity.data.y + 1),
-              Team.ONE, TeamResourceData.Resource.WOOD, 0));
-          minionCounter++;
-        }
-        counter = 0;
-      }
-    }
-
-    @Override
-    public void upgrade() {
-      tier++;
-      maxMinions += 5;
     }
   }
 }
