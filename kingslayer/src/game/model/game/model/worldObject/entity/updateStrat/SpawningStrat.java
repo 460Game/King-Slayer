@@ -15,13 +15,13 @@ public class SpawningStrat extends UpdateStrat {
   int maxSpawns;
   int spawnCounter;
   int timeBetweenSpawns;
-  Function<Pair<Integer, Integer>, Entity> function;
+  Function<Pair<Double, Double>, Entity> function;
 
   public SpawningStrat() {
-    
+
   }
 
-  public SpawningStrat(int timeBetweenSpawns, int maxSpawns, Function<Pair<Integer, Integer>, Entity> function) {
+  public SpawningStrat(int timeBetweenSpawns, int maxSpawns, Function<Pair<Double, Double>, Entity> function) {
     this.counter = 0;
     this.timeBetweenSpawns = timeBetweenSpawns;
     this.maxSpawns = maxSpawns;
@@ -34,7 +34,7 @@ public class SpawningStrat extends UpdateStrat {
     counter++;
     if (counter > timeBetweenSpawns) {
       if (spawnCounter < maxSpawns) {
-        model.processMessage(new MakeEntityRequest(Minions.makeRangedMinionOne(entity.data.x, entity.data.y + 1),
+        model.processMessage(new MakeEntityRequest(function.apply(new Pair(entity.data.x, entity.data.y)),
             Team.ONE, TeamResourceData.Resource.WOOD, 0));
         spawnCounter++;
       }

@@ -16,6 +16,7 @@ import game.model.game.model.worldObject.entity.updateStrat.SpawningStrat;
 import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
 import javafx.util.Pair;
 
+import java.util.Random;
 import java.util.function.Function;
 
 public class Entities {
@@ -180,13 +181,8 @@ public class Entities {
         return new Entity(x, y, Double.POSITIVE_INFINITY,
             Team.ONE,
             Role.NEUTRAL,
-            new SpawningStrat(10000, 10, new Function<Pair<Integer, Integer>, Entity>() {
-                @Override
-                public Entity apply(Pair<Integer, Integer> coords) {
-                    System.out.println("Creating a new red minion");
-                    return Minions.makeRangedMinionOne(coords.getKey(), coords.getValue() + 1);
-                }
-            }),
+            new SpawningStrat(10000, 10, coords ->
+                Minions.makeRangedMinionOne(coords.getKey(), coords.getValue() + 1)),
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.RED_BARRACKS_DRAW_STRAT,
@@ -198,8 +194,11 @@ public class Entities {
         return new Entity(x, y, Double.POSITIVE_INFINITY,
             Team.ONE,
             Role.NEUTRAL,
-            StillStrat.SINGLETON,
-            HardCollisionStrat.SINGLETON,
+            new SpawningStrat(1000, Integer.MAX_VALUE, coords -> {
+                Random random = new Random();
+                return Entities.makeArrow(coords.getKey(), coords.getValue(), random.nextDouble() * 2 * Math.PI);
+            }),
+            WaterCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             ImageDrawStrat.RED_ARROW_TOWER_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON,
