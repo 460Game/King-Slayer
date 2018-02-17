@@ -113,7 +113,7 @@ public class GameInteractionLayer extends Region  {
                 }
             }
 
-            if (e.getCode() == KeyCode.DIGIT3 || e.getCode() == KeyCode.NUMPAD3) { // Temporary, just for testing
+            if (e.getCode() == KeyCode.DIGIT3 || e.getCode() == KeyCode.NUMPAD3) {
                 if (model.getLocalPlayer().role == Role.KING) {
                     if (model.getLocalPlayer().team == Team.ONE) {
                         cost = -2;
@@ -121,10 +121,24 @@ public class GameInteractionLayer extends Region  {
                         placing = Entities.makeRedBarracks(0, 0);
                         model.processMessage(new NewEntityCommand(placingGhost));
                     } else {
+                        // TODO
                         cost = -2;
                         placingGhost = Minions.makeRangedMinionTwo(0, 0);
                         placing = Minions.makeRangedMinionTwo(0, 0);
                         model.processMessage(new NewEntityCommand(placingGhost));
+                    }
+                }
+            }
+
+            if (e.getCode() == KeyCode.DIGIT4 || e.getCode() == KeyCode.NUMPAD4) {
+                if (model.getLocalPlayer().role == Role.KING) {
+                    if (model.getLocalPlayer().team == Team.ONE) {
+                        cost = -20;
+                        placingGhost = Entities.makeRedArrowTower(0, 0);
+                        placing = Entities.makeRedArrowTower(0, 0);
+                        model.processMessage(new NewEntityCommand(placingGhost));
+                    } else {
+                        // TODO
                     }
                 }
             }

@@ -99,6 +99,7 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
 
     @Override
     public void update(Entity entity, Model model) {
+      // TODO this should occur somewhere else
       // Add in a ranged red fighter
       counter++;
       if (counter > 10000) {
