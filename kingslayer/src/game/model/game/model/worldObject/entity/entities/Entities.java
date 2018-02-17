@@ -190,6 +190,19 @@ public class Entities {
             NopDeathStrat.SINGLETON);
     }
 
+    public static Entity makeBlueBarracks(double x, double y) {
+        return new Entity(x, y, Double.POSITIVE_INFINITY,
+            Team.TWO,
+            Role.NEUTRAL,
+            new SpawningStrat(10000, 10, coords ->
+                Minions.makeRangedMinionTwo(coords.getKey(), coords.getValue() + 1)),
+            GhostCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            UpgradableImageDrawStrat.BLUE_BARRACKS_DRAW_STRAT,
+            AIDoNothingStrat.SINGLETON,
+            NopDeathStrat.SINGLETON);
+    }
+
     public static Entity makeRedArrowTower(double x, double y) {
         return new Entity(x, y, Double.POSITIVE_INFINITY,
             Team.ONE,
@@ -201,6 +214,21 @@ public class Entities {
             WaterCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             ImageDrawStrat.RED_ARROW_TOWER_IMAGE_DRAW_STRAT,
+            AIDoNothingStrat.SINGLETON,
+            NopDeathStrat.SINGLETON);
+    }
+
+    public static Entity makeBlueArrowTower(double x, double y) {
+        return new Entity(x, y, Double.POSITIVE_INFINITY,
+            Team.TWO,
+            Role.NEUTRAL,
+            new SpawningStrat(1000, Integer.MAX_VALUE, coords -> {
+                Random random = new Random();
+                return Entities.makeArrow(coords.getKey(), coords.getValue(), random.nextDouble() * 2 * Math.PI);
+            }),
+            WaterCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            ImageDrawStrat.BLUE_ARROW_TOWER_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON,
             NopDeathStrat.SINGLETON);
     }

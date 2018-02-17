@@ -123,8 +123,8 @@ public class GameInteractionLayer extends Region  {
                     } else {
                         // TODO
                         cost = -2;
-                        placingGhost = Minions.makeRangedMinionTwo(0, 0);
-                        placing = Minions.makeRangedMinionTwo(0, 0);
+                        placingGhost = Entities.makeBlueBarracks(0, 0);
+                        placing = Entities.makeBlueBarracks(0, 0);
                         model.processMessage(new NewEntityCommand(placingGhost));
                     }
                 }
@@ -138,7 +138,10 @@ public class GameInteractionLayer extends Region  {
                         placing = Entities.makeRedArrowTower(0, 0);
                         model.processMessage(new NewEntityCommand(placingGhost));
                     } else {
-                        // TODO
+                        cost = -20;
+                        placingGhost = Entities.makeBlueArrowTower(0, 0);
+                        placing = Entities.makeBlueArrowTower(0, 0);
+                        model.processMessage(new NewEntityCommand(placingGhost));
                     }
                 }
             }
