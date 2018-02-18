@@ -89,6 +89,7 @@ public class GameInteractionLayer extends Region  {
             if (placingGhost != null) {
                 model.removeByID(placingGhost.id);
                 placingGhost = null;
+                placing = null;
             }
 
             if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1) {
