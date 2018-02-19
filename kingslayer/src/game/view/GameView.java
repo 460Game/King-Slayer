@@ -6,6 +6,7 @@ import game.message.toServer.StopRequest;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.Team;
+import game.model.game.model.worldObject.entity.Entity;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
@@ -158,6 +159,18 @@ public class GameView {
                 dir[0]++;
             else if (kc == KeyCode.ESCAPE)
                 exitPrompt.setVisible(!exitPrompt.isVisible());
+
+            if (kc == TAB) {
+                model.processMessage(new StopRequest(model.getLocalPlayer().id));
+                int role = (model.getLocalPlayer().role.val + 1) % 2;
+                for (Entity entity : model.getAllEntities()) {
+                    if (entity.team == model.getLocalPlayer().team && entity.role.val == role) {
+                        model.setLocalPlayer(entity.id);
+                        break;
+                    }
+                }
+                // TODO tab issue with 2 player
+            }
 
 
             if (dir[0] == 0 && dir[1] == 0)
