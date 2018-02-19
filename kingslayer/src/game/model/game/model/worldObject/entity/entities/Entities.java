@@ -9,15 +9,11 @@ import game.model.game.model.worldObject.entity.collideStrat.*;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CellHitbox;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CircleHitbox;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
-import game.model.game.model.worldObject.entity.deathStrat.BuiltWallDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.NopDeathStrat;
+import game.model.game.model.worldObject.entity.deathStrat.RemoveOnDeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
 import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
 import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
-import javafx.util.Pair;
-
-import java.util.Random;
-import java.util.function.Function;
 
 public class Entities {
 
@@ -114,7 +110,7 @@ public class Entities {
             CellHitbox.SINGLETON,
             ImageDrawStrat.WALL_BUILDABLE_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON,
-                BuiltWallDeathStrat.SINGLETON);
+                RemoveOnDeathStrat.SINGLETON);
     }
 
     public static Entity makeGhostWall(double x, double y) {
@@ -138,7 +134,7 @@ public class Entities {
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.RED_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON,
-                BuiltWallDeathStrat.SINGLETON); // TODO DEATH
+                RemoveOnDeathStrat.SINGLETON); // TODO DEATH
     }
 
     public static Entity makeResourceCollectorRedGhost(double x, double y) {
@@ -162,7 +158,7 @@ public class Entities {
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.BLUE_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON,
-                BuiltWallDeathStrat.SINGLETON); // TODO death
+                RemoveOnDeathStrat.SINGLETON); // TODO death
     }
 
     public static Entity makeResourceCollectorBlueGhost(double x, double y) {
@@ -186,7 +182,7 @@ public class Entities {
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.RED_BARRACKS_DRAW_STRAT,
             BuildingSpawnerStrat.BarracksBuildingSpawnerStrat.SINGLETON,
-            NopDeathStrat.SINGLETON);
+                RemoveOnDeathStrat.SINGLETON);
     }
 
     public static Entity makeBlueBarracks(double x, double y) {
@@ -198,7 +194,7 @@ public class Entities {
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.BLUE_BARRACKS_DRAW_STRAT,
             BuildingSpawnerStrat.BarracksBuildingSpawnerStrat.SINGLETON,
-            NopDeathStrat.SINGLETON);
+                RemoveOnDeathStrat.SINGLETON);
     }
 
     public static Entity makeRedArrowTower(double x, double y) {
@@ -209,8 +205,8 @@ public class Entities {
                 HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             ImageDrawStrat.RED_ARROW_TOWER_IMAGE_DRAW_STRAT,
-            AIDoNothingStrat.SINGLETON,
-            NopDeathStrat.SINGLETON);
+                BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON,
+                RemoveOnDeathStrat.SINGLETON);
     }
 
     public static Entity makeBlueArrowTower(double x, double y) {
@@ -221,8 +217,8 @@ public class Entities {
                 HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             ImageDrawStrat.BLUE_ARROW_TOWER_IMAGE_DRAW_STRAT,
-            AIDoNothingStrat.SINGLETON,
-            NopDeathStrat.SINGLETON);
+                BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON,
+                RemoveOnDeathStrat.SINGLETON);
     }
 
     static Hitbox ARROW_HITBOX =  new CircleHitbox(0.2);
@@ -236,7 +232,7 @@ public class Entities {
             RotatingImageDrawStrat.ARROW_IMAGE_DRAW_STRAT,
 //                ImageDrawStrat.ARROW_IMAGE_DRAW_STRAT,
                 AIDoNothingStrat.SINGLETON,
-                NopDeathStrat.SINGLETON);
+                RemoveOnDeathStrat.SINGLETON);
         arrow.data.updateData.maxSpeed = 7;
         arrow.data.updateData.velocity.setMagnitude(arrow.data.updateData.maxSpeed);
         arrow.data.updateData.velocity.setAngle(angle);

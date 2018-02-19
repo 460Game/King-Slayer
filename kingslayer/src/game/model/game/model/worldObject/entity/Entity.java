@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity;
 
+import com.esotericsoftware.minlog.Log;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
@@ -243,7 +244,7 @@ public class Entity implements Updatable, Drawable, AIable {
         return data.getHealth();
     }
 
-    public void onServerDeath(ServerCallBack deathHandler) {
+    public void onDeath(ServerCallBack deathHandler) {
         serverDeathCallBacks.add(deathHandler);
     }
 }

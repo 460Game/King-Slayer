@@ -1,7 +1,6 @@
 package game.model.game.model.worldObject.entity.aiStrat;
 
 import com.esotericsoftware.minlog.Log;
-import game.message.toServer.EntityBuildRequest;
 import game.message.toServer.MakeEntityRequest;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
@@ -38,11 +37,11 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
     public static class TowerBuildingSpawnerStrat extends BuildingSpawnerStrat {
 
-        public static final BarracksBuildingSpawnerStrat SINGLETON = new BarracksBuildingSpawnerStrat();
+        public static final TowerBuildingSpawnerStrat SINGLETON = new TowerBuildingSpawnerStrat();
 
         @Override
         double timeBetweenSpawns() {
-            return 1;
+            return 0;
         }
 
         @Override
@@ -90,7 +89,8 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
             if (data.spawnCounter < maxActive()) {
                 Entity newEntity = makeEntity(entity.data.x, entity.data.y, entity.team);
                 model.processMessage(new MakeEntityRequest(newEntity));
-                newEntity.onServerDeath((e, serverGameModel) -> {
+                newEntity.onDeath((e, serverGameModel) -> {
+                    Log.info("Building spawned a dead thing");
                     data.spawnCounter--;
                 });
                 data.spawnCounter++;
