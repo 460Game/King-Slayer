@@ -4,6 +4,7 @@ import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
+import game.model.game.model.worldObject.entity.aiStrat.BuildingSpawnerStrat;
 import game.model.game.model.worldObject.entity.collideStrat.*;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CellHitbox;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CircleHitbox;
@@ -13,6 +14,10 @@ import game.model.game.model.worldObject.entity.deathStrat.NopDeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
 import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
 import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
+import javafx.util.Pair;
+
+import java.util.Random;
+import java.util.function.Function;
 
 public class Entities {
 
@@ -170,6 +175,54 @@ public class Entities {
             GhostDrawStrat.GHOST_BLUE_COLLECTOR,
             AIDoNothingStrat.SINGLETON,
                 NopDeathStrat.SINGLETON);
+    }
+
+    public static Entity makeRedBarracks(double x, double y) {
+        return new Entity(x, y, Double.POSITIVE_INFINITY,
+            Team.ONE,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            GhostCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            UpgradableImageDrawStrat.RED_BARRACKS_DRAW_STRAT,
+            BuildingSpawnerStrat.BarracksBuildingSpawnerStrat.SINGLETON,
+            NopDeathStrat.SINGLETON);
+    }
+
+    public static Entity makeBlueBarracks(double x, double y) {
+        return new Entity(x, y, Double.POSITIVE_INFINITY,
+            Team.TWO,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            GhostCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            UpgradableImageDrawStrat.BLUE_BARRACKS_DRAW_STRAT,
+            BuildingSpawnerStrat.BarracksBuildingSpawnerStrat.SINGLETON,
+            NopDeathStrat.SINGLETON);
+    }
+
+    public static Entity makeRedArrowTower(double x, double y) {
+        return new Entity(x, y, Double.POSITIVE_INFINITY,
+            Team.ONE,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            WaterCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            ImageDrawStrat.RED_ARROW_TOWER_IMAGE_DRAW_STRAT,
+            AIDoNothingStrat.SINGLETON,
+            NopDeathStrat.SINGLETON);
+    }
+
+    public static Entity makeBlueArrowTower(double x, double y) {
+        return new Entity(x, y, Double.POSITIVE_INFINITY,
+            Team.TWO,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            WaterCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            ImageDrawStrat.BLUE_ARROW_TOWER_IMAGE_DRAW_STRAT,
+            AIDoNothingStrat.SINGLETON,
+            NopDeathStrat.SINGLETON);
     }
 
     static Hitbox ARROW_HITBOX =  new CircleHitbox(0.2);

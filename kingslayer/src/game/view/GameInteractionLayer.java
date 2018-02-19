@@ -9,6 +9,7 @@ import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Entities;
+import game.model.game.model.worldObject.entity.entities.Minions;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -29,7 +30,7 @@ public class GameInteractionLayer extends Region  {
     private Entity placingGhost;
     private int cost;
 
-    GameInteractionLayer(ClientGameModel clientGameModel) {
+    public GameInteractionLayer(ClientGameModel clientGameModel) {
         this.model = clientGameModel;
         uiCanvas = new Canvas();
         uiCanvas.heightProperty().bind(this.heightProperty());
@@ -85,8 +86,14 @@ public class GameInteractionLayer extends Region  {
         });
 
         uiCanvas.setOnKeyPressed(e -> {
+            if (placingGhost != null) {
+                model.removeByID(placingGhost.id);
+                placingGhost = null;
+                placing = null;
+            }
+
             if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1) {
-                if (model.getLocalPlayer().role == Role.KING && placing == null) {
+                if (model.getLocalPlayer().role == Role.KING) {
                     cost = -10;
                     placingGhost = Entities.makeGhostWall(0, 0);
                     placing = Entities.makeBuiltWall(0, 0);
@@ -95,7 +102,7 @@ public class GameInteractionLayer extends Region  {
             }
 
             if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2) {
-                if (model.getLocalPlayer().role == Role.KING && placing == null) {
+                if (model.getLocalPlayer().role == Role.KING) {
                     if (model.getLocalPlayer().team == Team.ONE) {
                         cost = -2;
                         placingGhost = Entities.makeResourceCollectorRedGhost(0, 0);
@@ -109,7 +116,39 @@ public class GameInteractionLayer extends Region  {
                     }
                 }
             }
-        });
 
+            if (e.getCode() == KeyCode.DIGIT3 || e.getCode() == KeyCode.NUMPAD3) {
+                if (model.getLocalPlayer().role == Role.KING) {
+                    if (model.getLocalPlayer().team == Team.ONE) {
+                        cost = -2;
+                        placingGhost = Entities.makeRedBarracks(0, 0);
+                        placing = Entities.makeRedBarracks(0, 0);
+                        model.processMessage(new NewEntityCommand(placingGhost));
+                    } else {
+                        // TODO
+                        cost = -2;
+                        placingGhost = Entities.makeBlueBarracks(0, 0);
+                        placing = Entities.makeBlueBarracks(0, 0);
+                        model.processMessage(new NewEntityCommand(placingGhost));
+                    }
+                }
+            }
+
+            if (e.getCode() == KeyCode.DIGIT4 || e.getCode() == KeyCode.NUMPAD4) {
+                if (model.getLocalPlayer().role == Role.KING) {
+                    if (model.getLocalPlayer().team == Team.ONE) {
+                        cost = -20;
+                        placingGhost = Entities.makeRedArrowTower(0, 0);
+                        placing = Entities.makeRedArrowTower(0, 0);
+                        model.processMessage(new NewEntityCommand(placingGhost));
+                    } else {
+                        cost = -20;
+                        placingGhost = Entities.makeBlueArrowTower(0, 0);
+                        placing = Entities.makeBlueArrowTower(0, 0);
+                        model.processMessage(new NewEntityCommand(placingGhost));
+                    }
+                }
+            }
+        });
     }
 }

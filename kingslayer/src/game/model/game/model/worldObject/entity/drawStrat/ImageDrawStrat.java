@@ -25,6 +25,8 @@ public abstract class ImageDrawStrat extends DrawStrat {
     public static final ImageDrawStrat TREASURE_IMAGE_DRAW_STRAT = new TreasureImageDrawStrat();
 
     public static final ImageDrawStrat WALL_BUILDABLE_IMAGE_DRAW_STRAT = new WallBuildableImageDrawStrat();
+    public static final ImageDrawStrat RED_ARROW_TOWER_IMAGE_DRAW_STRAT = new RedArrowTowerImageDrawStrat();
+    public static final ImageDrawStrat BLUE_ARROW_TOWER_IMAGE_DRAW_STRAT = new BlueArrowTowerImageDrawStrat();
 
     @Override
     public DrawData initDrawData() {
@@ -267,6 +269,66 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
 
         private WallBuildableImageDrawStrat() {
+        }
+    }
+
+    public static class RedArrowTowerImageDrawStrat extends ImageDrawStrat {
+        @Override
+        Image getImage() {
+            return Images.RED_ARROW_TOWER_IMAGE;
+        }
+
+        @Override
+        double getWidth() {
+            return 1;
+        }
+
+        @Override
+        double getHeight() {
+            return 1.75;
+        }
+
+        @Override
+        double getCenterX() {
+            return 0.5;
+        }
+
+        @Override
+        double getCenterY() {
+            return 0.5;
+        }
+
+        private RedArrowTowerImageDrawStrat() {
+        }
+    }
+
+    public static class BlueArrowTowerImageDrawStrat extends ImageDrawStrat {
+        @Override
+        Image getImage() {
+            return Images.BLUE_ARROW_TOWER_IMAGE;
+        }
+
+        @Override
+        double getWidth() {
+            return 1;
+        }
+
+        @Override
+        double getHeight() {
+            return 1.75;
+        }
+
+        @Override
+        double getCenterX() {
+            return 0.5;
+        }
+
+        @Override
+        double getCenterY() {
+            return 0.5;
+        }
+
+        private BlueArrowTowerImageDrawStrat() {
         }
     }
 

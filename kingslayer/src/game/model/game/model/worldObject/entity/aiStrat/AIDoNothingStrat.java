@@ -1,6 +1,7 @@
 package game.model.game.model.worldObject.entity.aiStrat;
 
 import game.model.game.model.GameModel;
+import game.model.game.model.ServerGameModel;
 import game.model.game.model.worldObject.entity.Entity;
 
 public class AIDoNothingStrat extends AIStrat {
@@ -12,7 +13,7 @@ public class AIDoNothingStrat extends AIStrat {
     }
 
     @Override
-    public void updateAI(Entity entity, GameModel model) {
+    public void updateAI(Entity entity, ServerGameModel model, double seconds) {
         //Do nothing
     }
 }

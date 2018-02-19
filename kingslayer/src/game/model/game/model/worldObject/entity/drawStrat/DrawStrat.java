@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
+import game.model.game.model.Model;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
 import javafx.scene.canvas.GraphicsContext;
@@ -22,7 +23,7 @@ public abstract class DrawStrat {
      */
     public abstract double getDrawZ(EntityData entity);
 
-    public void update(Entity entity) {
+    public void update(Entity entity, Model model) {
 
     }
 
