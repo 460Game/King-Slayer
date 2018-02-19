@@ -151,6 +151,7 @@ public class RemoteConnection {
         messageQueues = new HashMap<>();
         toBeConsumeMsgQueue = new LinkedBlockingQueue<>();
 
+
         if (isServer) {
 //            //TODO change this later
 
@@ -215,7 +216,10 @@ public class RemoteConnection {
 
                         //TODO: change it to be defensive here
                         //TODO: important line added here!!!!!!!!!!!!!!!!
-                        adaptor.serverLobbyComfirmTeamAndRole(connection.getID(), readyMsg.getTeam(), readyMsg.getRole());
+                        adaptor.serverLobbyComfirmTeamAndRole(connection.getID(),
+                                readyMsg.getTeam(), readyMsg.getRole(), readyMsg.getPlayerName());
+
+
 
                         readyClients.put(connection.getID(), connection);
                         System.out.println("READY CLIENTS: " + readyClients.size());
@@ -416,9 +420,9 @@ public class RemoteConnection {
         else client.stop();
     }
 
-    public void notifyReady(Team team, Role role) {
+    public void notifyReady(Team team, Role role, String playerName) {
         if (isServer) System.err.println("Server should not do this");
-        else client.sendTCP(new NetworkCommon.ClientReadyMsg(team, role));
+        else client.sendTCP(new NetworkCommon.ClientReadyMsg(team, role, playerName));
     }
 
     //if isServer, make client remoteModel
@@ -440,6 +444,37 @@ public class RemoteConnection {
 
     class RemoteModel implements Model {
         int connectId;
+
+        String playerName;
+
+        Team myTeam;
+
+        Role myRole;
+
+        public Team getTeam() {
+            return myTeam;
+        }
+
+        public Role getRole() {
+            return myRole;
+        }
+
+        public String getPlayerName() {
+            return playerName;
+        }
+
+        public void setTeam(Team team) {
+            myTeam = team;
+        }
+
+        public void setPlayerName(String p) {
+            playerName = p;
+        }
+
+        public void setRole(Role role) {
+            myRole = role;
+        }
+
 
         public RemoteModel(int conid) {
             connectId = conid;

@@ -153,7 +153,8 @@ public class NetworkCommon {
     public static class ClientReadyMsg {
         private Team teamChoice;
         private Role roleChoice;
-        public ClientReadyMsg() {}
+        private String playerName;
+        public ClientReadyMsg(Team team, Role role, String playerName) {}
         public ClientReadyMsg(Team team, Role role) {
             teamChoice = team;
             roleChoice = role;
@@ -163,6 +164,9 @@ public class NetworkCommon {
         }
         public Role getRole() {
             return roleChoice;
+        }
+        public String getPlayerName() {
+            return playerName;
         }
     }
 
