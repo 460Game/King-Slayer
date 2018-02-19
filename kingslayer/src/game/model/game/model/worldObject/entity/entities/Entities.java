@@ -108,7 +108,7 @@ public class Entities {
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            ImageDrawStrat.WALL_BUILDABLE_IMAGE_DRAW_STRAT,
+            UpgradableImageDrawStrat.BUILDABLE_WOOD_WALL,
             AIDoNothingStrat.SINGLETON,
                 RemoveOnDeathStrat.SINGLETON);
     }
@@ -180,7 +180,7 @@ public class Entities {
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.RED_WOOD_BARRACKS,
+            UpgradableImageDrawStrat.RED_WOOD_RANGED_BARRACKS,
             BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
                 RemoveOnDeathStrat.SINGLETON);
     }
@@ -192,7 +192,7 @@ public class Entities {
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.RED_WOOD_BARRACKS,
+            UpgradableImageDrawStrat.RED_WOOD_RANGED_BARRACKS,
             BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON);
     }
@@ -204,7 +204,7 @@ public class Entities {
             StillStrat.SINGLETON,
                 HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.BLUE_WOOD_BARRACKS,
+            UpgradableImageDrawStrat.BLUE_WOOD_RANGED_BARRACKS,
             BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
                 RemoveOnDeathStrat.SINGLETON);
     }
@@ -215,7 +215,7 @@ public class Entities {
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.BLUE_WOOD_BARRACKS,
+            UpgradableImageDrawStrat.BLUE_WOOD_RANGED_BARRACKS,
             BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON);
     }

@@ -10,21 +10,22 @@ import static util.Util.toDrawCoords;
 
 public class UpgradableImageDrawStrat extends ImageDrawStrat {
 
+  public static final UpgradableImageDrawStrat BUILDABLE_WOOD_WALL = new BuildableWall(0);
   public static final UpgradableImageDrawStrat RED_WOOD_RESOURCE_COLLECTOR = new RedResourceCollectorImageDrawStrat(0);
   public static final UpgradableImageDrawStrat BLUE_WOOD_RESOURCE_COLLECTOR = new BlueResourceCollectorImageDrawStrat(0);
-  public static final UpgradableImageDrawStrat RED_WOOD_BARRACKS = new RedRangedBarracksImageDrawStrat(0);
-  public static final UpgradableImageDrawStrat BLUE_WOOD_BARRACKS = new BlueRangedBarracksImageDrawStrat(0);
+  public static final UpgradableImageDrawStrat RED_WOOD_RANGED_BARRACKS = new RedRangedBarracksImageDrawStrat(0);
+  public static final UpgradableImageDrawStrat BLUE_WOOD_RANGED_BARRACKS = new BlueRangedBarracksImageDrawStrat(0);
   public static final UpgradableImageDrawStrat RED_WOOD_ARROW_TOWER = new RedArrowTowerImageDrawStrat(0);
   public static final UpgradableImageDrawStrat BLUE_WOOD_ARROW_TOWER = new BlueArrowTowerImageDrawStrat(0);
 
   public static final UpgradableImageDrawStrat RED_STONE_RESOURCE_COLLECTOR = new RedResourceCollectorImageDrawStrat(1);
   public static final UpgradableImageDrawStrat BLUE_STONE_RESOURCE_COLLECTOR = new BlueResourceCollectorImageDrawStrat(1);
-  public static final UpgradableImageDrawStrat RED_STONE_BARRACKS = new RedRangedBarracksImageDrawStrat(1);
-  public static final UpgradableImageDrawStrat BLUE_STONE_BARRACKS = new BlueRangedBarracksImageDrawStrat(1);
+  public static final UpgradableImageDrawStrat RED_STONE_RANGED_BARRACKS = new RedRangedBarracksImageDrawStrat(1);
+  public static final UpgradableImageDrawStrat BLUE_STONE_RANGED_BARRACKS = new BlueRangedBarracksImageDrawStrat(1);
   public static final UpgradableImageDrawStrat RED_STONE_ARROW_TOWER = new RedArrowTowerImageDrawStrat(1);
   public static final UpgradableImageDrawStrat BLUE_STONE_ARROW_TOWER = new BlueArrowTowerImageDrawStrat(1);
 
-  int tier = 0;
+  int tier;
 
   public UpgradableImageDrawStrat() {}
 
@@ -65,7 +66,7 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
 
   @Override
   double getHeight() {
-    return 1.75;
+    return 1.625;
   }
 
   @Override
@@ -76,6 +77,19 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
   @Override
   double getCenterY() {
     return 0.5;
+  }
+
+  public static class BuildableWall extends UpgradableImageDrawStrat {
+    @Override
+    Image getImage() {
+      return Images.WALLS_BUILDABLE_IMAGE;
+    }
+
+    private BuildableWall() {}
+
+    private BuildableWall(int tier) {
+      this.tier = tier;
+    }
   }
 
   public static class RedResourceCollectorImageDrawStrat extends UpgradableImageDrawStrat {
