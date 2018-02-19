@@ -41,12 +41,12 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns() {
-            return 0.5;
+            return 0.1;
         }
 
         @Override
         int maxActive() {
-            return 1;
+            return 100;
         }
 
         @Override
@@ -84,7 +84,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
     public void updateAI(Entity entity, ServerGameModel model, double seconds) {
         BuildingSpanwerStratAIData data = (BuildingSpanwerStratAIData) entity.data.aiData;
         data.elapsedTime += seconds;
-        if (data.elapsedTime > timeBetweenSpawns()) {
+        while (data.elapsedTime > timeBetweenSpawns()) {
             data.elapsedTime -= timeBetweenSpawns();
             if (data.spawnCounter < maxActive()) {
                 Entity newEntity = makeEntity(entity.data.x, entity.data.y, entity.team);
