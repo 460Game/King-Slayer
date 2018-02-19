@@ -108,7 +108,6 @@ public class NetworkCommon {
         kryo.register(StillStrat.class);
         kryo.register(UpdateData.class);
         kryo.register(UpdateStrat.class);
-        kryo.register(SpawningStrat.class);
         kryo.register(StopRequest.class);
         kryo.register(InitGameCommand.class);
         kryo.register(NewEntityCommand.class);

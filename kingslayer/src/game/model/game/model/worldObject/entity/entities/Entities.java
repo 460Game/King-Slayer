@@ -4,6 +4,7 @@ import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
+import game.model.game.model.worldObject.entity.aiStrat.BuildingSpawnerStrat;
 import game.model.game.model.worldObject.entity.collideStrat.*;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CellHitbox;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CircleHitbox;
@@ -12,7 +13,6 @@ import game.model.game.model.worldObject.entity.deathStrat.BuiltWallDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.NopDeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
 import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
-import game.model.game.model.worldObject.entity.updateStrat.SpawningStrat;
 import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
 import javafx.util.Pair;
 
@@ -181,12 +181,11 @@ public class Entities {
         return new Entity(x, y, Double.POSITIVE_INFINITY,
             Team.ONE,
             Role.NEUTRAL,
-            new SpawningStrat(10000, 10, coords ->
-                Minions.makeRangedMinionOne(coords.getKey(), coords.getValue() + 1)),
+            StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.RED_BARRACKS_DRAW_STRAT,
-            AIDoNothingStrat.SINGLETON,
+            BuildingSpawnerStrat.RedBarracksBuildingSpawnerStrat.SINGLETON,
             NopDeathStrat.SINGLETON);
     }
 
@@ -194,12 +193,11 @@ public class Entities {
         return new Entity(x, y, Double.POSITIVE_INFINITY,
             Team.TWO,
             Role.NEUTRAL,
-            new SpawningStrat(10000, 10, coords ->
-                Minions.makeRangedMinionTwo(coords.getKey(), coords.getValue() + 1)),
+            StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.BLUE_BARRACKS_DRAW_STRAT,
-            AIDoNothingStrat.SINGLETON,
+            BuildingSpawnerStrat.RedBarracksBuildingSpawnerStrat.SINGLETON,
             NopDeathStrat.SINGLETON);
     }
 
@@ -207,10 +205,7 @@ public class Entities {
         return new Entity(x, y, Double.POSITIVE_INFINITY,
             Team.ONE,
             Role.NEUTRAL,
-            new SpawningStrat(1000, Integer.MAX_VALUE, coords -> {
-                Random random = new Random();
-                return Entities.makeArrow(coords.getKey(), coords.getValue(), random.nextDouble() * 2 * Math.PI);
-            }),
+            StillStrat.SINGLETON,
             WaterCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             ImageDrawStrat.RED_ARROW_TOWER_IMAGE_DRAW_STRAT,
@@ -222,10 +217,7 @@ public class Entities {
         return new Entity(x, y, Double.POSITIVE_INFINITY,
             Team.TWO,
             Role.NEUTRAL,
-            new SpawningStrat(1000, Integer.MAX_VALUE, coords -> {
-                Random random = new Random();
-                return Entities.makeArrow(coords.getKey(), coords.getValue(), random.nextDouble() * 2 * Math.PI);
-            }),
+            StillStrat.SINGLETON,
             WaterCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             ImageDrawStrat.BLUE_ARROW_TOWER_IMAGE_DRAW_STRAT,

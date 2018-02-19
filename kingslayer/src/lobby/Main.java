@@ -21,6 +21,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -68,13 +71,13 @@ public class Main extends Application {
     Canvas midCanvas = new Canvas();
     GraphicsContext midGC = midCanvas.getGraphicsContext2D();
 
-
     MenuItem[] items = new MenuItem[]{
-        new MenuItem("JOIN GAME"),
-        new MenuItem("NEW GAME"),
-        new MenuItem("TEST GAME"),
-        new MenuItem("HOW TO PLAY"),
-        new MenuItem("EXIT")};
+        new MenuItem("Join LAN"),
+        new MenuItem("Host LAN"),
+        new MenuItem("Solo Game"),
+        new MenuItem("Tutorial Game"),
+        new MenuItem("Options"),
+        new MenuItem("Exit")};
 
     public void closeServer() {
         if (lobbyServer != null) {
@@ -82,28 +85,7 @@ public class Main extends Application {
         }
     }
 
-    private class TriCircle extends Parent {
-        private TriCircle() {
-            Shape shape1 = Shape.subtract(new Circle(8), new Circle(2));
-            shape1.setFill(textColor);
-
-            Shape shape2 = Shape.subtract(new Circle(8), new Circle(2));
-            shape2.setFill(textColor);
-            shape2.setTranslateX(5);
-
-            Shape shape3 = Shape.subtract(new Circle(8), new Circle(2));
-            shape3.setFill(textColor);
-            shape3.setTranslateX(2.5);
-            shape3.setTranslateY(-5);
-
-            getChildren().addAll(shape1, shape2, shape3);
-
-            setEffect(new GaussianBlur(2));
-        }
-    }
-
     private class MenuItem extends HBox {
-        private TriCircle c1 = new TriCircle(), c2 = new TriCircle();
         private Text text;
         private Runnable script;
 
@@ -116,7 +98,7 @@ public class Main extends Application {
             text.setStyle("-fx-stroke: black; -fx-stroke-width: 2px");
             text.setEffect(new DropShadow(5, 0, 5, Color.BLACK));
 
-            getChildren().addAll(c1, text, c2);
+            getChildren().addAll(text);
             setActive(false);
             setOnActivate(() -> System.out.println(name + " activated"));
 
@@ -142,8 +124,6 @@ public class Main extends Application {
         }
 
         public void setActive(boolean b) {
-            c1.setVisible(b);
-            c2.setVisible(b);
             text.setFill(b ? Color.WHITE : textColor);
         }
 
@@ -186,62 +166,50 @@ public class Main extends Application {
         this.window = window;
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
+        window.setFullScreenExitHint("");
+        window.setFullScreenExitKeyCombination(new KeyCodeCombination(KeyCode.F11));
         window.getIcons().add(LOGO_IMAGE);
         window.setResizable(true);
         window.setMinHeight(400);
         window.setMinWidth(600);
-        window.setWidth(bounds.getWidth() - 50);
-        window.setHeight(bounds.getHeight() - 50);
-        window.setX(25);
-        window.setY(25);
+        window.setWidth(bounds.getWidth() - 4);
+        window.setHeight(bounds.getHeight() - 4);
+        window.setX(2);
+        window.setY(2);
         window.setTitle("King Slayer");
         window.setFullScreen(true);
 
-//        Canvas bgCanvas = new Canvas();
-//        GraphicsContext bgGC = bgCanvas.getGraphicsContext2D();
-//        Canvas midCanvas = new Canvas();
-//        GraphicsContext midGC = midCanvas.getGraphicsContext2D();
-
-
         items[0].setOnActivate(this::connectForm);
+        items[0].setActive(true);
         items[1].setOnActivate(this::guiSetNumOfPlayer);
         items[2].setOnActivate(this::testGame);
         items[3].setOnActivate(this::howToPlay);
-        items[4].setOnActivate(this::exit);
+        items[4].setOnActivate(this::options);
+        items[5].setOnActivate(this::exit);
         menuBox = new VBox(10, items);
-        items[0].setActive(true);
 
         InvalidationListener resize = l -> {
-            //  if(window.isMaximized()) {
-            //      window.setHeight(bounds.getHeight());
-            //      window.setWidth(bounds.getWidth());
-            //  }
-            bgCanvas.setWidth(window.getWidth());
-            bgCanvas.setHeight(window.getHeight());
-            midCanvas.setWidth(window.getWidth());
-            midCanvas.setHeight(window.getHeight());
             font = Font.font("", FontWeight.BOLD, window.getHeight()/400 * 18);
             for(MenuItem item : items)
                 item.updateSize();
         };
 
+     //   bgCanvas.widthProperty().bind(window.widthProperty());
+     //   bgCanvas.widthProperty().bind(window.heightProperty());
+     //   midCanvas.widthProperty().bind(window.widthProperty());
+        //   midCanvas.heightProperty().bind(window.heightProperty());
+
         window.heightProperty().addListener(resize);
         window.widthProperty().addListener(resize);
-        window.maximizedProperty().addListener(resize);
 
         Group root = new Group();
-        root.getChildren().add(bgCanvas);
-        root.getChildren().add(midCanvas);
-        root.getChildren().add(menuBox);
+        root.getChildren().addAll(bgCanvas, midCanvas, menuBox);
         mainMenuScene = new Scene(root);
 
         mainMenuScene.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
 
         mainMenuScene.setOnKeyPressed(e -> {
             switch (e.getCode()) {
-                case F11:
-                    window.setFullScreen(true);
-                    break;
                 case UP:
                 case W:
                     if (currentItem > 0) {
@@ -275,8 +243,8 @@ public class Main extends Application {
 
                 midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
                 midGC.drawImage(LOGO_TEXT_IMAGE, window.getWidth()/4, 50, window.getWidth()/2, (153/645.0)*window.getWidth()/2);
-
-                bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, window.getWidth(), window.getHeight());
+                Log.info(bgCanvas.getWidth() + " W ");
+                bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, bgCanvas.getWidth(), bgCanvas.getHeight());
 
                 menuBox.setTranslateX(window.getWidth() / 2 - menuBox.getWidth() / 2);
                 menuBox.setTranslateY(window.getHeight() - menuBox.getHeight() - 100);
@@ -294,7 +262,6 @@ public class Main extends Application {
 
     private void connectForm() {
         Platform.runLater(() -> window.setScene(ipFormScene()));
-//        window.setScene(new Scene(ipForm(), 800, 500));
     }
 
     private Scene ipFormScene() {
@@ -431,10 +398,6 @@ public class Main extends Application {
     private void setAnimator(Pane addedPane) {
 
         InvalidationListener resize = l -> {
-            //  if(window.isMaximized()) {
-            //      window.setHeight(bounds.getHeight());
-            //      window.setWidth(bounds.getWidth());
-            //  }
             bgCanvas.setWidth(window.getWidth());
             bgCanvas.setHeight(window.getHeight());
             midCanvas.setWidth(window.getWidth());
@@ -444,32 +407,30 @@ public class Main extends Application {
                 item.updateSize();
         };
 
+        window.heightProperty().addListener(resize);
+        window.widthProperty().addListener(resize);
+        window.maximizedProperty().addListener(resize);
 
-            window.heightProperty().addListener(resize);
-            window.widthProperty().addListener(resize);
-            window.maximizedProperty().addListener(resize);
+        double[] bgOpac = new double[]{2.0};
+        animator = new AnimationTimer() {
 
+        @Override
+        public void handle(long now) {
+            midGC.clearRect(0, 0, window.getWidth(), window.getHeight());
+            midGC.setFill(Color.color(0.6, 0.6, 0.7, 0.4 + (Math.abs(bgOpac[0] % 2 - 1)) * 0.3));
+            bgOpac[0] += 0.002;
 
-            double[] bgOpac = new double[]{2.0};
-            animator = new AnimationTimer() {
+            midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
+            midGC.drawImage(LOGO_TEXT_IMAGE, window.getWidth()/4, 50, window.getWidth()/2, (153/645.0)*window.getWidth()/2);
 
-            @Override
-            public void handle(long now) {
-                midGC.clearRect(0, 0, window.getWidth(), window.getHeight());
-                midGC.setFill(Color.color(0.6, 0.6, 0.7, 0.4 + (Math.abs(bgOpac[0] % 2 - 1)) * 0.3));
-                bgOpac[0] += 0.002;
+            bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, window.getWidth(), window.getHeight());
 
-                midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
-                midGC.drawImage(LOGO_TEXT_IMAGE, window.getWidth()/4, 50, window.getWidth()/2, (153/645.0)*window.getWidth()/2);
+            addedPane.setTranslateX(window.getWidth() / 2 - addedPane.getWidth() / 2);
+            addedPane.setTranslateY(window.getHeight() - addedPane.getHeight() + 200);
+        }
+    };
 
-                bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, window.getWidth(), window.getHeight());
-
-                addedPane.setTranslateX(window.getWidth() / 2 - addedPane.getWidth() / 2);
-                addedPane.setTranslateY(window.getHeight() - addedPane.getHeight() + 200);
-            }
-        };
-
-        animator.start();
+    animator.start();
     }
 
     private GridPane inputNumOfPlayers() {
@@ -586,4 +547,8 @@ public class Main extends Application {
         Application.launch();
     }
 
+
+    private void options() {
+        Log.info("OPTIONS SELECTED");
+    }
 }

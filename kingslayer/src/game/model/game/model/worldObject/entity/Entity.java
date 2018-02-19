@@ -1,6 +1,7 @@
 package game.model.game.model.worldObject.entity;
 
 import game.model.game.grid.GridCell;
+import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.worldObject.entity.aiStrat.AIStrat;
 import game.model.game.model.worldObject.entity.aiStrat.AIable;
@@ -16,7 +17,11 @@ import game.model.game.model.GameModel;
 import game.model.game.model.team.Team;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import static util.Util.toDrawCoords;
 
@@ -95,14 +100,15 @@ public class Entity implements Updatable, Drawable, AIable {
 
     /**
      * Constructor of an entity, given all of its game data.
-     * @param x x-coordinate of the center of its position
-     * @param y y-coordinate of the center of its position
-     * @param team team corresponding to this entity
-     * @param updateStrat method with which this entity updates
+     *
+     * @param x              x-coordinate of the center of its position
+     * @param y              y-coordinate of the center of its position
+     * @param team           team corresponding to this entity
+     * @param updateStrat    method with which this entity updates
      * @param collisionStrat method with which this entity collides.
-     * @param hitbox hitbox of this entity
-     * @param drawStrat method with which this entity is drawn
-     * @param aiStrat TODO
+     * @param hitbox         hitbox of this entity
+     * @param drawStrat      method with which this entity is drawn
+     * @param aiStrat        TODO
      */
     public Entity(double x, double y, double health,
                   Team team,
@@ -121,7 +127,7 @@ public class Entity implements Updatable, Drawable, AIable {
         this.drawStrat = drawStrat;
         this.aiStrat = aiStrat;
         this.data = new EntityData(hitbox, aiStrat.makeAIData(), drawStrat.initDrawData(),
-                updateStrat.initUpdateData(), x, y, health);
+            updateStrat.initUpdateData(), x, y, health);
         this.deathStrat = deathStrat;
     }
 
@@ -140,15 +146,15 @@ public class Entity implements Updatable, Drawable, AIable {
     }
 
     @Override
-    public void updateAI(GameModel model) {
-        this.aiStrat.updateAI(this, model);
+    public void updateAI(ServerGameModel model) {
+        this.aiStrat.updateAI(this, model, 1);
     }
 
     @Override
     public void draw(GraphicsContext gc) {
         this.drawStrat.draw(this, gc);
 
-        if(!this.invincible()) {
+        if (!this.invincible()) {
             //TEMPORARY!!!!!!!!!
             gc.setFill(Color.RED);
             gc.fillRect(toDrawCoords(data.x) - 10, toDrawCoords(data.y) - 30, 20, 3);
@@ -169,8 +175,9 @@ public class Entity implements Updatable, Drawable, AIable {
     /**
      * Performs collisions with another entity based off of this
      * entity's colliding strategy.
+     *
      * @param model current model of the game
-     * @param b the entity being collided with
+     * @param b     the entity being collided with
      */
     public void collision(GameModel model, Entity b) {
         inCollision = true;
@@ -187,6 +194,7 @@ public class Entity implements Updatable, Drawable, AIable {
 
     /**
      * Gets the collision type of this entity.
+     *
      * @return the collision type of this entity
      */
     public CollisionStrat.CollideType getCollideType() {
@@ -195,6 +203,7 @@ public class Entity implements Updatable, Drawable, AIable {
 
     /**
      * Update the cells that this entity is currently in.
+     *
      * @param model current model of the game
      */
     public void updateCells(GameModel model) {
@@ -209,7 +218,18 @@ public class Entity implements Updatable, Drawable, AIable {
         return Hitbox.testCollision(this.data.x, this.data.y, this.data.hitbox, x, y, hitbox);
     }
 
+    //Experinamenting with this style of coding
+    //Lots of the uglyness we have with strategies is stuff that touches the network
+    //Theres no reason we cant have more beautiful code on the server side
+    private transient List<ServerCallBack> serverDeathCallBacks = new ArrayList<>(0);
+
     public void entityDie(GameModel model) {
+        model.execute(
+            serverGameModel ->
+                serverDeathCallBacks.forEach(
+                    serverCallBack -> serverCallBack.accept(this, serverGameModel)),
+            clientGameModel -> {}
+        );
         deathStrat.handleDeath(model, this);
     }
 
@@ -221,5 +241,9 @@ public class Entity implements Updatable, Drawable, AIable {
 
     public double getHealth() {
         return data.getHealth();
+    }
+
+    public void onServerDeath(ServerCallBack deathHandler) {
+        serverDeathCallBacks.add(deathHandler);
     }
 }
