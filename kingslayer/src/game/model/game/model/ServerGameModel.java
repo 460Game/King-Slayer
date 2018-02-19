@@ -94,6 +94,12 @@ public class ServerGameModel extends GameModel {
         for(Entity entity : this.getAllEntities())
             clients.forEach(client -> client.processMessage(new SetEntityCommand(entity)));
 
+        // TODO @tian set each client to the role/team the want
+        clients.forEach(client -> {
+            client.processMessage(new InitGameCommand(clientToPlayerInfo.get(client).getTeam(),
+                    clientToPlayerInfo.get(client).getRole(), teamRoleEntityMap));
+        });
+
         teamData.put(Team.ONE, new TeamResourceData());
         teamData.put(Team.TWO, new TeamResourceData());
 
@@ -103,13 +109,6 @@ public class ServerGameModel extends GameModel {
             model.processMessage(new UpdateResourceCommand(teamData.get(players.get(i).team)));
             i++;
         }
-
-        // TODO @tian set each client to the role/team the want
-        clients.forEach(client -> {
-            client.processMessage(new InitGameCommand(clientToPlayerInfo.get(client).getTeam(),
-                    clientToPlayerInfo.get(client).getRole(), teamRoleEntityMap));
-        });
-
     }
 
     @Override
@@ -205,7 +204,7 @@ public class ServerGameModel extends GameModel {
             }
 
             for(Model model : clients) {
-                model.processMessage(new UpdateResourceCommand(teamData.get(clientToTeamRoleMap.get(model).getKey()))); //TEMPORARY GARBAGE
+                model.processMessage(new UpdateResourceCommand(teamData.get(clientToPlayerInfo.get(model).getTeam()))); //TEMPORARY GARBAGE
             }
 
         }
