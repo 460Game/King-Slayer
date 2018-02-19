@@ -174,7 +174,7 @@ public class Entities {
     }
 
     public static Entity makeRedBarracks(double x, double y) {
-        return new Entity(x, y, Double.POSITIVE_INFINITY,
+        return new Entity(x, y, 100,
             Team.ONE,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
@@ -186,7 +186,7 @@ public class Entities {
     }
 
     public static Entity makeBlueBarracks(double x, double y) {
-        return new Entity(x, y, Double.POSITIVE_INFINITY,
+        return new Entity(x, y, 100,
             Team.TWO,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
@@ -198,7 +198,7 @@ public class Entities {
     }
 
     public static Entity makeRedArrowTower(double x, double y) {
-        return new Entity(x, y, Double.POSITIVE_INFINITY,
+        return new Entity(x, y, 100,
             Team.ONE,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
@@ -210,7 +210,7 @@ public class Entities {
     }
 
     public static Entity makeBlueArrowTower(double x, double y) {
-        return new Entity(x, y, Double.POSITIVE_INFINITY,
+        return new Entity(x, y, 100,
             Team.TWO,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
@@ -221,7 +221,8 @@ public class Entities {
                 RemoveOnDeathStrat.SINGLETON);
     }
 
-    static Hitbox ARROW_HITBOX =  new CircleHitbox(0.2);
+    private static final Hitbox ARROW_HITBOX = new CircleHitbox(0.2);
+
     public static Entity makeArrow(double x, double y, double angle) {
         Entity arrow = new Entity(x, y, Double.POSITIVE_INFINITY,
                 Team.NEUTRAL,

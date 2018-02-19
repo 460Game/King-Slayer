@@ -41,7 +41,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns() {
-            return 0;
+            return 0.5;
         }
 
         @Override
@@ -90,7 +90,6 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
                 Entity newEntity = makeEntity(entity.data.x, entity.data.y, entity.team);
                 model.processMessage(new MakeEntityRequest(newEntity));
                 newEntity.onDeath((e, serverGameModel) -> {
-                    Log.info("Building spawned a dead thing");
                     data.spawnCounter--;
                 });
                 data.spawnCounter++;
