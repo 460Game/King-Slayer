@@ -12,7 +12,6 @@ public class RemoveOnDeathStrat extends DeathStrat {
     public void handleDeath(GameModel model, Entity entity) {
         model.remove(entity);
         model.execute(serverGameModel ->
-                serverGameModel.getClients().forEach(client -> client.processMessage(new RemoveEntityCommand(entity))), clientGameModel -> {
-        });
+                serverGameModel.processMessage(new RemoveEntityCommand(entity)), clientGameModel -> {});
     }
 }

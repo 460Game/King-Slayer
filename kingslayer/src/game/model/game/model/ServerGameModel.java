@@ -70,11 +70,9 @@ public class ServerGameModel extends GameModel {
         this.clients = clients;
         this.clientToTeamRoleMap = clientToTeamRoleMap;
 
-        // Send teamRoleEntityMap to client
-        for(Model client : clients)
             for (int i = 0; i < this.getMapWidth(); i++)
                 for (int j = 0; j < this.getMapWidth(); j++) {
-                    client.processMessage(new SetTileCommand(i, j, this.getTile(i, j)));
+                    this.processMessage(new SetTileCommand(i, j, this.getTile(i, j)));
                 }
 
         ArrayList<Entity> players = new ArrayList<>();
@@ -87,13 +85,8 @@ public class ServerGameModel extends GameModel {
 
         // Send all entities to clients
         for(Entity entity : this.getAllEntities())
-            clients.forEach(client -> client.processMessage(new SetEntityCommand(entity)));
+            this.processMessage(new SetEntityCommand(entity));
 
-        // TODO @tian set each client to the role/team the want
-        clients.forEach(client -> {
-            client.processMessage(new InitGameCommand(clientToTeamRoleMap.get(client).getKey(),
-                    clientToTeamRoleMap.get(client).getValue(), teamRoleEntityMap));
-        });
 
         teamData.put(Team.ONE, new TeamResourceData());
         teamData.put(Team.TWO, new TeamResourceData());
@@ -104,6 +97,13 @@ public class ServerGameModel extends GameModel {
             model.processMessage(new UpdateResourceCommand(teamData.get(players.get(i).team)));
             i++;
         }
+
+
+        // TODO @tian set each client to the role/team the want
+        clients.forEach(client -> {
+            client.processMessage(new InitGameCommand(clientToTeamRoleMap.get(client).getKey(),
+                    clientToTeamRoleMap.get(client).getValue(), teamRoleEntityMap));
+        });
     }
 
     @Override

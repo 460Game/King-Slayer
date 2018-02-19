@@ -14,6 +14,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Region;
 
+import static javafx.scene.input.KeyCode.*;
+import static javafx.scene.input.KeyCode.DIGIT3;
+import static javafx.scene.input.KeyCode.DIGIT4;
+import static javafx.scene.input.KeyCode.NUMPAD4;
+import static javafx.scene.input.MouseButton.PRIMARY;
+import static javafx.scene.input.MouseButton.SECONDARY;
 import static util.Const.TILE_PIXELS;
 import static util.Util.toDrawCoords;
 import static util.Util.toWorldCoords;
@@ -40,7 +46,9 @@ public class GameInteractionLayer extends Region  {
         uiCanvas.setFocusTraversable(true);
 
         uiCanvas.setOnMouseClicked(e -> {
-            if (e.getButton() == MouseButton.PRIMARY) {
+            MouseButton mb = e.getButton();
+
+            if (mb == PRIMARY) {
                 if (model.getLocalPlayer().role == Role.KING && placing != null) {
                     if (!placingGhost.data.hitbox.getCollidesWith(model, placingGhost.data.x, placingGhost.data.y).skip(1).findAny().isPresent()) {
                         model.processMessage(new EntityBuildRequest(placing,
@@ -62,7 +70,7 @@ public class GameInteractionLayer extends Region  {
 
                     // TODO problem when player running into own arrow
                 }
-            } else if (e.getButton() == MouseButton.SECONDARY) {
+            } else if (mb == SECONDARY) {
                 if (model.getLocalPlayer().role == Role.KING && placing != null) {
                     model.remove(placingGhost);
                     placing = null;
@@ -85,13 +93,15 @@ public class GameInteractionLayer extends Region  {
         });
 
         uiCanvas.setOnKeyPressed(e -> {
+            KeyCode kc = e.getCode();
+
             if (placingGhost != null) {
                 model.removeByID(placingGhost.id);
                 placingGhost = null;
                 placing = null;
             }
 
-            if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1) {
+            if (kc == DIGIT1 || kc == NUMPAD1) {
                 if (model.getLocalPlayer().role == Role.KING) {
                     cost = -10;
                     placingGhost = Entities.makeGhostWall(0, 0);
@@ -100,7 +110,7 @@ public class GameInteractionLayer extends Region  {
                 }
             }
 
-            if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2) {
+            if (kc == DIGIT2 || kc == NUMPAD2) {
                 if (model.getLocalPlayer().role == Role.KING) {
                     if (model.getLocalPlayer().team == Team.ONE) {
                         cost = -2;
@@ -116,7 +126,7 @@ public class GameInteractionLayer extends Region  {
                 }
             }
 
-            if (e.getCode() == KeyCode.DIGIT3 || e.getCode() == KeyCode.NUMPAD3) {
+            if (kc == DIGIT3 || kc == NUMPAD3) {
                 if (model.getLocalPlayer().role == Role.KING) {
                     if (model.getLocalPlayer().team == Team.ONE) {
                         cost = -2;
@@ -133,7 +143,7 @@ public class GameInteractionLayer extends Region  {
                 }
             }
 
-            if (e.getCode() == KeyCode.DIGIT4 || e.getCode() == KeyCode.NUMPAD4) {
+            if (kc == DIGIT4 || kc == NUMPAD4) {
                 if (model.getLocalPlayer().role == Role.KING) {
                     if (model.getLocalPlayer().team == Team.ONE) {
                         cost = -20;
