@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.aiStrat;
 
+import com.esotericsoftware.minlog.Log;
 import game.model.game.model.GameModel;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.worldObject.entity.Entity;

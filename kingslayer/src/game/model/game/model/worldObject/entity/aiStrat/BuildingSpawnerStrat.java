@@ -1,11 +1,12 @@
 package game.model.game.model.worldObject.entity.aiStrat;
 
+import com.esotericsoftware.minlog.Log;
+import game.message.toServer.EntityBuildRequest;
+import game.message.toServer.MakeEntityRequest;
 import game.model.game.model.ServerGameModel;
+import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Minions;
-import util.Pos;
-
-import java.util.function.Function;
 
 public abstract class BuildingSpawnerStrat extends AIStrat {
 
@@ -24,30 +25,24 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
 
         @Override
-        Entity function(double x, double y) {
-            return Minions.makeRangedMinionTwo(x, y);
+        Entity makeEntity(double x, double y, Team team) {
+            return Minions.makeRangedMinion(x, y, team);
         }
     }
 
     abstract double timeBetweenSpawns();
     abstract int maxActive();
-    abstract Entity function(double x, double y);
+    abstract Entity makeEntity(double x, double y, Team team);
 
-    public BuildingSpawnerStrat() { }
+    private BuildingSpawnerStrat() { }
 
     static class BuildingSpanwerStratAIData extends AIData {
-        int elapsedTime;
-        int maxSpawns;
+        double elapsedTime;
         int spawnCounter;
-        int timeBetweenSpawns;
-        Function<Pos, Entity> function;
 
         BuildingSpanwerStratAIData() {
             this.elapsedTime = 0;
-            this.timeBetweenSpawns = timeBetweenSpawns;
-            this.maxSpawns = maxSpawns;
             this.spawnCounter = 0;
-            this.function = function;
         }
     }
 
@@ -60,11 +55,12 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
     public void updateAI(Entity entity, ServerGameModel model, double seconds) {
         BuildingSpanwerStratAIData data = (BuildingSpanwerStratAIData) entity.data.aiData;
         data.elapsedTime += seconds;
+        Log.info("BUilding spawner strat " + data.elapsedTime);
         if (data.elapsedTime > timeBetweenSpawns()) {
             data.elapsedTime -= timeBetweenSpawns();
             if (data.spawnCounter < maxActive()) {
-                Entity newEntity = function(entity.data.x, entity.data.y);
-                model.makeEntity(newEntity);
+                Entity newEntity = makeEntity(entity.data.x, entity.data.y, entity.team);
+                model.processMessage(new MakeEntityRequest(newEntity));
                 newEntity.onServerDeath((e, serverGameModel) -> {
                     data.spawnCounter--;
                 });

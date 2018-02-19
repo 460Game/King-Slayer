@@ -147,9 +147,7 @@ public class GameView {
                 return;
             currentlyPressed.add(kc);
 
-            if (kc == F11)
-                window.setFullScreen(true);
-            else if (kc == W || kc == UP) // Start upward movement.
+            if (kc == W || kc == UP) // Start upward movement.
                 dir[1]--;
             else if (kc == S || kc == DOWN) // Start downward movement.
                 dir[1]++;

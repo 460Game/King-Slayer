@@ -16,28 +16,15 @@ public class Minions {
 
   static private CircleHitbox hitbox = new CircleHitbox(MINION_RADIUS);
 
-  public static Entity makeRangedMinionOne(double x, double y) {
-    return new Entity(x, y, 100,
-        Team.ONE,
-        Role.NEUTRAL,
-        MovingStrat.SINGLETON,
-        UnitCollisionStrat.SINGLETON,
-        hitbox,
-        DirectionAnimationDrawStrat.RED_RANGED_ANIMATION,
-        AIDoNothingStrat.SINGLETON,
-        SlayerDeathStrat.SINGLETON);
-  }
-
-  public static Entity makeRangedMinionTwo(double x, double y) {
-    return new Entity(x, y, 100,
-        Team.TWO,
-        Role.NEUTRAL,
-        MovingStrat.SINGLETON,
-        UnitCollisionStrat.SINGLETON,
-        hitbox,
-        DirectionAnimationDrawStrat.BLUE_RANGED_ANIMATION,
-        AIDoNothingStrat.SINGLETON,
-        SlayerDeathStrat.SINGLETON);
-  }
-
+    public static Entity makeRangedMinion(double x, double y, Team team) {
+      return new Entity(x, y, 100,
+              team,
+              Role.NEUTRAL,
+              MovingStrat.SINGLETON,
+              UnitCollisionStrat.SINGLETON,
+              hitbox,
+              team == Team.ONE ? DirectionAnimationDrawStrat.RED_RANGED_ANIMATION : DirectionAnimationDrawStrat.BLUE_RANGED_ANIMATION,
+              AIDoNothingStrat.SINGLETON,
+              SlayerDeathStrat.SINGLETON);
+    }
 }

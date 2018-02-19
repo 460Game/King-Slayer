@@ -10,6 +10,7 @@ import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.util.Pair;
+import util.Const;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -143,9 +144,24 @@ public class ServerGameModel extends GameModel {
     }
 
     private void run() {
+        boolean[] doAi = {false};
+
+        Timer timer = new Timer();
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                doAi[0] = true;
+            }
+        }, 1000, Const.AI_LOOP_UPDATE_TIME_MILI);
+
         while (running) {
         //    long start = System.nanoTime();
             this.update();
+            if(doAi[0]) {
+                this.updateAI(this);
+                doAi[0] = false;
+            }
 //            System.err.println("server game model running " + toString());
             //want it independent of how long update take, so use the following instead
             //of thread.sleep()...
@@ -187,6 +203,8 @@ public class ServerGameModel extends GameModel {
             }
 
         }
+
+        timer.cancel();
     }
 
     public void makeEntity(Entity e) {
@@ -203,4 +221,5 @@ public class ServerGameModel extends GameModel {
         super.removeByID(entityID);
         clients.forEach(client -> client.processMessage(new RemoveEntityCommand(entityID)));
     }
+
 }

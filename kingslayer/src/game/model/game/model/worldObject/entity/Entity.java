@@ -146,8 +146,8 @@ public class Entity implements Updatable, Drawable, AIable {
     }
 
     @Override
-    public void updateAI(ServerGameModel model) {
-        this.aiStrat.updateAI(this, model, 1);
+    public void updateAI(ServerGameModel model, double secondsElapsed) {
+        this.aiStrat.updateAI(this, model, secondsElapsed);
     }
 
     @Override
