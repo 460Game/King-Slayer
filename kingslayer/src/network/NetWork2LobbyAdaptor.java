@@ -13,5 +13,5 @@ public interface NetWork2LobbyAdaptor {
     public void getMsg(Message obj);
 
     public void showLobbyTeamChoice();
-    public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role);
+    public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role, String playerName);
 }

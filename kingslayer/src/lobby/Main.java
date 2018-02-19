@@ -71,6 +71,8 @@ public class Main extends Application {
     Canvas midCanvas = new Canvas();
     GraphicsContext midGC = midCanvas.getGraphicsContext2D();
 
+    TextField playerName = new TextField();
+
     MenuItem[] items = new MenuItem[]{
         new MenuItem("Join LAN"),
         new MenuItem("Host LAN"),
@@ -291,8 +293,13 @@ public class Main extends Application {
         GridPane.setConstraints(roleChoice, 1, 0);
         grid.getChildren().add(roleChoice);
 
+        playerName = new TextField();
+        playerName.setPromptText("Enter player name.");
+        GridPane.setConstraints(playerName, 2, 0);
+        grid.getChildren().add(playerName);
+
         Button ready = new Button("Ready");
-        GridPane.setConstraints(ready, 2, 0);
+        GridPane.setConstraints(ready, 3, 0);
         grid.getChildren().add(ready);
 
         ready.setOnAction(new EventHandler<ActionEvent>() {
@@ -498,8 +505,8 @@ public class Main extends Application {
         //TODO: get from the view later!!!!!!!!!!!
         Team team = teamChoice.getValue();
         Role role = roleChoice.getValue();
-
-        lobbyClient.lobbyClientReady(team, role);
+        String playerNameStr = playerName.getText();
+        lobbyClient.lobbyClientReady(team, role, playerNameStr);
     }
 
     private void joinGame(String host) throws Exception {
