@@ -187,7 +187,7 @@ public class Main extends Application {
         };
 
         bgCanvas.widthProperty().bind(window.widthProperty());
-        bgCanvas.widthProperty().bind(window.heightProperty());
+        bgCanvas.heightProperty().bind(window.heightProperty());
         midCanvas.widthProperty().bind(window.widthProperty());
         midCanvas.heightProperty().bind(window.heightProperty());
 
@@ -238,7 +238,7 @@ public class Main extends Application {
 
                 midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
                 midGC.drawImage(LOGO_TEXT_IMAGE, window.getWidth()/4, 50, window.getWidth()/2, (153/645.0)*window.getWidth()/2);
-                bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, bgCanvas.getWidth(), bgCanvas.getHeight());
+                bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, window.getWidth(), window.getHeight());
 
                 menuBox.setTranslateX(window.getWidth() / 2 - menuBox.getWidth() / 2);
                 menuBox.setTranslateY(window.getHeight() - menuBox.getHeight() - 100);

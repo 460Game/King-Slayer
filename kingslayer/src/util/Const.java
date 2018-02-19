@@ -10,7 +10,7 @@ public abstract class Const {
     /**
      * Flag that signals whether to update in debugging mdode.
      */
-    public static final boolean DEBUG_DRAW = true;//true;
+    public static final boolean DEBUG_DRAW = false;//true;
 
     /**
      * Angles based on the drawing coordinate system.
@@ -85,7 +85,7 @@ public abstract class Const {
     public static final int WATER_ANIM_PERIOD = UPDATES_PER_SECOND * 4;
 
 
-    public final static int AI_LOOP_UPDATE_PER_SECOND = 5;
+    public final static int AI_LOOP_UPDATE_PER_SECOND = 10;
 
-    public static final long AI_LOOP_UPDATE_TIME_MILI = 200;
+    public static final long AI_LOOP_UPDATE_TIME_MILI = 100;
 }
