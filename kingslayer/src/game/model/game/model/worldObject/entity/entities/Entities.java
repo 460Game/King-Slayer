@@ -185,7 +185,7 @@ public class Entities {
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.RED_BARRACKS_DRAW_STRAT,
-            BuildingSpawnerStrat.RedBarracksBuildingSpawnerStrat.SINGLETON,
+            BuildingSpawnerStrat.BarracksBuildingSpawnerStrat.SINGLETON,
             NopDeathStrat.SINGLETON);
     }
 
@@ -197,7 +197,7 @@ public class Entities {
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.BLUE_BARRACKS_DRAW_STRAT,
-            BuildingSpawnerStrat.RedBarracksBuildingSpawnerStrat.SINGLETON,
+            BuildingSpawnerStrat.BarracksBuildingSpawnerStrat.SINGLETON,
             NopDeathStrat.SINGLETON);
     }
 
