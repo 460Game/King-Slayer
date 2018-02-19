@@ -258,7 +258,7 @@ public class Entity implements Updatable, Drawable, AIable {
         data.setHealth(data.getHealth() - decrement);
         if (data.getHealth() <= 0) {
             entityDie(model);
-            System.out.println("ENTITY DIES");
+//            System.out.println("ENTITY DIES");
         }
     }
 
