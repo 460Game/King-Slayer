@@ -159,7 +159,7 @@ public class Main extends Application {
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
         window.setFullScreenExitHint("");
-        window.setFullScreenExitKeyCombination(new KeyCodeCombination(KeyCode.F11));
+        window.setFullScreenExitKeyCombination(new KeyCodeCombination(KeyCode.ENTER, KeyCombination.ALT_DOWN));
         window.getIcons().add(LOGO_IMAGE);
         window.setResizable(true);
         window.setMinHeight(400);
@@ -186,10 +186,10 @@ public class Main extends Application {
                 item.updateSize();
         };
 
-     //   bgCanvas.widthProperty().bind(window.widthProperty());
-     //   bgCanvas.widthProperty().bind(window.heightProperty());
-     //   midCanvas.widthProperty().bind(window.widthProperty());
-        //   midCanvas.heightProperty().bind(window.heightProperty());
+        bgCanvas.widthProperty().bind(window.widthProperty());
+        bgCanvas.widthProperty().bind(window.heightProperty());
+        midCanvas.widthProperty().bind(window.widthProperty());
+        midCanvas.heightProperty().bind(window.heightProperty());
 
         window.heightProperty().addListener(resize);
         window.widthProperty().addListener(resize);
@@ -202,6 +202,9 @@ public class Main extends Application {
 
         mainMenuScene.setOnKeyPressed(e -> {
             switch (e.getCode()) {
+                case F11:
+                    window.setFullScreen(!window.isFullScreen());
+                    break;
                 case UP:
                 case W:
                     if (currentItem > 0) {
@@ -235,7 +238,6 @@ public class Main extends Application {
 
                 midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
                 midGC.drawImage(LOGO_TEXT_IMAGE, window.getWidth()/4, 50, window.getWidth()/2, (153/645.0)*window.getWidth()/2);
-                Log.info(bgCanvas.getWidth() + " W ");
                 bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, bgCanvas.getWidth(), bgCanvas.getHeight());
 
                 menuBox.setTranslateX(window.getWidth() / 2 - menuBox.getWidth() / 2);
