@@ -112,8 +112,8 @@ public class LobbyClient {//extends Application {
     //TODO rename this to makeModel
     public void lobbyClientMakeModel() {
         //TODO kinda unsafe here. server might not have a model yet
-        Log.info("lobby client has made the server model");
         serverModel = client.makeRemoteModel().iterator().next();
+        Log.info("lobby client has made the server model");
 
         //TODO !!!! don't have getGenerator
         clientGameModel = new ClientGameModel(new Model() {
@@ -129,13 +129,15 @@ public class LobbyClient {//extends Application {
         });
     }
 
-    public void restartFromReadyPage() {
+    public int restartFromReadyPage() {
         //nop for now
         gameView = null;
 
         clientGameModel = null;
         serverModel = null;
+        int status = client.restartFromReadyPage();
         System.out.println("want it to be null: " + gameView);
+        return status;
     }
 }
 
