@@ -1,7 +1,9 @@
 package game.view;
 
+import game.ai.Astar;
 import game.message.toServer.GoDirectionRequest;
 import game.message.toServer.StopRequest;
+import game.model.game.grid.GridCell;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.Team;
 import javafx.animation.AnimationTimer;
@@ -132,7 +134,6 @@ public class GameView {
         scene.setOnScroll(e -> {
 
         });
-
 
         int[] dir = {0, 0};
 

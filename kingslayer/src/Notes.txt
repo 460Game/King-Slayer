@@ -1,0 +1,18 @@
+To test/print path:
+
+Add astar field to game view.
+World panel in game view takes in astar as parameter.
+Add this to scene.onKeyPressed:
+                   // TODO remove this
+                   if (kc == SPACE) {
+                       GridCell end = astar.getPassable().iterator().next();
+                       int startx = (int) model.getLocalPlayer().data.x;
+                       int starty = (int) model.getLocalPlayer().data.y;
+                       System.out.println("Start x, y: " + startx + ", " + starty);
+                       System.out.println("End x, y: " + end.getTopLeftX() + ", " + end.getTopLeftY());
+                       astar.findPath(model.getCell(startx, starty), model.getCell(end.getTopLeftX(), end.getTopLeftY()));
+                   }
+
+Add astar field to world panel
+World panel should take in astar as parameter and assign it to astar field.
+Add astar.draw in update.
