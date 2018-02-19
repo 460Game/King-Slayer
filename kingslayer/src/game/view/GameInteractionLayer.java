@@ -141,13 +141,13 @@ public class GameInteractionLayer extends Region  {
                 if (model.getLocalPlayer().role == Role.KING) {
                     if (model.getLocalPlayer().team == Team.ONE) {
                         cost = -2;
-                        placingGhost = Entities.makeRedBarracks(0, 0);
+                        placingGhost = Entities.makeRedBarracksGhost(0, 0);
                         placing = Entities.makeRedBarracks(0, 0);
                         model.processMessage(new NewEntityCommand(placingGhost));
                     } else {
                         // TODO
                         cost = -2;
-                        placingGhost = Entities.makeBlueBarracks(0, 0);
+                        placingGhost = Entities.makeBlueBarracksGhost(0, 0);
                         placing = Entities.makeBlueBarracks(0, 0);
                         model.processMessage(new NewEntityCommand(placingGhost));
                     }

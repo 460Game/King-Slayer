@@ -27,8 +27,11 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   public static final DirectionAnimationDrawStrat BLUE_KING_ANIMATION = new BlueKingDirectionAnimationDrawStrat();
   public static final DirectionAnimationDrawStrat RED_SLAYER_ANIMATION = new RedSlayerDirectionAnimationDrawStrat();
   public static final DirectionAnimationDrawStrat BLUE_SLAYER_ANIMATION = new BlueSlayerDirectionAnimationDrawStrat();
+
   public static final DirectionAnimationDrawStrat RED_RANGED_ANIMATION = new RedRangedMinionDirectionAnimationDrawStrat();
   public static final DirectionAnimationDrawStrat BLUE_RANGED_ANIMATION = new BlueRangedMinionDirectionAnimationDrawStrat();
+  public static final DirectionAnimationDrawStrat RED_MELEE_ANIMATION = new RedMeleeMinionDirectionAnimationDrawStrat();
+  public static final DirectionAnimationDrawStrat BLUE_MELEE_ANIMATION = new BlueMeleeMinionDirectionAnimationDrawStrat();
 
   /**
    * Key for figuring out which piece of the character sheet is needed for
@@ -133,6 +136,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
       return Images.BLUE_SLAYER_IMAGE_SHEET;
     }
   }
+
   public static class RedRangedMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage() {
@@ -140,6 +144,18 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     }
   }
   public static class BlueRangedMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+    @Override
+    Image getImage() {
+      return Images.BLUE_RANGED_IMAGE_SHEET;
+    }
+  }
+  public static class RedMeleeMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+    @Override
+    Image getImage() {
+      return Images.RED_SLAYER_IMAGE_SHEET;
+    }
+  }
+  public static class BlueMeleeMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage() {
       return Images.BLUE_SLAYER_IMAGE_SHEET;

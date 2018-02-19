@@ -37,6 +37,7 @@ public abstract class Images {
     public static final Image BLUE_KING_IMAGE_SHEET = getImage("king_blue_sheet_new.png");
     public static final Image RED_SLAYER_IMAGE_SHEET = getImage("slayer_red_sheet.png");
     public static final Image BLUE_SLAYER_IMAGE_SHEET = getImage("slayer_blue_sheet.png");
+    public static final Image BLUE_RANGED_IMAGE_SHEET = getImage("minions_ranged_blue.png");
 
     private static Image getImage(String s) {
         return new Image(Images.class.getResourceAsStream(s));

@@ -1,6 +1,5 @@
 package game.model.game.model.worldObject.entity.aiStrat;
 
-import com.esotericsoftware.minlog.Log;
 import game.message.toServer.MakeEntityRequest;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
@@ -14,9 +13,29 @@ import static java.lang.Math.sin;
 
 public abstract class BuildingSpawnerStrat extends AIStrat {
 
-    public static class BarracksBuildingSpawnerStrat extends BuildingSpawnerStrat {
+    public static class RangedBarracksBuildingSpawnerStrat extends BuildingSpawnerStrat {
 
-        public static final BarracksBuildingSpawnerStrat SINGLETON = new BarracksBuildingSpawnerStrat();
+        public static final RangedBarracksBuildingSpawnerStrat SINGLETON = new RangedBarracksBuildingSpawnerStrat();
+
+        @Override
+        double timeBetweenSpawns() {
+            return 5;
+        }
+
+        @Override
+        int maxActive() {
+            return 5;
+        }
+
+        @Override
+        Entity makeEntity(double x, double y, Team team) {
+            return Minions.makeRangedMinion(x, y, team);
+        }
+    }
+
+    public static class MeleeBarracksBuildingSpawnerStrat extends BuildingSpawnerStrat {
+
+        public static final MeleeBarracksBuildingSpawnerStrat SINGLETON = new MeleeBarracksBuildingSpawnerStrat();
 
         @Override
         double timeBetweenSpawns() {

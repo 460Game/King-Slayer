@@ -181,8 +181,20 @@ public class Entities {
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.RED_BARRACKS_DRAW_STRAT,
-            BuildingSpawnerStrat.BarracksBuildingSpawnerStrat.SINGLETON,
+            BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
                 RemoveOnDeathStrat.SINGLETON);
+    }
+
+    public static Entity makeRedBarracksGhost(double x, double y) {
+        return new Entity(x, y, 100,
+            Team.ONE,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            GhostCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            UpgradableImageDrawStrat.RED_BARRACKS_DRAW_STRAT,
+            BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
+            RemoveOnDeathStrat.SINGLETON);
     }
 
     public static Entity makeBlueBarracks(double x, double y) {
@@ -193,8 +205,19 @@ public class Entities {
                 HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.BLUE_BARRACKS_DRAW_STRAT,
-            BuildingSpawnerStrat.BarracksBuildingSpawnerStrat.SINGLETON,
+            BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
                 RemoveOnDeathStrat.SINGLETON);
+    }
+    public static Entity makeBlueBarracksGhost(double x, double y) {
+        return new Entity(x, y, 100,
+            Team.TWO,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            GhostCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            UpgradableImageDrawStrat.BLUE_BARRACKS_DRAW_STRAT,
+            BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
+            RemoveOnDeathStrat.SINGLETON);
     }
 
     public static Entity makeRedArrowTower(double x, double y) {

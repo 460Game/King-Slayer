@@ -29,4 +29,16 @@ public class Minions {
               MinionStrat.RangedMinionStrat.SINGLETON,
               RemoveOnDeathStrat.SINGLETON);
     }
+
+  public static Entity makeMeleeMinion(double x, double y, Team team) {
+    return new Entity(x, y, 100,
+        team,
+        Role.NEUTRAL,
+        MovingStrat.SINGLETON,
+        UnitCollisionStrat.SINGLETON,
+        hitbox,
+        team == Team.ONE ? DirectionAnimationDrawStrat.RED_MELEE_ANIMATION : DirectionAnimationDrawStrat.BLUE_MELEE_ANIMATION,
+        MinionStrat.RangedMinionStrat.SINGLETON,
+        RemoveOnDeathStrat.SINGLETON);
+  }
 }
