@@ -14,6 +14,8 @@ import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
+import game.model.game.model.worldObject.entity.aiStrat.BuildingSpawnerStrat;
+import game.model.game.model.worldObject.entity.aiStrat.MinionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.*;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.*;
 import game.model.game.model.team.Team;
@@ -134,6 +136,8 @@ public class NetworkCommon {
         kryo.register(TeamWinCommand.class);
         kryo.register(NopDeathStrat.class);
         kryo.register(SlayerDeathStrat.class);
+        kryo.register(MinionStrat.class);
+        kryo.register(BuildingSpawnerStrat.class);
 
         kryo.register(WaterCollisionStrat.class);
         kryo.register(KingDeathStrat.class);
