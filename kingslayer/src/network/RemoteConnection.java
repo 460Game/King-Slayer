@@ -94,7 +94,6 @@ public class RemoteConnection {
 
 
             for (Integer clientId : messageQueues.keySet()) {
-                messageQueues.remove(Integer.valueOf(clientId));
                 messageQueues.put(Integer.valueOf(clientId), new LinkedBlockingQueue<>());
             }
 
