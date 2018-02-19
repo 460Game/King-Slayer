@@ -71,7 +71,8 @@ public class GridCell {
      * @return true if the cell is able to be walked through
      */
     public boolean isPassable() {
-        return contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD);
+        return contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD
+                || e.getCollideType() == CollisionStrat.CollideType.WATER);
     }
 
     /**
@@ -200,7 +201,7 @@ public class GridCell {
         // TODO fix collisions in different cells (2 objects in 2 cells will collide twice)
         for(int i = 0; i < contents.size(); i++) {
             for (int j = 0; j < i; j++) {
-                if (i < contents.size() && j < contents.size()) { //Here maybe because the elements removed during this loop (arrows)
+                if (i < contents.size() && j < contents.size()) { //Here because elements may be removed during this loop (arrows)
                     Entity a = contents.get(i);
                     Entity b = contents.get(j);
 
@@ -272,7 +273,6 @@ public class GridCell {
     public double getCenterY() {
         return y + 0.5;
     }
-
 
     @Override
     public boolean equals(Object o) {

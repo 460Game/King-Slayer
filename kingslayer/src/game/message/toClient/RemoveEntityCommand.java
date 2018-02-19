@@ -27,6 +27,10 @@ public class RemoveEntityCommand implements ToClientCommand {
         this.entityID = id;
     }
 
+    public RemoveEntityCommand(Entity entity) {
+        this.entityID = entity.id;
+    }
+
     /**
      * Remove the references of the local entity with the given ID in the client
      * model.

@@ -20,9 +20,7 @@ import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
-import static util.Const.CANVAS_HEIGHT;
-import static util.Const.CANVAS_WIDTH;
-import static util.Const.DEBUG_DRAW;
+import static util.Const.*;
 
 public abstract class GameModel implements Model {
 
@@ -204,5 +202,21 @@ public abstract class GameModel implements Model {
         if (!entities.containsKey(entity))
             return null;
         return entities.get(entity);
+    }
+
+    private long AINanoTime = -1;
+
+    /*
+    Server only mthod for updating the
+     */
+    public void updateAI(ServerGameModel serverGameModel) {
+        if (AINanoTime == -1) {
+            AINanoTime = System.nanoTime();
+            return;
+        }
+        long cur = System.nanoTime();
+        double elapsed = NANOS_TO_SECONDS * (cur - AINanoTime);
+        AINanoTime = cur;
+        entities.values().forEach(e -> e.updateAI(serverGameModel, elapsed));;
     }
 }

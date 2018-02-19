@@ -1,9 +1,13 @@
 package game.view;
 
+import game.ai.Astar;
 import game.message.toServer.GoDirectionRequest;
 import game.message.toServer.StopRequest;
+import game.model.game.grid.GridCell;
 import game.model.game.model.ClientGameModel;
+import game.model.game.model.gameState.Loading;
 import game.model.game.model.team.Team;
+import game.model.game.model.worldObject.entity.Entity;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
@@ -23,9 +27,9 @@ import static util.Util.toWorldCoords;
 public class GameView {
 
     private ClientGameModel model;
-    Stage window;
-    Main mainApp;
-    AnimationTimer timer;
+    private Stage window;
+    private Main mainApp;
+    private AnimationTimer timer;
 
     public GameView(ClientGameModel model, Main mainApp) {
         this.model = model;
@@ -35,6 +39,11 @@ public class GameView {
     public void start(Stage window) {
         this.window = window;
         Group root = new Group();
+
+        //TODO loading screen
+        while(model.getState() == Loading.SINGLETON) {
+            model.update();
+        }
 
         Minimap minimap = new Minimap(model);
         WorldPanel worldPanel = new WorldPanel(model);
@@ -87,41 +96,48 @@ public class GameView {
         root.getChildren().addAll(worldPanel, minimap, infoPanel, actionPanel, resourcePanel,
             exitPrompt, teamLosePrompt, teamWinPrompt);
 
+
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (model.getWinningTeam() == Team.NEUTRAL) {
-                    model.update();
-                    if (model.getLocalPlayer() != null) {
-                        worldPanel.update();
-                        resourcePanel.update();
-                        minimap.draw();
-                        infoPanel.update();
-                        actionPanel.update();
+                    if (model.getWinningTeam() == Team.NEUTRAL) {
+                        worldPanel.setVisible(true);
+                        resourcePanel.setVisible(true);
+                        minimap.setVisible(true);
+                        infoPanel.setVisible(true);
+                        teamLosePrompt.setVisible(false);
+                        actionPanel.setVisible(true);
 
-                        //TODO dont do this
-                        resourcePanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-                        minimap.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-                        infoPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-                        actionPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+                        model.update();
+                            worldPanel.update();
+                            resourcePanel.update();
+                            minimap.draw();
+                            infoPanel.update();
+                            actionPanel.update();
 
+                            //TODO dont do this
+                            resourcePanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+                            minimap.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+                            infoPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+                            actionPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+
+                    } else if (model.getWinningTeam() == model.getLocalPlayer().team) {
+                        teamWinPrompt.setVisible(true);
+                        worldPanel.setVisible(false);
+                        resourcePanel.setVisible(false);
+                        minimap.setVisible(false);
+                        infoPanel.setVisible(false);
+                        actionPanel.setVisible(false);
+                    } else {
+                        worldPanel.setVisible(false);
+                        resourcePanel.setVisible(false);
+                        minimap.setVisible(false);
+                        infoPanel.setVisible(false);
+                        teamLosePrompt.setVisible(true);
+                        actionPanel.setVisible(false);
                     }
-                } else if (model.getWinningTeam() == model.getLocalPlayer().team) {
-                    teamWinPrompt.setVisible(true);
-                    worldPanel.setVisible(false);
-                    resourcePanel.setVisible(false);
-                    minimap.setVisible(false);
-                    infoPanel.setVisible(false);
-                    actionPanel.setVisible(false);
-                } else {
-                    worldPanel.setVisible(false);
-                    resourcePanel.setVisible(false);
-                    minimap.setVisible(false);
-                    infoPanel.setVisible(false);
-                    teamLosePrompt.setVisible(true);
-                    actionPanel.setVisible(false);
+
                 }
-            }
         };
 
         timer.start();
@@ -132,7 +148,6 @@ public class GameView {
         scene.setOnScroll(e -> {
 
         });
-
 
         int[] dir = {0, 0};
 
@@ -145,9 +160,7 @@ public class GameView {
                 return;
             currentlyPressed.add(kc);
 
-            if (kc == F11)
-                window.setFullScreen(true);
-            else if (kc == W || kc == UP) // Start upward movement.
+            if (kc == W || kc == UP) // Start upward movement.
                 dir[1]--;
             else if (kc == S || kc == DOWN) // Start downward movement.
                 dir[1]++;
@@ -157,6 +170,18 @@ public class GameView {
                 dir[0]++;
             else if (kc == KeyCode.ESCAPE)
                 exitPrompt.setVisible(!exitPrompt.isVisible());
+
+            if (kc == TAB) {
+                model.processMessage(new StopRequest(model.getLocalPlayer().id));
+                int role = (model.getLocalPlayer().role.val + 1) % 2;
+                for (Entity entity : model.getAllEntities()) {
+                    if (entity.team == model.getLocalPlayer().team && entity.role.val == role) {
+                        model.setLocalPlayer(entity.id);
+                        break;
+                    }
+                }
+                // TODO tab issue with 2 player
+            }
 
 
             if (dir[0] == 0 && dir[1] == 0)

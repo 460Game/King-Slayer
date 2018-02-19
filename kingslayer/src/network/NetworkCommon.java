@@ -14,10 +14,11 @@ import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
+import game.model.game.model.worldObject.entity.aiStrat.BuildingSpawnerStrat;
+import game.model.game.model.worldObject.entity.aiStrat.MinionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.*;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.*;
 import game.model.game.model.team.Team;
-import game.model.game.model.worldObject.entity.deathStrat.BuiltWallDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.KingDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.NopDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.SlayerDeathStrat;
@@ -45,7 +46,7 @@ public class NetworkCommon {
         kryo.register(ActionRequest.class);
         kryo.register(GoDirectionRequest.class);
         kryo.register(RemoveEntityCommand.class);
-        kryo.register(MakeEntityRequest.class);
+        kryo.register(EntityBuildRequest.class);
         kryo.register(SetEntityCommand.class);
         kryo.register(SetTileCommand.class);
         kryo.register(ToClientCommand.class);
@@ -108,7 +109,6 @@ public class NetworkCommon {
         kryo.register(StillStrat.class);
         kryo.register(UpdateData.class);
         kryo.register(UpdateStrat.class);
-        kryo.register(SpawningStrat.class);
         kryo.register(StopRequest.class);
         kryo.register(InitGameCommand.class);
         kryo.register(NewEntityCommand.class);
@@ -136,10 +136,13 @@ public class NetworkCommon {
         kryo.register(TeamWinCommand.class);
         kryo.register(NopDeathStrat.class);
         kryo.register(SlayerDeathStrat.class);
+        kryo.register(MinionStrat.class);
+        kryo.register(BuildingSpawnerStrat.class);
 
-        kryo.register(BuiltWallDeathStrat.class);
         kryo.register(WaterCollisionStrat.class);
         kryo.register(KingDeathStrat.class);
+        kryo.register(ClientRestartMsg.class);
+        kryo.register(AnimationDrawData.class);
     }
 
     public static class ClientMakeModelMsg {
@@ -150,7 +153,8 @@ public class NetworkCommon {
     public static class ClientReadyMsg {
         private Team teamChoice;
         private Role roleChoice;
-        public ClientReadyMsg() {}
+        private String playerName;
+        public ClientReadyMsg(Team team, Role role, String playerName) {}
         public ClientReadyMsg(Team team, Role role) {
             teamChoice = team;
             roleChoice = role;
@@ -160,6 +164,9 @@ public class NetworkCommon {
         }
         public Role getRole() {
             return roleChoice;
+        }
+        public String getPlayerName() {
+            return playerName;
         }
     }
 
@@ -171,9 +178,6 @@ public class NetworkCommon {
         public AllClientConnectMsg() {}
     }
 
-    public static class ClientFinishMakingModelMsg {
-        public ClientFinishMakingModelMsg() {}
-    }
 
     public static class SyncClockMsg {
         private long serverTime;
@@ -185,6 +189,15 @@ public class NetworkCommon {
             return serverTime;
         }
     }
+
+    public static class ClientFinishMakingModelMsg {
+        public ClientFinishMakingModelMsg() {}
+    }
+    public static class ClientRestartMsg {
+        public ClientRestartMsg() {}
+    }
+
+
 
 //    public static class BatchMsg {
 //        ArrayList<Message> msgs;

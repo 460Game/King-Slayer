@@ -191,7 +191,8 @@ public class Astar {
                         open.add(neighbor);
 
                     // Calculate a g-score if the neighbor were to be passed through from the current cell.
-                    double tempg = g.get(current) + Util.dist(current.getTopLeftX(), current.getTopLeftY(), neighbor.getTopLeftX(), neighbor.getTopLeftY());
+                    double tempg = g.get(current) + Util.dist(current.getTopLeftX(), current.getTopLeftY(),
+                            neighbor.getTopLeftX(), neighbor.getTopLeftY());
 
                     // If the calculated g-score is less than the g-score already found for the neighbor cell,
                     // we ignore this potential path.
@@ -240,11 +241,21 @@ public class Astar {
         return path;
     }
 
+    /**
+     * Finds a path using A* search given a starting cell and an ending cell. This path
+     * is stored in the "path" field.
+     * @param start the starting cell of the path
+     * @param end the destination cell of the path
+     */
     public void findPath(GridCell start, GridCell end) {
         findTraversableNodes();
         path = astar(start, end);
     }
 
+    /**
+     * Gets the path that this search found.
+     * @return the path that this search found
+     */
     public List<GridCell> pathGetter() {
         return path;
     }
@@ -258,7 +269,7 @@ public class Astar {
             gc.setLineWidth(5);
             gc.setFill(Color.BLUE);
             gc.strokePolyline(path.stream().mapToDouble(c -> TILE_PIXELS * (c.getTopLeftX() + 0.5)).toArray(),
-                    path.stream().mapToDouble(c -> TILE_PIXELS * (c.getTopLeftY() + 1.5)).toArray(), path.size());
+                    path.stream().mapToDouble(c -> TILE_PIXELS * (c.getTopLeftY() + 0.5)).toArray(), path.size());
         }
     }
 }

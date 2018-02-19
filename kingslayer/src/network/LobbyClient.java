@@ -85,7 +85,7 @@ public class LobbyClient {//extends Application {
             }
 
             @Override
-            public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role) {
+            public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role, String playerName) {
                 //client should not call
             }
 
@@ -105,15 +105,15 @@ public class LobbyClient {//extends Application {
         clientGameModel.processMessage(msg);
     }
 
-    public void lobbyClientReady(Team team, Role role) {
-        client.notifyReady(team, role);
+    public void lobbyClientReady(Team team, Role role, String playerName) {
+        client.notifyReady(team, role, playerName);
     }
 
     //TODO rename this to makeModel
     public void lobbyClientMakeModel() {
         //TODO kinda unsafe here. server might not have a model yet
-        Log.info("lobby client has made the server model");
         serverModel = client.makeRemoteModel().iterator().next();
+        Log.info("lobby client has made the server model");
 
         //TODO !!!! don't have getGenerator
         clientGameModel = new ClientGameModel(new Model() {
@@ -129,13 +129,15 @@ public class LobbyClient {//extends Application {
         });
     }
 
-    public void restartFromReadyPage() {
+    public int restartFromReadyPage() {
         //nop for now
         gameView = null;
 
         clientGameModel = null;
         serverModel = null;
+        int status = client.restartFromReadyPage();
         System.out.println("want it to be null: " + gameView);
+        return status;
     }
 }
 

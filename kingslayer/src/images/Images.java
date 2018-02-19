@@ -3,6 +3,7 @@ package images;
 import javafx.scene.image.Image;
 
 public abstract class Images {
+
     public static final Image BOX_IMAGE = getImage("barrier.png");
     public static final Image WALL_IMAGE = getImage("wall.png");
     public static final Image LOGO_IMAGE = getImage("logo.png");

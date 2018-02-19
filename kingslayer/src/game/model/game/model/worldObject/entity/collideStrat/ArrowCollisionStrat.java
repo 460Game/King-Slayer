@@ -24,52 +24,36 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
     public void collisionSoft(GameModel model, Entity a, Entity b) {
         // Server stops the arrow and removes it from the game. Entity b loses an
         // appropriate amount of health. All servers update entity b's health.
-        Consumer<ServerGameModel> serverConsumer = (server) -> {
+        // As a precaution, on the client side, stop the arrow and remove it from the game.
+        model.execute((server) -> {
             a.data.updateData.velocity.setMagnitude(0);
-            server.removeByID(a.id);
+            a.entityDie(server);
             b.decreaseHealthBy(model, 5);
             server.getClients().forEach(client -> client.processMessage(new SetEntityCommand(b)));
-        };
-
-        // As a precaution, on the client side, stop the arrow and remove it from the game.
-        model.execute(serverConsumer, (client) -> {
+        }, (client) -> {
             a.data.updateData.velocity.setMagnitude(0);
-            client.removeByID(a.id);
+            a.entityDie(client);
         });
     }
 
     @Override
     public void collisionWater(GameModel model, Entity a, Entity b) {
-        Consumer<ServerGameModel> serverConsumer = (server) -> {
-            a.data.updateData.velocity.setMagnitude(0);
-            server.removeByID(a.id);
-        };
-        Consumer<ClientGameModel> clientConsumer = (client) -> {
-            a.data.updateData.velocity.setMagnitude(0);
-            client.removeByID(a.id);
-        };
-
         // Normally an arrow should go over water fine. This check only stops the arrow
         // from going out of the bounds of the map and causing an error.
         if (!checkBounds(a.data.x - a.data.hitbox.getRadius(ANGLE_LEFT), a.data.y - a.data.hitbox.getRadius(ANGLE_UP)) ||
-                !checkBounds(a.data.x + a.data.hitbox.getRadius(ANGLE_RIGHT), a.data.y + a.data.hitbox.getRadius(ANGLE_DOWN)))
-            model.execute(serverConsumer, clientConsumer);
+                !checkBounds(a.data.x + a.data.hitbox.getRadius(ANGLE_RIGHT), a.data.y + a.data.hitbox.getRadius(ANGLE_DOWN))) {
+            a.data.updateData.velocity.setMagnitude(0);
+            a.entityDie(model);
+        }
     }
 
     @Override
     public void collisionHard(GameModel model, Entity a, Entity b) {
         // Both the client and server stops the arrow and removes it from the game.
-        model.execute((server) -> {
-            if (b.getHealth() != Double.POSITIVE_INFINITY)
-                b.decreaseHealthBy(model, 5); // TODO CHANGE THIS
-            a.data.updateData.velocity.setMagnitude(0);
-            server.removeByID(a.id);
-        }, (client) -> {
-            if (b.getHealth() != Double.POSITIVE_INFINITY)
-                b.decreaseHealthBy(model, 5);
-            a.data.updateData.velocity.setMagnitude(0);
-            client.removeByID(a.id);
-//            System.out.println(b.data.getHealth());
-        });
+
+        if (b.getHealth() != Double.POSITIVE_INFINITY)
+            b.decreaseHealthBy(model, 5); // TODO CHANGE THIS
+        a.data.updateData.velocity.setMagnitude(0);
+        a.entityDie(model);
     }
 }

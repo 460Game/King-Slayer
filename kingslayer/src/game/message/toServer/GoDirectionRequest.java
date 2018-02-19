@@ -16,7 +16,7 @@ public class GoDirectionRequest extends ActionRequest {
     private long id;
 
     /**
-     * String of the direction the player wants to move.
+     * Angle that the player wants to move.
      */
     private double angle;
 

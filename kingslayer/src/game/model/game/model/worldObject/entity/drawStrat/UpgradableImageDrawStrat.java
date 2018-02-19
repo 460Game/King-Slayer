@@ -1,12 +1,6 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
-import game.message.toServer.MakeEntityRequest;
-import game.model.game.model.GameModel;
-import game.model.game.model.Model;
-import game.model.game.model.team.Team;
-import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.entities.Minions;
 import images.Images;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;

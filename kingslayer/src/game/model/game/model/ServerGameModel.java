@@ -10,6 +10,8 @@ import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.util.Pair;
+import lobby.PlayerInfo;
+import util.Const;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -25,7 +27,10 @@ public class ServerGameModel extends GameModel {
 
     private Collection<? extends Model> clients = null;
 
-    private Map<? extends Model, Pair<Team, Role>> clientToTeamRoleMap;
+//    private Map<? extends Model, Pair<Team, Role>> clientToTeamRoleMap;
+
+    private Map<? extends Model, PlayerInfo> clientToPlayerInfo;
+
 
     private int counter = 0; // GARBAGE
 
@@ -64,13 +69,14 @@ public class ServerGameModel extends GameModel {
         return System.nanoTime();
     }
 
-    public void init(Collection<? extends Model> clients, Map<? extends Model, Pair<Team, Role>> clientToTeamRoleMap) {
+    public void init(Collection<? extends Model> clients, Map<? extends Model, PlayerInfo> clientToPlayerInfoMap) {
 
         this.clients = clients;
-        this.clientToTeamRoleMap = clientToTeamRoleMap;
+        this.clientToPlayerInfo = clientToPlayerInfoMap;
+//        this.clientToTeamRoleMap = new HashMap<>();
 
         // Send teamRoleEntityMap to client
-        for(Model client : clients)
+        for (Model client : clients)
             for (int i = 0; i < this.getMapWidth(); i++)
                 for (int j = 0; j < this.getMapWidth(); j++) {
                     client.processMessage(new SetTileCommand(i, j, this.getTile(i, j)));
@@ -90,8 +96,8 @@ public class ServerGameModel extends GameModel {
 
         // TODO @tian set each client to the role/team the want
         clients.forEach(client -> {
-            client.processMessage(new InitGameCommand(clientToTeamRoleMap.get(client).getKey(),
-                    clientToTeamRoleMap.get(client).getValue(), teamRoleEntityMap));
+            client.processMessage(new InitGameCommand(clientToPlayerInfo.get(client).getTeam(),
+                    clientToPlayerInfo.get(client).getRole(), teamRoleEntityMap));
         });
 
         teamData.put(Team.ONE, new TeamResourceData());
@@ -123,7 +129,7 @@ public class ServerGameModel extends GameModel {
     public void stop() {
         running = false;
         updateThread.stop();
-        clientToTeamRoleMap = null;
+        clientToPlayerInfo = null;
         teamData = null;
         teamRoleEntityMap = null;
         clients = null;
@@ -143,9 +149,24 @@ public class ServerGameModel extends GameModel {
     }
 
     private void run() {
+        boolean[] doAi = {false};
+
+        Timer timer = new Timer();
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                doAi[0] = true;
+            }
+        }, 1000, Const.AI_LOOP_UPDATE_TIME_MILI);
+
         while (running) {
         //    long start = System.nanoTime();
             this.update();
+            if(doAi[0]) {
+                this.updateAI(this);
+                doAi[0] = false;
+            }
 //            System.err.println("server game model running " + toString());
             //want it independent of how long update take, so use the following instead
             //of thread.sleep()...
@@ -183,10 +204,12 @@ public class ServerGameModel extends GameModel {
             }
 
             for(Model model : clients) {
-                model.processMessage(new UpdateResourceCommand(teamData.get(clientToTeamRoleMap.get(model).getKey()))); //TEMPORARY GARBAGE
+                model.processMessage(new UpdateResourceCommand(teamData.get(clientToPlayerInfo.get(model).getTeam()))); //TEMPORARY GARBAGE
             }
 
         }
+
+        timer.cancel();
     }
 
     public void makeEntity(Entity e) {
@@ -203,4 +226,5 @@ public class ServerGameModel extends GameModel {
         super.removeByID(entityID);
         clients.forEach(client -> client.processMessage(new RemoveEntityCommand(entityID)));
     }
+
 }

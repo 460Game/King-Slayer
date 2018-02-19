@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import lobby.Main;
+import lobby.PlayerInfo;
 import sun.rmi.runtime.Log;
 
 import java.util.Collections;
@@ -30,9 +31,9 @@ public class SingleplayerController {
     public void start(Stage primaryStage) throws Exception {
         ServerGameModel serverModel = new ServerGameModel();
         ClientGameModel clientModel = new ClientGameModel(new CopyingModelWrapper(serverModel));
-        Map<Model, Pair<Team, Role>> testingMap = new HashMap<>();
+        Map<Model, PlayerInfo> testingMap = new HashMap<>();
         Model clientGameModel2 = new CopyingModelWrapper(clientModel);
-        testingMap.put(clientGameModel2, new Pair<>(Team.TWO, Role.KING));//SLAYER));
+        testingMap.put(clientGameModel2, new PlayerInfo(Team.TWO, Role.KING, "testName"));//SLAYER));
         serverModel.init(Collections.singleton(clientGameModel2), testingMap);
         serverModel.start();
 

@@ -8,6 +8,7 @@ import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import javafx.util.Pair;
+import lobby.PlayerInfo;
 import lobby.RoleChoice;
 import lobby.TeamChoice;
 
@@ -26,6 +27,11 @@ public class LobbyServer { //extends Application {
     private Set<RemoteConnection.RemoteModel> remoteModels;
 
     public Map<Integer, Pair<Team, Role>> conn2TeamAndRole = new HashMap<>();
+    public Map<Integer, String> conn2PlayerName = new HashMap<>();
+
+    public Map<Integer, PlayerInfo> conn2PlayerInfo = new HashMap<>();
+    public Map<RemoteConnection.RemoteModel, PlayerInfo> clientGameModelToPlayerInfo;
+
     public Map<Integer, ClientGameModel> conn2ClientGameModel = new HashMap<>();
     public Map<RemoteConnection.RemoteModel, Pair<Team, Role>> clientGameModelToTeamAndRole;
 
@@ -49,6 +55,7 @@ public class LobbyServer { //extends Application {
                     System.out.println("check serverInit: " + remoteModel.getConnectId());
                     clientGameModelToTeamAndRole.put(remoteModel,
                             conn2TeamAndRole.get(remoteModel.getConnectId()));
+                    clientGameModelToPlayerInfo.put(remoteModel, conn2PlayerInfo.get(remoteModel.getConnectId()));
                 }
 
 
@@ -61,7 +68,8 @@ public class LobbyServer { //extends Application {
 
 
                 //TODO: put the enum parameters in
-                serverModel.init(remoteModels, clientGameModelToTeamAndRole);
+//                serverModel.init(remoteModels, clientGameModelToTeamAndRole);
+                serverModel.init(remoteModels, clientGameModelToPlayerInfo);
                 serverModel.start();
 
                 for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
@@ -91,9 +99,11 @@ public class LobbyServer { //extends Application {
             }
 
             @Override
-            public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role) {
+            public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role, String playerName) {
                 System.out.println("Did put team and role in the map: " + connId);
                 conn2TeamAndRole.put(connId, new Pair<>(team, role));
+                conn2PlayerName.put(connId, playerName);
+                conn2PlayerInfo.put(connId, new PlayerInfo(team, role, playerName));
             }
 
         });
@@ -128,7 +138,7 @@ public class LobbyServer { //extends Application {
     }
     public void makeServerModel() {}
 
-    public void restartFromReadyPage() {
+    public int restartFromReadyPage() {
         conn2TeamAndRole = new HashMap<>();
         conn2ClientGameModel = new HashMap<>();
         clientGameModelToTeamAndRole = new HashMap<>();
@@ -136,7 +146,8 @@ public class LobbyServer { //extends Application {
 
         remoteModels = null;
         serverModel = null;
-        server.restartFromReadyPage();
+        int status = server.restartFromReadyPage();
+        return status;
     }
 
     public void closeServer() {
