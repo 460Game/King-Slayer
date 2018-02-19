@@ -132,7 +132,7 @@ public class Entities {
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.RED_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
+            UpgradableImageDrawStrat.RED_WOOD_RESOURCE_COLLECTOR,
             AIDoNothingStrat.SINGLETON,
                 RemoveOnDeathStrat.SINGLETON); // TODO DEATH
     }
@@ -156,7 +156,7 @@ public class Entities {
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.BLUE_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT,
+            UpgradableImageDrawStrat.BLUE_WOOD_RESOURCE_COLLECTOR,
             AIDoNothingStrat.SINGLETON,
                 RemoveOnDeathStrat.SINGLETON); // TODO death
     }
@@ -180,7 +180,7 @@ public class Entities {
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.RED_BARRACKS_DRAW_STRAT,
+            UpgradableImageDrawStrat.RED_WOOD_BARRACKS,
             BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
                 RemoveOnDeathStrat.SINGLETON);
     }
@@ -192,7 +192,7 @@ public class Entities {
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.RED_BARRACKS_DRAW_STRAT,
+            UpgradableImageDrawStrat.RED_WOOD_BARRACKS,
             BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON);
     }
@@ -204,7 +204,7 @@ public class Entities {
             StillStrat.SINGLETON,
                 HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.BLUE_BARRACKS_DRAW_STRAT,
+            UpgradableImageDrawStrat.BLUE_WOOD_BARRACKS,
             BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
                 RemoveOnDeathStrat.SINGLETON);
     }
@@ -215,7 +215,7 @@ public class Entities {
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.BLUE_BARRACKS_DRAW_STRAT,
+            UpgradableImageDrawStrat.BLUE_WOOD_BARRACKS,
             BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON);
     }
@@ -227,9 +227,21 @@ public class Entities {
             StillStrat.SINGLETON,
                 HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            ImageDrawStrat.RED_ARROW_TOWER_IMAGE_DRAW_STRAT,
+            UpgradableImageDrawStrat.RED_WOOD_ARROW_TOWER,
                 BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON,
                 RemoveOnDeathStrat.SINGLETON);
+    }
+
+    public static Entity makeRedArrowTowerGhost(double x, double y) {
+        return new Entity(x, y, 100,
+            Team.ONE,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            GhostCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            UpgradableImageDrawStrat.RED_WOOD_ARROW_TOWER,
+            BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON,
+            RemoveOnDeathStrat.SINGLETON);
     }
 
     public static Entity makeBlueArrowTower(double x, double y) {
@@ -239,9 +251,21 @@ public class Entities {
             StillStrat.SINGLETON,
                 HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            ImageDrawStrat.BLUE_ARROW_TOWER_IMAGE_DRAW_STRAT,
+            UpgradableImageDrawStrat.BLUE_WOOD_ARROW_TOWER,
                 BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON,
                 RemoveOnDeathStrat.SINGLETON);
+    }
+
+    public static Entity makeBlueArrowTowerGhost(double x, double y) {
+        return new Entity(x, y, 100,
+            Team.TWO,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            GhostCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            UpgradableImageDrawStrat.BLUE_WOOD_ARROW_TOWER,
+            BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON,
+            RemoveOnDeathStrat.SINGLETON);
     }
 
     private static final Hitbox ARROW_HITBOX = new CircleHitbox(0.2);

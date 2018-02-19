@@ -10,12 +10,23 @@ import static util.Util.toDrawCoords;
 
 public class UpgradableImageDrawStrat extends ImageDrawStrat {
 
-  public static final UpgradableImageDrawStrat RED_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT = new RedResourceCollectorImageDrawStrat();
-  public static final UpgradableImageDrawStrat BLUE_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT = new BlueResourceCollectorImageDrawStrat();
-  public static final UpgradableImageDrawStrat RED_BARRACKS_DRAW_STRAT = new RedRangedBarracksImageDrawStrat();
-  public static final UpgradableImageDrawStrat BLUE_BARRACKS_DRAW_STRAT = new BlueRangedBarracksImageDrawStrat();
+  public static final UpgradableImageDrawStrat RED_WOOD_RESOURCE_COLLECTOR = new RedResourceCollectorImageDrawStrat(0);
+  public static final UpgradableImageDrawStrat BLUE_WOOD_RESOURCE_COLLECTOR = new BlueResourceCollectorImageDrawStrat(0);
+  public static final UpgradableImageDrawStrat RED_WOOD_BARRACKS = new RedRangedBarracksImageDrawStrat(0);
+  public static final UpgradableImageDrawStrat BLUE_WOOD_BARRACKS = new BlueRangedBarracksImageDrawStrat(0);
+  public static final UpgradableImageDrawStrat RED_WOOD_ARROW_TOWER = new RedArrowTowerImageDrawStrat(0);
+  public static final UpgradableImageDrawStrat BLUE_WOOD_ARROW_TOWER = new BlueArrowTowerImageDrawStrat(0);
+
+  public static final UpgradableImageDrawStrat RED_STONE_RESOURCE_COLLECTOR = new RedResourceCollectorImageDrawStrat(1);
+  public static final UpgradableImageDrawStrat BLUE_STONE_RESOURCE_COLLECTOR = new BlueResourceCollectorImageDrawStrat(1);
+  public static final UpgradableImageDrawStrat RED_STONE_BARRACKS = new RedRangedBarracksImageDrawStrat(1);
+  public static final UpgradableImageDrawStrat BLUE_STONE_BARRACKS = new BlueRangedBarracksImageDrawStrat(1);
+  public static final UpgradableImageDrawStrat RED_STONE_ARROW_TOWER = new RedArrowTowerImageDrawStrat(1);
+  public static final UpgradableImageDrawStrat BLUE_STONE_ARROW_TOWER = new BlueArrowTowerImageDrawStrat(1);
 
   int tier = 0;
+
+  public UpgradableImageDrawStrat() {}
 
   @Override
   public void draw(Entity entity, GraphicsContext gc) {
@@ -73,7 +84,10 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
       return Images.RED_RESOURCE_COLLECTORS_IMAGE;
     }
 
-    private RedResourceCollectorImageDrawStrat() {
+    private RedResourceCollectorImageDrawStrat() {}
+
+    private RedResourceCollectorImageDrawStrat(int tier) {
+      this.tier = tier;
     }
   }
 
@@ -83,7 +97,10 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
       return Images.BLUE_RESOURCE_COLLECTORS_IMAGE;
     }
 
-    private BlueResourceCollectorImageDrawStrat() {
+    private BlueResourceCollectorImageDrawStrat() {}
+
+    private BlueResourceCollectorImageDrawStrat(int tier) {
+
     }
   }
 
@@ -92,12 +109,50 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
     Image getImage() {
       return Images.RED_BARRACKS_IMAGE;
     }
+
+    private RedRangedBarracksImageDrawStrat() {}
+
+    private RedRangedBarracksImageDrawStrat(int tier) {
+      this.tier = tier;
+    }
   }
 
   public static class BlueRangedBarracksImageDrawStrat extends UpgradableImageDrawStrat {
     @Override
     Image getImage() {
       return Images.BLUE_BARRACKS_IMAGE;
+    }
+
+    private BlueRangedBarracksImageDrawStrat() {}
+
+    private BlueRangedBarracksImageDrawStrat(int tier) {
+      this.tier = tier;
+    }
+  }
+
+  public static class RedArrowTowerImageDrawStrat extends UpgradableImageDrawStrat {
+    @Override
+    Image getImage() {
+      return Images.RED_ARROW_TOWER_IMAGE;
+    }
+
+    private RedArrowTowerImageDrawStrat() {}
+
+    private RedArrowTowerImageDrawStrat(int tier) {
+      this.tier = tier;
+    }
+  }
+
+  public static class BlueArrowTowerImageDrawStrat extends UpgradableImageDrawStrat {
+    @Override
+    Image getImage() {
+      return Images.BLUE_ARROW_TOWER_IMAGE;
+    }
+
+    private BlueArrowTowerImageDrawStrat() {}
+
+    private BlueArrowTowerImageDrawStrat(int tier) {
+      this.tier = tier;
     }
   }
 }

@@ -18,8 +18,8 @@ public abstract class Images {
     public static final Image BLUE_RESOURCE_COLLECTORS_IMAGE = getImage("resource_collectors_blue.png");
     public static final Image RED_BARRACKS_IMAGE = getImage("barracks_red.png");
     public static final Image BLUE_BARRACKS_IMAGE = getImage("barracks_blue.png");
-    public static final Image RED_ARROW_TOWER_IMAGE = getImage("arrow_tower_red.png");
-    public static final Image BLUE_ARROW_TOWER_IMAGE = getImage("arrow_tower_blue.png");
+    public static final Image RED_ARROW_TOWER_IMAGE = getImage("arrow_towers_red.png");
+    public static final Image BLUE_ARROW_TOWER_IMAGE = getImage("arrow_towers_blue.png");
 
     public static final Image TREASURE_IMAGE = getImage("treasure.png");
     public static final Image ARROW_IMAGE = getImage("arrow.png");

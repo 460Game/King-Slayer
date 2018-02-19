@@ -85,6 +85,8 @@ public class GameInteractionLayer extends Region  {
                 if (model.getLocalPlayer().role == Role.KING && placing != null) {
                     model.remove(placingGhost);
                     placing = null;
+                } else if (upgrading) {
+                    upgrading = false;
                 }
             }
         });
@@ -145,7 +147,6 @@ public class GameInteractionLayer extends Region  {
                         placing = Entities.makeRedBarracks(0, 0);
                         model.processMessage(new NewEntityCommand(placingGhost));
                     } else {
-                        // TODO
                         cost = -2;
                         placingGhost = Entities.makeBlueBarracksGhost(0, 0);
                         placing = Entities.makeBlueBarracks(0, 0);
@@ -158,12 +159,12 @@ public class GameInteractionLayer extends Region  {
                 if (model.getLocalPlayer().role == Role.KING) {
                     if (model.getLocalPlayer().team == Team.ONE) {
                         cost = -20;
-                        placingGhost = Entities.makeRedArrowTower(0, 0);
+                        placingGhost = Entities.makeRedArrowTowerGhost(0, 0);
                         placing = Entities.makeRedArrowTower(0, 0);
                         model.processMessage(new NewEntityCommand(placingGhost));
                     } else {
                         cost = -20;
-                        placingGhost = Entities.makeBlueArrowTower(0, 0);
+                        placingGhost = Entities.makeBlueArrowTowerGhost(0, 0);
                         placing = Entities.makeBlueArrowTower(0, 0);
                         model.processMessage(new NewEntityCommand(placingGhost));
                     }
