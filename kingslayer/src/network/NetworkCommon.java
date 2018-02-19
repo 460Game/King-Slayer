@@ -142,6 +142,8 @@ public class NetworkCommon {
         kryo.register(BuiltWallDeathStrat.class);
         kryo.register(WaterCollisionStrat.class);
         kryo.register(KingDeathStrat.class);
+        kryo.register(ClientRestartMsg.class);
+        kryo.register(AnimationDrawData.class);
     }
 
     public static class ClientMakeModelMsg {
@@ -173,9 +175,6 @@ public class NetworkCommon {
         public AllClientConnectMsg() {}
     }
 
-    public static class ClientFinishMakingModelMsg {
-        public ClientFinishMakingModelMsg() {}
-    }
 
     public static class SyncClockMsg {
         private long serverTime;
@@ -187,6 +186,15 @@ public class NetworkCommon {
             return serverTime;
         }
     }
+
+    public static class ClientFinishMakingModelMsg {
+        public ClientFinishMakingModelMsg() {}
+    }
+    public static class ClientRestartMsg {
+        public ClientRestartMsg() {}
+    }
+
+
 
 //    public static class BatchMsg {
 //        ArrayList<Message> msgs;

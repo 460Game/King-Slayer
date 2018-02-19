@@ -128,7 +128,7 @@ public class LobbyServer { //extends Application {
     }
     public void makeServerModel() {}
 
-    public void restartFromReadyPage() {
+    public int restartFromReadyPage() {
         conn2TeamAndRole = new HashMap<>();
         conn2ClientGameModel = new HashMap<>();
         clientGameModelToTeamAndRole = new HashMap<>();
@@ -136,7 +136,8 @@ public class LobbyServer { //extends Application {
 
         remoteModels = null;
         serverModel = null;
-        server.restartFromReadyPage();
+        int status = server.restartFromReadyPage();
+        return status;
     }
 
     public void closeServer() {

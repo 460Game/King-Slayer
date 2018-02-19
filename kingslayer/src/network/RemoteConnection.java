@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.LinkedTransferQueue;
 
+import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 
 /**
@@ -23,23 +24,14 @@ public class RemoteConnection {
         Log.set(Log.LEVEL_INFO);
     }
 
+    private boolean running = false;
+
     public void notifyMadeModel() {
         if (isServer) return;//server should not use this
         client.sendTCP(new NetworkCommon.ClientFinishMakingModelMsg());
     }
 
-    public void restartFromReadyPage() {
-        if (isServer) {
-            System.out.println("clear and send all client connect");
-            readyClients.clear();
-            cntClientModelsMade = 0;
-            server.sendToAllTCP(new NetworkCommon.AllClientConnectMsg());
-        }
-        else {
-            Log.error("Client should not call restartFromReadyPage");
-            return;
-        }
-    }
+
 
     // This holds per connection state.
     public static class GameConnection extends Connection {
@@ -49,14 +41,15 @@ public class RemoteConnection {
         }
     }
 
-    boolean isServer;
+    volatile boolean isServer;
     NetWork2LobbyAdaptor adaptor;
 
     Server server;
     ConcurrentHashMap<Integer, GameConnection> clientList;
-
-    ConcurrentHashMap<Integer, GameConnection> readyClients = new ConcurrentHashMap<>();
+    ConcurrentHashMap<Integer, GameConnection> restartClientList;
+    ConcurrentHashMap<Integer, GameConnection> readyClients;
     int cntClientModelsMade = 0;
+
 
     Client client;
 
@@ -67,6 +60,8 @@ public class RemoteConnection {
     Long t1 = null;
 
     int numOfPlayer = 1;
+    int consumeQMark;
+    int sendQMark;
 
     Map<Integer, LinkedBlockingQueue<Message>> messageQueues;
     LinkedBlockingQueue<Message> toBeConsumeMsgQueue;
@@ -74,6 +69,72 @@ public class RemoteConnection {
 
     long delta = (long) 10E6;
 
+    volatile Thread sendQueueMsgThread;
+    volatile Thread consumeQueueMsgThread;
+
+    public int restartFromReadyPage() {
+        remoteModels = null;
+        if (isServer) {
+            System.out.println("clear and send all client connect");
+            readyClients = new ConcurrentHashMap<>();
+            cntClientModelsMade = 0;
+
+            running = false;
+
+            consumeQMark = new Random().nextInt(100);
+            sendQMark = new Random().nextInt(100);
+
+            while (!sendQueueMsgThread.isInterrupted()) sendQueueMsgThread.interrupt();
+            while (!consumeQueueMsgThread.isInterrupted()) consumeQueueMsgThread.interrupt();
+
+
+
+            for (Integer clientId : messageQueues.keySet()) {
+                messageQueues.remove(Integer.valueOf(clientId));
+                messageQueues.put(Integer.valueOf(clientId), new LinkedBlockingQueue<>());
+            }
+
+            toBeConsumeMsgQueue = new LinkedBlockingQueue<>();
+            sendQueueMsgThread = new Thread(this::sendQueueMsg, sendQMark + " Send Batched Message Thread");
+            consumeQueueMsgThread = new Thread(this::consumeReceivedMsg, consumeQMark + " Consume Msg Thread");
+
+
+            running = true;
+            sendQueueMsgThread.start();
+            consumeQueueMsgThread.start();
+
+//            server.sendToAllTCP(new NetworkCommon.AllClientConnectMsg());
+            return 0;
+        }
+        else {
+
+            running = false;
+
+            consumeQMark = new Random().nextInt(100);
+            sendQMark = new Random().nextInt(100);
+
+            while (!sendQueueMsgThread.isInterrupted()) sendQueueMsgThread.interrupt();
+            while (!consumeQueueMsgThread.isInterrupted()) consumeQueueMsgThread.interrupt();
+
+            sendQueueMsgThread = new Thread(this::sendQueueMsg, sendQMark + " Send Batched Message Thread");
+            consumeQueueMsgThread = new Thread(this::consumeReceivedMsg, consumeQMark + " Consume Msg Thread");
+
+
+            for (Integer id : messageQueues.keySet()) {
+                messageQueues.remove(Integer.valueOf(id));
+                messageQueues.put(Integer.valueOf(id), new LinkedBlockingQueue<>());
+            }
+
+            toBeConsumeMsgQueue = new LinkedBlockingQueue<>();
+
+            running = true;
+            sendQueueMsgThread.start();
+            consumeQueueMsgThread.start();
+
+            client.sendTCP(new NetworkCommon.ClientRestartMsg());
+            return 0;
+        }
+    }
 
     public void setNumOfPlayer(int num) {
         numOfPlayer = num;
@@ -89,7 +150,11 @@ public class RemoteConnection {
 
         if (isServer) {
 //            //TODO change this later
+
             clientList = new ConcurrentHashMap<>();
+            restartClientList = new ConcurrentHashMap<>();
+            readyClients = new ConcurrentHashMap<>();
+
             server = new Server(10000000, 10000000 /2) {
                 protected Connection newConnection() {
                     return new RemoteConnection.GameConnection("ServerName");
@@ -99,10 +164,11 @@ public class RemoteConnection {
 //            //TODO change this later
             client = new Client(10000000, 10000000 /2);
         }
+        setKyroServerAndClient();
         start();
     }
 
-    public void start() throws IOException {
+    public void setKyroServerAndClient() throws IOException {
         if (isServer) {//is server receives it
             NetworkCommon.register(server);
 
@@ -113,6 +179,7 @@ public class RemoteConnection {
 
                     //init a queue when have a new client
                     if (!clientList.containsKey(connection.getID())) {
+                        System.out.println("still find a new client");
                         clientList.putIfAbsent(connection.getID(), connection);
                         messageQueues.put(connection.getID(), new LinkedBlockingQueue<>());
 
@@ -125,7 +192,18 @@ public class RemoteConnection {
                     if (obj instanceof NetworkCommon.ClientFinishMakingModelMsg) {
                         cntClientModelsMade++;
                         if (cntClientModelsMade == clientList.size()) {
+                            System.out.println(cntClientModelsMade + " client models are made, start");
                             adaptor.serverInit();
+                        }
+                    }
+
+                    if (obj instanceof NetworkCommon.ClientRestartMsg) {
+                        restartClientList.put(connection.getID(), connection);
+                        if (restartClientList.size() == clientList.size()) {
+                            System.out.println("begin restart");
+                            server.sendToAllTCP(new NetworkCommon.AllClientConnectMsg());
+
+                            restartClientList.clear();
                         }
                     }
 
@@ -135,7 +213,7 @@ public class RemoteConnection {
                         //TODO: change it to be defensive here
                         //TODO: important line added here!!!!!!!!!!!!!!!!
                         adaptor.serverLobbyComfirmTeamAndRole(connection.getID(), readyMsg.getTeam(), readyMsg.getRole());
-                        
+
                         readyClients.put(connection.getID(), connection);
                         System.out.println("READY CLIENTS: " + readyClients.size());
 
@@ -157,12 +235,13 @@ public class RemoteConnection {
                     }
 
                     if (obj instanceof NetworkCommon.SyncClockMsg) {
-                        long guessServerTime = ((NetworkCommon.SyncClockMsg) obj).getServerTime();
-                        long curTime = System.nanoTime();
-                        if (Math.abs(guessServerTime - curTime) > delta) {
-                            server.sendToTCP(c.getID(), new NetworkCommon.SyncClockMsg(curTime));
-                        }
-                        Log.info(curTime + " " + guessServerTime);
+//                        long guessServerTime = ((NetworkCommon.SyncClockMsg) obj).getServerTime();
+//                        long curTime = System.nanoTime();
+//                        if (Math.abs(guessServerTime - curTime) > delta) {
+//                            server.sendToTCP(c.getID(), new NetworkCommon.SyncClockMsg(curTime));
+//                        }
+                        server.sendToTCP(c.getID(), new NetworkCommon.SyncClockMsg(System.nanoTime()));
+//                        Log.info(curTime + " " + guessServerTime);
                     }
 
                 }
@@ -201,6 +280,7 @@ public class RemoteConnection {
                     }
 
                     if (obj instanceof NetworkCommon.AllClientConnectMsg) {
+                        Log.info(connection.getID() + "get all client connectMsg");
                         adaptor.showLobbyTeamChoice();
                     }
 
@@ -214,6 +294,8 @@ public class RemoteConnection {
                     }
 
                     if (obj instanceof NetworkCommon.SyncClockMsg) {
+                        if (t1 != null && t0 != null) return;//restart do not need sync
+                        System.out.println("Sync message");
                         if (clientStartTime == null) {
                             clientStartTime = System.nanoTime();
                             serverStartTime = ((NetworkCommon.SyncClockMsg) obj).getServerTime();
@@ -235,30 +317,45 @@ public class RemoteConnection {
                 }
             });
         }
-        (new Thread(this::sendQueueMsg, this.toString() + " Send Batched Message Thread")).start();
-        (new Thread(this::consumeReceivedMsg, this.toString() + " Consume Msg Thread")).start();
     }
+
+    public void start() throws IOException {
+
+
+        consumeQMark = new Random().nextInt(100);
+        sendQMark = new Random().nextInt(100);
+        sendQueueMsgThread = new Thread(this::sendQueueMsg, sendQMark + " Send Batched Message Thread");
+        consumeQueueMsgThread = new Thread(this::consumeReceivedMsg, consumeQMark + " Consume Msg Thread");
+        running = true;
+        sendQueueMsgThread.start();
+        consumeQueueMsgThread.start();
+    }
+
     private void consumeReceivedMsg() {
-        while (true) {
+        while (running && currentThread() == consumeQueueMsgThread) {
             try {
-                sleep(10);
+                sleep(100);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
+                currentThread().interrupt();
             }
+
+//            System.err.println(consumeQMark + " running consume Q " + currentThread() + " " + consumeQueueMsgThread);
             while (!toBeConsumeMsgQueue.isEmpty()) {
                 adaptor.getMsg(toBeConsumeMsgQueue.poll());
             }
         }
     }
+
     private void sendQueueMsg() {
-        while (true) {
+        while (running && currentThread() == sendQueueMsgThread) {
 
             try {
-                sleep(5);
+                sleep(50);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                currentThread().interrupt();
             }
-
+//            System.err.println(sendQMark + " running send Q " + currentThread() + " " + sendQueueMsgThread);
             if (isServer) {
                 for (int connectId : messageQueues.keySet()) {
                     List<Message> messageList = new ArrayList<>();
@@ -323,14 +420,16 @@ public class RemoteConnection {
 
     //if isServer, make client remoteModel
     public Set<RemoteModel> makeRemoteModel() {
-        if (remoteModels != null) return remoteModels;
+//        if (remoteModels != null) return remoteModels;
         remoteModels = new HashSet<>();
         if (isServer) {
+            System.out.println("Server make remote model");
             for (int id : clientList.keySet()) {
 //                System.out.println("server remote model id: " + id);
                 remoteModels.add(new RemoteModel(id));
             }
         } else {
+            System.out.println("Client make remote model");
             remoteModels.add(new RemoteModel(-1));//not using the conid
         }
         return remoteModels;
