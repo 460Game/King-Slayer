@@ -22,6 +22,7 @@ public class ClientGameModel extends GameModel {
     Team winningTeam = Team.NEUTRAL;
     Team losingTeam = Team.NEUTRAL;
 
+
     public ClientGameModel(Model server) {
         super(new ClientMapGenerator());
         this.server = server;

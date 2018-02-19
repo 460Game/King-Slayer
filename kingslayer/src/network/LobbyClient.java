@@ -85,7 +85,7 @@ public class LobbyClient {//extends Application {
             }
 
             @Override
-            public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role) {
+            public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role, String playerName) {
                 //client should not call
             }
 
@@ -105,8 +105,8 @@ public class LobbyClient {//extends Application {
         clientGameModel.processMessage(msg);
     }
 
-    public void lobbyClientReady(Team team, Role role) {
-        client.notifyReady(team, role);
+    public void lobbyClientReady(Team team, Role role, String playerName) {
+        client.notifyReady(team, role, playerName);
     }
 
     //TODO rename this to makeModel

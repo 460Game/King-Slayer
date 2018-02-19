@@ -10,6 +10,7 @@ import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.util.Pair;
+import lobby.PlayerInfo;
 import util.Const;
 
 import java.util.*;
@@ -26,7 +27,10 @@ public class ServerGameModel extends GameModel {
 
     private Collection<? extends Model> clients = null;
 
-    private Map<? extends Model, Pair<Team, Role>> clientToTeamRoleMap;
+//    private Map<? extends Model, Pair<Team, Role>> clientToTeamRoleMap;
+
+    private Map<? extends Model, PlayerInfo> clientToPlayerInfo;
+
 
     private int counter = 0; // GARBAGE
 
@@ -65,14 +69,17 @@ public class ServerGameModel extends GameModel {
         return System.nanoTime();
     }
 
-    public void init(Collection<? extends Model> clients, Map<? extends Model, Pair<Team, Role>> clientToTeamRoleMap) {
+    public void init(Collection<? extends Model> clients, Map<? extends Model, PlayerInfo> clientToPlayerInfoMap) {
 
         this.clients = clients;
-        this.clientToTeamRoleMap = clientToTeamRoleMap;
+        this.clientToPlayerInfo = clientToPlayerInfoMap;
+//        this.clientToTeamRoleMap = new HashMap<>();
 
+        // Send teamRoleEntityMap to client
+        for (Model client : clients)
             for (int i = 0; i < this.getMapWidth(); i++)
                 for (int j = 0; j < this.getMapWidth(); j++) {
-                    this.processMessage(new SetTileCommand(i, j, this.getTile(i, j)));
+                    client.processMessage(new SetTileCommand(i, j, this.getTile(i, j)));
                 }
 
         ArrayList<Entity> players = new ArrayList<>();
@@ -85,8 +92,7 @@ public class ServerGameModel extends GameModel {
 
         // Send all entities to clients
         for(Entity entity : this.getAllEntities())
-            this.processMessage(new SetEntityCommand(entity));
-
+            clients.forEach(client -> client.processMessage(new SetEntityCommand(entity)));
 
         teamData.put(Team.ONE, new TeamResourceData());
         teamData.put(Team.TWO, new TeamResourceData());
@@ -98,12 +104,12 @@ public class ServerGameModel extends GameModel {
             i++;
         }
 
-
         // TODO @tian set each client to the role/team the want
         clients.forEach(client -> {
-            client.processMessage(new InitGameCommand(clientToTeamRoleMap.get(client).getKey(),
-                    clientToTeamRoleMap.get(client).getValue(), teamRoleEntityMap));
+            client.processMessage(new InitGameCommand(clientToPlayerInfo.get(client).getTeam(),
+                    clientToPlayerInfo.get(client).getRole(), teamRoleEntityMap));
         });
+
     }
 
     @Override
@@ -124,7 +130,7 @@ public class ServerGameModel extends GameModel {
     public void stop() {
         running = false;
         updateThread.stop();
-        clientToTeamRoleMap = null;
+        clientToPlayerInfo = null;
         teamData = null;
         teamRoleEntityMap = null;
         clients = null;
