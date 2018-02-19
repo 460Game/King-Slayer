@@ -34,8 +34,7 @@ public class SpawningStrat extends UpdateStrat {
     counter++;
     if (counter > timeBetweenSpawns) {
       if (spawnCounter < maxSpawns) {
-        model.processMessage(new MakeEntityRequest(function.apply(new Pair(entity.data.x, entity.data.y)),
-            Team.ONE, TeamResourceData.Resource.WOOD, 0));
+        model.processMessage(new MakeEntityRequest(function.apply(new Pair(entity.data.x, entity.data.y))));
         spawnCounter++;
       }
       counter = 0;

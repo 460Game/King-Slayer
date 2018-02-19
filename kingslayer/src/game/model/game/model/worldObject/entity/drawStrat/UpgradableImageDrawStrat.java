@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
+import game.model.game.model.GameModel;
 import game.model.game.model.worldObject.entity.Entity;
 import images.Images;
 import javafx.scene.canvas.GraphicsContext;
