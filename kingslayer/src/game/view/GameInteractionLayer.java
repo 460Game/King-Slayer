@@ -30,6 +30,8 @@ public class GameInteractionLayer extends Region  {
     private Entity placingGhost;
     private int cost;
 
+    private boolean upgrading = false;
+
     public GameInteractionLayer(ClientGameModel clientGameModel) {
         this.model = clientGameModel;
         uiCanvas = new Canvas();
@@ -51,6 +53,15 @@ public class GameInteractionLayer extends Region  {
                     }
                     model.remove(placingGhost);
                     placing = null;
+                } else if (upgrading) {
+                  int x = (int) (toDrawCoords(model.getLocalPlayer().data.x) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS;
+                  int y = (int) (toDrawCoords(model.getLocalPlayer().data.y) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS;
+                  Entity entity = model.getEntityAt(x, y);
+                  System.out.println("clicked at " + x + " " + y + " and hit entity " + entity);
+                  if (entity != null) {
+                    entity.upgrade(model);
+                    upgrading = false;
+                  }
                 } else if (model.getLocalPlayer().role == Role.SLAYER) {
 
                     double xCoords = toWorldCoords(e.getX() - getWidth() / 2);
@@ -149,6 +160,13 @@ public class GameInteractionLayer extends Region  {
                     }
                 }
             }
+
+          if (e.getCode() == KeyCode.E) {
+            if (model.getLocalPlayer().role == Role.KING) {
+              upgrading = true;
+            }
+          }
+
         });
     }
 }

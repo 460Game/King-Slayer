@@ -185,6 +185,14 @@ public class Entity implements Updatable, Drawable, AIable {
         drawStrat.update(this, model);
     }
 
+    public void upgrade(GameModel model) {
+        System.out.println("upgrading health");
+        this.data.setHealth(this.data.getHealth() + 10);
+
+        drawStrat.upgrade(model);
+        updateStrat.upgrade(model);
+    }
+
     /**
      * Gets the collision type of this entity.
      * @return the collision type of this entity

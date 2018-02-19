@@ -1,6 +1,7 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
 import game.message.toServer.MakeEntityRequest;
+import game.model.game.model.GameModel;
 import game.model.game.model.Model;
 import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
@@ -14,10 +15,10 @@ import static util.Util.toDrawCoords;
 
 public class UpgradableImageDrawStrat extends ImageDrawStrat {
 
-  public static final DrawStrat RED_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT = new RedResourceCollectorImageDrawStrat();
-  public static final DrawStrat BLUE_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT = new BlueResourceCollectorImageDrawStrat();
-  public static final DrawStrat RED_BARRACKS_DRAW_STRAT = new RedRangedBarracksImageDrawStrat();
-  public static final DrawStrat BLUE_BARRACKS_DRAW_STRAT = new BlueRangedBarracksImageDrawStrat();
+  public static final UpgradableImageDrawStrat RED_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT = new RedResourceCollectorImageDrawStrat();
+  public static final UpgradableImageDrawStrat BLUE_RESOURCE_COLLECTOR_IMAGE_DRAW_STRAT = new BlueResourceCollectorImageDrawStrat();
+  public static final UpgradableImageDrawStrat RED_BARRACKS_DRAW_STRAT = new RedRangedBarracksImageDrawStrat();
+  public static final UpgradableImageDrawStrat BLUE_BARRACKS_DRAW_STRAT = new BlueRangedBarracksImageDrawStrat();
 
   int tier = 0;
 
@@ -39,8 +40,11 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
         toDrawCoords(h));
   }
 
-  public void upgrade() {
-    tier++;
+  @Override
+  public void upgrade(GameModel model) {
+    System.out.println("upgrading tier of texture");
+    if (tier < 2)
+      tier++;
   }
 
   @Override

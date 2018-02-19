@@ -41,4 +41,9 @@ public class SpawningStrat extends UpdateStrat {
       counter = 0;
     }
   }
+
+  @Override
+  public void upgrade(GameModel model) {
+    this.maxSpawns += 10;
+  }
 }
