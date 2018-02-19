@@ -16,15 +16,27 @@ public class MakeEntityRequest implements ToServerRequest {
      */
     private Entity entity;
 
+    /**
+     * Team that created the entity.
+     */
     private Team creator;
 
+    /**
+     * Resource that may be changed.
+     */
     private TeamResourceData.Resource resource;
 
+    /**
+     * Amount of resource that was changed.
+     */
     private int change;
 
     /**
      * Constructor of a message, given an entity to be created.
      * @param entity entity to be created
+     * @param creator team creating the entity
+     * @param resource resource that may be changed
+     * @param change amount of resource changed
      */
     public MakeEntityRequest(Entity entity, Team creator, TeamResourceData.Resource resource, int change) {
         this.entity = entity;

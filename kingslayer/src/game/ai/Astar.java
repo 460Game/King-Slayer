@@ -241,11 +241,21 @@ public class Astar {
         return path;
     }
 
+    /**
+     * Finds a path using A* search given a starting cell and an ending cell. This path
+     * is stored in the "path" field.
+     * @param start the starting cell of the path
+     * @param end the destination cell of the path
+     */
     public void findPath(GridCell start, GridCell end) {
         findTraversableNodes();
         path = astar(start, end);
     }
 
+    /**
+     * Gets the path that this search found.
+     * @return the path that this search found
+     */
     public List<GridCell> pathGetter() {
         return path;
     }

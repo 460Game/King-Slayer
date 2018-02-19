@@ -1,12 +1,12 @@
 package game.message.toServer;
 
-import game.message.toClient.NewEntityCommand;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Entities;
 
 /**
- * Created by ryanhan on 2/14/18.
+ * Message sent by a client to tell the server that it wants
+ * to shoot an arrow.
  */
 public class ShootArrowRequest extends ActionRequest {
 
@@ -15,16 +15,27 @@ public class ShootArrowRequest extends ActionRequest {
      */
     private long id;
 
+    /**
+     * Angle of movement of the arrow.
+     */
     private double angle;
 
+    /**
+     * X-coordinate of the arrow.
+     */
     private double x;
 
+    /**
+     * Y-coordinate of the arrow.
+     */
     private double y;
 
     /**
      * Constructor for a message, given an id.
      * @param id id of the entity wanting to shoot the arrow.
-     * @param
+     * @param x x-coordinate of the arrow
+     * @param y y-coordinate of the arrow
+     * @param angle angle of movement of the arrow
      */
     public ShootArrowRequest(long id, double x, double y, double angle) {
         this.id = id;
@@ -44,9 +55,7 @@ public class ShootArrowRequest extends ActionRequest {
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        Entity arrow = Entities.makeArrow(x + 0.5* Math.cos(angle), y + 0.5*Math.sin(angle), angle);
+        Entity arrow = Entities.makeArrow(x + 0.5 * Math.cos(angle), y + 0.5 * Math.sin(angle), angle);
         model.makeEntity(arrow);
-      // model.processMessage(new NewEntityCommand(model.getEntity(arrow.id)));
-    //    model.getClients().forEach(client -> client.processMessage(new NewEntityCommand(model.getEntity(arrow.id))));
     }
 }
