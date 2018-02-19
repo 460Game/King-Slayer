@@ -84,8 +84,12 @@ public class RemoteConnection {
             consumeQMark = new Random().nextInt(100);
             sendQMark = new Random().nextInt(100);
 
-            while (!sendQueueMsgThread.isInterrupted()) sendQueueMsgThread.interrupt();
-            while (!consumeQueueMsgThread.isInterrupted()) consumeQueueMsgThread.interrupt();
+//            while (!sendQueueMsgThread.isInterrupted()) sendQueueMsgThread.interrupt();
+//            while (!consumeQueueMsgThread.isInterrupted()) consumeQueueMsgThread.interrupt();
+
+            toBeConsumeMsgQueue = new LinkedBlockingQueue<>();
+            sendQueueMsgThread = new Thread(this::sendQueueMsg, sendQMark + " Send Batched Message Thread");
+            consumeQueueMsgThread = new Thread(this::consumeReceivedMsg, consumeQMark + " Consume Msg Thread");
 
 
 
@@ -94,9 +98,9 @@ public class RemoteConnection {
                 messageQueues.put(Integer.valueOf(clientId), new LinkedBlockingQueue<>());
             }
 
-            toBeConsumeMsgQueue = new LinkedBlockingQueue<>();
-            sendQueueMsgThread = new Thread(this::sendQueueMsg, sendQMark + " Send Batched Message Thread");
-            consumeQueueMsgThread = new Thread(this::consumeReceivedMsg, consumeQMark + " Consume Msg Thread");
+//            toBeConsumeMsgQueue = new LinkedBlockingQueue<>();
+//            sendQueueMsgThread = new Thread(this::sendQueueMsg, sendQMark + " Send Batched Message Thread");
+//            consumeQueueMsgThread = new Thread(this::consumeReceivedMsg, consumeQMark + " Consume Msg Thread");
 
 
             running = true;
