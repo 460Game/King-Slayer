@@ -71,7 +71,8 @@ public class GridCell {
      * @return true if the cell is able to be walked through
      */
     public boolean isPassable() {
-        return contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD);
+        return contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD
+                || e.getCollideType() == CollisionStrat.CollideType.WATER);
     }
 
     /**
