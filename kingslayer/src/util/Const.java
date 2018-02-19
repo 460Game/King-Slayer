@@ -83,4 +83,9 @@ public abstract class Const {
      * The time period between different water animations.
      */
     public static final int WATER_ANIM_PERIOD = UPDATES_PER_SECOND * 4;
+
+
+    public final static int AI_LOOP_UPDATE_PER_SECOND = 5;
+
+    public static final long AI_LOOP_UPDATE_TIME_MILI = 200;
 }

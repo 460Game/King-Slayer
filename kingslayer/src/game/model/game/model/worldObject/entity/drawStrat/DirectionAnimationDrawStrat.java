@@ -146,14 +146,5 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     }
   }
 
-  private static DirectionAnimationDrawStrat make(Image boxImage) {
-    return new DirectionAnimationDrawStrat() {
-      @Override
-      Image getImage() {
-        return boxImage;
-      }
-    };
-  }
-
   private DirectionAnimationDrawStrat(){}
 }

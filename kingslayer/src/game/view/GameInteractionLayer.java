@@ -1,7 +1,7 @@
 package game.view;
 
 import game.message.toClient.NewEntityCommand;
-import game.message.toServer.MakeEntityRequest;
+import game.message.toServer.EntityBuildRequest;
 import game.message.toServer.ShootArrowRequest;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.Role;
@@ -9,7 +9,6 @@ import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Entities;
-import game.model.game.model.worldObject.entity.entities.Minions;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -44,7 +43,7 @@ public class GameInteractionLayer extends Region  {
             if (e.getButton() == MouseButton.PRIMARY) {
                 if (model.getLocalPlayer().role == Role.KING && placing != null) {
                     if (!placingGhost.data.hitbox.getCollidesWith(model, placingGhost.data.x, placingGhost.data.y).skip(1).findAny().isPresent()) {
-                        model.processMessage(new MakeEntityRequest(placing,
+                        model.processMessage(new EntityBuildRequest(placing,
                             model.getLocalPlayer().team,
                             TeamResourceData.Resource.WOOD,
                             cost));
