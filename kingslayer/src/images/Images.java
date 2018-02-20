@@ -39,6 +39,11 @@ public abstract class Images {
     public static final Image RED_SLAYER_IMAGE_SHEET = getImage("slayer_red_sheet.png");
     public static final Image BLUE_SLAYER_IMAGE_SHEET = getImage("slayer_blue_sheet.png");
     public static final Image BLUE_RANGED_IMAGE_SHEET = getImage("minions_ranged_blue.png");
+    public static final Image RED_RANGED_IMAGE_SHEET = getImage("slayer_red_sheet.png"); // TODO
+    public static final Image BLUE_MELEE_IMAGE_SHEET = getImage("minions_siege_blue.png");
+    public static final Image RED_MELEE_IMAGE_SHEET = getImage("minions_siege_red.png");
+    public static final Image BLUE_SIEGE_IMAGE_SHEET = getImage("minions_siege_blue.png");
+    public static final Image RED_SIEGE_IMAGE_SHEET = getImage("minions_siege_red.png");
 
     private static Image getImage(String s) {
         return new Image(Images.class.getResourceAsStream(s));

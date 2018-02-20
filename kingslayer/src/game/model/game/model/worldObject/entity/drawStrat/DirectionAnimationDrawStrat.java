@@ -140,7 +140,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   public static class RedRangedMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage() {
-      return Images.RED_SLAYER_IMAGE_SHEET;
+      return Images.RED_RANGED_IMAGE_SHEET;
     }
   }
   public static class BlueRangedMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
@@ -152,13 +152,26 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   public static class RedMeleeMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage() {
-      return Images.RED_SLAYER_IMAGE_SHEET;
-    }
+      return Images.RED_MELEE_IMAGE_SHEET;
+    } // TODO
   }
   public static class BlueMeleeMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage() {
-      return Images.BLUE_SLAYER_IMAGE_SHEET;
+      return Images.BLUE_MELEE_IMAGE_SHEET;
+    } // TODO
+  }
+
+  public static class RedSiegeMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+    @Override
+    Image getImage() {
+      return Images.RED_SIEGE_IMAGE_SHEET;
+    }
+  }
+  public static class BlueSiegeMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+    @Override
+    Image getImage() {
+      return Images.BLUE_SIEGE_IMAGE_SHEET;
     }
   }
 

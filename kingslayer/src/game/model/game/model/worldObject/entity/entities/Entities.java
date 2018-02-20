@@ -38,7 +38,7 @@ public class Entities {
             new CircleHitbox(0.3),
             ImageDrawStrat.TREASURE_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON,
-                NopDeathStrat.SINGLETON);
+            NopDeathStrat.SINGLETON);
     }
 
     public static Entity makeTree(double x, double y) {
@@ -50,7 +50,7 @@ public class Entities {
             CellHitbox.SINGLETON,
             ImageDrawStrat.TREE_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON,
-                NopDeathStrat.SINGLETON); // TODO death
+            NopDeathStrat.SINGLETON); // TODO death
     }
 
     public static Entity makeStone(double x, double y) {
@@ -62,7 +62,7 @@ public class Entities {
             CellHitbox.SINGLETON,
             ImageDrawStrat.STONE_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON,
-                NopDeathStrat.SINGLETON); // TODO death
+            NopDeathStrat.SINGLETON); // TODO death
     }
 
     public static Entity makeMetal(double x, double y) {
@@ -74,7 +74,7 @@ public class Entities {
             CellHitbox.SINGLETON,
             ImageDrawStrat.METAL_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON,
-                NopDeathStrat.SINGLETON); // TODO death
+            NopDeathStrat.SINGLETON); // TODO death
     }
 
     public static Entity makeWall(double x, double y) {
@@ -86,7 +86,7 @@ public class Entities {
             CellHitbox.SINGLETON,
             ImageDrawStrat.WALL_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON,
-                NopDeathStrat.SINGLETON);
+            NopDeathStrat.SINGLETON);
     }
 
     public static Entity makeBox(double x, double y) {
@@ -98,7 +98,7 @@ public class Entities {
             CellHitbox.SINGLETON,
             ImageDrawStrat.BOX_IMAGE_DRAW_STRAT,
             AIDoNothingStrat.SINGLETON,
-                NopDeathStrat.SINGLETON);
+            NopDeathStrat.SINGLETON);
     }
 
     public static Entity makeBuiltWall(double x, double y) {
@@ -110,7 +110,7 @@ public class Entities {
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.BUILDABLE_WOOD_WALL,
             AIDoNothingStrat.SINGLETON,
-                RemoveOnDeathStrat.SINGLETON);
+            RemoveOnDeathStrat.SINGLETON);
     }
 
     public static Entity makeGhostWall(double x, double y) {
@@ -122,149 +122,84 @@ public class Entities {
             CellHitbox.SINGLETON,
             GhostDrawStrat.GHOSTWALL,//ImageDrawStrat.WALL_BUILDABLE_IMAGE_DRAW_STRAT,//GhostDrawStrat.GHOSTWALL,
             AIDoNothingStrat.SINGLETON,
-                NopDeathStrat.SINGLETON);
+            NopDeathStrat.SINGLETON);
     }
 
-    public static Entity makeResourceCollectorRed(double x, double y) {
+    public static Entity makeResourceCollector(double x, double y, Team team) {
         return new Entity(x, y, 100,
-            Team.ONE,
+            team,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.RED_WOOD_RESOURCE_COLLECTOR,
+            team == Team.ONE ?
+                UpgradableImageDrawStrat.RED_WOOD_RESOURCE_COLLECTOR : UpgradableImageDrawStrat.BLUE_WOOD_RESOURCE_COLLECTOR,
             AIDoNothingStrat.SINGLETON,
-                RemoveOnDeathStrat.SINGLETON); // TODO DEATH
+            RemoveOnDeathStrat.SINGLETON); // TODO DEATH
     }
 
-    public static Entity makeResourceCollectorRedGhost(double x, double y) {
+    public static Entity makeResourceCollectorGhost(double x, double y, Team team) {
         return new Entity(x, y, Double.POSITIVE_INFINITY,
-            Team.NEUTRAL,
+            team,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            GhostDrawStrat.GHOST_RED_COLLECTOR,
+            team == Team.ONE ?
+                GhostDrawStrat.GHOST_RED_COLLECTOR : GhostDrawStrat.GHOST_BLUE_COLLECTOR,
             AIDoNothingStrat.SINGLETON,
-                NopDeathStrat.SINGLETON);
+            NopDeathStrat.SINGLETON);
     }
 
-    public static Entity makeResourceCollectorBlue(double x, double y) {
+    public static Entity makeRangedBarracks(double x, double y, Team team) {
         return new Entity(x, y, 100,
-            Team.TWO,
+            team,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.BLUE_WOOD_RESOURCE_COLLECTOR,
-            AIDoNothingStrat.SINGLETON,
-                RemoveOnDeathStrat.SINGLETON); // TODO death
-    }
-
-    public static Entity makeResourceCollectorBlueGhost(double x, double y) {
-        return new Entity(x, y, Double.POSITIVE_INFINITY,
-            Team.NEUTRAL,
-            Role.NEUTRAL,
-            StillStrat.SINGLETON,
-            GhostCollisionStrat.SINGLETON,
-            CellHitbox.SINGLETON,
-            GhostDrawStrat.GHOST_BLUE_COLLECTOR,
-            AIDoNothingStrat.SINGLETON,
-                NopDeathStrat.SINGLETON);
-    }
-
-    public static Entity makeRedBarracks(double x, double y) {
-        return new Entity(x, y, 100,
-            Team.ONE,
-            Role.NEUTRAL,
-            StillStrat.SINGLETON,
-            HardCollisionStrat.SINGLETON,
-            CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.RED_WOOD_RANGED_BARRACKS,
-            BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
-                RemoveOnDeathStrat.SINGLETON);
-    }
-
-    public static Entity makeRedBarracksGhost(double x, double y) {
-        return new Entity(x, y, 100,
-            Team.ONE,
-            Role.NEUTRAL,
-            StillStrat.SINGLETON,
-            GhostCollisionStrat.SINGLETON,
-            CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.RED_WOOD_RANGED_BARRACKS,
+            team == Team.ONE ?
+                UpgradableImageDrawStrat.RED_WOOD_RANGED_BARRACKS : UpgradableImageDrawStrat.BLUE_WOOD_RANGED_BARRACKS,
             BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON);
     }
 
-    public static Entity makeBlueBarracks(double x, double y) {
+    public static Entity makeRangedBarracksGhost(double x, double y, Team team) {
         return new Entity(x, y, 100,
-            Team.TWO,
-            Role.NEUTRAL,
-            StillStrat.SINGLETON,
-                HardCollisionStrat.SINGLETON,
-            CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.BLUE_WOOD_RANGED_BARRACKS,
-            BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
-                RemoveOnDeathStrat.SINGLETON);
-    }
-    public static Entity makeBlueBarracksGhost(double x, double y) {
-        return new Entity(x, y, 100,
-            Team.TWO,
+            team,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.BLUE_WOOD_RANGED_BARRACKS,
-            BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
+            team == Team.ONE ?
+                UpgradableImageDrawStrat.RED_WOOD_RANGED_BARRACKS : UpgradableImageDrawStrat.BLUE_WOOD_RANGED_BARRACKS,
+            AIDoNothingStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON);
     }
 
-    public static Entity makeRedArrowTower(double x, double y) {
+    public static Entity makeArrowTower(double x, double y, Team team) {
         return new Entity(x, y, 100,
-            Team.ONE,
+            team,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
-                HardCollisionStrat.SINGLETON,
+            HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.RED_WOOD_ARROW_TOWER,
-                BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON,
-                RemoveOnDeathStrat.SINGLETON);
-    }
-
-    public static Entity makeRedArrowTowerGhost(double x, double y) {
-        return new Entity(x, y, 100,
-            Team.ONE,
-            Role.NEUTRAL,
-            StillStrat.SINGLETON,
-            GhostCollisionStrat.SINGLETON,
-            CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.RED_WOOD_ARROW_TOWER,
+            team == Team.ONE ?
+                UpgradableImageDrawStrat.RED_WOOD_ARROW_TOWER : UpgradableImageDrawStrat.BLUE_WOOD_ARROW_TOWER,
             BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON);
     }
 
-    public static Entity makeBlueArrowTower(double x, double y) {
+    public static Entity makeArrowTowerGhost(double x, double y, Team team) {
         return new Entity(x, y, 100,
-            Team.TWO,
-            Role.NEUTRAL,
-            StillStrat.SINGLETON,
-                HardCollisionStrat.SINGLETON,
-            CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.BLUE_WOOD_ARROW_TOWER,
-                BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON,
-                RemoveOnDeathStrat.SINGLETON);
-    }
-
-    public static Entity makeBlueArrowTowerGhost(double x, double y) {
-        return new Entity(x, y, 100,
-            Team.TWO,
+            team,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.BLUE_WOOD_ARROW_TOWER,
-            BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON,
+            team == Team.ONE ?
+                UpgradableImageDrawStrat.RED_WOOD_ARROW_TOWER : UpgradableImageDrawStrat.BLUE_WOOD_ARROW_TOWER,
+            AIDoNothingStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON);
     }
 
