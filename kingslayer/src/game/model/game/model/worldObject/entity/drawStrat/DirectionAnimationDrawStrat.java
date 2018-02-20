@@ -14,6 +14,7 @@ import java.util.Scanner;
 
 import javafx.scene.paint.Color;
 
+import static java.lang.Math.decrementExact;
 import static util.Util.toDrawCoords;
 import static java.lang.Math.PI;
 
@@ -23,15 +24,12 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   public int height = 32;
   public int width = 32;
 
-  public static final DirectionAnimationDrawStrat RED_KING_ANIMATION = new RedKingDirectionAnimationDrawStrat();
-  public static final DirectionAnimationDrawStrat BLUE_KING_ANIMATION = new BlueKingDirectionAnimationDrawStrat();
-  public static final DirectionAnimationDrawStrat RED_SLAYER_ANIMATION = new RedSlayerDirectionAnimationDrawStrat();
-  public static final DirectionAnimationDrawStrat BLUE_SLAYER_ANIMATION = new BlueSlayerDirectionAnimationDrawStrat();
+  public static final DirectionAnimationDrawStrat KING_ANIMATION = new KingDirectionAnimationDrawStrat();
+  public static final DirectionAnimationDrawStrat SLAYER_ANIMATION = new SlayerDirectionAnimationDrawStrat();
 
-  public static final DirectionAnimationDrawStrat RED_RANGED_ANIMATION = new RedRangedMinionDirectionAnimationDrawStrat();
-  public static final DirectionAnimationDrawStrat BLUE_RANGED_ANIMATION = new BlueRangedMinionDirectionAnimationDrawStrat();
-  public static final DirectionAnimationDrawStrat RED_MELEE_ANIMATION = new RedMeleeMinionDirectionAnimationDrawStrat();
-  public static final DirectionAnimationDrawStrat BLUE_MELEE_ANIMATION = new BlueMeleeMinionDirectionAnimationDrawStrat();
+  public static final DirectionAnimationDrawStrat RANGED_ANIMATION = new RangedMinionDirectionAnimationDrawStrat();
+  public static final DirectionAnimationDrawStrat MELEE_ANIMATION = new MeleeMinionDirectionAnimationDrawStrat();
+  public static final DirectionAnimationDrawStrat RESOURCE_MINION_ANIMATION = new ResourceMinionDirectionAnimationDrawStrat();
 
   /**
    * Key for figuring out which piece of the character sheet is needed for
@@ -63,12 +61,12 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     return null;
   }
 
-  abstract Image getImage();
+  abstract Image getImage(Entity entity);
 
   public void draw(Entity entity, GraphicsContext gc) {
     try {
       Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
-      gc.drawImage(this.getImage(),
+      gc.drawImage(this.getImage(entity),
               toDrawCoords(p.x),
               toDrawCoords(p.y),
               width,
@@ -112,66 +110,89 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     return entity.y;
   }
 
-  public static class RedKingDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+  public static class KingDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
-    Image getImage() {
-      return Images.RED_KING_IMAGE_SHEET;
-    }
-  }
-  public static class BlueKingDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
-    @Override
-    Image getImage() {
-      return Images.BLUE_KING_IMAGE_SHEET;
-    }
-  }
-  public static class RedSlayerDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
-    @Override
-    Image getImage() {
-      return Images.RED_SLAYER_IMAGE_SHEET;
-    }
-  }
-  public static class BlueSlayerDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
-    @Override
-    Image getImage() {
-      return Images.BLUE_SLAYER_IMAGE_SHEET;
+    Image getImage(Entity entity) {
+      switch (entity.team) {
+        case ONE:
+          return Images.RED_KING_IMAGE_SHEET;
+        case TWO:
+          return Images.BLUE_KING_IMAGE_SHEET;
+        default:
+          return null;
+      }
     }
   }
 
-  public static class RedRangedMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+  public static class SlayerDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
-    Image getImage() {
-      return Images.RED_RANGED_IMAGE_SHEET;
+    Image getImage(Entity entity) {
+      switch (entity.team) {
+        case ONE:
+          return Images.RED_SLAYER_IMAGE_SHEET;
+        case TWO:
+          return Images.BLUE_SLAYER_IMAGE_SHEET;
+        default:
+          return null;
+      }
     }
   }
-  public static class BlueRangedMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+
+  public static class RangedMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
-    Image getImage() {
-      return Images.BLUE_RANGED_IMAGE_SHEET;
+    Image getImage(Entity entity) {
+      switch (entity.team) {
+        case ONE:
+          return Images.RED_RANGED_IMAGE_SHEET;
+        case TWO:
+          return Images.BLUE_RANGED_IMAGE_SHEET;
+        default:
+          return null;
+      }
     }
   }
-  public static class RedMeleeMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+
+  public static class MeleeMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
-    Image getImage() {
-      return Images.RED_MELEE_IMAGE_SHEET;
-    } // TODO
-  }
-  public static class BlueMeleeMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
-    @Override
-    Image getImage() {
-      return Images.BLUE_MELEE_IMAGE_SHEET;
+    Image getImage(Entity entity) {
+      switch (entity.team) {
+        case ONE:
+          return Images.RED_MELEE_IMAGE_SHEET;
+        case TWO:
+          return Images.BLUE_MELEE_IMAGE_SHEET;
+        default:
+          return null;
+      }
     } // TODO
   }
 
-  public static class RedSiegeMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+  public static class SiegeMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
-    Image getImage() {
-      return Images.RED_SIEGE_IMAGE_SHEET;
+    Image getImage(Entity entity) {
+      switch (entity.team) {
+        case ONE:
+          return Images.RED_SIEGE_IMAGE_SHEET;
+        case TWO:
+          return Images.BLUE_SIEGE_IMAGE_SHEET;
+        default:
+          return null;
+      }
+
     }
   }
-  public static class BlueSiegeMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+
+  public static class ResourceMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
-    Image getImage() {
-      return Images.BLUE_SIEGE_IMAGE_SHEET;
+    Image getImage(Entity entity) {
+      switch (entity.team) {
+        case ONE:
+          return Images.RED_RESOURCE_MINION_IMAGE_SHEET;
+        case TWO:
+          return Images.BLUE_RESOURCE_MIONION_IMAGE_SHEET;
+        default:
+          return null;
+      }
+
     }
   }
 
