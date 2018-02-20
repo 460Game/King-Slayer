@@ -31,9 +31,6 @@ public class ServerGameModel extends GameModel {
 
     private Map<? extends Model, PlayerInfo> clientToPlayerInfo;
 
-
-    private int counter = 0; // GARBAGE
-
     Thread updateThread;
 
     int tmpMark;
@@ -178,30 +175,6 @@ public class ServerGameModel extends GameModel {
              //   } catch (InterruptedException e) {
              //       e.printStackTrace();
              //   }
-
-            counter++;
-
-            if (counter > 500) {
-                int resourcesRed = 0;
-                for (Entity e : this.getAllEntities()) {
-                    if (e.team == Team.ONE && e.role == Role.NEUTRAL) {
-                        resourcesRed++;
-                    }
-                }
-//                System.out.println("Red: " + resourcesRed);
-                changeResource(Team.ONE, TeamResourceData.Resource.WOOD, resourcesRed);
-
-                int resourcesBlue = 0;
-                for (Entity e : this.getAllEntities()) {
-                    if (e.team == Team.TWO && e.role == Role.NEUTRAL) {
-                        resourcesBlue++;
-                    }
-                }
-//                System.out.println("Blue: " + resourcesBlue);
-                changeResource(Team.TWO, TeamResourceData.Resource.WOOD, resourcesBlue);
-
-                counter = 0;
-            }
 
             for(Model model : clients) {
                 model.processMessage(new UpdateResourceCommand(teamData.get(clientToPlayerInfo.get(model).getTeam()))); //TEMPORARY GARBAGE

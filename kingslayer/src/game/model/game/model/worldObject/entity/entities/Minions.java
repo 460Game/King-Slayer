@@ -25,7 +25,7 @@ public class Minions {
               MovingStrat.SINGLETON,
               UnitCollisionStrat.SINGLETON,
               hitbox,
-              team == Team.ONE ? DirectionAnimationDrawStrat.RED_RANGED_ANIMATION : DirectionAnimationDrawStrat.BLUE_RANGED_ANIMATION,
+              DirectionAnimationDrawStrat.RANGED_ANIMATION,
               MinionStrat.RangedMinionStrat.SINGLETON,
               RemoveOnDeathStrat.SINGLETON);
     }
@@ -37,7 +37,19 @@ public class Minions {
         MovingStrat.SINGLETON,
         UnitCollisionStrat.SINGLETON,
         hitbox,
-        team == Team.ONE ? DirectionAnimationDrawStrat.RED_MELEE_ANIMATION : DirectionAnimationDrawStrat.BLUE_MELEE_ANIMATION,
+        DirectionAnimationDrawStrat.MELEE_ANIMATION,
+        MinionStrat.RangedMinionStrat.SINGLETON,
+        RemoveOnDeathStrat.SINGLETON);
+  }
+
+  public static Entity makeResourceMinion(double x, double y, Team team) {
+    return new Entity(x, y, 100,
+        team,
+        Role.NEUTRAL,
+        MovingStrat.SINGLETON,
+        UnitCollisionStrat.SINGLETON,
+        hitbox,
+        DirectionAnimationDrawStrat.RESOURCE_MINION_ANIMATION,
         MinionStrat.RangedMinionStrat.SINGLETON,
         RemoveOnDeathStrat.SINGLETON);
   }

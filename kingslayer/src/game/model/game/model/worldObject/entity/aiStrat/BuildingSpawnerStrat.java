@@ -53,6 +53,26 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
     }
 
+    public static class ResourceCollectorBuildingSpawnerStrat extends BuildingSpawnerStrat {
+
+        public static final ResourceCollectorBuildingSpawnerStrat SINGLETON = new ResourceCollectorBuildingSpawnerStrat();
+
+        @Override
+        double timeBetweenSpawns() {
+            return 5;
+        }
+
+        @Override
+        int maxActive() {
+            return 5;
+        }
+
+        @Override
+        Entity makeEntity(double x, double y, Team team) {
+            return Minions.makeResourceMinion(x, y, team);
+        }
+    }
+
 
     public static class TowerBuildingSpawnerStrat extends BuildingSpawnerStrat {
 

@@ -1,5 +1,6 @@
 package game.model.game.map;
 
+import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Entities;
 import game.model.game.model.worldObject.entity.entities.Players;
@@ -78,10 +79,10 @@ public class ServerMapGenerator implements MapGenerator {
         grass2(Tile.GRASS_2, null),
         barrier(Tile.GRASS_0, Entities::makeBox),
         unset(null, null),
-        startKingA(Tile.PATH, Players::makeKingA),
-        startSlayerA(Tile.PATH, Players::makeSlayerA),
-        startKingB(Tile.PATH, Players::makeKingB),
-        startSlayerB(Tile.PATH, Players::makeSlayerB),
+        startKingA(Tile.PATH, (x, y) -> Players.makeKing(x, y, Team.ONE)),
+        startSlayerA(Tile.PATH, (x, y) -> Players.makeSlayer(x, y, Team.ONE)),
+        startKingB(Tile.PATH, (x, y) -> Players.makeKing(x, y, Team.TWO)),
+        startSlayerB(Tile.PATH, (x, y) -> Players.makeSlayer(x, y, Team.TWO)),
         bridge(Tile.SHALLOW_WATER, null),
         road(Tile.PATH, null);
 
