@@ -133,7 +133,7 @@ public class Entities {
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
             UpgradableImageDrawStrat.WOOD_RESOURCE_COLLECTOR,
-            AIDoNothingStrat.SINGLETON,
+            BuildingSpawnerStrat.ResourceCollectorBuildingSpawnerStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON); // TODO DEATH
     }
 
