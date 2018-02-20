@@ -11,23 +11,21 @@ import static util.Util.toDrawCoords;
 public class UpgradableImageDrawStrat extends ImageDrawStrat {
 
   public static final UpgradableImageDrawStrat BUILDABLE_WOOD_WALL = new BuildableWall(0);
-  public static final UpgradableImageDrawStrat RED_WOOD_RESOURCE_COLLECTOR = new RedResourceCollectorImageDrawStrat(0);
-  public static final UpgradableImageDrawStrat BLUE_WOOD_RESOURCE_COLLECTOR = new BlueResourceCollectorImageDrawStrat(0);
-  public static final UpgradableImageDrawStrat RED_WOOD_RANGED_BARRACKS = new RedRangedBarracksImageDrawStrat(0);
-  public static final UpgradableImageDrawStrat BLUE_WOOD_RANGED_BARRACKS = new BlueRangedBarracksImageDrawStrat(0);
-  public static final UpgradableImageDrawStrat RED_WOOD_ARROW_TOWER = new RedArrowTowerImageDrawStrat(0);
-  public static final UpgradableImageDrawStrat BLUE_WOOD_ARROW_TOWER = new BlueArrowTowerImageDrawStrat(0);
+  public static final UpgradableImageDrawStrat WOOD_RESOURCE_COLLECTOR = new ResourceCollectorImageDrawStrat(0);
+  public static final UpgradableImageDrawStrat WOOD_RANGED_BARRACKS = new RangedBarracksImageDrawStrat(0);
+  public static final UpgradableImageDrawStrat WOOD_ARROW_TOWER = new ArrowTowerImageDrawStrat(0);
 
-  public static final UpgradableImageDrawStrat RED_STONE_RESOURCE_COLLECTOR = new RedResourceCollectorImageDrawStrat(1);
-  public static final UpgradableImageDrawStrat BLUE_STONE_RESOURCE_COLLECTOR = new BlueResourceCollectorImageDrawStrat(1);
-  public static final UpgradableImageDrawStrat RED_STONE_RANGED_BARRACKS = new RedRangedBarracksImageDrawStrat(1);
-  public static final UpgradableImageDrawStrat BLUE_STONE_RANGED_BARRACKS = new BlueRangedBarracksImageDrawStrat(1);
-  public static final UpgradableImageDrawStrat RED_STONE_ARROW_TOWER = new RedArrowTowerImageDrawStrat(1);
-  public static final UpgradableImageDrawStrat BLUE_STONE_ARROW_TOWER = new BlueArrowTowerImageDrawStrat(1);
+  public static final UpgradableImageDrawStrat STONE_RESOURCE_COLLECTOR = new ResourceCollectorImageDrawStrat(1);
+  public static final UpgradableImageDrawStrat STONE_RANGED_BARRACKS = new RangedBarracksImageDrawStrat(1);
+  public static final UpgradableImageDrawStrat STONE_ARROW_TOWER = new ArrowTowerImageDrawStrat(1);
 
   int tier;
 
   public UpgradableImageDrawStrat() {}
+
+  public Image getImage(Entity entity) {
+    return null;
+  }
 
   @Override
   public void draw(Entity entity, GraphicsContext gc) {
@@ -36,7 +34,7 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
     double x = w - this.getCenterX();
     double y = h - this.getCenterY();
 
-    gc.drawImage(getImage(),
+    gc.drawImage(getImage(entity),
         toDrawCoords(w) * tier,
         0,
         toDrawCoords(w),
@@ -92,80 +90,62 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
     }
   }
 
-  public static class RedResourceCollectorImageDrawStrat extends UpgradableImageDrawStrat {
+  public static class ResourceCollectorImageDrawStrat extends UpgradableImageDrawStrat {
     @Override
-    Image getImage() {
-      return Images.RED_RESOURCE_COLLECTORS_IMAGE;
+    public Image getImage(Entity entity) {
+      switch (entity.team) {
+        case ONE:
+          return Images.RED_RESOURCE_COLLECTORS_IMAGE;
+        case TWO:
+          return Images.BLUE_RESOURCE_COLLECTORS_IMAGE;
+        default:
+          return null;
+      }
     }
 
-    private RedResourceCollectorImageDrawStrat() {}
+    private ResourceCollectorImageDrawStrat() {}
 
-    private RedResourceCollectorImageDrawStrat(int tier) {
+    private ResourceCollectorImageDrawStrat(int tier) {
       this.tier = tier;
     }
   }
 
-  public static class BlueResourceCollectorImageDrawStrat extends UpgradableImageDrawStrat {
+  public static class RangedBarracksImageDrawStrat extends UpgradableImageDrawStrat {
     @Override
-    Image getImage() {
-      return Images.BLUE_RESOURCE_COLLECTORS_IMAGE;
+    public Image getImage(Entity entity) {
+      switch (entity.team) {
+        case ONE:
+          return Images.RED_BARRACKS_IMAGE;
+        case TWO:
+          return Images.BLUE_BARRACKS_IMAGE;
+        default:
+          return null;
+      }
     }
 
-    private BlueResourceCollectorImageDrawStrat() {}
+    private RangedBarracksImageDrawStrat() {}
 
-    private BlueResourceCollectorImageDrawStrat(int tier) {
-
-    }
-  }
-
-  public static class RedRangedBarracksImageDrawStrat extends UpgradableImageDrawStrat {
-    @Override
-    Image getImage() {
-      return Images.RED_BARRACKS_IMAGE;
-    }
-
-    private RedRangedBarracksImageDrawStrat() {}
-
-    private RedRangedBarracksImageDrawStrat(int tier) {
+    private RangedBarracksImageDrawStrat(int tier) {
       this.tier = tier;
     }
   }
 
-  public static class BlueRangedBarracksImageDrawStrat extends UpgradableImageDrawStrat {
+  public static class ArrowTowerImageDrawStrat extends UpgradableImageDrawStrat {
     @Override
-    Image getImage() {
-      return Images.BLUE_BARRACKS_IMAGE;
+    public Image getImage(Entity entity) {
+      switch (entity.team) {
+        case ONE:
+          return Images.RED_ARROW_TOWER_IMAGE;
+        case TWO:
+          return Images.BLUE_ARROW_TOWER_IMAGE;
+        default:
+          return null;
+      }
     }
 
-    private BlueRangedBarracksImageDrawStrat() {}
+    private ArrowTowerImageDrawStrat() {}
 
-    private BlueRangedBarracksImageDrawStrat(int tier) {
-      this.tier = tier;
-    }
-  }
-
-  public static class RedArrowTowerImageDrawStrat extends UpgradableImageDrawStrat {
-    @Override
-    Image getImage() {
-      return Images.RED_ARROW_TOWER_IMAGE;
-    }
-
-    private RedArrowTowerImageDrawStrat() {}
-
-    private RedArrowTowerImageDrawStrat(int tier) {
-      this.tier = tier;
-    }
-  }
-
-  public static class BlueArrowTowerImageDrawStrat extends UpgradableImageDrawStrat {
-    @Override
-    Image getImage() {
-      return Images.BLUE_ARROW_TOWER_IMAGE;
-    }
-
-    private BlueArrowTowerImageDrawStrat() {}
-
-    private BlueArrowTowerImageDrawStrat(int tier) {
+    private ArrowTowerImageDrawStrat(int tier) {
       this.tier = tier;
     }
   }

@@ -132,8 +132,7 @@ public class Entities {
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            team == Team.ONE ?
-                UpgradableImageDrawStrat.RED_WOOD_RESOURCE_COLLECTOR : UpgradableImageDrawStrat.BLUE_WOOD_RESOURCE_COLLECTOR,
+            UpgradableImageDrawStrat.WOOD_RESOURCE_COLLECTOR,
             AIDoNothingStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON); // TODO DEATH
     }
@@ -145,8 +144,7 @@ public class Entities {
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            team == Team.ONE ?
-                GhostDrawStrat.GHOST_RED_COLLECTOR : GhostDrawStrat.GHOST_BLUE_COLLECTOR,
+            GhostDrawStrat.GHOST_COLLECTOR,
             AIDoNothingStrat.SINGLETON,
             NopDeathStrat.SINGLETON);
     }
@@ -158,8 +156,7 @@ public class Entities {
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            team == Team.ONE ?
-                UpgradableImageDrawStrat.RED_WOOD_RANGED_BARRACKS : UpgradableImageDrawStrat.BLUE_WOOD_RANGED_BARRACKS,
+            UpgradableImageDrawStrat.WOOD_RANGED_BARRACKS,
             BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON);
     }
@@ -171,8 +168,7 @@ public class Entities {
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            team == Team.ONE ?
-                UpgradableImageDrawStrat.RED_WOOD_RANGED_BARRACKS : UpgradableImageDrawStrat.BLUE_WOOD_RANGED_BARRACKS,
+            UpgradableImageDrawStrat.WOOD_RANGED_BARRACKS,
             AIDoNothingStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON);
     }
@@ -184,8 +180,7 @@ public class Entities {
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            team == Team.ONE ?
-                UpgradableImageDrawStrat.RED_WOOD_ARROW_TOWER : UpgradableImageDrawStrat.BLUE_WOOD_ARROW_TOWER,
+            UpgradableImageDrawStrat.WOOD_ARROW_TOWER,
             BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON);
     }
@@ -197,8 +192,7 @@ public class Entities {
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            team == Team.ONE ?
-                UpgradableImageDrawStrat.RED_WOOD_ARROW_TOWER : UpgradableImageDrawStrat.BLUE_WOOD_ARROW_TOWER,
+            UpgradableImageDrawStrat.WOOD_ARROW_TOWER,
             AIDoNothingStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON);
     }
