@@ -25,15 +25,18 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
         // Server stops the arrow and removes it from the game. Entity b loses an
         // appropriate amount of health. All servers update entity b's health.
         // As a precaution, on the client side, stop the arrow and remove it from the game.
-        model.execute((server) -> {
-            a.data.updateData.velocity.setMagnitude(0);
-            a.entityDie(server);
-            b.decreaseHealthBy(model, 5);
-            server.getClients().forEach(client -> client.processMessage(new SetEntityCommand(b)));
-        }, (client) -> {
-            a.data.updateData.velocity.setMagnitude(0);
-            a.entityDie(client);
-        });
+        if (a.team != b.team) {
+            model.execute((server) -> {
+                a.data.updateData.velocity.setMagnitude(0);
+                a.entityDie(server);
+                b.decreaseHealthBy(model, 5);
+                server.getClients().forEach(client -> client.processMessage(new SetEntityCommand(b)));
+            }, (client) -> {
+                a.data.updateData.velocity.setMagnitude(0);
+                a.entityDie(client);
+            });
+        }
+        // TODO should arrows go through minions/teammates
     }
 
     @Override
@@ -51,8 +54,10 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
     public void collisionHard(GameModel model, Entity a, Entity b) {
         // Both the client and server stops the arrow and removes it from the game.
 
-        if (b.getHealth() != Double.POSITIVE_INFINITY)
-            b.decreaseHealthBy(model, 5); // TODO CHANGE THIS
+        if (a.team != b.team) {
+            if (b.getHealth() != Double.POSITIVE_INFINITY)
+                b.decreaseHealthBy(model, 5); // TODO CHANGE THIS
+        }
         a.data.updateData.velocity.setMagnitude(0);
         a.entityDie(model);
     }

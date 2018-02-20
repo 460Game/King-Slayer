@@ -199,9 +199,10 @@ public class Entities {
 
     private static final Hitbox ARROW_HITBOX = new CircleHitbox(0.2);
 
-    public static Entity makeArrow(double x, double y, double angle) {
+    public static Entity makeArrow(double x, double y, double angle, Team team) {
         Entity arrow = new Entity(x, y, Double.POSITIVE_INFINITY,
-                Team.NEUTRAL,
+//                Team.NEUTRAL,
+                team,
                 Role.NEUTRAL,
                 MovingStrat.SINGLETON,
                 ArrowCollisionStrat.SINGLETON,

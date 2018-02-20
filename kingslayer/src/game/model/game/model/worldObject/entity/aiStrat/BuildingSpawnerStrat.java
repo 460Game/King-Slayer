@@ -71,7 +71,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         @Override
         Entity makeEntity(double x, double y, Team team) {
             double dir = Util.random.nextDouble() * 2 * Math.PI;
-            return Entities.makeArrow(x + cos(dir), y + sin(dir), dir);
+            return Entities.makeArrow(x + cos(dir), y + sin(dir), dir, team);
         }
     }
 

@@ -79,7 +79,7 @@ public class GameInteractionLayer extends Region  {
                     model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
                         model.getLocalPlayer().data.x + 0.56 * Math.cos(angle),
                         model.getLocalPlayer().data.y + 0.56 * Math.sin(angle),
-                        angle));
+                        angle, model.getLocalPlayer().team));
 
                     // TODO problem when player running into own arrow
                 }

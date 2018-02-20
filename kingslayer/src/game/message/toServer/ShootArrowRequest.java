@@ -1,6 +1,7 @@
 package game.message.toServer;
 
 import game.model.game.model.ServerGameModel;
+import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Entities;
 
@@ -31,17 +32,23 @@ public class ShootArrowRequest extends ActionRequest {
     private double y;
 
     /**
+     * Team that made the shoot arrow request.
+     */
+    private Team team;
+
+    /**
      * Constructor for a message, given an id.
      * @param id id of the entity wanting to shoot the arrow.
      * @param x x-coordinate of the arrow
      * @param y y-coordinate of the arrow
      * @param angle angle of movement of the arrow
      */
-    public ShootArrowRequest(long id, double x, double y, double angle) {
+    public ShootArrowRequest(long id, double x, double y, double angle, Team team) {
         this.id = id;
         this.angle = angle;
         this.x = x;
         this.y = y;
+        this.team = team;
     }
 
     /**
@@ -55,7 +62,7 @@ public class ShootArrowRequest extends ActionRequest {
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        Entity arrow = Entities.makeArrow(x + 0.5 * Math.cos(angle), y + 0.5 * Math.sin(angle), angle);
+        Entity arrow = Entities.makeArrow(x - 0.5 * Math.cos(angle), y - 0.5 * Math.sin(angle), angle, team);
         model.makeEntity(arrow);
     }
 }
