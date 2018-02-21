@@ -68,7 +68,7 @@ public class Entities {
         return new Entity(x, y,
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
-                pair(HEALTH, 100),
+                pair(HEALTH, 100.0),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.BUILDABLE_WOOD_WALL),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
     }
@@ -84,7 +84,7 @@ public class Entities {
         return new Entity(x, y,
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
-                pair(HEALTH, 100),
+                pair(HEALTH, 100.0),
                 pair(TEAM, team),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_RESOURCE_COLLECTOR),
                 pair(AI_STRAT, BuildingSpawnerStrat.ResourceCollectorBuildingSpawnerStrat.SINGLETON),
@@ -104,7 +104,7 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
-                pair(HEALTH, 100),
+                pair(HEALTH, 100.0),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.MeleeBarracksBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
@@ -115,7 +115,7 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
-                pair(HEALTH, 100),
+                pair(HEALTH, 100.0),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
@@ -126,7 +126,7 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
-                pair(HEALTH, 100),
+                pair(HEALTH, 100.0),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.SiegeBarracksBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
@@ -146,7 +146,7 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
-                pair(HEALTH, 100),
+                pair(HEALTH, 100.0),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_ARROW_TOWER),
                 pair(AI_STRAT, BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
