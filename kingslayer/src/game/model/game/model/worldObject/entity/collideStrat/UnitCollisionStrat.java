@@ -25,10 +25,10 @@ public class UnitCollisionStrat extends SoftCollisionStrat {
     public void collisionSoft(GameModel model, Entity a, Entity b) {
         //TODO should push away from other entity
         double collisionAngle = Util.angle2Points(a.data.x, a.data.y, b.data.x, b.data.y);
-        a.data.x -= 3 * Math.cos(collisionAngle) * NANOS_TO_SECONDS * a.timeDelta;
-        a.data.y -= 3 * Math.sin(collisionAngle) * NANOS_TO_SECONDS * a.timeDelta;
-        b.data.x += 3 * Math.cos(collisionAngle) * NANOS_TO_SECONDS * b.timeDelta;
-        b.data.y += 3 * Math.sin(collisionAngle) * NANOS_TO_SECONDS * b.timeDelta;
+        a.data.x -= 1.5 * Math.cos(collisionAngle) * NANOS_TO_SECONDS * a.timeDelta;
+        a.data.y -= 1.5 * Math.sin(collisionAngle) * NANOS_TO_SECONDS * a.timeDelta;
+        b.data.x += 1.5 * Math.cos(collisionAngle) * NANOS_TO_SECONDS * b.timeDelta;
+        b.data.y += 1.5 * Math.sin(collisionAngle) * NANOS_TO_SECONDS * b.timeDelta;
 
         if (a.team != b.team && !(a.team == Team.NEUTRAL || b.team == Team.NEUTRAL)) {
             a.decreaseHealthBy(model,  NANOS_TO_SECONDS * a.timeDelta);
