@@ -1,5 +1,6 @@
 package game.message.toClient;
 
+import game.model.game.map.Tile;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
@@ -27,6 +28,8 @@ public class InitGameCommand implements ToClientCommand {
      */
     private TeamRoleEntityMap map;
 
+    private Tile[][] gameMap;
+
     /**
      * Constructor for a message to initialize a game, given a client's team,
      * role, and mapping from team and role to ID.
@@ -34,10 +37,11 @@ public class InitGameCommand implements ToClientCommand {
      * @param role role of the client
      * @param map mapping from team and role to ID
      */
-    public InitGameCommand(Team team, Role role, TeamRoleEntityMap map) {
+    public InitGameCommand(Team team, Role role, TeamRoleEntityMap map, Tile[][] gameMap) {
         this.team = team;
         this.role = role;
         this.map = map;
+        this.gameMap = gameMap;
     }
 
     /**
@@ -53,6 +57,6 @@ public class InitGameCommand implements ToClientCommand {
      */
     @Override
     public void executeClient(ClientGameModel model) {
-        model.init(team, role, map);
+        model.init(team, role, map, gameMap);
     }
 }

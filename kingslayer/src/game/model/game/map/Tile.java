@@ -50,10 +50,7 @@ public enum Tile {
      */
     SHALLOW_WATER('B', Color.BROWN),
 
-    /**
-     * Fog tile.
-     */
-    FOG('?', Color.GRAY), UNSET('!', Color.BLACK);
+    UNSET('!', Color.BLACK);
 
     private Color color;
     public char tupleNum;

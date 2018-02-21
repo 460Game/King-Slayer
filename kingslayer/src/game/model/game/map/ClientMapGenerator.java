@@ -14,7 +14,7 @@ public class ClientMapGenerator implements MapGenerator {
 
     @Override
     public Tile makeTile(int i, int j) {
-        return Tile.FOG;
+        return Tile.UNSET;
     }
 
     @Override

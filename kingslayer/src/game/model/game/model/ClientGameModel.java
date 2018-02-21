@@ -4,6 +4,7 @@ import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.message.toServer.RequestEntityRequest;
 import game.model.game.map.ClientMapGenerator;
+import game.model.game.map.Tile;
 import game.model.game.model.gameState.GameState;
 import game.model.game.model.gameState.Loading;
 import game.model.game.model.gameState.Running;
@@ -19,8 +20,8 @@ public class ClientGameModel extends GameModel {
 
     private TeamResourceData resourceData = new TeamResourceData();
 
-    Team winningTeam = Team.NEUTRAL;
-    Team losingTeam = Team.NEUTRAL;
+    Team winningTeam = null;
+    Team losingTeam = null;
 
 
     public ClientGameModel(Model server) {
@@ -59,8 +60,11 @@ public class ClientGameModel extends GameModel {
             server.processMessage(m);
     }
 
-    public void init(Team team, Role role, TeamRoleEntityMap map) {
+    public void init(Team team, Role role, TeamRoleEntityMap map, Tile[][] gameMap) {
         this.setLocalPlayer(map.getEntity(team, role));
+        for(int x = 0; x < getMapWidth(); x++)
+            for(int y = 0; y < getMapHeight(); y++)
+                this.getCell(x,y).setTile(gameMap[x][y], this);
         state = Running.SINGLETON;
     }
 
@@ -84,12 +88,12 @@ public class ClientGameModel extends GameModel {
     }
 
     public void changeWinningTeam(Team team) {
-        if (winningTeam == getLocalPlayer().team) return; //already won
+        if (winningTeam == getLocalPlayer().getTeam()) return; //already won
         winningTeam = team;
     }
 
     public void changeLosingTeam(Team team) {
-        if (losingTeam == getLocalPlayer().team) return; //already lost
+        if (losingTeam == getLocalPlayer().getTeam()) return; //already lost
         losingTeam = team;
     }
 

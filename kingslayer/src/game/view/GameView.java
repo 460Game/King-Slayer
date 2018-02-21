@@ -101,7 +101,7 @@ public class GameView {
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                    if (model.getWinningTeam() == Team.NEUTRAL) {
+                    if (model.getWinningTeam() == null) {
                         worldPanel.setVisible(true);
                         resourcePanel.setVisible(true);
                         minimap.setVisible(true);
@@ -117,12 +117,12 @@ public class GameView {
                             actionPanel.update();
 
                             //TODO dont do this
-                            resourcePanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-                            minimap.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-                            infoPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-                            actionPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().team.color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+                            resourcePanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+                            minimap.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+                            infoPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+                            actionPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
 
-                    } else if (model.getWinningTeam() == model.getLocalPlayer().team) {
+                    } else if (model.getWinningTeam() == model.getLocalPlayer().getTeam()) {
                         teamWinPrompt.setVisible(true);
                         worldPanel.setVisible(false);
                         resourcePanel.setVisible(false);
@@ -174,9 +174,9 @@ public class GameView {
 
             if (kc == TAB) {
                 model.processMessage(new StopRequest(model.getLocalPlayer().id));
-                int role = (model.getLocalPlayer().role.val + 1) % 2;
+                int role = (model.getLocalPlayer().getRole().val + 1) % 2;
                 for (Entity entity : model.getAllEntities()) {
-                    if (entity.team == model.getLocalPlayer().team && entity.role.val == role) {
+                    if (entity.getTeam() == model.getLocalPlayer().getTeam() && entity.getRole().val == role) {
                         model.setLocalPlayer(entity.id);
                         break;
                     }

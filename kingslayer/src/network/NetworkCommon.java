@@ -12,15 +12,12 @@ import game.model.game.model.team.Role;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.EntityData;
-import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
 import game.model.game.model.worldObject.entity.aiStrat.BuildingSpawnerStrat;
 import game.model.game.model.worldObject.entity.aiStrat.MinionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.*;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.*;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.deathStrat.KingDeathStrat;
-import game.model.game.model.worldObject.entity.deathStrat.NopDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.RemoveOnDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.SlayerDeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
@@ -49,7 +46,6 @@ public class NetworkCommon {
         kryo.register(RemoveEntityCommand.class);
         kryo.register(EntityBuildRequest.class);
         kryo.register(SetEntityCommand.class);
-        kryo.register(SetTileCommand.class);
         kryo.register(ToClientCommand.class);
         kryo.register(ToServerRequest.class);
         kryo.register(ShootArrowRequest.class);
@@ -66,8 +62,6 @@ public class NetworkCommon {
         kryo.register(ClientStartModelMsg.class);
         kryo.register(ArrayList.class);
         kryo.register(SyncClockMsg.class);
-        kryo.register(EntityData.class);
-        kryo.register(UpdateData.class);
         kryo.register(Velocity.class);
         kryo.register(InitGameCommand.class);
         kryo.register(UpdateResourceCommand.class);
@@ -75,7 +69,6 @@ public class NetworkCommon {
         kryo.register(RequestEntityRequest.class);
         kryo.register(NewEntityCommand.class);
         kryo.register(Entity.class);
-        kryo.register(AIDoNothingStrat.class);
 
 
         kryo.register(ImageDrawStrat.WallImageDrawStrat.class);
@@ -101,18 +94,14 @@ public class NetworkCommon {
         kryo.register(AnimateDrawStrat.class);
         kryo.register(DrawStrat.class);
         kryo.register(ImageDrawStrat.class);
-        kryo.register(NoDrawStrat.class);
         kryo.register(ShapeDrawStrat.class);
         kryo.register(MovingStrat.class);
-        kryo.register(StillStrat.class);
-        kryo.register(UpdateData.class);
         kryo.register(UpdateStrat.class);
         kryo.register(StopRequest.class);
         kryo.register(InitGameCommand.class);
         kryo.register(NewEntityCommand.class);
         kryo.register(RemoveEntityCommand.class);
         kryo.register(SetEntityCommand.class);
-        kryo.register(SetTileCommand.class);
         kryo.register(ToClientCommand.class);
         kryo.register(UpdateResourceCommand.class);
         kryo.register(ActionRequest.class);
@@ -132,7 +121,6 @@ public class NetworkCommon {
         kryo.register(ClientFinishMakingModelMsg.class);
 
         kryo.register(TeamWinCommand.class);
-        kryo.register(NopDeathStrat.class);
         kryo.register(SlayerDeathStrat.class);
         kryo.register(MinionStrat.class);
         kryo.register(BuildingSpawnerStrat.class);

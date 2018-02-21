@@ -11,7 +11,7 @@ import game.model.game.model.worldObject.entity.EntityData;
 public class SetEntityCommand implements ToClientCommand {
 
     /**
-     * Data corresponding to the entity.
+     * EntityProperty corresponding to the entity.
      */
     private EntityData data;
 
@@ -32,7 +32,7 @@ public class SetEntityCommand implements ToClientCommand {
      * @param entity entity to be set
      */
     public SetEntityCommand(Entity entity) {
-        this.data = entity.data;
+        this.data = entity.getData();
         this.id = entity.id;
     }
 

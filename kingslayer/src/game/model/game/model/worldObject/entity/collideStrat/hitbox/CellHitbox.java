@@ -12,7 +12,7 @@ import java.util.Set;
 import static util.Util.toDrawCoords;
 
 /**
- * A hitbox that always takes up an entire cell, for entities that
+ * A getHitbox that always takes up an entire cell, for entities that
  * block an entire cell (boxes, walls, etc.).
  */
 public class CellHitbox extends Hitbox {
@@ -32,7 +32,7 @@ public class CellHitbox extends Hitbox {
 
     @Override
     public void drawShape(GraphicsContext gc, Entity entity) {
-        gc.fillRect(toDrawCoords(entity.data.x - 0.5), toDrawCoords(entity.data.y - 0.5), toDrawCoords(1), toDrawCoords(1));
+        gc.fillRect(toDrawCoords(entity.getX() - 0.5), toDrawCoords(entity.getY() - 0.5), toDrawCoords(1), toDrawCoords(1));
     }
 
     @Override

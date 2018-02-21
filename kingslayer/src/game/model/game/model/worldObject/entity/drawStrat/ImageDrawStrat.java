@@ -1,14 +1,9 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
-import com.esotericsoftware.minlog.Log;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.EntityData;
 import images.Images;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 
 import static util.Util.toDrawCoords;
 
@@ -46,14 +41,14 @@ public abstract class ImageDrawStrat extends DrawStrat {
         double y = h - this.getCenterY();
 
         gc.drawImage(getImage(),
-            toDrawCoords(entity.data.x - x),
-            toDrawCoords(entity.data.y - y),
+            toDrawCoords(entity.getX() - x),
+            toDrawCoords(entity.getY() - y),
             toDrawCoords(w),
             toDrawCoords(h));
     }
 
-    public double getDrawZ(EntityData entity) {
-        return entity.y;
+    public double getDrawZ(Entity entity) {
+        return entity.getY();
     }
 
     public ImageDrawStrat() {

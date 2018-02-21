@@ -4,6 +4,7 @@ import com.esotericsoftware.minlog.Log;
 import game.message.*;
 import game.message.toClient.*;
 import game.model.game.map.ServerMapGenerator;
+import game.model.game.map.Tile;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
@@ -15,24 +16,20 @@ import util.Const;
 import java.util.*;
 import java.util.function.Consumer;
 
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.TEAM;
 import static util.Const.*;
 
 public class ServerGameModel extends GameModel {
 
     public ServerGameModel() {
         super(new ServerMapGenerator(GRID_X_SIZE, GRID_Y_SIZE));
-        tmpMark = new Random().nextInt();
     }
 
     private Collection<? extends Model> clients = null;
 
-//    private Map<? extends Model, Pair<Team, Role>> clientToTeamRoleMap;
-
     private Map<? extends Model, PlayerInfo> clientToPlayerInfo;
 
-    Thread updateThread;
-
-    int tmpMark;
+    private Thread updateThread;
 
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
 
@@ -69,20 +66,12 @@ public class ServerGameModel extends GameModel {
 
         this.clients = clients;
         this.clientToPlayerInfo = clientToPlayerInfoMap;
-//        this.clientToTeamRoleMap = new HashMap<>();
-
-        // Send teamRoleEntityMap to client
-        for (Model client : clients)
-            for (int i = 0; i < this.getMapWidth(); i++)
-                for (int j = 0; j < this.getMapWidth(); j++) {
-                    client.processMessage(new SetTileCommand(i, j, this.getTile(i, j)));
-                }
 
         ArrayList<Entity> players = new ArrayList<>();
         for (Entity entity : this.getAllEntities()) {
-            if(entity.team != Team.NEUTRAL) { //TODO this is TEMPORARY
+            if(entity.has(TEAM)) { //TODO this is TEMPORARY
                 players.add(entity);
-                teamRoleEntityMap.setEntity(entity.team, entity.role, entity.id); // Only for players
+                teamRoleEntityMap.setEntity(entity.getTeam(), entity.getRole(), entity.id); // Only for players
             }
         }
 
@@ -90,11 +79,18 @@ public class ServerGameModel extends GameModel {
         for(Entity entity : this.getAllEntities())
             clients.forEach(client -> client.processMessage(new SetEntityCommand(entity)));
 
+        Tile[][] tiles = new Tile[getMapWidth()][getMapHeight()];
+        for(int x = 0; x <getMapWidth(); x++) {
+            for(int y = 0; y < getMapHeight(); y++) {
+                tiles[x][y] = this.getTile(x,y);
+            }
+        }
+
         // TODO @tian set each client to the role/team the want
         clients.forEach(client -> {
             Log.info("!!!!!!!client player: " + clientToPlayerInfo.get(client).getTeam() + clientToPlayerInfo.get(client).getRole());
             client.processMessage(new InitGameCommand(clientToPlayerInfo.get(client).getTeam(),
-                    clientToPlayerInfo.get(client).getRole(), teamRoleEntityMap));
+                    clientToPlayerInfo.get(client).getRole(), teamRoleEntityMap, tiles));
         });
 
         teamData.put(Team.ONE, new TeamResourceData());
@@ -103,14 +99,14 @@ public class ServerGameModel extends GameModel {
         int i = 0;
         // Send player to client
         for(Model model : clients) {
-            model.processMessage(new UpdateResourceCommand(teamData.get(players.get(i).team)));
+            model.processMessage(new UpdateResourceCommand(teamData.get(players.get(i).getTeam())));
             i++;
         }
     }
 
     @Override
     public String toString() {
-        return "Server game model " + tmpMark;
+        return "Server game model";
     }
 
     private boolean running = false;
@@ -158,28 +154,14 @@ public class ServerGameModel extends GameModel {
         }, 1000, Const.AI_LOOP_UPDATE_TIME_MILI);
 
         while (running) {
-        //    long start = System.nanoTime();
             this.update();
             if(doAi[0]) {
                 this.updateAI(this);
                 doAi[0] = false;
             }
-//            System.err.println("server game model running " + toString());
-            //want it independent of how long update take, so use the following instead
-            //of thread.sleep()...
-        //    long delta = System.nanoTime()- start;
-        //    if (UPDATE_LOOP_TIME_NANOS > delta)
-         //       try {
-                    Thread.yield();
-              //      Thread.sleep((UPDATE_LOOP_TIME_NANOS - delta)/ 1000000L);
-             //   } catch (InterruptedException e) {
-             //       e.printStackTrace();
-             //   }
-
-            for(Model model : clients) {
+            Thread.yield();
+            for(Model model : clients)
                 model.processMessage(new UpdateResourceCommand(teamData.get(clientToPlayerInfo.get(model).getTeam()))); //TEMPORARY GARBAGE
-            }
-
         }
 
         timer.cancel();
@@ -187,7 +169,6 @@ public class ServerGameModel extends GameModel {
 
     public void makeEntity(Entity e) {
         this.setEntity(e);
-        clients.forEach(client -> client.processMessage(new SetEntityCommand(e)));
     }
 
     @Override

@@ -4,7 +4,6 @@ package game.model.game.model.worldObject.entity.aiStrat;
 import game.ai.Astar;
 import game.message.toClient.SetEntityCommand;
 import game.model.game.grid.GridCell;
-import game.model.game.model.ClientGameModel;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.worldObject.entity.Entity;
@@ -46,22 +45,22 @@ public abstract class MinionStrat extends AIStrat {
     }
 
     @Override
-    public AIData makeAIData() {
-        return new MinionStratAIData();
+    public void init(Entity entity) {
+        entity.add(Entity.EntityProperty.AI_DATA, new MinionStratAIData());
     }
 
     @Override
     public void updateAI(Entity entity, ServerGameModel model, double seconds) {
         // get closest king?
 
-        MinionStratAIData data = (MinionStratAIData) entity.data.aiData;
+        MinionStratAIData data = entity.get(Entity.EntityProperty.AI_DATA);
         Astar astar = new Astar(model);
-        Entity king = model.getAllEntities().parallelStream().filter((e) -> e.team != entity.team && e.role == Role.KING).findFirst().get();
-
-        int entityx = (int) entity.data.x;
-        int entityy = (int) entity.data.y;
-        int x = (int) model.getEntity(king.id).data.x;
-        int y = (int) model.getEntity(king.id).data.y;
+        Entity king = model.getAllEntities().parallelStream().filter((e) -> e.getTeam() != entity.getTeam() && e.has(Entity.EntityProperty.ROLE) && e.<Role>get(Entity.EntityProperty.ROLE) == Role.KING).findFirst().get();
+//        System.out.println(king.id);
+        int entityx = (int) (double) entity.getX();
+        int entityy = (int) (double) entity.getY();
+        int x = (int) (double) model.getEntity(king.id).getX();
+        int y = (int) (double) model.getEntity(king.id).getY();
 
         // Check if path exists and king has moved, then generate a new path.
         if (data.path.size() > 0 && data.path.get(data.path.size() - 1).getTopLeftX() != x &&
@@ -71,22 +70,23 @@ public abstract class MinionStrat extends AIStrat {
         }
 
         // If nothing in path and not at destination, generate a path.
+
         if (data.path.size() == 0 && entityx != x && entityy != y) {
             data.path = astar.astar(model.getCell(entityx, entityy), model.getCell(x, y));
             System.out.println("Found path");
         }
 
         // might need to check for empty path
-        // If reached destination, stop.
-        if (entityx == x && entityy == y) {
-            entity.data.updateData.velocity.setMagnitude(0);
-            data.path.clear();
-        } else if (entityx == data.path.get(0).getTopLeftX() && entityy == data.path.get(0).getTopLeftY())
-            data.path.remove(0); // Remove the first cell in path if it has been reached.
+
+        if (entityx == x && entityy == y)
+            entity.setVelocity(entity.getVelocity().withMagnitude(0));
+        else if (entityx == data.path.get(0).getTopLeftX() && entityy == data.path.get(0).getTopLeftY())
+            data.path.remove(0);
+
         else {
             // Keep moving if cells are in path.
             astar.moveToCell(entity, data.path.get(0));
-            entity.data.updateData.velocity.setMagnitude(1);
+            entity.setVelocity(entity.getVelocity().withMagnitude(1));
         }
 
         model.processMessage(new SetEntityCommand(entity));

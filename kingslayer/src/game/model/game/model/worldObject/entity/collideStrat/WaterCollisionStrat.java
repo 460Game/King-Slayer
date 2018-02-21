@@ -17,7 +17,7 @@ public class WaterCollisionStrat extends CollisionStrat {
     @Override
     public void collision(GameModel model, Entity a, Entity b) {
         if (b.getCollideType() == CollideType.HARD || b.getCollideType() == CollideType.WATER) {
-            throw new RuntimeException("Hard objects colliding " + a.data.hitbox + " and " + b.data.hitbox);
+            throw new RuntimeException("Hard objects colliding " + a.getHitbox() + " and " + b.getHitbox());
         }
     }
 

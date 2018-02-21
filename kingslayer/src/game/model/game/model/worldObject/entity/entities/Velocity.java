@@ -7,32 +7,34 @@ import static java.lang.Math.PI;
  */
 public class Velocity {
 
+    public static final Velocity NONE = new Velocity(0,0);
+
     /**
      * X-component of the velocity.
      */
-    private double vx;
+    private final double vx;
 
     /**
      * Y-component of the velocity.
      */
-    private double vy;
+    private final double vy;
 
     /**
      * Magnitude of the velocity.
      */
-    private double magnitude;
+    //private final double magnitude;
 
     /**
      * Angle of the velocity.
      */
-    private double angle;
+   // private final double angle;
 
     /**
      * Default constructor for serialization.
      */
     public Velocity() {
         this(0,0);
-        angle = PI * 0.5;
+        //angle = PI * 0.5;
     }
 
     /**
@@ -43,8 +45,8 @@ public class Velocity {
     public Velocity(double vx, double vy) {
         this.vx = vx;
         this.vy = vy;
-        magnitude = Math.sqrt(vx * vx + vy * vy);
-        angle = Math.atan2(vy, vx);
+    //    magnitude = Math.sqrt(vx * vx + vy * vy);
+     //   angle = Math.atan2(vy, vx);
     }
 
     /**
@@ -53,31 +55,31 @@ public class Velocity {
      * @param angle angle of velocity
      * @param notComponent used to distinguish constructors (not used)
      */
-    public Velocity(double magnitude, double angle, boolean notComponent) {
-        this.magnitude = magnitude;
-        this.angle = angle;
-        vx = magnitude * Math.cos(angle);
-        vy = magnitude * Math.sin(angle);
-    }
+   // public Velocity(double magnitude, double angle, boolean notComponent) {
+   //     this.magnitude = magnitude;
+   //     this.angle = angle;
+   //     vx = magnitude * Math.cos(angle);
+   //     vy = magnitude * Math.sin(angle);
+   // }
 
     /**
      * Gets the x component of the velocity.
      * @return x component of the velocity
      */
-    public double getVx() {
-        return vx;
-    }
+  //  public double getVx() {
+ //       return vx;
+ //   }
 
     /**
      * Sets the x component of the velocity to the one specified.
      * Need to update magnitude and angle as well.
      * @param vx new x component of the velocity
      */
-    public void setVx(double vx) {
-        this.vx = vx;
-        magnitude = Math.sqrt(vx * vx + vy * vy);
-        angle = Math.atan2(vy, vx);
-    }
+   // public void setVx(double vx) {
+  //      this.vx = vx;
+   //     magnitude = Math.sqrt(vx * vx + vy * vy);
+  //      angle = Math.atan2(vy, vx);
+  //  }
 
     /**
      * Gets the y component of the velocity.
@@ -92,18 +94,18 @@ public class Velocity {
      * Need to update magnitude and angle as well.
      * @param vy new y component of the velocity
      */
-    public void setVy(double vy) {
-        this.vy = vy;
-        magnitude = Math.sqrt(vx * vx + vy * vy);
-        angle = Math.atan2(vy, vx);
-    }
+  //  public void setVy(double vy) {
+  //      this.vy = vy;
+  //      magnitude = Math.sqrt(vx * vx + vy * vy);
+  //      angle = Math.atan2(vy, vx);
+  //  }
 
     /**
      * Gets the magnitude of the velocity.
      * @return magnitude of the velocity
      */
     public double getMagnitude() {
-        return magnitude;
+        return Math.sqrt(vx * vx + vy * vy);
     }
 
     /**
@@ -111,10 +113,9 @@ public class Velocity {
      * Need to update vx and vy as well.
      * @param magnitude new magnitude of the velocity
      */
-    public void setMagnitude(double magnitude) {
-        this.magnitude = magnitude;
-        vx = magnitude * Math.cos(angle);
-        vy = magnitude * Math.sin(angle);
+    public Velocity withMagnitude(double magnitude) {
+        double angle = Math.atan2(vy, vx);
+return        new Velocity(magnitude * Math.cos(angle), magnitude * Math.sin(angle));
     }
 
     /**
@@ -122,7 +123,9 @@ public class Velocity {
      * @return angle of the velocity
      */
     public double getAngle() {
-        return angle;
+        if(vy == 0 && vx == 0)
+            return PI * 0.5;
+        return Math.atan2(vy, vx);
     }
 
     /**
@@ -130,9 +133,12 @@ public class Velocity {
      * Need to update vx and vy as well.
      * @param angle new magnitude of the velocity
      */
-    public void setAngle(double angle) {
-        this.angle = angle;
-        vx = magnitude * Math.cos(angle);
-        vy = magnitude * Math.sin(angle);
+    public Velocity withAngle(double angle) {
+        double magnitude = Math.sqrt(vx * vx + vy * vy);
+        return new Velocity(magnitude * Math.cos(angle), magnitude * Math.sin(angle));
+    }
+
+    public double getVx() {
+        return vx;
     }
 }

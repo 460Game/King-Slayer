@@ -9,7 +9,7 @@ import game.model.game.model.team.TeamResourceData;
 public class UpdateResourceCommand implements ToClientCommand {
 
     /**
-     * Data holding the resource counts of the team.
+     * EntityProperty holding the resource counts of the team.
      */
     private TeamResourceData data;
 

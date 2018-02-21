@@ -53,36 +53,36 @@ public class GameInteractionLayer extends Region  {
             MouseButton mb = e.getButton();
 
             if (mb == PRIMARY) {
-                if (model.getLocalPlayer().role == Role.KING && placing != null) {
-                    if (!placingGhost.data.hitbox.getCollidesWith(model, placingGhost.data.x, placingGhost.data.y).skip(1).findAny().isPresent()) {
+                if (model.getLocalPlayer().getRole() == Role.KING && placing != null) {
+                    if (!placingGhost.getHitbox().getCollidesWith(model, placingGhost.getX(), placingGhost.getY()).skip(1).findAny().isPresent()) {
                         model.processMessage(new EntityBuildRequest(placing,
-                            model.getLocalPlayer().team,
+                            model.getLocalPlayer().getTeam(),
                             TeamResourceData.Resource.WOOD,
                             cost));
                     }
                     model.remove(placingGhost);
                     placing = null;
                 } else if (upgrading) {
-                  int x = (int) (toDrawCoords(model.getLocalPlayer().data.x) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS;
-                  int y = (int) (toDrawCoords(model.getLocalPlayer().data.y) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS;
+                  int x = (int) (toDrawCoords(model.getLocalPlayer().getX()) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS;
+                  int y = (int) (toDrawCoords(model.getLocalPlayer().getY()) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS;
                   Entity entity = model.getEntityAt(x, y);
                   System.out.println("clicked at " + x + " " + y + " and hit entity " + entity);
                   if (entity != null) {
-                    entity.upgrade(model);
+                 //   entity.upgrade(model); TODO TODO
                     upgrading = false;
                   }
-                } else if (model.getLocalPlayer().role == Role.SLAYER) {
+                } else if (model.getLocalPlayer().getRole() == Role.SLAYER) {
 
                     double xCoords = toWorldCoords(e.getX() - getWidth() / 2);
                     double yCoords = toWorldCoords(e.getY() - getHeight() / 2);
                     double angle = Math.atan2(yCoords, xCoords);
                     model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
-                        model.getLocalPlayer().data.x,
-                        model.getLocalPlayer().data.y,
-                        angle, model.getLocalPlayer().team));
+                        model.getLocalPlayer().getX(),
+                        model.getLocalPlayer().getY(),
+                        angle, model.getLocalPlayer().getTeam()));
                 }
             } else if (mb == SECONDARY) {
-                if (model.getLocalPlayer().role == Role.KING && placing != null) {
+                if (model.getLocalPlayer().getRole() == Role.KING && placing != null) {
                     model.remove(placingGhost);
                     placing = null;
                 } else if (upgrading) {
@@ -92,15 +92,15 @@ public class GameInteractionLayer extends Region  {
         });
 
         uiCanvas.setOnMouseMoved(e -> {
-            if (model.getLocalPlayer() != null && model.getLocalPlayer().role == Role.KING && placing != null) {
-                double placingX = Math.floor((toDrawCoords(model.getLocalPlayer().data.x) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS) + 0.5;
-                double placingY = Math.floor((toDrawCoords(model.getLocalPlayer().data.y) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS) + 0.5;
-                if (Math.sqrt(Math.pow(model.getLocalPlayer().data.x - placingX, 2) + Math.pow(model.getLocalPlayer().data.y - placingY, 2)) < 5) {
-                    placing.data.x = placingX;
-                    placing.data.y = placingY;
+            if (model.getLocalPlayer() != null && model.getLocalPlayer().getRole() == Role.KING && placing != null) {
+                double placingX = Math.floor((toDrawCoords(model.getLocalPlayer().getX()) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS) + 0.5;
+                double placingY = Math.floor((toDrawCoords(model.getLocalPlayer().getY()) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS) + 0.5;
+                if (Math.sqrt(Math.pow(model.getLocalPlayer().getX() - placingX, 2) + Math.pow(model.getLocalPlayer().getY() - placingY, 2)) < 5) {
+                    placing.setX(placingX) ;
+                    placing.setY(placingY) ;
 
-                    placingGhost.data.x = placingX;
-                    placingGhost.data.y = placingY;
+                    placingGhost.setX(placingX)  ;
+                    placingGhost.setY(placingY);
                 }
             }
         });
@@ -114,7 +114,7 @@ public class GameInteractionLayer extends Region  {
                 placing = null;
             }
 
-            if ((kc == DIGIT1 || kc == NUMPAD1) && model.getLocalPlayer().role == Role.KING) {
+            if ((kc == DIGIT1 || kc == NUMPAD1) && model.getLocalPlayer().getRole() == Role.KING) {
                 if (!selectingBarracks) {
                     cost = -10;
                     placingGhost = Entities.makeGhostWall(0, 0);
@@ -122,24 +122,24 @@ public class GameInteractionLayer extends Region  {
                     model.processMessage(new NewEntityCommand(placingGhost));
                 } else {
                     cost = -2;
-                    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().team);
-                    placing = Entities.makeMeleeBarracks(0, 0, model.getLocalPlayer().team);
+                    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
+                    placing = Entities.makeMeleeBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
 
                     selectingBarracks = false;
                 }
             }
 
-            if ((kc == DIGIT2 || kc == NUMPAD2) && model.getLocalPlayer().role == Role.KING) {
+            if ((kc == DIGIT2 || kc == NUMPAD2) && model.getLocalPlayer().getRole() == Role.KING) {
                 if (!selectingBarracks) {
                     cost = -2;
-                    placingGhost = Entities.makeResourceCollectorGhost(0, 0, model.getLocalPlayer().team);
-                    placing = Entities.makeResourceCollector(0, 0, model.getLocalPlayer().team);
+                    placingGhost = Entities.makeResourceCollectorGhost(0, 0, model.getLocalPlayer().getTeam());
+                    placing = Entities.makeResourceCollector(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
                 } else {
                     cost = -2;
-                    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().team);
-                    placing = Entities.makeRangedBarracks(0, 0, model.getLocalPlayer().team);
+                    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
+                    placing = Entities.makeRangedBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
 
                     selectingBarracks = false;
@@ -151,8 +151,8 @@ public class GameInteractionLayer extends Region  {
                     selectingBarracks = true;
                 } else {
                     cost = -2;
-                    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().team);
-                    placing = Entities.makeSiegeBarracks(0, 0, model.getLocalPlayer().team);
+                    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
+                    placing = Entities.makeSiegeBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
 
                     selectingBarracks = false;
@@ -161,10 +161,10 @@ public class GameInteractionLayer extends Region  {
 
             if (kc == DIGIT4 || kc == NUMPAD4) {
                 if (!selectingBarracks) {
-                    if (model.getLocalPlayer().role == Role.KING) {
+                    if (model.getLocalPlayer().getRole() == Role.KING) {
                         cost = -20;
-                        placingGhost = Entities.makeArrowTowerGhost(0, 0, model.getLocalPlayer().team);
-                        placing = Entities.makeArrowTower(0, 0, model.getLocalPlayer().team);
+                        placingGhost = Entities.makeArrowTowerGhost(0, 0, model.getLocalPlayer().getTeam());
+                        placing = Entities.makeArrowTower(0, 0, model.getLocalPlayer().getTeam());
                         model.processMessage(new NewEntityCommand(placingGhost));
                     }
                 } else {
@@ -175,7 +175,7 @@ public class GameInteractionLayer extends Region  {
             }
 
           if (e.getCode() == KeyCode.E) {
-            if (model.getLocalPlayer().role == Role.KING) {
+            if (model.getLocalPlayer().getRole() == Role.KING) {
               upgrading = true;
             }
           }

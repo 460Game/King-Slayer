@@ -88,4 +88,8 @@ public abstract class Const {
     public final static int AI_LOOP_UPDATE_PER_SECOND = 10;
 
     public static final long AI_LOOP_UPDATE_TIME_MILI = 100;
+
+    public static final int LEVEL_WOOD = 0;
+    public static final int LEVEL_STONE = 1;
+    public static final int LEVEL_METAL = 2;
 }

@@ -1,12 +1,14 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.entities.Velocity;
 import images.Images;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import util.Util;
 
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.VELOCITY;
 import static util.Util.toDrawCoords;
 
 public abstract class RotatingImageDrawStrat extends ImageDrawStrat {
@@ -24,9 +26,9 @@ public abstract class RotatingImageDrawStrat extends ImageDrawStrat {
 
         Util.drawRotatedImage(gc,
             getImage(),
-            entity.data.updateData.velocity.getAngle(),
-            toDrawCoords(entity.data.x - x),
-            toDrawCoords(entity.data.y - y),
+            entity.<Velocity>get(VELOCITY).getAngle(),
+            toDrawCoords(entity.getX() - x),
+            toDrawCoords(entity.getY() - y),
             toDrawCoords(w),
             toDrawCoords(h));
     }

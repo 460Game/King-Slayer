@@ -67,7 +67,7 @@ public class GridCell {
     /**
      * Returns true if the cell is able to be passed through, or equivalently,
      * if a pathing enemy should try to go through this tile. A cell is
-     * considered unpassable if it has a cell hitbox occupying it.
+     * considered unpassable if it has a cell getHitbox occupying it.
      * @return true if the cell is able to be walked through
      */
     public boolean isPassable() {

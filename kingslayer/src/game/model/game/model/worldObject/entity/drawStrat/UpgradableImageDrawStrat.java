@@ -10,16 +10,14 @@ import static util.Util.toDrawCoords;
 
 public class UpgradableImageDrawStrat extends ImageDrawStrat {
 
-  public static final UpgradableImageDrawStrat BUILDABLE_WOOD_WALL = new BuildableWall(0);
-  public static final UpgradableImageDrawStrat WOOD_RESOURCE_COLLECTOR = new ResourceCollectorImageDrawStrat(0);
-  public static final UpgradableImageDrawStrat WOOD_BARRACKS = new BarracksImageDrawStrat(0);
-  public static final UpgradableImageDrawStrat WOOD_ARROW_TOWER = new ArrowTowerImageDrawStrat(0);
+  public static final UpgradableImageDrawStrat BUILDABLE_WOOD_WALL = new BuildableWall();
+  public static final UpgradableImageDrawStrat WOOD_RESOURCE_COLLECTOR = new ResourceCollectorImageDrawStrat();
+  public static final UpgradableImageDrawStrat WOOD_BARRACKS = new BarracksImageDrawStrat();
+  public static final UpgradableImageDrawStrat WOOD_ARROW_TOWER = new ArrowTowerImageDrawStrat();
 
-  public static final UpgradableImageDrawStrat STONE_RESOURCE_COLLECTOR = new ResourceCollectorImageDrawStrat(1);
-  public static final UpgradableImageDrawStrat STONE_BARRACKS = new BarracksImageDrawStrat(1);
-  public static final UpgradableImageDrawStrat STONE_ARROW_TOWER = new ArrowTowerImageDrawStrat(1);
-
-  int tier;
+  public static final UpgradableImageDrawStrat STONE_RESOURCE_COLLECTOR = new ResourceCollectorImageDrawStrat();
+  public static final UpgradableImageDrawStrat STONE_BARRACKS = new BarracksImageDrawStrat();
+  public static final UpgradableImageDrawStrat STONE_ARROW_TOWER = new ArrowTowerImageDrawStrat();
 
   public UpgradableImageDrawStrat() {}
 
@@ -35,21 +33,14 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
     double y = h - this.getCenterY();
 
     gc.drawImage(getImage(entity),
-        toDrawCoords(w) * tier,
+        toDrawCoords(w) * entity.<Integer>get(Entity.EntityProperty.LEVEL),
         0,
         toDrawCoords(w),
         toDrawCoords(h),
-        toDrawCoords(entity.data.x - x),
-        toDrawCoords(entity.data.y - y),
+        toDrawCoords(entity.getX() - x),
+        toDrawCoords(entity.getY() - y),
         toDrawCoords(w),
         toDrawCoords(h));
-  }
-
-  @Override
-  public void upgrade(GameModel model) {
-    System.out.println("upgrading tier of texture");
-    if (tier < 2)
-      tier++;
   }
 
   @Override
@@ -84,69 +75,50 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
     }
 
     private BuildableWall() {}
-
-    private BuildableWall(int tier) {
-      this.tier = tier;
-    }
   }
 
   public static class ResourceCollectorImageDrawStrat extends UpgradableImageDrawStrat {
     @Override
     public Image getImage(Entity entity) {
-      switch (entity.team) {
+      switch (entity.getTeam()) {
         case ONE:
           return Images.RED_RESOURCE_COLLECTORS_IMAGE;
         case TWO:
           return Images.BLUE_RESOURCE_COLLECTORS_IMAGE;
-        default:
-          return null;
       }
+      return null;
     }
 
     private ResourceCollectorImageDrawStrat() {}
-
-    private ResourceCollectorImageDrawStrat(int tier) {
-      this.tier = tier;
-    }
   }
 
   public static class BarracksImageDrawStrat extends UpgradableImageDrawStrat {
     @Override
     public Image getImage(Entity entity) {
-      switch (entity.team) {
+      switch (entity.getTeam()) {
         case ONE:
           return Images.RED_BARRACKS_IMAGE;
         case TWO:
           return Images.BLUE_BARRACKS_IMAGE;
-        default:
-          return null;
       }
+      return null;
     }
 
     private BarracksImageDrawStrat() {}
-
-    private BarracksImageDrawStrat(int tier) {
-      this.tier = tier;
-    }
   }
 
   public static class ArrowTowerImageDrawStrat extends UpgradableImageDrawStrat {
     @Override
     public Image getImage(Entity entity) {
-      switch (entity.team) {
+      switch (entity.getTeam()) {
         case ONE:
           return Images.RED_ARROW_TOWER_IMAGE;
         case TWO:
           return Images.BLUE_ARROW_TOWER_IMAGE;
-        default:
-          return null;
       }
+      return null;
     }
 
     private ArrowTowerImageDrawStrat() {}
-
-    private ArrowTowerImageDrawStrat(int tier) {
-      this.tier = tier;
-    }
   }
 }

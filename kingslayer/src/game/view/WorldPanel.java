@@ -56,8 +56,8 @@ public class WorldPanel extends Region {
 
     public void update() {
 
-            double x = model.getLocalPlayer().data.x;
-            double y = model.getLocalPlayer().data.y;
+            double x = model.getLocalPlayer().getX();
+            double y = model.getLocalPlayer().getY();
             double gameW = toWorldCoords(getWidth() / scaleFactor[0]);
             double gameH = toWorldCoords(getHeight() / scaleFactor[0]);
             double xt = -toDrawCoords(x * scaleFactor[0]) + getWidth() / 2;
