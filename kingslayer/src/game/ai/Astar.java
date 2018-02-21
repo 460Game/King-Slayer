@@ -90,6 +90,11 @@ public class Astar {
         // D = 1, D2 = sqrt(2)
     }
 
+    public GridCell findClosestPassable(GridCell cell) {
+        return passable.parallelStream().min((c1, c2) -> Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
+                Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
+    }
+
     /**
      * Perform the A* search given a starting cell and an ending cell. The resulting
      * path goes from adjacent cell, where adjacent is any of the 8 directions.
@@ -102,6 +107,9 @@ public class Astar {
     public List<GridCell> astar(GridCell start, GridCell end) {
         // TODO may need to include finding the traversable nodes
 //        findTraversableNodes();
+        GridCell c = findClosestPassable(end);
+//        System.out.println("End coords: " + end.getTopLeftX() + ", " + end.getTopLeftY());
+//        System.out.println("Closest coords: " + c.getTopLeftX() + ", " + c.getTopLeftY());
 
         if (!passable.contains(end))
             throw new RuntimeException("Destination cell is not passable.");
@@ -137,7 +145,7 @@ public class Astar {
         // is all heuristic. Add the start cell to the discovered
         // cell set.
         g.put(start, 0.0);
-        f.put(start, heuristicValue(start, end));
+        f.put(start, heuristicValue(start, c));
         open.add(start);
 
         // Loop until the set of discovered, but not computed cells is
@@ -157,7 +165,7 @@ public class Astar {
                 }
 
             // If the cell equals the destination cell, we are done.
-            if (current.equals(end)) {
+            if (current.equals(c)) {
                return getPath(prevCell, current);
             }
 
@@ -205,7 +213,7 @@ public class Astar {
                     // Update the mappings of previous cells, g-scores, and f-scores.
                     prevCell.put(neighbor, current);
                     g.put(neighbor, tempg);
-                    f.put(neighbor, g.get(neighbor) + heuristicValue(neighbor, end));
+                    f.put(neighbor, g.get(neighbor) + heuristicValue(neighbor, c));
                 }
             }
 //            System.out.println("SIZE of open set: " + open.size());
