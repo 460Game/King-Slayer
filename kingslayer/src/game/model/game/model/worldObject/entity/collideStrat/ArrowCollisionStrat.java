@@ -36,7 +36,7 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
                 a.entityDie(client);
             });
         }
-        // TODO should arrows go through minions/teammates
+        // TODO should arrows go through minions/teammates?
     }
 
     @Override
@@ -53,7 +53,6 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
     @Override
     public void collisionHard(GameModel model, Entity a, Entity b) {
         // Both the client and server stops the arrow and removes it from the game.
-
         if (a.team != b.team) {
             if (b.getHealth() != Double.POSITIVE_INFINITY)
                 b.decreaseHealthBy(model, 5); // TODO CHANGE THIS

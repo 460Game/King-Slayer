@@ -77,11 +77,9 @@ public class GameInteractionLayer extends Region  {
                     double yCoords = toWorldCoords(e.getY() - getHeight() / 2);
                     double angle = Math.atan2(yCoords, xCoords);
                     model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
-                        model.getLocalPlayer().data.x + 0.56 * Math.cos(angle),
-                        model.getLocalPlayer().data.y + 0.56 * Math.sin(angle),
+                        model.getLocalPlayer().data.x,
+                        model.getLocalPlayer().data.y,
                         angle, model.getLocalPlayer().team));
-
-                    // TODO problem when player running into own arrow
                 }
             } else if (mb == SECONDARY) {
                 if (model.getLocalPlayer().role == Role.KING && placing != null) {

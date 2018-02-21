@@ -134,7 +134,7 @@ public abstract class GameModel implements Model {
     public void remove(Entity entity) {
         if(entity.containedIn != null)
             entity.containedIn.forEach(cell -> cell.removeContents(entity));
-        entities.remove(entity);
+        entities.remove(entity.id);
     }
 
     public void setTile(int x, int y, Tile tile) {
