@@ -13,8 +13,9 @@ import static util.Util.toDrawCoords;
 
 public class GhostDrawStrat extends ImageDrawStrat {
 
-  public static final WallGhostDrawStrat GHOSTWALL = new WallGhostDrawStrat();
-  public static final ResourceCollectorGhostDrawStrat GHOST_COLLECTOR = new ResourceCollectorGhostDrawStrat();
+  public static final GhostDrawStrat GHOSTWALL = new WallGhostDrawStrat();
+  public static final GhostDrawStrat GHOST_COLLECTOR = new ResourceCollectorGhostDrawStrat();
+  public static final GhostDrawStrat GHOST_BARRACKS = new BarracksGhostDrawStrat();
 
   @Override
   public DrawData initDrawData() {
@@ -94,6 +95,22 @@ public class GhostDrawStrat extends ImageDrawStrat {
     }
 
     private ResourceCollectorGhostDrawStrat() {
+    }
+  }
+
+  public static class BarracksGhostDrawStrat extends GhostDrawStrat {
+    public Image getImage(Entity entity) {
+      switch (entity.team) {
+        case ONE:
+          return Images.RED_WOOD_BARRACKS_IMAGE;
+        case TWO:
+          return Images.BLUE_WOOD_BARRACKS_IMAGE;
+        default:
+          return null;
+      }
+    }
+
+    private BarracksGhostDrawStrat() {
     }
   }
 }

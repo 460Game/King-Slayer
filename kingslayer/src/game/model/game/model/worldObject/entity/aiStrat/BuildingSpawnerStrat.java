@@ -13,6 +13,26 @@ import static java.lang.Math.sin;
 
 public abstract class BuildingSpawnerStrat extends AIStrat {
 
+    public static class MeleeBarracksBuildingSpawnerStrat extends BuildingSpawnerStrat {
+
+        public static final MeleeBarracksBuildingSpawnerStrat SINGLETON = new MeleeBarracksBuildingSpawnerStrat();
+
+        @Override
+        double timeBetweenSpawns() {
+            return 5;
+        }
+
+        @Override
+        int maxActive() {
+            return 5;
+        }
+
+        @Override
+        Entity makeEntity(double x, double y, Team team) {
+            return Minions.makeMeleeMinion(x, y, team);
+        }
+    }
+
     public static class RangedBarracksBuildingSpawnerStrat extends BuildingSpawnerStrat {
 
         public static final RangedBarracksBuildingSpawnerStrat SINGLETON = new RangedBarracksBuildingSpawnerStrat();
@@ -33,9 +53,9 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
     }
 
-    public static class MeleeBarracksBuildingSpawnerStrat extends BuildingSpawnerStrat {
+    public static class SiegeBarracksBuildingSpawnerStrat extends BuildingSpawnerStrat {
 
-        public static final MeleeBarracksBuildingSpawnerStrat SINGLETON = new MeleeBarracksBuildingSpawnerStrat();
+        public static final SiegeBarracksBuildingSpawnerStrat SINGLETON = new SiegeBarracksBuildingSpawnerStrat();
 
         @Override
         double timeBetweenSpawns() {
@@ -49,7 +69,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         Entity makeEntity(double x, double y, Team team) {
-            return Minions.makeRangedMinion(x, y, team);
+            return Minions.makeSiegeMinion(x, y, team);
         }
     }
 
