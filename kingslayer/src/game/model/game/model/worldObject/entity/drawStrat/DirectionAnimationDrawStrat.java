@@ -1,7 +1,9 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
 import game.model.game.model.Model;
+import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.entities.Velocity;
 import images.Images;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -11,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.TEAM;
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.VELOCITY;
 import static java.lang.Math.decrementExact;
 import static util.Util.toDrawCoords;
 import static java.lang.Math.PI;
@@ -69,19 +73,18 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
               toDrawCoords(p.y),
               width,
               height,
-              toDrawCoords(entity.data.x - entity.data.hitbox.getWidth() / 2),
-              toDrawCoords(entity.data.y - entity.data.hitbox.getHeight() / 2),
-              toDrawCoords(entity.data.hitbox.getWidth()),
-              toDrawCoords(entity.data.hitbox.getHeight()));
+              toDrawCoords(entity.getX() - entity.getHitbox().getWidth() / 2),
+              toDrawCoords(entity.getY() - entity.getHitbox().getHeight() / 2),
+              toDrawCoords(entity.getHitbox().getWidth()),
+              toDrawCoords(entity.getHitbox().getHeight()));
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
-  @Override
   public void update(Entity entity, Model model) {
     // Update direction of image
-    double angle = entity.data.updateData.velocity.getAngle();
+    double angle = entity.<Velocity>get(VELOCITY).getAngle();
     if (angle >= -0.75 * PI && angle < -0.25 * PI) {
       drawData.direction = 'N';
     } else if (angle >= -0.25 * PI && angle < 0.25 * PI) {
@@ -93,7 +96,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     }
 
     // Update image being used
-    if (entity.data.updateData.velocity.getMagnitude() != 0) {
+    if (entity.<Velocity>get(VELOCITY).getMagnitude() != 0) {
       drawData.count++;
       if (drawData.count > 11) {
         drawData.count = 0;
@@ -104,14 +107,14 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     }
   }
 
-  public double getDrawZ(EntityData entity) {
-    return entity.y;
+  public double getDrawZ(Entity entity) {
+    return entity.getY();
   }
 
   public static class KingDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage(Entity entity) {
-      switch (entity.team) {
+      switch (entity.<Team>get(TEAM)) {
         case ONE:
           return Images.RED_KING_IMAGE_SHEET;
         case TWO:
@@ -125,7 +128,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   public static class SlayerDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage(Entity entity) {
-      switch (entity.team) {
+      switch (entity.<Team>get(TEAM)) {
         case ONE:
           return Images.RED_SLAYER_IMAGE_SHEET;
         case TWO:
@@ -139,7 +142,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   public static class RangedMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage(Entity entity) {
-      switch (entity.team) {
+      switch (entity.<Team>get(TEAM)) {
         case ONE:
           return Images.RED_RANGED_IMAGE_SHEET;
         case TWO:
@@ -153,7 +156,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   public static class MeleeMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage(Entity entity) {
-      switch (entity.team) {
+      switch (entity.<Team>get(TEAM)) {
         case ONE:
           return Images.RED_MELEE_IMAGE_SHEET;
         case TWO:
@@ -167,7 +170,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   public static class SiegeMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage(Entity entity) {
-      switch (entity.team) {
+      switch (entity.<Team>get(TEAM)) {
         case ONE:
           return Images.RED_SIEGE_IMAGE_SHEET;
         case TWO:
@@ -182,7 +185,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   public static class ResourceMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
     @Override
     Image getImage(Entity entity) {
-      switch (entity.team) {
+      switch (entity.<Team>get(TEAM)) {
         case ONE:
           return Images.RED_RESOURCE_MINION_IMAGE_SHEET;
         case TWO:

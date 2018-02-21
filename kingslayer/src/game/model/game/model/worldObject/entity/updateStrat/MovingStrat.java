@@ -7,15 +7,14 @@ import game.model.game.model.worldObject.entity.Entity;
 public class MovingStrat extends UpdateStrat {
 
     public static final UpdateStrat SINGLETON = new MovingStrat();
-
     @Override
-    public void init() {
-
+    protected void update(Entity entity, GameModel model, double seconds) {
+        entity.translateX(entity.getVelocity().getVx() * seconds);
+        entity.translateY(entity.getVelocity().getVy() * seconds);
     }
 
     @Override
-    protected void update(Entity entity, GameModel model, double seconds) {
-        entity.data.x += entity.data.updateData.velocity.getVx() * seconds;
-        entity.data.y += entity.data.updateData.velocity.getVy() * seconds;
+    public void init(Entity entity) {
+
     }
 }

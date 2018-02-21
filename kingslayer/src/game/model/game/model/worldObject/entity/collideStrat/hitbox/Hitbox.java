@@ -41,9 +41,9 @@ public abstract class Hitbox {
     public void updateCells(Entity entity, GameModel model) {
 
         // Check if the entity has moved, so it can update the cells it is in.
-        if (entity.data.x != entity.prevX || entity.data.y != entity.prevY) {
+        if (entity.getX() != entity.prevX || entity.getY() != entity.prevY) {
             // Get the set of cells the entity is currently in.
-            Set<GridCell> afterSet = entity.hitbox.getCells(entity.data.x, entity.data.y, model);
+            Set<GridCell> afterSet = entity.getHitbox().getCells(entity.getX(), entity.getY(), model);
 
 //            System.out.println("Player position: " + entity.data.x + ", " + entity.data.y);
 
@@ -72,8 +72,8 @@ public abstract class Hitbox {
 
             // Update the cells that it is currently in and its previous x, y coordinates.
             entity.containedIn = afterSet;
-            entity.prevX = entity.data.x;
-            entity.prevY = entity.data.y;
+            entity.prevX = entity.getX();
+            entity.prevY = entity.getY();
         }
     }
 
@@ -84,7 +84,7 @@ public abstract class Hitbox {
      * @return true if this getHitbox collides with the specified getHitbox
      */
     public static boolean testCollision(Entity t, Entity o) {
-        return testCollision(t.data.x, t.data.y, t.hitbox, o.data.x, o.data.y, o.hitbox);
+        return testCollision(t.getX(), t.getY(), t.getHitbox(), o.getX(), o.getY(), o.getHitbox());
     }
 
     public static boolean testCollision(double x1, double y1, Hitbox box1, double x2, double y2, Hitbox box2) {

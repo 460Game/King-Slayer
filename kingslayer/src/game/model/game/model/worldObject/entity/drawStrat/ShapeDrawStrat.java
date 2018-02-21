@@ -18,10 +18,10 @@ public class ShapeDrawStrat extends DrawStrat {
 
     public void draw(Entity entity, GraphicsContext gc) {
         gc.setFill(Color.color(1,1,1,1));
-        entity.data.hitbox.draw(gc, entity);
+        entity.getHitbox().draw(gc, entity);
     }
 
-    public double getDrawZ(EntityData entityData) {
-        return entityData.y;
+    public double getDrawZ(Entity entity) {
+        return entity.getY();
     }
 }

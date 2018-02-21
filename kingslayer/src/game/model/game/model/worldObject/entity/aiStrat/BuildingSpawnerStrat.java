@@ -8,6 +8,7 @@ import game.model.game.model.worldObject.entity.entities.Entities;
 import game.model.game.model.worldObject.entity.entities.Minions;
 import util.Util;
 
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.AI_DATA;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
@@ -135,18 +136,18 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
     }
 
     @Override
-    public AIData makeAIData() {
-        return new BuildingSpanwerStratAIData();
+    public void init(Entity entity) {
+        entity.add(AI_DATA, new BuildingSpanwerStratAIData());
     }
 
     @Override
     public void updateAI(Entity entity, ServerGameModel model, double seconds) {
-        BuildingSpanwerStratAIData data = (BuildingSpanwerStratAIData) entity.data.aiData;
+        BuildingSpanwerStratAIData data = entity.<BuildingSpanwerStratAIData>get(AI_DATA);
         data.elapsedTime += seconds;
         while (data.elapsedTime > timeBetweenSpawns()) {
             data.elapsedTime -= timeBetweenSpawns();
             if (data.spawnCounter < maxActive()) {
-                Entity newEntity = makeEntity(entity.data.x, entity.data.y, entity.team);
+                Entity newEntity = makeEntity(entity.getX(), entity.getY(), entity.getTeam());
                 model.processMessage(new MakeEntityRequest(newEntity));
                 newEntity.onDeath((e, serverGameModel) -> {
                     data.spawnCounter--;

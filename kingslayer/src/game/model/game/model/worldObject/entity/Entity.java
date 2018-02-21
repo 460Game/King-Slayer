@@ -3,6 +3,7 @@ package game.model.game.model.worldObject.entity;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
+import game.model.game.model.worldObject.entity.aiStrat.AIData;
 import game.model.game.model.worldObject.entity.aiStrat.AIStrat;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
@@ -13,7 +14,7 @@ import game.model.game.model.worldObject.entity.entities.Velocity;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
-import util.Util;
+import util.*;
 import game.model.game.model.GameModel;
 import game.model.game.model.team.Team;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,7 +22,6 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.*;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.*;
-import static game.model.game.model.worldObject.entity.Entity.PropType.*;
 import static util.Pair.pair;
 import static util.Util.toDrawCoords;
 
@@ -44,21 +44,22 @@ public class Entity {
      * all should be immutable unless local only - chanign data withen them without calls to set or put wont propgate
      */
     public enum EntityProperty {
-        LAST_UPDATE_TIME(Integer.class, PASSIVE_SYNC),
-        LEVEL(Integer.class, ACTIVE_SYNC),
-        HEALTH(Double.class, ACTIVE_SYNC),
-        HITBOX(Hitbox.class, ACTIVE_SYNC),
-        X(Double.class, PASSIVE_SYNC),
-        Y(Double.class, PASSIVE_SYNC),
-        TEAM(Team.class, ACTIVE_SYNC),
-        ROLE(Role.class, ACTIVE_SYNC),
-        DRAW_DATA(DrawData.class, LOCAL_ONLY),
-        VELOCITY(Velocity.class, ACTIVE_SYNC),
-        AI_STRAT(AIStrat.class, LOCAL_ONLY),
-        DRAW_STRAT(DrawStrat.class, ON_CHANGE_ONLY),
-        UPDATE_STRAT(UpdateStrat.class, ON_CHANGE_ONLY),
-        COLLISION_STRAT(CollisionStrat.class, ON_CHANGE_ONLY),
-        DEATH_STRAT(DeathStrat.class, ON_CHANGE_ONLY);
+        LAST_UPDATE_TIME(Integer.class, PropType.PASSIVE_SYNC),
+        LEVEL(Integer.class, PropType.ACTIVE_SYNC),
+        HEALTH(Double.class, PropType.ACTIVE_SYNC),
+        HITBOX(Hitbox.class, PropType.ACTIVE_SYNC),
+        X(Double.class, PropType.PASSIVE_SYNC),
+        Y(Double.class, PropType.PASSIVE_SYNC),
+        TEAM(Team.class, PropType.ACTIVE_SYNC),
+        ROLE(Role.class, PropType.ACTIVE_SYNC),
+        DRAW_DATA(DrawData.class, PropType.LOCAL_ONLY),
+        VELOCITY(Velocity.class, PropType.ACTIVE_SYNC),
+        AI_STRAT(AIStrat.class, PropType.LOCAL_ONLY),
+        AI_DATA(AIData.class, PropType.LOCAL_ONLY),
+        DRAW_STRAT(DrawStrat.class, PropType.ON_CHANGE_ONLY),
+        UPDATE_STRAT(UpdateStrat.class, PropType.ON_CHANGE_ONLY),
+        COLLISION_STRAT(CollisionStrat.class, PropType.ON_CHANGE_ONLY),
+        DEATH_STRAT(DeathStrat.class, PropType.ON_CHANGE_ONLY);
 
         EntityProperty(Class type, PropType sync) {
             this.type = type;
@@ -69,26 +70,45 @@ public class Entity {
         public final PropType sync;
     }
 
-    private Map<EntityProperty, Object> dataMap = new EnumMap<>(EntityProperty.class);
+    private EntityData localMap = new EntityData(EntityProperty.class);
+    private EntityData dataMap = new EntityData(EntityProperty.class);
+
+
+    public void setData(EntityData data) {
+        this.dataMap = data;
+    }
+
+    public EntityData getData() {
+        return this.dataMap;
+    }
+
 
     public <T> Optional<T> oget(EntityProperty key) {
         return Optional.of((T) dataMap.get(key));
     }
 
     public <T> T get(EntityProperty key){
+        if(key.sync == PropType.LOCAL_ONLY)
+            return (T) localMap.get(key);
         return (T) dataMap.get(key);
     }
 
     public boolean has(EntityProperty key){
+        if(key.sync == PropType.LOCAL_ONLY)
+            return localMap.containsKey(key);
         return dataMap.containsKey(key);
     }
 
-    public <T> void add(EntityProperty a, T value) {
-        if(has(a))
+    public <T> void add(EntityProperty key, T value) {
+        if(has(key))
             throw new RuntimeException("Already has property");
-        dataMap.put(a, a.type.cast(value));
-        if(a.sync ){//&& isServer) { TODO
-            //Mark this to propogate to client
+        if(key.sync == PropType.LOCAL_ONLY)
+            localMap.put(key, key.type.cast(value));
+        else {
+            dataMap.put(key, key.type.cast(value));
+
+            if(key.sync == PropType.ACTIVE_SYNC)
+                needSync = true;
         }
     }
 
@@ -97,15 +117,19 @@ public class Entity {
     }
 
     //TODO better error messages
-    public <T> void set(EntityProperty a, T value) {
-        if(!has(a))
+    public <T> void set(EntityProperty key, T value) {
+        if(!has(key))
             throw new RuntimeException("Dosnt have prop");
-        dataMap.put(a, a.type.cast(value));
-        if(a.sync){ //&& isServer) { TODO
-            //Mark this to propogate to client
+        if(key.sync == PropType.LOCAL_ONLY)
+            localMap.put(key, key.type.cast(value));
+        else {
+            dataMap.put(key, key.type.cast(value));
+            if(key.sync == PropType.ACTIVE_SYNC)
+                needSync = true;
         }
     }
 
+public transient boolean needSync = true;
 
     /**
      * Checks if this entity is currently colliding with another entity.
@@ -136,40 +160,14 @@ public class Entity {
     public final long id;
 
 
-    public Entity(double x, double y, Pair<EntityProperty, Object>... varargs) {
-        this.x = x;
-        this.y =y;
+    public Entity(double x, double y, Hitbox hitbox, CollisionStrat collisionStrat, Pair<EntityProperty, Object>... varargs) {
+        this.add(X, x);
+        this.add(Y, y);
+        this.add(HITBOX, hitbox);
+        this.add(COLLISION_STRAT, collisionStrat);
         id = Util.random.nextLong();
         for(Pair<EntityProperty, Object> pair : varargs)
             add(pair);
-    }
-
-    /**
-     * Constructor of an entity, given all of its game data.
-     *
-     * @param x              x-coordinate of the center of its position
-     * @param y              y-coordinate of the center of its position
-     * @param team           team corresponding to this entity
-     * @param updateStrat    method with which this entity updates
-     * @param collisionStrat method with which this entity collides.
-     * @param hitbox         getHitbox of this entity
-     * @param drawStrat      method with which this entity is drawn
-     * @param aiStrat        TODO
-     */
-    public Entity(double x, double y, double health,
-                  Team team,
-                  Role role,
-                  UpdateStrat updateStrat,
-                  CollisionStrat collisionStrat,
-                  Hitbox hitbox,
-                  DrawStrat drawStrat,
-                  AIStrat aiStrat,
-                  DeathStrat deathStrat) {
-        this(x,y,pair(TEAM, team), pair(ROLE, role), pair(UPDATE_STRAT, updateStrat), pair(COLLISION_STRAT, collisionStrat), pair(DRAW_STRAT, drawStrat),
-                pair(AI_STRAT, aiStrat), pair(HITBOX, hitbox), pair(DEATH_STRAT, deathStrat),
-                pair(HEALTH, health));
-        updateStrat.initUpdateData(this);
-        aiStrat.makeAIData(this);
     }
 
     /**
@@ -200,33 +198,59 @@ public class Entity {
     }
 
     public Hitbox getHitbox() {
-        return this.<Hitbox>get(HITBOX);
+        return this.get(HITBOX);
     }
 
     public Double getX() {
-        return this.<Double>get(X);
+        return this.get(X);
     }
 
     public Double getY() {
-        return this.<Double>get(Y);
+        return this.get(Y);
     }
+
     public void setX(double x) {
         this.set(X, x);
     }
 
-    public Double setY(double y) {
+    public void translateX(double d) {
+        this.setX(this.getX() + d);
+    }
+
+    public void setY(double y) {
         this.set(X, y);
     }
 
+    public void translateY(double d) {
+        this.setY(this.getY() + d);
+    }
 
     private boolean invincible() {
-        return getHealth() == Double.POSITIVE_INFINITY;
+        return !this.has(HEALTH);
     }
 
     public double getDrawZ() {
         return this.<DrawStrat>get(DRAW_STRAT).getDrawZ(this);
     }
 
+    public long lastUpdate() {
+        return this.get(LAST_UPDATE_TIME);
+    }
+
+    public Team getTeam() {
+        return this.get(TEAM);
+    }
+
+    public Role getRole() {
+        return this.get(ROLE);
+    }
+
+    public Velocity getVelocity() {
+        return this.<Velocity>oget(VELOCITY).orElse(Velocity.NONE);
+    }
+    public void setVelocity(Velocity velocity) {
+        this.<Velocity>set(VELOCITY, velocity);
+    }
     /**
      * Performs collisions with another entity based off of this
      * entity's colliding strategy.
@@ -241,18 +265,15 @@ public class Entity {
 
     public void update(GameModel model) {
         inCollision = false;
-        if (this.lastUpdateTime == -1) {
-            this.lastUpdateTime = model.modelCurrentTime;
+        if (!this.has(LAST_UPDATE_TIME)) {
+            this.add(LAST_UPDATE_TIME, model.modelCurrentTime);
             return;
         }
 
-        this.timeDelta = model.modelCurrentTime - this.data.lastUpdateTime;
-        this.data.lastUpdateTime = model.modelCurrentTime;
+        this.timeDelta = model.modelCurrentTime - this.<Long>get(LAST_UPDATE_TIME);
+        this.set(LAST_UPDATE_TIME, model.modelCurrentTime);
 
-            this.updateStrat.update(this, model);
-
-            drawStrat.update(this, model);
-
+        this.<UpdateStrat>oget(UPDATE_STRAT).ifPresent(updateStrat -> updateStrat.update(this, model));
     }
 
     /**

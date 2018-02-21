@@ -254,7 +254,7 @@ public class Astar {
     }
 
     public void moveToCell(Entity e, GridCell cell) {
-        e.data.updateData.velocity.setAngle(Math.atan2(cell.getCenterY() - e.data.y, cell.getCenterX() - e.data.x));
+       e.setVelocity( e.getVelocity().withAngle(Math.atan2(cell.getCenterY() - e.getY(), cell.getCenterX() - e.getX())));
     }
 
     /**

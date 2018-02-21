@@ -15,7 +15,7 @@ public class KingDeathStrat extends DeathStrat {
 
         System.out.println("A king dies!");
         Consumer<ServerGameModel> serverConsumer = (server) -> {
-            server.teamWin((entity.team == Team.ONE) ? Team.TWO : Team.ONE);
+            server.teamWin((entity.getTeam() == Team.ONE) ? Team.TWO : Team.ONE);
 //            server.getClients().forEach(client -> client.processMessage(new SetEntityCommand(b)));
         };
         model.execute(serverConsumer, (client) -> {

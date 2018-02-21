@@ -33,12 +33,12 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
     double y = h - this.getCenterY();
 
     gc.drawImage(getImage(entity),
-        toDrawCoords(w) * entity.getLevel(),
+        toDrawCoords(w) * entity.<Integer>get(Entity.EntityProperty.LEVEL),
         0,
         toDrawCoords(w),
         toDrawCoords(h),
-        toDrawCoords(entity.data.x - x),
-        toDrawCoords(entity.data.y - y),
+        toDrawCoords(entity.getX() - x),
+        toDrawCoords(entity.getY() - y),
         toDrawCoords(w),
         toDrawCoords(h));
   }
@@ -80,14 +80,13 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
   public static class ResourceCollectorImageDrawStrat extends UpgradableImageDrawStrat {
     @Override
     public Image getImage(Entity entity) {
-      switch (entity.team) {
+      switch (entity.getTeam()) {
         case ONE:
           return Images.RED_RESOURCE_COLLECTORS_IMAGE;
         case TWO:
           return Images.BLUE_RESOURCE_COLLECTORS_IMAGE;
-        default:
-          return null;
       }
+      return null;
     }
 
     private ResourceCollectorImageDrawStrat() {}
@@ -96,14 +95,13 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
   public static class BarracksImageDrawStrat extends UpgradableImageDrawStrat {
     @Override
     public Image getImage(Entity entity) {
-      switch (entity.team) {
+      switch (entity.getTeam()) {
         case ONE:
           return Images.RED_BARRACKS_IMAGE;
         case TWO:
           return Images.BLUE_BARRACKS_IMAGE;
-        default:
-          return null;
       }
+      return null;
     }
 
     private BarracksImageDrawStrat() {}
@@ -112,14 +110,13 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
   public static class ArrowTowerImageDrawStrat extends UpgradableImageDrawStrat {
     @Override
     public Image getImage(Entity entity) {
-      switch (entity.team) {
+      switch (entity.getTeam()) {
         case ONE:
           return Images.RED_ARROW_TOWER_IMAGE;
         case TWO:
           return Images.BLUE_ARROW_TOWER_IMAGE;
-        default:
-          return null;
       }
+      return null;
     }
 
     private ArrowTowerImageDrawStrat() {}

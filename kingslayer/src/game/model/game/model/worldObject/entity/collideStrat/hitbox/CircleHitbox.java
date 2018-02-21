@@ -64,8 +64,8 @@ public class CircleHitbox extends Hitbox {
 
     @Override
     public void drawShape(GraphicsContext gc, Entity entity) {
-        gc.fillOval(toDrawCoords(entity.data.x - 0.5 * radius),
-            toDrawCoords(entity.data.y - 0.5 * radius),
+        gc.fillOval(toDrawCoords(entity.getX() - 0.5 * radius),
+            toDrawCoords(entity.getY() - 0.5 * radius),
             toDrawCoords(radius), toDrawCoords(radius));
     }
 

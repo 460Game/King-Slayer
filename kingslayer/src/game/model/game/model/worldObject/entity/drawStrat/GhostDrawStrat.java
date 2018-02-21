@@ -56,16 +56,16 @@ public class GhostDrawStrat extends ImageDrawStrat {
 
     gc.setGlobalAlpha(0.5);
     gc.drawImage(getImage(entity),
-        toDrawCoords(entity.data.x - x),
-        toDrawCoords(entity.data.y - y),
+        toDrawCoords(entity.getX() - x),
+        toDrawCoords(entity.getY() - y),
         toDrawCoords(w),
         toDrawCoords(h));
     gc.setGlobalAlpha(1.0);
   }
 
   @Override
-  public double getDrawZ(EntityData entity) {
-    return entity.y;
+  public double getDrawZ(Entity entity) {
+    return entity.getY();
   }
 
   public static class WallGhostDrawStrat extends GhostDrawStrat {
@@ -80,7 +80,7 @@ public class GhostDrawStrat extends ImageDrawStrat {
 
   public static class ResourceCollectorGhostDrawStrat extends GhostDrawStrat {
     public Image getImage(Entity entity) {
-      switch (entity.team) {
+      switch (entity.getTeam()) {
         case ONE:
           return Images.RED_RESOURCE_COLLECTOR_IMAGE;
         case TWO:
@@ -96,7 +96,7 @@ public class GhostDrawStrat extends ImageDrawStrat {
 
   public static class BarracksGhostDrawStrat extends GhostDrawStrat {
     public Image getImage(Entity entity) {
-      switch (entity.team) {
+      switch (entity.getTeam()) {
         case ONE:
           return Images.RED_WOOD_BARRACKS_IMAGE;
         case TWO:

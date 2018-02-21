@@ -1,10 +1,12 @@
 package game.model.game.model;
 
 import game.message.Message;
+import game.message.toClient.SetEntityCommand;
 import game.model.game.grid.GridCell;
 import game.model.game.map.MapGenerator;
 import game.model.game.map.Tile;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.EntityData;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.WritableImage;
 
@@ -107,7 +109,7 @@ public abstract class GameModel implements Model {
 
     public Entity getEntityAt(int x, int y) {
         for (Entity e: getAllEntities()) {
-            if ((int) e.data.x == x && (int) e.data.y == y)
+            if ((int) (double)e.getX() == x && (int) (double)e.getY() == y)
                 return e;
         }
         return null;
@@ -143,6 +145,16 @@ public abstract class GameModel implements Model {
         entities.values().forEach(e -> e.update(this));
         entities.values().forEach(e -> e.updateCells(this));
         allCells.forEach(cell -> cell.collideContents(this));
+
+        this.execute(serverGameModel -> {
+            entities.values().forEach(e -> {
+                if(e.needSync) {
+                    e.needSync = false;
+                    serverGameModel.processMessage(new SetEntityCommand(e));
+                }
+            });
+
+        }, clientGameModel -> {});
     }
 
     public Collection<GridCell> getAllCells() {
@@ -155,7 +167,7 @@ public abstract class GameModel implements Model {
      */
     public boolean trySetEntityData(long id, EntityData data) {
         if(entities.containsKey(id)) {
-            entities.get(id).data = data;
+            entities.get(id).setData(data);
             return true;
         } else {
             return false;
@@ -165,7 +177,7 @@ public abstract class GameModel implements Model {
     public void setEntity(Entity entity) {
         Entity e = entities.get(entity.id);
         if(e != null)
-            e.data = entity.data;
+            e.setData(entity.getData());
         else
             entities.put(entity.id, entity);
     }
@@ -183,7 +195,7 @@ public abstract class GameModel implements Model {
         allCells.stream().flatMap(GridCell::streamContents).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc));
 
         if(DEBUG_DRAW)
-            allCells.stream().flatMap(GridCell::streamContents).forEach(a -> a.hitbox.draw(gc, a));
+            allCells.stream().flatMap(GridCell::streamContents).forEach(a -> a.getHitbox().draw(gc, a));
     }
 
     public void writeBackground(WritableImage image, boolean b) {

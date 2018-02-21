@@ -2,6 +2,7 @@ package game.message.toClient;
 
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.EntityData;
 
 /**
  * Message sent to set an entity on a client's game model. This message
@@ -31,7 +32,7 @@ public class SetEntityCommand implements ToClientCommand {
      * @param entity entity to be set
      */
     public SetEntityCommand(Entity entity) {
-        this.data = entity.data;
+        this.data = entity.getData();
         this.id = entity.id;
     }
 

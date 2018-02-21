@@ -8,11 +8,6 @@ import javafx.scene.paint.Color;
 public enum Team {
 
     /**
-     * Neutral team generally include the map entities.
-     */
-    NEUTRAL(0, Color.BLACK),
-
-    /**
      * Team 1's players, minions, and towers.
      */
     ONE(1, Color.RED),
@@ -48,8 +43,6 @@ public enum Team {
      * @return the team corresponding to the specified number
      */
     public static Team valueOf(int i) {
-        if(i == 0)
-            return Team.NEUTRAL;
         if(i == 1)
             return Team.ONE;
         if(i == 2)

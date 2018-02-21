@@ -41,14 +41,14 @@ public abstract class ImageDrawStrat extends DrawStrat {
         double y = h - this.getCenterY();
 
         gc.drawImage(getImage(),
-            toDrawCoords(entity.data.x - x),
-            toDrawCoords(entity.data.y - y),
+            toDrawCoords(entity.getX() - x),
+            toDrawCoords(entity.getY() - y),
             toDrawCoords(w),
             toDrawCoords(h));
     }
 
-    public double getDrawZ(EntityData entity) {
-        return entity.y;
+    public double getDrawZ(Entity entity) {
+        return entity.getY();
     }
 
     public ImageDrawStrat() {
