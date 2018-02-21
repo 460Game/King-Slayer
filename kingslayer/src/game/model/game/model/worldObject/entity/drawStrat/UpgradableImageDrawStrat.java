@@ -79,7 +79,7 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
 
   public static class BuildableWall extends UpgradableImageDrawStrat {
     @Override
-    Image getImage() {
+    public Image getImage(Entity entity) {
       return Images.WALLS_BUILDABLE_IMAGE;
     }
 
