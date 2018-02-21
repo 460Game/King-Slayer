@@ -7,7 +7,7 @@ import network.NetworkCommon;
 
 public class CopyingModelWrapper implements Model {
 
-    Kryo kryo;
+    private Kryo kryo;
 
     private Model model;
 

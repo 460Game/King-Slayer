@@ -20,22 +20,22 @@ import static util.Util.dist;
 
 /**
  * Shouldn't be drawable! Purely for testing for now.
- * Abstract class that defines a generic hitbox. All entities on a tile
- * have a hitbox derived from this class.
+ * Abstract class that defines a generic getHitbox. All entities on a tile
+ * have a getHitbox derived from this class.
  */
 public abstract class Hitbox {
 
     /**
-     * Return the set of all cells this hitbox overlaps with. This method
+     * Return the set of all cells this getHitbox overlaps with. This method
      * should return a new set every time.
      *
      * @param gameMap current model of the game
-     * @return the set of all cells that this hitbox overlaps with.
+     * @return the set of all cells that this getHitbox overlaps with.
      */
     public abstract Set<GridCell> getCells(double x, double y, GameModel gameMap);
 
     /**
-     * Return the set of all cell references this hitbox overlaps with.
+     * Return the set of all cell references this getHitbox overlaps with.
      * This method should return a new set every time.
      */
     public void updateCells(Entity entity, GameModel model) {
@@ -43,7 +43,7 @@ public abstract class Hitbox {
         // Check if the entity has moved, so it can update the cells it is in.
         if (entity.data.x != entity.prevX || entity.data.y != entity.prevY) {
             // Get the set of cells the entity is currently in.
-            Set<GridCell> afterSet = entity.data.hitbox.getCells(entity.data.x, entity.data.y, model);
+            Set<GridCell> afterSet = entity.hitbox.getCells(entity.data.x, entity.data.y, model);
 
 //            System.out.println("Player position: " + entity.data.x + ", " + entity.data.y);
 
@@ -78,13 +78,13 @@ public abstract class Hitbox {
     }
 
     /**
-     * Returns true if this hitbox collides with the given hitbox. Returns false
+     * Returns true if this getHitbox collides with the given getHitbox. Returns false
      * otherwise.
      *
-     * @return true if this hitbox collides with the specified hitbox
+     * @return true if this getHitbox collides with the specified getHitbox
      */
     public static boolean testCollision(Entity t, Entity o) {
-        return testCollision(t.data.x, t.data.y, t.data.hitbox, o.data.x, o.data.y, o.data.hitbox);
+        return testCollision(t.data.x, t.data.y, t.hitbox, o.data.x, o.data.y, o.hitbox);
     }
 
     public static boolean testCollision(double x1, double y1, Hitbox box1, double x2, double y2, Hitbox box2) {
@@ -118,17 +118,17 @@ public abstract class Hitbox {
     public abstract void drawShape(GraphicsContext gc, Entity entity);
 
     /**
-     * Gets the distance from the center of the hitbox to the farthest edge at
+     * Gets the distance from the center of the getHitbox to the farthest edge at
      * the given angle.
      *
      * @param angle angle at which to find the "radius"
-     * @return the distance from the center of the hitbox to the edge at the angle
+     * @return the distance from the center of the getHitbox to the edge at the angle
      */
     public abstract double getRadius(double angle);
 
     /**
      * Get the width of the object (the length of the horizontal line going through
-     * the center of the hitbox.
+     * the center of the getHitbox.
      *
      * @return the width of the object
      */
@@ -138,7 +138,7 @@ public abstract class Hitbox {
 
     /**
      * Get the height of the object (the length of the vertical line going through
-     * the center of the hitbox.
+     * the center of the getHitbox.
      *
      * @return the height of the object
      */

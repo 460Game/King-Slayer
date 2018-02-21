@@ -1,29 +1,28 @@
 package game.model.game.model.worldObject.entity;
 
-import com.esotericsoftware.minlog.Log;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.worldObject.entity.aiStrat.AIStrat;
-import game.model.game.model.worldObject.entity.aiStrat.AIable;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import game.model.game.model.worldObject.entity.deathStrat.DeathStrat;
-import game.model.game.model.worldObject.entity.drawStrat.DirectionAnimationDrawStrat;
+import game.model.game.model.worldObject.entity.drawStrat.DrawData;
 import game.model.game.model.worldObject.entity.drawStrat.DrawStrat;
+import game.model.game.model.worldObject.entity.entities.Velocity;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 import javafx.scene.paint.Color;
+import javafx.util.Pair;
 import util.Util;
 import game.model.game.model.GameModel;
 import game.model.game.model.team.Team;
 import javafx.scene.canvas.GraphicsContext;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import java.util.*;
 
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.*;
+import static game.model.game.model.worldObject.entity.Entity.PropType.*;
+import static util.Pair.pair;
 import static util.Util.toDrawCoords;
 
 /**
@@ -31,32 +30,82 @@ import static util.Util.toDrawCoords;
  * and knows its game-relevant data. Each entity has its own way of updating, colliding,
  * and drawing.
  */
-public class Entity implements Updatable, Drawable, AIable {
+public class Entity {
+
+    private enum PropType{
+        ON_CHANGE_ONLY, //sent only if changed on server
+        ACTIVE_SYNC, //will queue an update to the client if changed
+        PASSIVE_SYNC, //Will be sent along with any active sync items
+        LOCAL_ONLY; // Not sent ever
+    }
 
     /**
-     * TODO
+     * properties of the entity
+     * all should be immutable unless local only - chanign data withen them without calls to set or put wont propgate
      */
-    final AIStrat aiStrat;
+    public enum EntityProperty {
+        LAST_UPDATE_TIME(Integer.class, PASSIVE_SYNC),
+        LEVEL(Integer.class, ACTIVE_SYNC),
+        HEALTH(Double.class, ACTIVE_SYNC),
+        HITBOX(Hitbox.class, ACTIVE_SYNC),
+        X(Double.class, PASSIVE_SYNC),
+        Y(Double.class, PASSIVE_SYNC),
+        TEAM(Team.class, ACTIVE_SYNC),
+        ROLE(Role.class, ACTIVE_SYNC),
+        DRAW_DATA(DrawData.class, LOCAL_ONLY),
+        VELOCITY(Velocity.class, ACTIVE_SYNC),
+        AI_STRAT(AIStrat.class, LOCAL_ONLY),
+        DRAW_STRAT(DrawStrat.class, ON_CHANGE_ONLY),
+        UPDATE_STRAT(UpdateStrat.class, ON_CHANGE_ONLY),
+        COLLISION_STRAT(CollisionStrat.class, ON_CHANGE_ONLY),
+        DEATH_STRAT(DeathStrat.class, ON_CHANGE_ONLY);
 
-    /**
-     * The way this entity is drawn on the game map.
-     */
-    final DrawStrat drawStrat;
+        EntityProperty(Class type, PropType sync) {
+            this.type = type;
+            this.sync = sync;
+        }
 
-    /**
-     * The way this entity is updated in the game.
-     */
-    final UpdateStrat updateStrat;
+        public final Class type;
+        public final PropType sync;
+    }
 
-    /**
-     * The way this entity collides with other entities in the game.
-     */
-    final CollisionStrat collisionStrat;
+    private Map<EntityProperty, Object> dataMap = new EnumMap<>(EntityProperty.class);
 
-    /**
-     * The way this entity dies in the game.
-     */
-    final DeathStrat deathStrat;
+    public <T> Optional<T> oget(EntityProperty key) {
+        return Optional.of((T) dataMap.get(key));
+    }
+
+    public <T> T get(EntityProperty key){
+        return (T) dataMap.get(key);
+    }
+
+    public boolean has(EntityProperty key){
+        return dataMap.containsKey(key);
+    }
+
+    public <T> void add(EntityProperty a, T value) {
+        if(has(a))
+            throw new RuntimeException("Already has property");
+        dataMap.put(a, a.type.cast(value));
+        if(a.sync ){//&& isServer) { TODO
+            //Mark this to propogate to client
+        }
+    }
+
+    private void add(Pair<EntityProperty, Object> pair) {
+        this.add(pair.getKey(), pair.getValue());
+    }
+
+    //TODO better error messages
+    public <T> void set(EntityProperty a, T value) {
+        if(!has(a))
+            throw new RuntimeException("Dosnt have prop");
+        dataMap.put(a, a.type.cast(value));
+        if(a.sync){ //&& isServer) { TODO
+            //Mark this to propogate to client
+        }
+    }
+
 
     /**
      * Checks if this entity is currently colliding with another entity.
@@ -79,27 +128,21 @@ public class Entity implements Updatable, Drawable, AIable {
      */
     public transient Set<GridCell> containedIn = null;
 
-    /**
-     * Team of this entity.
-     */
-    public final Team team;
-
-    /**
-     *
-     */
-    public final Role role;
+    public transient long timeDelta = 0;
 
     /**
      * ID of this entity.
      */
     public final long id;
 
-    /**
-     * Holds all the game-relevant data about this entity.
-     */
-    public EntityData data;
 
-    public long timeDelta;
+    public Entity(double x, double y, Pair<EntityProperty, Object>... varargs) {
+        this.x = x;
+        this.y =y;
+        id = Util.random.nextLong();
+        for(Pair<EntityProperty, Object> pair : varargs)
+            add(pair);
+    }
 
     /**
      * Constructor of an entity, given all of its game data.
@@ -109,7 +152,7 @@ public class Entity implements Updatable, Drawable, AIable {
      * @param team           team corresponding to this entity
      * @param updateStrat    method with which this entity updates
      * @param collisionStrat method with which this entity collides.
-     * @param hitbox         hitbox of this entity
+     * @param hitbox         getHitbox of this entity
      * @param drawStrat      method with which this entity is drawn
      * @param aiStrat        TODO
      */
@@ -122,63 +165,66 @@ public class Entity implements Updatable, Drawable, AIable {
                   DrawStrat drawStrat,
                   AIStrat aiStrat,
                   DeathStrat deathStrat) {
-        id = Util.random.nextLong();
-        this.team = team;
-        this.role = role;
-        this.updateStrat = updateStrat;
-        this.collisionStrat = collisionStrat;
-        this.drawStrat = drawStrat;
-        this.aiStrat = aiStrat;
-        this.data = new EntityData(hitbox, aiStrat.makeAIData(), drawStrat.initDrawData(),
-            updateStrat.initUpdateData(), x, y, health);
-        this.deathStrat = deathStrat;
-
-        this.timeDelta = 0;
+        this(x,y,pair(TEAM, team), pair(ROLE, role), pair(UPDATE_STRAT, updateStrat), pair(COLLISION_STRAT, collisionStrat), pair(DRAW_STRAT, drawStrat),
+                pair(AI_STRAT, aiStrat), pair(HITBOX, hitbox), pair(DEATH_STRAT, deathStrat),
+                pair(HEALTH, health));
+        updateStrat.initUpdateData(this);
+        aiStrat.makeAIData(this);
     }
 
     /**
      * Default constructor needed for serialization.
      */
     private Entity() {
-        this.updateStrat = null;
-        this.collisionStrat = null;
-        this.drawStrat = null;
-        this.aiStrat = null;
-        this.deathStrat = null;
-        team = null;
-        role = null;
         id = 0;
     }
 
-    @Override
     public void updateAI(ServerGameModel model, double secondsElapsed) {
         if (this.getHealth() <= 0) {
             entityDie(model);
         } else {
-            this.aiStrat.updateAI(this, model, secondsElapsed);
+            this.<AIStrat>oget(AI_STRAT).ifPresent(strat -> strat.updateAI(this, model, secondsElapsed));
         }
     }
 
-    @Override
     public void draw(GraphicsContext gc) {
-        this.drawStrat.draw(this, gc);
+        this.<DrawStrat>oget(DRAW_STRAT).ifPresent(strat -> strat.draw(this, gc));
 
         if (!this.invincible()) {
             //TEMPORARY!!!!!!!!!
             gc.setFill(Color.RED);
-            gc.fillRect(toDrawCoords(data.x) - 10, toDrawCoords(data.y) - 30, 20, 3);
+            gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getX()) - 30, 20, 3);
             gc.setFill(Color.GREEN);
-            gc.fillRect(toDrawCoords(data.x) - 10, toDrawCoords(data.y) - 30, (getHealth() / 100) * 20, 3);
+            gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getX()) - 30, (getHealth() / 100) * 20, 3);
         }
     }
+
+    public Hitbox getHitbox() {
+        return this.<Hitbox>get(HITBOX);
+    }
+
+    public Double getX() {
+        return this.<Double>get(X);
+    }
+
+    public Double getY() {
+        return this.<Double>get(Y);
+    }
+    public void setX(double x) {
+        this.set(X, x);
+    }
+
+    public Double setY(double y) {
+        this.set(X, y);
+    }
+
 
     private boolean invincible() {
         return getHealth() == Double.POSITIVE_INFINITY;
     }
 
-    @Override
     public double getDrawZ() {
-        return this.drawStrat.getDrawZ(data);
+        return this.<DrawStrat>get(DRAW_STRAT).getDrawZ(this);
     }
 
     /**
@@ -190,14 +236,13 @@ public class Entity implements Updatable, Drawable, AIable {
      */
     public void collision(GameModel model, Entity b) {
         inCollision = true;
-        this.collisionStrat.collision(model, this, b);
+        this.<CollisionStrat>oget(COLLISION_STRAT).ifPresent(collisionStrat -> collisionStrat.collision(model, this, b));
     }
 
-    @Override
     public void update(GameModel model) {
         inCollision = false;
-        if(this.data.lastUpdateTime == -1) {
-            this.data.lastUpdateTime = model.modelCurrentTime;
+        if (this.lastUpdateTime == -1) {
+            this.lastUpdateTime = model.modelCurrentTime;
             return;
         }
 
@@ -208,20 +253,11 @@ public class Entity implements Updatable, Drawable, AIable {
         if (this.getHealth() <= 0) {
             entityDie(model);
 //            System.out.println("HEELLLLLLLLLLLLLLLOOOOOOOO");
-        }
-        else {
+        } else {
             this.updateStrat.update(this, model);
 
             drawStrat.update(this, model);
         }
-    }
-
-    public void upgrade(GameModel model) {
-        System.out.println("upgrading health");
-        this.data.setHealth(this.data.getHealth() + 10);
-
-        drawStrat.upgrade(model);
-        updateStrat.upgrade(model);
     }
 
     /**
@@ -230,7 +266,7 @@ public class Entity implements Updatable, Drawable, AIable {
      * @return the collision type of this entity
      */
     public CollisionStrat.CollideType getCollideType() {
-        return collisionStrat.getCollideType();
+        return this.<CollisionStrat>get(COLLISION_STRAT).getCollideType();
     }
 
     /**
@@ -239,15 +275,15 @@ public class Entity implements Updatable, Drawable, AIable {
      * @param model current model of the game
      */
     public void updateCells(GameModel model) {
-        this.data.hitbox.updateCells(this, model);
+        this.getHitbox().updateCells(this, model);
     }
 
     public String toString() {
-        return "" + this.id + ": " + this.data.x + ", " + this.data.y;
+        return "" + this.id + ": " + this.getX() + ", " + this.getY();
     }
 
     public boolean checkCollision(Hitbox hitbox, double x, double y) {
-        return Hitbox.testCollision(this.data.x, this.data.y, this.data.hitbox, x, y, hitbox);
+        return Hitbox.testCollision(this.getX(), this.getY(), this.getHitbox(), x, y, hitbox);
     }
 
     //Experinamenting with this style of coding
@@ -257,24 +293,23 @@ public class Entity implements Updatable, Drawable, AIable {
 
     public void entityDie(GameModel model) {
         model.execute(
-            serverGameModel ->
-                serverDeathCallBacks.forEach(
-                    serverCallBack -> serverCallBack.accept(this, serverGameModel)),
-            clientGameModel -> {}
+                serverGameModel ->
+                        serverDeathCallBacks.forEach(
+                                serverCallBack -> serverCallBack.accept(this, serverGameModel)),
+                clientGameModel -> {
+                }
         );
-        deathStrat.handleDeath(model, this);
+        this.<DeathStrat>oget(DEATH_STRAT).ifPresent(strat -> strat.handleDeath(model, this));
     }
 
     public void decreaseHealthBy(GameModel model, double decrement) {
-        data.setHealth(data.getHealth() - decrement);
-        if (data.getHealth() <= 0) {
+        this.set(HEALTH, this.<Double>get(HEALTH) - decrement);
+        if (this.<Double>get(HEALTH) <= 0)
             entityDie(model);
-//            System.out.println("ENTITY DIES");
-        }
     }
 
     public double getHealth() {
-        return data.getHealth();
+        return this.<Double>get(HEALTH);
     }
 
     public void onDeath(ServerCallBack deathHandler) {

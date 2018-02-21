@@ -7,16 +7,14 @@ import static util.Const.NANOS_TO_SECONDS;
 
 public abstract class UpdateStrat {
 
-    public UpdateData initUpdateData() {
-        return new UpdateData();
-    }
+    public abstract void init();
 
     /**
      * Updates the entity in the game model.
      * @param model current game model
      */
     public void update(Entity entity, GameModel model) {
-        if(entity.data.updateData.lastUpdate == -1) {
+        if(entity.data.lastUpdate == -1) {
             entity.data.updateData.lastUpdate = model.nanoTime();
             return;
         }
@@ -25,10 +23,6 @@ public abstract class UpdateStrat {
         update(entity, model, NANOS_TO_SECONDS * entity.timeDelta);
 //        entity.data.updateData.lastUpdate = current_time;
         entity.data.updateData.lastUpdate += entity.timeDelta;
-    }
-
-    public void upgrade(GameModel model) {
-        // Do nothing
     }
 
     protected abstract void update(Entity entity, GameModel model, double seconds);

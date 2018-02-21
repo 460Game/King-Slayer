@@ -54,7 +54,7 @@ public class GameInteractionLayer extends Region  {
 
             if (mb == PRIMARY) {
                 if (model.getLocalPlayer().role == Role.KING && placing != null) {
-                    if (!placingGhost.data.hitbox.getCollidesWith(model, placingGhost.data.x, placingGhost.data.y).skip(1).findAny().isPresent()) {
+                    if (!placingGhost.hitbox.getCollidesWith(model, placingGhost.data.x, placingGhost.data.y).skip(1).findAny().isPresent()) {
                         model.processMessage(new EntityBuildRequest(placing,
                             model.getLocalPlayer().team,
                             TeamResourceData.Resource.WOOD,

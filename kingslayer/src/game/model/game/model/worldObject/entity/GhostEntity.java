@@ -25,7 +25,7 @@ public class GhostEntity extends Entity {
    * @param collisionStrat
    *     method with which this entity collides.
    * @param hitbox
-   *     hitbox of this entity
+   *     getHitbox of this entity
    * @param drawStrat
    *     method with which this entity is drawn
    * @param aiStrat

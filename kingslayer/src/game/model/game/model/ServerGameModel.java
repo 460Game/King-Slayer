@@ -21,18 +21,13 @@ public class ServerGameModel extends GameModel {
 
     public ServerGameModel() {
         super(new ServerMapGenerator(GRID_X_SIZE, GRID_Y_SIZE));
-        tmpMark = new Random().nextInt();
     }
 
     private Collection<? extends Model> clients = null;
 
-//    private Map<? extends Model, Pair<Team, Role>> clientToTeamRoleMap;
-
     private Map<? extends Model, PlayerInfo> clientToPlayerInfo;
 
-    Thread updateThread;
-
-    int tmpMark;
+    private Thread updateThread;
 
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
 
@@ -110,7 +105,7 @@ public class ServerGameModel extends GameModel {
 
     @Override
     public String toString() {
-        return "Server game model " + tmpMark;
+        return "Server game model";
     }
 
     private boolean running = false;

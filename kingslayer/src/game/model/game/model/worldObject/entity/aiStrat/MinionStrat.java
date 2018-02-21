@@ -18,7 +18,7 @@ public abstract class MinionStrat extends AIStrat {
 
     }
 
-    static class MinionStratAIData extends AIData {
+    static class MinionStratAIData {
 
         MinionStratAIData() {
 

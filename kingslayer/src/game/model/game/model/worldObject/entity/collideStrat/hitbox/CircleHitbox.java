@@ -11,12 +11,12 @@ import java.util.Set;
 import static util.Util.toDrawCoords;
 
 /**
- * A hitbox that is a circle.
+ * A getHitbox that is a circle.
  */
 public class CircleHitbox extends Hitbox {
 
     /**
-     * Radius of the circular hitbox.
+     * Radius of the circular getHitbox.
      */
     private double radius;
 
@@ -28,7 +28,7 @@ public class CircleHitbox extends Hitbox {
     }
 
     /**
-     * Constructor of a circle hitbox with given coordinates and radius.
+     * Constructor of a circle getHitbox with given coordinates and radius.
      * @param radius radius of the circle
      */
     public CircleHitbox(double radius) {

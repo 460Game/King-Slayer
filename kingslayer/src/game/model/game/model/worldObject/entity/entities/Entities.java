@@ -9,11 +9,9 @@ import game.model.game.model.worldObject.entity.collideStrat.*;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CellHitbox;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.CircleHitbox;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
-import game.model.game.model.worldObject.entity.deathStrat.NopDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.RemoveOnDeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
 import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
-import game.model.game.model.worldObject.entity.updateStrat.StillStrat;
 
 public class Entities {
 

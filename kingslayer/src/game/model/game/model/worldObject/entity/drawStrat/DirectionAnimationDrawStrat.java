@@ -2,7 +2,6 @@ package game.model.game.model.worldObject.entity.drawStrat;
 
 import game.model.game.model.Model;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.EntityData;
 import images.Images;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -11,8 +10,6 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
-import javafx.scene.paint.Color;
 
 import static java.lang.Math.decrementExact;
 import static util.Util.toDrawCoords;

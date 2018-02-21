@@ -1,14 +1,9 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
-import com.esotericsoftware.minlog.Log;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.EntityData;
 import images.Images;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 
 import static util.Util.toDrawCoords;
 

@@ -43,9 +43,9 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
     public void collisionWater(GameModel model, Entity a, Entity b) {
         // Normally an arrow should go over water fine. This check only stops the arrow
         // from going out of the bounds of the map and causing an error.
-        if (!checkBounds(a.data.x - a.data.hitbox.getRadius(ANGLE_LEFT), a.data.y - a.data.hitbox.getRadius(ANGLE_UP)) ||
-                !checkBounds(a.data.x + a.data.hitbox.getRadius(ANGLE_RIGHT), a.data.y + a.data.hitbox.getRadius(ANGLE_DOWN))) {
-            a.data.updateData.velocity.setMagnitude(0);
+        if (!checkBounds(a.x - a.hitbox.getRadius(ANGLE_LEFT), a.y - a.hitbox.getRadius(ANGLE_UP)) ||
+                !checkBounds(a.x + a.hitbox.getRadius(ANGLE_RIGHT), a.y + a.hitbox.getRadius(ANGLE_DOWN))) {
+            a.updateData.velocity.setMagnitude(0);
             a.entityDie(model);
         }
     }

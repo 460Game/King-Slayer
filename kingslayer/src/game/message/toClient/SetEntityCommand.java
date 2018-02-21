@@ -2,7 +2,6 @@ package game.message.toClient;
 
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.EntityData;
 
 /**
  * Message sent to set an entity on a client's game model. This message
@@ -11,7 +10,7 @@ import game.model.game.model.worldObject.entity.EntityData;
 public class SetEntityCommand implements ToClientCommand {
 
     /**
-     * Data corresponding to the entity.
+     * EntityProperty corresponding to the entity.
      */
     private EntityData data;
 

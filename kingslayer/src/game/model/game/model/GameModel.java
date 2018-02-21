@@ -4,17 +4,9 @@ import game.message.Message;
 import game.model.game.grid.GridCell;
 import game.model.game.map.MapGenerator;
 import game.model.game.map.Tile;
-import game.model.game.model.gameState.GameState;
-import game.model.game.model.worldObject.entity.Drawable;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.EntityData;
-import game.model.game.model.worldObject.entity.drawStrat.ShapeDrawStrat;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.paint.Color;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -191,7 +183,7 @@ public abstract class GameModel implements Model {
         allCells.stream().flatMap(GridCell::streamContents).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc));
 
         if(DEBUG_DRAW)
-            allCells.stream().flatMap(GridCell::streamContents).forEach(a -> a.data.hitbox.draw(gc, a));
+            allCells.stream().flatMap(GridCell::streamContents).forEach(a -> a.hitbox.draw(gc, a));
     }
 
     public void writeBackground(WritableImage image, boolean b) {

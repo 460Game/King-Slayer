@@ -59,9 +59,9 @@ public class UnitCollisionStrat extends SoftCollisionStrat {
 
         // Move the unit to the right spot depending on which side of the entity it hits.
         if (hitVerticalWall)
-            a.data.x = b.data.x - (hitleft ? 1 : -1) * (0.5 + a.data.hitbox.getRadius(collisionAngle + PI/2));
+            a.data.x = b.data.x - (hitleft ? 1 : -1) * (0.5 + a.hitbox.getRadius(collisionAngle + PI/2));
         if (hitHorizontalWall)
-            a.data.y = b.data.y - (hittop ? 1 : -1) * (0.5 + a.data.hitbox.getRadius(collisionAngle)); //TODO is this angle right? @ryan
+            a.data.y = b.data.y - (hittop ? 1 : -1) * (0.5 + a.hitbox.getRadius(collisionAngle)); //TODO is this angle right? @ryan
 
 //        System.out.println("New Player x: " + a.data.x);
 //        System.out.println("New Player y: " + a.data.y);

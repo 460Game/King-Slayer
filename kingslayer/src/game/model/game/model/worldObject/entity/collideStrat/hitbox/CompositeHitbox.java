@@ -16,7 +16,7 @@ public class CompositeHitbox extends Hitbox {
     private Hitbox a;
 
     private double offX;
-    private double offY; // hitbox a is -offX/2, -offY/2 offset from center, hitbox b is offX/2 offY/2 from center
+    private double offY; // getHitbox a is -offX/2, -offY/2 offset from center, getHitbox b is offX/2 offY/2 from center
 
     private Hitbox b;
 

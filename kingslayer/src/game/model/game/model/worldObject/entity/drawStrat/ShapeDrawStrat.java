@@ -2,7 +2,6 @@ package game.model.game.model.worldObject.entity.drawStrat;
 
 
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.EntityData;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 

@@ -1,13 +1,9 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
-import game.model.game.model.ClientGameModel;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.EntityData;
-import game.model.game.model.worldObject.entity.collideStrat.GhostCollisionStrat;
 import images.Images;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 import static util.Util.toDrawCoords;
 
