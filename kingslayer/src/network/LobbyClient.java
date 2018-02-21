@@ -7,23 +7,15 @@ import game.model.game.model.Model;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.view.GameView;
-import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lobby.Lobby;
+import lobby.lobbyMessage.LobbyMessage;
 import lobby.Main;
-import lobby.RoleChoice;
-import lobby.TeamChoice;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 
-public class LobbyClient {//extends Application {
+public class LobbyClient implements Lobby {//extends Application {
     static {
         Log.set(Log.LEVEL_INFO);
     }
@@ -35,6 +27,9 @@ public class LobbyClient {//extends Application {
     private Stage window;
     private LobbyClient2LobbyAdaptor lobbyAdaptor;
     public Main mainApp;
+
+    public int connectId;
+
     public LobbyClient(Stage window, LobbyClient2LobbyAdaptor lobbyAdaptor, Main mainApp) {
         this.window = window;
         this.lobbyAdaptor = lobbyAdaptor;
@@ -96,6 +91,7 @@ public class LobbyClient {//extends Application {
         // We'll do the connect on a new thread so the ChatFrame can show a progress bar.
         // Connecting to localhost is usually so fast you won't see the progress bar.
         client.connectToServer(5000, host);
+        connectId = client.client.getID();
     }
 
 
@@ -138,6 +134,11 @@ public class LobbyClient {//extends Application {
         int status = client.restartFromReadyPage();
         System.out.println("want it to be null: " + gameView);
         return status;
+    }
+
+    @Override
+    public void processMessage(LobbyMessage msg) {
+        msg.execuate(this);
     }
 }
 

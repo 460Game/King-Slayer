@@ -8,14 +8,13 @@ import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import javafx.util.Pair;
+import lobby.Lobby;
+import lobby.lobbyMessage.LobbyMessage;
 import lobby.PlayerInfo;
-import lobby.RoleChoice;
-import lobby.TeamChoice;
 
-import java.rmi.Remote;
 import java.util.*;
 
-public class LobbyServer { //extends Application {
+public class LobbyServer implements Lobby { //extends Application {
 
     static {
         Log.set(Log.LEVEL_INFO);
@@ -154,5 +153,14 @@ public class LobbyServer { //extends Application {
         server.server.stop();
 //        server.server.close();
     }
+
+    @Override
+    public void processMessage(LobbyMessage msg) {
+        msg.execuate(this);
+    }
+
+//    public void validateTeamRolePlayer(PlayerInfo playerInfo) {
+//
+//    }
 }
 

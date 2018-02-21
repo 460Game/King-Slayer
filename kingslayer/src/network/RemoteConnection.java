@@ -395,10 +395,10 @@ public class RemoteConnection {
      * @param host
      * @throws IOException
      */
-    public void connectToServer(int port, String host) throws IOException {
+    public int connectToServer(int port, String host) throws IOException {
         if (isServer) {
             Log.error("Server should not connect to server crossing network");
-            return;
+            return -1;
         }
         Log.info("Client connect to " + host + " " + port);
 //        new Thread("Connect") {
@@ -412,7 +412,7 @@ public class RemoteConnection {
 //            }
 //        }.start();
         client.connect(port, host, NetworkCommon.port);
-
+        return 0;
     }
 
     public void stop() {

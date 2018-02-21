@@ -9,7 +9,6 @@ import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
-import javafx.util.Pair;
 import lobby.PlayerInfo;
 import util.Const;
 
