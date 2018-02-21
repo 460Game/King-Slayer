@@ -14,9 +14,5 @@ public class RemoveOnDeathStrat extends DeathStrat {
         model.execute(serverGameModel ->
             serverGameModel.processMessage(new RemoveEntityCommand(entity)), clientGameModel -> {});
             model.execute(serverGameModel -> serverGameModel.removeByID(entity.id), clientGameModel ->  clientGameModel.removeByID(entity.id));
-//        if (model.getAllEntities().contains(entity))
-//            System.out.println("Still not removed");
-//        else
-//            System.out.println("REMOVED!!!!");
     }
 }

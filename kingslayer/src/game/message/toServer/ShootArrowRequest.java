@@ -62,7 +62,7 @@ public class ShootArrowRequest extends ActionRequest {
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        Entity arrow = Entities.makeArrow(x - 0.5 * Math.cos(angle), y - 0.5 * Math.sin(angle), angle, team);
+        Entity arrow = Entities.makeArrow(x, y, angle, team);
         model.makeEntity(arrow);
     }
 }
