@@ -44,18 +44,10 @@ public class WorldPanel extends Region {
         gameInteractionLayer.prefWidthProperty().bind(this.widthProperty());
 
         //TODO this is sh*t
-        new java.util.Timer().schedule(
-            new java.util.TimerTask() {
-                @Override
-                public void run() {
                     BGImage1 = new WritableImage(CANVAS_WIDTH, CANVAS_HEIGHT);
                     model.writeBackground(BGImage1,true);
                     BGImage2 = new WritableImage(CANVAS_WIDTH, CANVAS_HEIGHT);
                     model.writeBackground(BGImage2,false);
-                }
-            },
-            3000
-        );
 
     }
 

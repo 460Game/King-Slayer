@@ -14,8 +14,7 @@ import static util.Util.toDrawCoords;
 public class GhostDrawStrat extends ImageDrawStrat {
 
   public static final WallGhostDrawStrat GHOSTWALL = new WallGhostDrawStrat();
-  public static final ResourceCollectorRedGhostDrawStrat GHOST_RED_COLLECTOR = new ResourceCollectorRedGhostDrawStrat();
-  public static final ResourceCollectorBlueGhostDrawStrat GHOST_BLUE_COLLECTOR = new ResourceCollectorBlueGhostDrawStrat();
+  public static final ResourceCollectorGhostDrawStrat GHOST_COLLECTOR = new ResourceCollectorGhostDrawStrat();
 
   @Override
   public DrawData initDrawData() {
@@ -27,6 +26,10 @@ public class GhostDrawStrat extends ImageDrawStrat {
     return null;
   }
 
+  public Image getImage(Entity entity) {
+    return null;
+  }
+
   @Override
   double getWidth() {
     return 1.0;
@@ -34,7 +37,7 @@ public class GhostDrawStrat extends ImageDrawStrat {
 
   @Override
   double getHeight() {
-    return 1.75;
+    return 1.625;
   }
 
   @Override
@@ -55,7 +58,7 @@ public class GhostDrawStrat extends ImageDrawStrat {
     double y = h - this.getCenterY();
 
     gc.setGlobalAlpha(0.5);
-    gc.drawImage(getImage(),
+    gc.drawImage(getImage(entity),
         toDrawCoords(entity.data.x - x),
         toDrawCoords(entity.data.y - y),
         toDrawCoords(w),
@@ -70,7 +73,7 @@ public class GhostDrawStrat extends ImageDrawStrat {
 
   public static class WallGhostDrawStrat extends GhostDrawStrat {
     @Override
-    public Image getImage() {
+    public Image getImage(Entity entity) {
       return Images.WALL_BUILDABLE_IMAGE;
     }
 
@@ -78,23 +81,19 @@ public class GhostDrawStrat extends ImageDrawStrat {
     }
   }
 
-  public static class ResourceCollectorRedGhostDrawStrat extends GhostDrawStrat {
-    @Override
-    public Image getImage() {
-      return Images.RED_RESOURCE_COLLECTOR_IMAGE;
+  public static class ResourceCollectorGhostDrawStrat extends GhostDrawStrat {
+    public Image getImage(Entity entity) {
+      switch (entity.team) {
+        case ONE:
+          return Images.RED_RESOURCE_COLLECTOR_IMAGE;
+        case TWO:
+          return Images.BLUE_RESOURCE_COLLECTOR_IMAGE;
+        default:
+          return null;
+      }
     }
 
-    private ResourceCollectorRedGhostDrawStrat() {
-    }
-  }
-
-  public static class ResourceCollectorBlueGhostDrawStrat extends GhostDrawStrat {
-    @Override
-    public Image getImage() {
-      return Images.BLUE_RESOURCE_COLLECTOR_IMAGE;
-    }
-
-    private ResourceCollectorBlueGhostDrawStrat() {
+    private ResourceCollectorGhostDrawStrat() {
     }
   }
 }

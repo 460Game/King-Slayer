@@ -19,50 +19,26 @@ public class Players {
 
     // TODO scale health appropriately
 
-    public static Entity makeSlayerA(Double x, Double y) {
+    public static Entity makeSlayer(Double x, Double y, Team team) {
         return new Entity(x, y, 100,
-            Team.ONE,
+            team,
             Role.SLAYER,
             MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
-            DirectionAnimationDrawStrat.RED_SLAYER_ANIMATION, //TODO drawForeground strat
+            DirectionAnimationDrawStrat.SLAYER_ANIMATION, //TODO drawForeground strat
             AIDoNothingStrat.SINGLETON,
                 SlayerDeathStrat.SINGLETON);
     }
 
-    public static Entity makeSlayerB(Double x, Double y) {
+    public static Entity makeKing(double x, double y, Team team) {
         return new Entity(x, y, 100,
-            Team.TWO,
-            Role.SLAYER,
-            MovingStrat.SINGLETON,
-            UnitCollisionStrat.SINGLETON,
-            hitbox,
-            DirectionAnimationDrawStrat.BLUE_SLAYER_ANIMATION, //TODO drawForeground strat
-            AIDoNothingStrat.SINGLETON,
-                SlayerDeathStrat.SINGLETON);
-    }
-
-    public static Entity makeKingA(double x, double y) {
-        return new Entity(x, y, 100,
-            Team.ONE,
+            team,
             Role.KING,
             MovingStrat.SINGLETON,
             UnitCollisionStrat.SINGLETON,
             hitbox,
-            DirectionAnimationDrawStrat.RED_KING_ANIMATION, //TODO drawForeground strat
-            AIDoNothingStrat.SINGLETON,
-                KingDeathStrat.SINGLETON);
-    }
-
-    public static Entity makeKingB(double x, double y) {
-        return new Entity(x, y, 100,
-            Team.TWO,
-            Role.KING,
-            MovingStrat.SINGLETON,
-            UnitCollisionStrat.SINGLETON,
-            hitbox,
-            DirectionAnimationDrawStrat.BLUE_KING_ANIMATION, //TODO drawForeground strat
+            DirectionAnimationDrawStrat.KING_ANIMATION, //TODO drawForeground strat
             AIDoNothingStrat.SINGLETON,
                 KingDeathStrat.SINGLETON);
     }

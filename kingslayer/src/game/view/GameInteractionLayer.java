@@ -14,6 +14,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Region;
 
+import static javafx.scene.input.KeyCode.*;
+import static javafx.scene.input.KeyCode.DIGIT3;
+import static javafx.scene.input.KeyCode.DIGIT4;
+import static javafx.scene.input.KeyCode.NUMPAD4;
+import static javafx.scene.input.MouseButton.PRIMARY;
+import static javafx.scene.input.MouseButton.SECONDARY;
 import static util.Const.TILE_PIXELS;
 import static util.Util.toDrawCoords;
 import static util.Util.toWorldCoords;
@@ -29,6 +35,10 @@ public class GameInteractionLayer extends Region  {
     private Entity placingGhost;
     private int cost;
 
+    private boolean upgrading = false;
+
+    private boolean selectingBarracks = false;
+
     public GameInteractionLayer(ClientGameModel clientGameModel) {
         this.model = clientGameModel;
         uiCanvas = new Canvas();
@@ -40,7 +50,9 @@ public class GameInteractionLayer extends Region  {
         uiCanvas.setFocusTraversable(true);
 
         uiCanvas.setOnMouseClicked(e -> {
-            if (e.getButton() == MouseButton.PRIMARY) {
+            MouseButton mb = e.getButton();
+
+            if (mb == PRIMARY) {
                 if (model.getLocalPlayer().role == Role.KING && placing != null) {
                     if (!placingGhost.data.hitbox.getCollidesWith(model, placingGhost.data.x, placingGhost.data.y).skip(1).findAny().isPresent()) {
                         model.processMessage(new EntityBuildRequest(placing,
@@ -50,6 +62,15 @@ public class GameInteractionLayer extends Region  {
                     }
                     model.remove(placingGhost);
                     placing = null;
+                } else if (upgrading) {
+                  int x = (int) (toDrawCoords(model.getLocalPlayer().data.x) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS;
+                  int y = (int) (toDrawCoords(model.getLocalPlayer().data.y) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS;
+                  Entity entity = model.getEntityAt(x, y);
+                  System.out.println("clicked at " + x + " " + y + " and hit entity " + entity);
+                  if (entity != null) {
+                    entity.upgrade(model);
+                    upgrading = false;
+                  }
                 } else if (model.getLocalPlayer().role == Role.SLAYER) {
 
                     double xCoords = toWorldCoords(e.getX() - getWidth() / 2);
@@ -58,14 +79,16 @@ public class GameInteractionLayer extends Region  {
                     model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
                         model.getLocalPlayer().data.x + 0.56 * Math.cos(angle),
                         model.getLocalPlayer().data.y + 0.56 * Math.sin(angle),
-                        angle));
+                        angle, model.getLocalPlayer().team));
 
                     // TODO problem when player running into own arrow
                 }
-            } else if (e.getButton() == MouseButton.SECONDARY) {
+            } else if (mb == SECONDARY) {
                 if (model.getLocalPlayer().role == Role.KING && placing != null) {
                     model.remove(placingGhost);
                     placing = null;
+                } else if (upgrading) {
+                    upgrading = false;
                 }
             }
         });
@@ -85,69 +108,74 @@ public class GameInteractionLayer extends Region  {
         });
 
         uiCanvas.setOnKeyPressed(e -> {
-            if (placingGhost != null) {
+            KeyCode kc = e.getCode();
+
+            if (placingGhost != null && kc != W && kc != A && kc != S && kc != D) {
                 model.removeByID(placingGhost.id);
                 placingGhost = null;
                 placing = null;
             }
 
-            if (e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.NUMPAD1) {
-                if (model.getLocalPlayer().role == Role.KING) {
+            if ((kc == DIGIT1 || kc == NUMPAD1) && model.getLocalPlayer().role == Role.KING) {
+                if (!selectingBarracks) {
                     cost = -10;
                     placingGhost = Entities.makeGhostWall(0, 0);
                     placing = Entities.makeBuiltWall(0, 0);
                     model.processMessage(new NewEntityCommand(placingGhost));
+                } else {
+                    // TODO make melee barracks
+
+                    selectingBarracks = false;
                 }
             }
 
-            if (e.getCode() == KeyCode.DIGIT2 || e.getCode() == KeyCode.NUMPAD2) {
-                if (model.getLocalPlayer().role == Role.KING) {
-                    if (model.getLocalPlayer().team == Team.ONE) {
-                        cost = -2;
-                        placingGhost = Entities.makeResourceCollectorRedGhost(0, 0);
-                        placing = Entities.makeResourceCollectorRed(0, 0);
-                        model.processMessage(new NewEntityCommand(placingGhost));
-                    } else {
-                        cost = -2;
-                        placingGhost = Entities.makeResourceCollectorBlueGhost(0, 0);
-                        placing = Entities.makeResourceCollectorBlue(0, 0);
-                        model.processMessage(new NewEntityCommand(placingGhost));
-                    }
+            if ((kc == DIGIT2 || kc == NUMPAD2) && model.getLocalPlayer().role == Role.KING) {
+                if (!selectingBarracks) {
+                    cost = -2;
+                    placingGhost = Entities.makeResourceCollectorGhost(0, 0, model.getLocalPlayer().team);
+                    placing = Entities.makeResourceCollector(0, 0, model.getLocalPlayer().team);
+                    model.processMessage(new NewEntityCommand(placingGhost));
+                } else {
+                    cost = -2;
+                    placingGhost = Entities.makeRangedBarracksGhost(0, 0, model.getLocalPlayer().team);
+                    placing = Entities.makeRangedBarracks(0, 0, model.getLocalPlayer().team);
+                    model.processMessage(new NewEntityCommand(placingGhost));
+
+                    selectingBarracks = false;
                 }
             }
 
-            if (e.getCode() == KeyCode.DIGIT3 || e.getCode() == KeyCode.NUMPAD3) {
-                if (model.getLocalPlayer().role == Role.KING) {
-                    if (model.getLocalPlayer().team == Team.ONE) {
-                        cost = -2;
-                        placingGhost = Entities.makeRedBarracks(0, 0);
-                        placing = Entities.makeRedBarracks(0, 0);
-                        model.processMessage(new NewEntityCommand(placingGhost));
-                    } else {
-                        // TODO
-                        cost = -2;
-                        placingGhost = Entities.makeBlueBarracks(0, 0);
-                        placing = Entities.makeBlueBarracks(0, 0);
-                        model.processMessage(new NewEntityCommand(placingGhost));
-                    }
+            if (kc == DIGIT3 || kc == NUMPAD3) {
+                if (! selectingBarracks) {
+                    selectingBarracks = true;
+                } else {
+                    // TODO make siege barracks
+
+                    selectingBarracks = false;
                 }
             }
 
-            if (e.getCode() == KeyCode.DIGIT4 || e.getCode() == KeyCode.NUMPAD4) {
-                if (model.getLocalPlayer().role == Role.KING) {
-                    if (model.getLocalPlayer().team == Team.ONE) {
+            if (kc == DIGIT4 || kc == NUMPAD4) {
+                if (!selectingBarracks) {
+                    if (model.getLocalPlayer().role == Role.KING) {
                         cost = -20;
-                        placingGhost = Entities.makeRedArrowTower(0, 0);
-                        placing = Entities.makeRedArrowTower(0, 0);
-                        model.processMessage(new NewEntityCommand(placingGhost));
-                    } else {
-                        cost = -20;
-                        placingGhost = Entities.makeBlueArrowTower(0, 0);
-                        placing = Entities.makeBlueArrowTower(0, 0);
+                        placingGhost = Entities.makeArrowTowerGhost(0, 0, model.getLocalPlayer().team);
+                        placing = Entities.makeArrowTower(0, 0, model.getLocalPlayer().team);
                         model.processMessage(new NewEntityCommand(placingGhost));
                     }
+                } else {
+                    // TODO make exploration barracks
+
+                    selectingBarracks = false;
                 }
             }
+
+          if (e.getCode() == KeyCode.E) {
+            if (model.getLocalPlayer().role == Role.KING) {
+              upgrading = true;
+            }
+          }
+
         });
     }
 }

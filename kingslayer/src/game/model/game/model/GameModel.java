@@ -111,6 +111,14 @@ public abstract class GameModel implements Model {
         return grid[x][y].getTile();
     }
 
+    public Entity getEntityAt(int x, int y) {
+        for (Entity e: getAllEntities()) {
+            if ((int) e.data.x == x && (int) e.data.y == y)
+                return e;
+        }
+        return null;
+    }
+
     /**
      * Removes the entity with the given ID from every tile on the game map.
      *

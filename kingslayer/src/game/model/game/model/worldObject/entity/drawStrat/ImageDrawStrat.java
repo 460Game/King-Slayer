@@ -25,8 +25,6 @@ public abstract class ImageDrawStrat extends DrawStrat {
     public static final ImageDrawStrat TREASURE_IMAGE_DRAW_STRAT = new TreasureImageDrawStrat();
 
     public static final ImageDrawStrat WALL_BUILDABLE_IMAGE_DRAW_STRAT = new WallBuildableImageDrawStrat();
-    public static final ImageDrawStrat RED_ARROW_TOWER_IMAGE_DRAW_STRAT = new RedArrowTowerImageDrawStrat();
-    public static final ImageDrawStrat BLUE_ARROW_TOWER_IMAGE_DRAW_STRAT = new BlueArrowTowerImageDrawStrat();
 
     @Override
     public DrawData initDrawData() {

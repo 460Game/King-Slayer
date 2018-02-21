@@ -1,6 +1,5 @@
 package game.model.game.model.worldObject.entity.aiStrat;
 
-import com.esotericsoftware.minlog.Log;
 import game.message.toServer.MakeEntityRequest;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
@@ -14,9 +13,9 @@ import static java.lang.Math.sin;
 
 public abstract class BuildingSpawnerStrat extends AIStrat {
 
-    public static class BarracksBuildingSpawnerStrat extends BuildingSpawnerStrat {
+    public static class RangedBarracksBuildingSpawnerStrat extends BuildingSpawnerStrat {
 
-        public static final BarracksBuildingSpawnerStrat SINGLETON = new BarracksBuildingSpawnerStrat();
+        public static final RangedBarracksBuildingSpawnerStrat SINGLETON = new RangedBarracksBuildingSpawnerStrat();
 
         @Override
         double timeBetweenSpawns() {
@@ -34,6 +33,46 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
     }
 
+    public static class MeleeBarracksBuildingSpawnerStrat extends BuildingSpawnerStrat {
+
+        public static final MeleeBarracksBuildingSpawnerStrat SINGLETON = new MeleeBarracksBuildingSpawnerStrat();
+
+        @Override
+        double timeBetweenSpawns() {
+            return 5;
+        }
+
+        @Override
+        int maxActive() {
+            return 5;
+        }
+
+        @Override
+        Entity makeEntity(double x, double y, Team team) {
+            return Minions.makeRangedMinion(x, y, team);
+        }
+    }
+
+    public static class ResourceCollectorBuildingSpawnerStrat extends BuildingSpawnerStrat {
+
+        public static final ResourceCollectorBuildingSpawnerStrat SINGLETON = new ResourceCollectorBuildingSpawnerStrat();
+
+        @Override
+        double timeBetweenSpawns() {
+            return 5;
+        }
+
+        @Override
+        int maxActive() {
+            return 5;
+        }
+
+        @Override
+        Entity makeEntity(double x, double y, Team team) {
+            return Minions.makeResourceMinion(x, y, team);
+        }
+    }
+
 
     public static class TowerBuildingSpawnerStrat extends BuildingSpawnerStrat {
 
@@ -41,18 +80,18 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns() {
-            return 0.5;
+            return 0.1;
         }
 
         @Override
         int maxActive() {
-            return 1;
+            return 100;
         }
 
         @Override
         Entity makeEntity(double x, double y, Team team) {
             double dir = Util.random.nextDouble() * 2 * Math.PI;
-            return Entities.makeArrow(x + cos(dir), y + sin(dir), dir);
+            return Entities.makeArrow(x + cos(dir), y + sin(dir), dir, team);
         }
     }
 
@@ -84,7 +123,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
     public void updateAI(Entity entity, ServerGameModel model, double seconds) {
         BuildingSpanwerStratAIData data = (BuildingSpanwerStratAIData) entity.data.aiData;
         data.elapsedTime += seconds;
-        if (data.elapsedTime > timeBetweenSpawns()) {
+        while (data.elapsedTime > timeBetweenSpawns()) {
             data.elapsedTime -= timeBetweenSpawns();
             if (data.spawnCounter < maxActive()) {
                 Entity newEntity = makeEntity(entity.data.x, entity.data.y, entity.team);

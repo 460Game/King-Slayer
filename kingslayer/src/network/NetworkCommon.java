@@ -14,6 +14,8 @@ import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntityData;
 import game.model.game.model.worldObject.entity.aiStrat.AIDoNothingStrat;
+import game.model.game.model.worldObject.entity.aiStrat.BuildingSpawnerStrat;
+import game.model.game.model.worldObject.entity.aiStrat.MinionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.*;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.*;
 import game.model.game.model.team.Team;
@@ -82,16 +84,13 @@ public class NetworkCommon {
         kryo.register(ImageDrawStrat.BoxImageDrawStrat.class);
         kryo.register(ImageDrawStrat.WallImageDrawStrat.class);
         kryo.register(ImageDrawStrat.WallBuildableImageDrawStrat.class);
-        kryo.register(UpgradableImageDrawStrat.RedResourceCollectorImageDrawStrat.class);
-        kryo.register(UpgradableImageDrawStrat.BlueResourceCollectorImageDrawStrat.class);
+        kryo.register(UpgradableImageDrawStrat.ResourceCollectorImageDrawStrat.class);
         kryo.register(UnitCollisionStrat.class);
         kryo.register(SoftCollisionStrat.class);
         kryo.register(HardCollisionStrat.class);
         kryo.register(GhostCollisionStrat.class);
-        kryo.register(DirectionAnimationDrawStrat.RedSlayerDirectionAnimationDrawStrat.class);
-        kryo.register(DirectionAnimationDrawStrat.RedKingDirectionAnimationDrawStrat.class);
-        kryo.register(DirectionAnimationDrawStrat.BlueKingDirectionAnimationDrawStrat.class);
-        kryo.register(DirectionAnimationDrawStrat.BlueSlayerDirectionAnimationDrawStrat.class);
+        kryo.register(DirectionAnimationDrawStrat.SlayerDirectionAnimationDrawStrat.class);
+        kryo.register(DirectionAnimationDrawStrat.KingDirectionAnimationDrawStrat.class);
 
         kryo.register(TreasureGhostCollisionStrat.class);
         kryo.register(ArrowCollisionStrat.class);
@@ -134,6 +133,8 @@ public class NetworkCommon {
         kryo.register(TeamWinCommand.class);
         kryo.register(NopDeathStrat.class);
         kryo.register(SlayerDeathStrat.class);
+        kryo.register(MinionStrat.class);
+        kryo.register(BuildingSpawnerStrat.class);
 
         kryo.register(WaterCollisionStrat.class);
         kryo.register(KingDeathStrat.class);

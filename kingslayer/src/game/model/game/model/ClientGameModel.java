@@ -4,6 +4,9 @@ import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.message.toServer.RequestEntityRequest;
 import game.model.game.map.ClientMapGenerator;
+import game.model.game.model.gameState.GameState;
+import game.model.game.model.gameState.Loading;
+import game.model.game.model.gameState.Running;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
@@ -58,6 +61,7 @@ public class ClientGameModel extends GameModel {
 
     public void init(Team team, Role role, TeamRoleEntityMap map) {
         this.setLocalPlayer(map.getEntity(team, role));
+        state = Running.SINGLETON;
     }
 
     @Override
@@ -97,5 +101,9 @@ public class ClientGameModel extends GameModel {
         return losingTeam;
     }
 
+    private GameState state = Loading.SINGLETON;
 
+    public GameState getState() {
+        return state;
+    }
 }

@@ -148,7 +148,11 @@ public class Entity implements Updatable, Drawable, AIable {
 
     @Override
     public void updateAI(ServerGameModel model, double secondsElapsed) {
-        this.aiStrat.updateAI(this, model, secondsElapsed);
+        if (this.getHealth() <= 0) {
+            entityDie(model);
+        } else {
+            this.aiStrat.updateAI(this, model, secondsElapsed);
+        }
     }
 
     @Override
@@ -188,9 +192,25 @@ public class Entity implements Updatable, Drawable, AIable {
     @Override
     public void update(GameModel model) {
         inCollision = false;
-        this.updateStrat.update(this, model);
 
-        drawStrat.update(this, model);
+        // TODO temp fix. entity is still in the model...
+        if (this.getHealth() <= 0) {
+            entityDie(model);
+//            System.out.println("HEELLLLLLLLLLLLLLLOOOOOOOO");
+        }
+        else {
+            this.updateStrat.update(this, model);
+
+            drawStrat.update(this, model);
+        }
+    }
+
+    public void upgrade(GameModel model) {
+        System.out.println("upgrading health");
+        this.data.setHealth(this.data.getHealth() + 10);
+
+        drawStrat.upgrade(model);
+        updateStrat.upgrade(model);
     }
 
     /**
@@ -236,8 +256,10 @@ public class Entity implements Updatable, Drawable, AIable {
 
     public void decreaseHealthBy(GameModel model, double decrement) {
         data.setHealth(data.getHealth() - decrement);
-        if (data.getHealth() <= 0)
+        if (data.getHealth() <= 0) {
             entityDie(model);
+//            System.out.println("ENTITY DIES");
+        }
     }
 
     public double getHealth() {

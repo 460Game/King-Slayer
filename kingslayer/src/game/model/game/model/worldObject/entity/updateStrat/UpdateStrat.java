@@ -25,5 +25,9 @@ public abstract class UpdateStrat {
         entity.data.updateData.lastUpdate = current_time;
     }
 
+    public void upgrade(GameModel model) {
+        // Do nothing
+    }
+
     protected abstract void update(Entity entity, GameModel model, double seconds);
 }

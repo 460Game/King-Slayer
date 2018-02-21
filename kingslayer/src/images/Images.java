@@ -12,14 +12,15 @@ public abstract class Images {
     public static final Image GAME_CURSOR_IMAGE = getImage("gamecursor.png");
 
     public static final Image WALL_BUILDABLE_IMAGE = getImage("wall_buildable.png");
+    public static final Image WALLS_BUILDABLE_IMAGE = getImage("walls_buildable.png");
     public static final Image RED_RESOURCE_COLLECTOR_IMAGE = getImage("resource_collector_red.png");
     public static final Image BLUE_RESOURCE_COLLECTOR_IMAGE = getImage("resource_collector_blue.png");
     public static final Image RED_RESOURCE_COLLECTORS_IMAGE = getImage("resource_collectors_red.png");
     public static final Image BLUE_RESOURCE_COLLECTORS_IMAGE = getImage("resource_collectors_blue.png");
     public static final Image RED_BARRACKS_IMAGE = getImage("barracks_red.png");
     public static final Image BLUE_BARRACKS_IMAGE = getImage("barracks_blue.png");
-    public static final Image RED_ARROW_TOWER_IMAGE = getImage("arrow_tower_red.png");
-    public static final Image BLUE_ARROW_TOWER_IMAGE = getImage("arrow_tower_blue.png");
+    public static final Image RED_ARROW_TOWER_IMAGE = getImage("arrow_towers_red.png");
+    public static final Image BLUE_ARROW_TOWER_IMAGE = getImage("arrow_towers_blue.png");
 
     public static final Image TREASURE_IMAGE = getImage("treasure.png");
     public static final Image ARROW_IMAGE = getImage("arrow.png");
@@ -37,6 +38,14 @@ public abstract class Images {
     public static final Image BLUE_KING_IMAGE_SHEET = getImage("king_blue_sheet_new.png");
     public static final Image RED_SLAYER_IMAGE_SHEET = getImage("slayer_red_sheet.png");
     public static final Image BLUE_SLAYER_IMAGE_SHEET = getImage("slayer_blue_sheet.png");
+    public static final Image BLUE_RANGED_IMAGE_SHEET = getImage("minions_ranged_blue.png");
+    public static final Image RED_RANGED_IMAGE_SHEET = getImage("slayer_red_sheet.png"); // TODO
+    public static final Image BLUE_MELEE_IMAGE_SHEET = getImage("minions_siege_blue.png");
+    public static final Image RED_MELEE_IMAGE_SHEET = getImage("minions_siege_red.png");
+    public static final Image BLUE_SIEGE_IMAGE_SHEET = getImage("minions_siege_blue.png");
+    public static final Image RED_SIEGE_IMAGE_SHEET = getImage("minions_siege_red.png");
+    public static final Image BLUE_RESOURCE_MIONION_IMAGE_SHEET = getImage("minions_resource_blue.png");
+    public static final Image RED_RESOURCE_MINION_IMAGE_SHEET = getImage("minions_resource_red.png");
 
     private static Image getImage(String s) {
         return new Image(Images.class.getResourceAsStream(s));
