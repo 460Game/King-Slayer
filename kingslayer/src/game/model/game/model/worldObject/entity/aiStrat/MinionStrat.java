@@ -52,6 +52,7 @@ public abstract class MinionStrat extends AIStrat {
     @Override
     public void updateAI(Entity entity, ServerGameModel model, double seconds) {
         // get closest king?
+
         MinionStratAIData data = entity.get(Entity.EntityProperty.AI_DATA);
         Astar astar = new Astar(model);
         Entity king = model.getAllEntities().parallelStream().filter((e) -> e.getTeam() != entity.getTeam() && e.has(Entity.EntityProperty.ROLE) && e.<Role>get(Entity.EntityProperty.ROLE) == Role.KING).findFirst().get();
@@ -60,25 +61,34 @@ public abstract class MinionStrat extends AIStrat {
         int entityy = (int) (double) entity.getY();
         int x = (int) (double) model.getEntity(king.id).getX();
         int y = (int) (double) model.getEntity(king.id).getY();
+
+        // Check if path exists and king has moved, then generate a new path.
+        if (data.path.size() > 0 && data.path.get(data.path.size() - 1).getTopLeftX() != x &&
+                data.path.get(data.path.size() - 1).getTopLeftY() != y) {
+            data.path.clear();
+            data.path = astar.astar(model.getCell(entityx, entityy), model.getCell(x, y));
+        }
+
+        // If nothing in path and not at destination, generate a path.
+
         if (data.path.size() == 0 && entityx != x && entityy != y) {
             data.path = astar.astar(model.getCell(entityx, entityy), model.getCell(x, y));
             System.out.println("Found path");
         }
+
         // might need to check for empty path
+
         if (entityx == x && entityy == y)
             entity.setVelocity(entity.getVelocity().withMagnitude(0));
         else if (entityx == data.path.get(0).getTopLeftX() && entityy == data.path.get(0).getTopLeftY())
             data.path.remove(0);
+
         else {
+            // Keep moving if cells are in path.
             astar.moveToCell(entity, data.path.get(0));
             entity.setVelocity(entity.getVelocity().withMagnitude(1));
         }
-//        System.out.println("King x: " + x);
-//        System.out.println("King y: " + y);
-//        entity.data.updateData.velocity.setVx((int) (Math.random() * 3) - 1);
-//        entity.data.updateData.velocity.setVy((int) (Math.random() * 3) - 1);
+
         model.processMessage(new SetEntityCommand(entity));
-//        entity.data.x += entity.data.updateData.velocity.getVx() * seconds;
-//        entity.data.y += entity.data.updateData.velocity.getVy() * seconds;
     }
 }
