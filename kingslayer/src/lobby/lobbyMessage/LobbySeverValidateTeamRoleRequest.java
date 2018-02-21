@@ -19,6 +19,7 @@ public class LobbySeverValidateTeamRoleRequest extends ToLobbyServerMsg {
 
     @Override
     public void lobbyServerExecuate(LobbyServer lobbyServer) {
+//        TODO: implement this secondly
 //        lobbyServer.validateTeamRolePlayer(myTeam, myRole, playerName);
     }
 }

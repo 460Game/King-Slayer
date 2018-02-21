@@ -106,7 +106,8 @@ public class ServerMapGenerator implements MapGenerator {
     }
 
     public void makeMap() {
-        makeMap((new Random()).nextLong());
+//        makeMap((new Random()).nextLong());
+        makeMap(Long.parseLong("6736756290173747940"));
     }
 
     public void makeMap(long seed) {

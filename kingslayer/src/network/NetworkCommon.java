@@ -21,6 +21,7 @@ import game.model.game.model.worldObject.entity.collideStrat.hitbox.*;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.deathStrat.KingDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.NopDeathStrat;
+import game.model.game.model.worldObject.entity.deathStrat.RemoveOnDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.SlayerDeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
 import game.model.game.model.worldObject.entity.entities.Velocity;
@@ -140,6 +141,8 @@ public class NetworkCommon {
         kryo.register(KingDeathStrat.class);
         kryo.register(ClientRestartMsg.class);
         kryo.register(AnimationDrawData.class);
+
+        kryo.register(RemoveOnDeathStrat.class);
     }
 
     public static class ClientMakeModelMsg {
@@ -151,11 +154,13 @@ public class NetworkCommon {
         private Team teamChoice;
         private Role roleChoice;
         private String playerName;
-        public ClientReadyMsg(Team team, Role role, String playerName) {}
-        public ClientReadyMsg(Team team, Role role) {
+        public ClientReadyMsg() {}
+        public ClientReadyMsg(Team team, Role role, String playerName) {
             teamChoice = team;
             roleChoice = role;
+            this.playerName = playerName;
         }
+
         public Team getTeam() {
             return teamChoice;
         }

@@ -41,6 +41,8 @@ public abstract class GameModel implements Model {
 
     public abstract void execute(Consumer<ServerGameModel> serverAction, Consumer<ClientGameModel> clientAction);
 
+    public long modelCurrentTime = 0;
+
     /**
      * Constructor for the game model.
      * @param generator map generator for this game model
@@ -143,6 +145,8 @@ public abstract class GameModel implements Model {
         ArrayList<Message> list = new ArrayList<>();
         messageQueue.drainTo(list);
         list.forEach(m -> m.execute(this));
+
+        modelCurrentTime = this.nanoTime();
 
         entities.values().forEach(e -> e.update(this));
         entities.values().forEach(e -> e.updateCells(this));

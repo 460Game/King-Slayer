@@ -2,6 +2,7 @@ package game.model.game.model.worldObject.entity.collideStrat;
 
 import com.esotericsoftware.minlog.Log;
 import game.model.game.model.GameModel;
+import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import util.Const;
 import util.Util;
@@ -23,6 +24,16 @@ public class UnitCollisionStrat extends SoftCollisionStrat {
     @Override
     public void collisionSoft(GameModel model, Entity a, Entity b) {
         //TODO should push away from other entity
+        double collisionAngle = Util.angle2Points(a.data.x, a.data.y, b.data.x, b.data.y);
+        a.data.x -= 1.5 * Math.cos(collisionAngle) * NANOS_TO_SECONDS * a.timeDelta;
+        a.data.y -= 1.5 * Math.sin(collisionAngle) * NANOS_TO_SECONDS * a.timeDelta;
+        b.data.x += 1.5 * Math.cos(collisionAngle) * NANOS_TO_SECONDS * b.timeDelta;
+        b.data.y += 1.5 * Math.sin(collisionAngle) * NANOS_TO_SECONDS * b.timeDelta;
+
+        if (a.team != b.team && !(a.team == Team.NEUTRAL || b.team == Team.NEUTRAL)) {
+            a.decreaseHealthBy(model,  NANOS_TO_SECONDS * a.timeDelta);
+            b.decreaseHealthBy(model, NANOS_TO_SECONDS * b.timeDelta);
+        }
     }
 
     @Override

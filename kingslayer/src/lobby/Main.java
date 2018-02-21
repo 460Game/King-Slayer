@@ -195,7 +195,7 @@ public class Main extends Application {
 
         window.heightProperty().addListener(resize);
         window.widthProperty().addListener(resize);
-
+//
         Group root = new Group();
         root.getChildren().addAll(bgCanvas, midCanvas, menuBox);
         mainMenuScene = new Scene(root);
@@ -227,6 +227,7 @@ public class Main extends Application {
                     break;
             }
         });
+
 
         double[] bgOpac = new double[]{2.0};
 
@@ -398,40 +399,37 @@ public class Main extends Application {
 
     private void setAnimator(Pane addedPane) {
 
-        InvalidationListener resize = l -> {
-            bgCanvas.setWidth(window.getWidth());
-            bgCanvas.setHeight(window.getHeight());
-            midCanvas.setWidth(window.getWidth());
-            midCanvas.setHeight(window.getHeight());
-            font = Font.font("", FontWeight.BOLD, window.getHeight()/400 * 18);
-            for(MenuItem item : items)
-                item.updateSize();
-        };
-
-        window.heightProperty().addListener(resize);
-        window.widthProperty().addListener(resize);
-        window.maximizedProperty().addListener(resize);
+//        InvalidationListener resize = l -> {
+//            font = Font.font("", FontWeight.BOLD, window.getHeight()/400 * 18);
+//            for(MenuItem item : items)
+//                item.updateSize();
+//        };
+//
+//        window.heightProperty().addListener(resize);
+//        window.widthProperty().addListener(resize);
+//        window.maximizedProperty().addListener(resize);
 
         double[] bgOpac = new double[]{2.0};
         animator = new AnimationTimer() {
 
         @Override
         public void handle(long now) {
-            midGC.clearRect(0, 0, window.getWidth(), window.getHeight());
-            midGC.setFill(Color.color(0.6, 0.6, 0.7, 0.4 + (Math.abs(bgOpac[0] % 2 - 1)) * 0.3));
-            bgOpac[0] += 0.002;
+                midGC.clearRect(0, 0, window.getWidth(), window.getHeight());
+                midGC.setFill(Color.color(0.6, 0.6, 0.7, 0.4 + (Math.abs(bgOpac[0] % 2 - 1)) * 0.3));
+                bgOpac[0] += 0.002;
 
-            midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
-            midGC.drawImage(LOGO_TEXT_IMAGE, window.getWidth()/4, 50, window.getWidth()/2, (153/645.0)*window.getWidth()/2);
+                midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
+                midGC.drawImage(LOGO_TEXT_IMAGE, window.getWidth()/4, 50, window.getWidth()/2,
+                        (153/645.0)*window.getWidth()/2);
 
-            bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, window.getWidth(), window.getHeight());
+                bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, window.getWidth(), window.getHeight());
 
-            addedPane.setTranslateX(window.getWidth() / 2 - addedPane.getWidth() / 2);
-            addedPane.setTranslateY(window.getHeight() - addedPane.getHeight() + 200);
-        }
-    };
+                addedPane.setTranslateX(window.getWidth() / 2 - addedPane.getWidth() / 2);
+                addedPane.setTranslateY(window.getHeight() - addedPane.getHeight() + 200);
+            }
+        };
 
-    animator.start();
+        animator.start();
     }
 
     private GridPane inputNumOfPlayers() {
@@ -506,6 +504,7 @@ public class Main extends Application {
         Team team = teamChoice.getValue();
         Role role = roleChoice.getValue();
         String playerNameStr = playerName.getText();
+        System.out.println("player name is " + playerNameStr + " " + team + role);
         lobbyClient.lobbyClientReady(team, role, playerNameStr);
     }
 

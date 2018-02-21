@@ -216,6 +216,7 @@ public class RemoteConnection {
 
                         //TODO: change it to be defensive here
                         //TODO: important line added here!!!!!!!!!!!!!!!!
+                        System.out.println("checccccc: " + readyMsg.getTeam() + readyMsg.getRole() + readyMsg.getPlayerName());
                         adaptor.serverLobbyComfirmTeamAndRole(connection.getID(),
                                 readyMsg.getTeam(), readyMsg.getRole(), readyMsg.getPlayerName());
 

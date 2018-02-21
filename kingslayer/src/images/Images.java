@@ -19,6 +19,8 @@ public abstract class Images {
     public static final Image BLUE_RESOURCE_COLLECTORS_IMAGE = getImage("resource_collectors_blue.png");
     public static final Image RED_BARRACKS_IMAGE = getImage("barracks_red.png");
     public static final Image BLUE_BARRACKS_IMAGE = getImage("barracks_blue.png");
+    public static final Image RED_WOOD_BARRACKS_IMAGE = getImage("barracks_wood_red.png");
+    public static final Image BLUE_WOOD_BARRACKS_IMAGE = getImage("barracks_wood_blue.png");
     public static final Image RED_ARROW_TOWER_IMAGE = getImage("arrow_towers_red.png");
     public static final Image BLUE_ARROW_TOWER_IMAGE = getImage("arrow_towers_blue.png");
 
@@ -40,8 +42,8 @@ public abstract class Images {
     public static final Image BLUE_SLAYER_IMAGE_SHEET = getImage("slayer_blue_sheet.png");
     public static final Image BLUE_RANGED_IMAGE_SHEET = getImage("minions_ranged_blue.png");
     public static final Image RED_RANGED_IMAGE_SHEET = getImage("slayer_red_sheet.png"); // TODO
-    public static final Image BLUE_MELEE_IMAGE_SHEET = getImage("minions_siege_blue.png");
-    public static final Image RED_MELEE_IMAGE_SHEET = getImage("minions_siege_red.png");
+    public static final Image BLUE_MELEE_IMAGE_SHEET = getImage("slayer_blue_sheet.png");
+    public static final Image RED_MELEE_IMAGE_SHEET = getImage("slayer_red_sheet.png");
     public static final Image BLUE_SIEGE_IMAGE_SHEET = getImage("minions_siege_blue.png");
     public static final Image RED_SIEGE_IMAGE_SHEET = getImage("minions_siege_red.png");
     public static final Image BLUE_RESOURCE_MIONION_IMAGE_SHEET = getImage("minions_resource_blue.png");

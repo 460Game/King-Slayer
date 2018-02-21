@@ -27,14 +27,14 @@ public class PlayerInfo {
         return team;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return ((PlayerInfo) obj).role == role && ((PlayerInfo) obj).team == team;
-    }
-
-    @Override
-    public int hashCode() {
-        return team.toString().hashCode()/11 + role.toString().hashCode()*11;
-    }
+//    @Override
+//    public boolean equals(Object obj) {
+//        return ((PlayerInfo) obj).role == role && ((PlayerInfo) obj).team == team;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return team.toString().hashCode()/11 + role.toString().hashCode()*11;
+//    }
 
 }

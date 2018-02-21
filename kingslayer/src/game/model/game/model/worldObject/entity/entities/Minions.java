@@ -18,18 +18,6 @@ public class Minions {
 
   static private CircleHitbox hitbox = new CircleHitbox(MINION_RADIUS);
 
-    public static Entity makeRangedMinion(double x, double y, Team team) {
-      return new Entity(x, y, 100,
-              team,
-              Role.NEUTRAL,
-              MovingStrat.SINGLETON,
-              UnitCollisionStrat.SINGLETON,
-              hitbox,
-              DirectionAnimationDrawStrat.RANGED_ANIMATION,
-              MinionStrat.RangedMinionStrat.SINGLETON,
-              RemoveOnDeathStrat.SINGLETON);
-    }
-
   public static Entity makeMeleeMinion(double x, double y, Team team) {
     return new Entity(x, y, 100,
         team,
@@ -38,7 +26,31 @@ public class Minions {
         UnitCollisionStrat.SINGLETON,
         hitbox,
         DirectionAnimationDrawStrat.MELEE_ANIMATION,
-        MinionStrat.RangedMinionStrat.SINGLETON, // TODO
+        MinionStrat.RangedMinionStrat.SINGLETON, // TODO what is this?
+        RemoveOnDeathStrat.SINGLETON);
+  }
+
+  public static Entity makeRangedMinion(double x, double y, Team team) {
+    return new Entity(x, y, 100,
+        team,
+        Role.NEUTRAL,
+        MovingStrat.SINGLETON,
+        UnitCollisionStrat.SINGLETON,
+        hitbox,
+        DirectionAnimationDrawStrat.RANGED_ANIMATION,
+        MinionStrat.RangedMinionStrat.SINGLETON,
+        RemoveOnDeathStrat.SINGLETON);
+  }
+
+  public static Entity makeSiegeMinion(double x, double y, Team team) {
+    return new Entity(x, y, 100,
+        team,
+        Role.NEUTRAL,
+        MovingStrat.SINGLETON,
+        UnitCollisionStrat.SINGLETON,
+        hitbox,
+        DirectionAnimationDrawStrat.SIEGE_ANIMATION,
+        MinionStrat.RangedMinionStrat.SINGLETON, // TODO what is this?
         RemoveOnDeathStrat.SINGLETON);
   }
 
@@ -50,7 +62,7 @@ public class Minions {
         UnitCollisionStrat.SINGLETON,
         hitbox,
         DirectionAnimationDrawStrat.RESOURCE_MINION_ANIMATION,
-        MinionStrat.RangedMinionStrat.SINGLETON, // TODO
+        MinionStrat.RangedMinionStrat.SINGLETON,
         RemoveOnDeathStrat.SINGLETON);
   }
 }

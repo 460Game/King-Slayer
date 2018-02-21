@@ -27,8 +27,9 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
   public static final DirectionAnimationDrawStrat KING_ANIMATION = new KingDirectionAnimationDrawStrat();
   public static final DirectionAnimationDrawStrat SLAYER_ANIMATION = new SlayerDirectionAnimationDrawStrat();
 
-  public static final DirectionAnimationDrawStrat RANGED_ANIMATION = new RangedMinionDirectionAnimationDrawStrat();
   public static final DirectionAnimationDrawStrat MELEE_ANIMATION = new MeleeMinionDirectionAnimationDrawStrat();
+  public static final DirectionAnimationDrawStrat RANGED_ANIMATION = new RangedMinionDirectionAnimationDrawStrat();
+  public static final DirectionAnimationDrawStrat SIEGE_ANIMATION = new SiegeMinionDirectionAnimationDrawStrat();
   public static final DirectionAnimationDrawStrat RESOURCE_MINION_ANIMATION = new ResourceMinionDirectionAnimationDrawStrat();
 
   /**
