@@ -38,7 +38,7 @@ public class Minions {
         UnitCollisionStrat.SINGLETON,
         hitbox,
         DirectionAnimationDrawStrat.MELEE_ANIMATION,
-        MinionStrat.RangedMinionStrat.SINGLETON,
+        MinionStrat.RangedMinionStrat.SINGLETON, // TODO
         RemoveOnDeathStrat.SINGLETON);
   }
 
@@ -50,7 +50,7 @@ public class Minions {
         UnitCollisionStrat.SINGLETON,
         hitbox,
         DirectionAnimationDrawStrat.RESOURCE_MINION_ANIMATION,
-        MinionStrat.RangedMinionStrat.SINGLETON,
+        MinionStrat.RangedMinionStrat.SINGLETON, // TODO
         RemoveOnDeathStrat.SINGLETON);
   }
 }

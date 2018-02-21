@@ -17,6 +17,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lobby.Main;
+import util.Const;
 
 import java.util.*;
 
@@ -182,6 +183,9 @@ public class GameView {
                 }
                 // TODO tab issue with 2 player
             }
+
+            if (kc == CAPS)
+                Const.DEBUG_DRAW = !Const.DEBUG_DRAW;
 
 
             if (dir[0] == 0 && dir[1] == 0)

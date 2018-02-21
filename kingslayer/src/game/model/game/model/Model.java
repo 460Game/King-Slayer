@@ -13,6 +13,5 @@ public interface Model {
      */
     void processMessage(Message m);
 
-
     long nanoTime();
 }
