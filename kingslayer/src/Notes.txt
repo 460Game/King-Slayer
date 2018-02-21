@@ -21,3 +21,4 @@ Add astar.draw in update.
 Interesting seeds:
 -2441187257478069716
 -8727363650928099376
+6730311356734676593: broken? map, red team spawns on island
