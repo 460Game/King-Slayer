@@ -2,7 +2,9 @@ package game.model.game.model.worldObject.entity.updateStrat;
 
 import game.model.game.model.GameModel;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.entities.Velocity;
 
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.VELOCITY;
 import static util.Const.NANOS_TO_SECONDS;
 
 public abstract class UpdateStrat {
@@ -25,5 +27,7 @@ public abstract class UpdateStrat {
 
     protected abstract void update(Entity entity, GameModel model, double seconds);
 
-    public abstract void init(Entity entity);
+    public void init(Entity entity) {
+        entity.add(VELOCITY, new Velocity());
+    }
 }

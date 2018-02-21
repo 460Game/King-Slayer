@@ -44,7 +44,7 @@ public class Entity {
      * all should be immutable unless local only - chanign data withen them without calls to set or put wont propgate
      */
     public enum EntityProperty {
-        LAST_UPDATE_TIME(Integer.class, PropType.PASSIVE_SYNC),
+        LAST_UPDATE_TIME(Long.class, PropType.PASSIVE_SYNC),
         LEVEL(Integer.class, PropType.ACTIVE_SYNC),
         HEALTH(Double.class, PropType.ACTIVE_SYNC),
         HITBOX(Hitbox.class, PropType.ACTIVE_SYNC),
@@ -84,7 +84,9 @@ public class Entity {
 
 
     public <T> Optional<T> oget(EntityProperty key) {
-        return Optional.of((T) dataMap.get(key));
+        if(has(key))
+            return Optional.of((T) dataMap.get(key));
+        return Optional.empty();
     }
 
     public <T> T get(EntityProperty key){
@@ -168,6 +170,11 @@ public transient boolean needSync = true;
         id = Util.random.nextLong();
         for(Pair<EntityProperty, Object> pair : varargs)
             add(pair);
+
+        if(this.has(AI_STRAT))
+            this.<AIStrat>get(AI_STRAT).init(this);
+        if(this.has(UPDATE_STRAT))
+            this.<UpdateStrat>get(UPDATE_STRAT).init(this);
     }
 
     /**
@@ -178,11 +185,7 @@ public transient boolean needSync = true;
     }
 
     public void updateAI(ServerGameModel model, double secondsElapsed) {
-        if (this.getHealth() <= 0) {
-            entityDie(model);
-        } else {
-            this.<AIStrat>oget(AI_STRAT).ifPresent(strat -> strat.updateAI(this, model, secondsElapsed));
-        }
+         this.<AIStrat>oget(AI_STRAT).ifPresent(strat -> strat.updateAI(this, model, secondsElapsed));
     }
 
     public void draw(GraphicsContext gc) {
@@ -248,8 +251,9 @@ public transient boolean needSync = true;
     public Velocity getVelocity() {
         return this.<Velocity>oget(VELOCITY).orElse(Velocity.NONE);
     }
+
     public void setVelocity(Velocity velocity) {
-        this.<Velocity>set(VELOCITY, velocity);
+        this.set(VELOCITY, velocity);
     }
     /**
      * Performs collisions with another entity based off of this
@@ -325,7 +329,7 @@ public transient boolean needSync = true;
     }
 
     public double getHealth() {
-        return this.<Double>get(HEALTH);
+        return this.get(HEALTH);
     }
 
     public void onDeath(ServerCallBack deathHandler) {

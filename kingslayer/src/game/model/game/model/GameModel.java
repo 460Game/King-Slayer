@@ -14,6 +14,7 @@ import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_STRAT;
 import static util.Const.*;
 
 public abstract class GameModel implements Model {
@@ -192,7 +193,7 @@ public abstract class GameModel implements Model {
      * @return
      */
     public void drawForeground(GraphicsContext gc, double x, double y, double w, double h) {
-        allCells.stream().flatMap(GridCell::streamContents).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc));
+        allCells.stream().flatMap(GridCell::streamContents).filter(entity -> entity.has(DRAW_STRAT)).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc));
 
         if(DEBUG_DRAW)
             allCells.stream().flatMap(GridCell::streamContents).forEach(a -> a.getHitbox().draw(gc, a));
