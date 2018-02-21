@@ -249,15 +249,10 @@ public class Entity {
         this.timeDelta = model.modelCurrentTime - this.data.lastUpdateTime;
         this.data.lastUpdateTime = model.modelCurrentTime;
 
-        // TODO temp fix. entity is still in the model...
-        if (this.getHealth() <= 0) {
-            entityDie(model);
-//            System.out.println("HEELLLLLLLLLLLLLLLOOOOOOOO");
-        } else {
             this.updateStrat.update(this, model);
 
             drawStrat.update(this, model);
-        }
+
     }
 
     /**

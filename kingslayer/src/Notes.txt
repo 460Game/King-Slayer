@@ -16,3 +16,8 @@ Add this to scene.onKeyPressed:
 Add astar field to world panel
 World panel should take in astar as parameter and assign it to astar field.
 Add astar.draw in update.
+
+
+Interesting seeds:
+-2441187257478069716
+-8727363650928099376

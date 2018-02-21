@@ -24,9 +24,15 @@ public class UnitCollisionStrat extends SoftCollisionStrat {
     @Override
     public void collisionSoft(GameModel model, Entity a, Entity b) {
         //TODO should push away from other entity
+        double collisionAngle = Util.angle2Points(a.data.x, a.data.y, b.data.x, b.data.y);
+        a.data.x -= 1.5 * Math.cos(collisionAngle) * NANOS_TO_SECONDS * a.timeDelta;
+        a.data.y -= 1.5 * Math.sin(collisionAngle) * NANOS_TO_SECONDS * a.timeDelta;
+        b.data.x += 1.5 * Math.cos(collisionAngle) * NANOS_TO_SECONDS * b.timeDelta;
+        b.data.y += 1.5 * Math.sin(collisionAngle) * NANOS_TO_SECONDS * b.timeDelta;
+
         if (a.team != b.team && !(a.team == Team.NEUTRAL || b.team == Team.NEUTRAL)) {
-            a.decreaseHealthBy(model, 0.2 * NANOS_TO_SECONDS * a.timeDelta);
-            b.decreaseHealthBy(model, 0.2 * NANOS_TO_SECONDS * b.timeDelta);
+            a.decreaseHealthBy(model,  NANOS_TO_SECONDS * a.timeDelta);
+            b.decreaseHealthBy(model, NANOS_TO_SECONDS * b.timeDelta);
         }
     }
 
@@ -59,9 +65,13 @@ public class UnitCollisionStrat extends SoftCollisionStrat {
 
         // Move the unit to the right spot depending on which side of the entity it hits.
         if (hitVerticalWall)
-            a.data.x = b.data.x - (hitleft ? 1 : -1) * (0.5 + a.hitbox.getRadius(collisionAngle + PI/2));
-        if (hitHorizontalWall)
-            a.data.y = b.data.y - (hittop ? 1 : -1) * (0.5 + a.hitbox.getRadius(collisionAngle)); //TODO is this angle right? @ryan
+            a.data.x = b.data.x - (hitleft ? 1 : -1) * (0.5 + a.data.hitbox.getRadius(collisionAngle + PI/2));
+        else if (hitHorizontalWall)
+            a.data.y = b.data.y - (hittop ? 1 : -1) * (0.5 + a.data.hitbox.getRadius(collisionAngle)); //TODO is this angle right? @ryan
+//        else {
+//            a.data.x = b.data.x - Math.cos(collisionAngle) * (a.data.hitbox.getRadius(collisionAngle) + 0.5 * Math.sqrt(2));
+//            a.data.y = b.data.y - Math.sin(collisionAngle) * (a.data.hitbox.getRadius(collisionAngle) + 0.5 * Math.sqrt(2));
+//        }
 
 //        System.out.println("New Player x: " + a.data.x);
 //        System.out.println("New Player y: " + a.data.y);

@@ -2,6 +2,7 @@ package game.ai;
 
 import game.model.game.grid.GridCell;
 import game.model.game.model.GameModel;
+import game.model.game.model.worldObject.entity.Entity;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -250,6 +251,10 @@ public class Astar {
     public void findPath(GridCell start, GridCell end) {
         findTraversableNodes();
         path = astar(start, end);
+    }
+
+    public void moveToCell(Entity e, GridCell cell) {
+        e.data.updateData.velocity.setAngle(Math.atan2(cell.getCenterY() - e.data.y, cell.getCenterX() - e.data.x));
     }
 
     /**
