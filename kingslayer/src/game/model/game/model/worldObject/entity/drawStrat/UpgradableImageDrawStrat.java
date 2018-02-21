@@ -12,11 +12,11 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
 
   public static final UpgradableImageDrawStrat BUILDABLE_WOOD_WALL = new BuildableWall(0);
   public static final UpgradableImageDrawStrat WOOD_RESOURCE_COLLECTOR = new ResourceCollectorImageDrawStrat(0);
-  public static final UpgradableImageDrawStrat WOOD_RANGED_BARRACKS = new RangedBarracksImageDrawStrat(0);
+  public static final UpgradableImageDrawStrat WOOD_BARRACKS = new BarracksImageDrawStrat(0);
   public static final UpgradableImageDrawStrat WOOD_ARROW_TOWER = new ArrowTowerImageDrawStrat(0);
 
   public static final UpgradableImageDrawStrat STONE_RESOURCE_COLLECTOR = new ResourceCollectorImageDrawStrat(1);
-  public static final UpgradableImageDrawStrat STONE_RANGED_BARRACKS = new RangedBarracksImageDrawStrat(1);
+  public static final UpgradableImageDrawStrat STONE_BARRACKS = new BarracksImageDrawStrat(1);
   public static final UpgradableImageDrawStrat STONE_ARROW_TOWER = new ArrowTowerImageDrawStrat(1);
 
   int tier;
@@ -110,7 +110,7 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
     }
   }
 
-  public static class RangedBarracksImageDrawStrat extends UpgradableImageDrawStrat {
+  public static class BarracksImageDrawStrat extends UpgradableImageDrawStrat {
     @Override
     public Image getImage(Entity entity) {
       switch (entity.team) {
@@ -123,9 +123,9 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
       }
     }
 
-    private RangedBarracksImageDrawStrat() {}
+    private BarracksImageDrawStrat() {}
 
-    private RangedBarracksImageDrawStrat(int tier) {
+    private BarracksImageDrawStrat(int tier) {
       this.tier = tier;
     }
   }

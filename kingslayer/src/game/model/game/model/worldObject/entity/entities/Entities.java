@@ -149,6 +149,18 @@ public class Entities {
             NopDeathStrat.SINGLETON);
     }
 
+    public static Entity makeMeleeBarracks(double x, double y, Team team) {
+        return new Entity(x, y, 100,
+            team,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            HardCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            UpgradableImageDrawStrat.WOOD_BARRACKS,
+            BuildingSpawnerStrat.MeleeBarracksBuildingSpawnerStrat.SINGLETON,
+            RemoveOnDeathStrat.SINGLETON);
+    }
+
     public static Entity makeRangedBarracks(double x, double y, Team team) {
         return new Entity(x, y, 100,
             team,
@@ -156,19 +168,31 @@ public class Entities {
             StillStrat.SINGLETON,
             HardCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.WOOD_RANGED_BARRACKS,
+            UpgradableImageDrawStrat.WOOD_BARRACKS,
             BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON);
     }
 
-    public static Entity makeRangedBarracksGhost(double x, double y, Team team) {
+    public static Entity makeSiegeBarracks(double x, double y, Team team) {
+        return new Entity(x, y, 100,
+            team,
+            Role.NEUTRAL,
+            StillStrat.SINGLETON,
+            HardCollisionStrat.SINGLETON,
+            CellHitbox.SINGLETON,
+            UpgradableImageDrawStrat.WOOD_BARRACKS,
+            BuildingSpawnerStrat.SiegeBarracksBuildingSpawnerStrat.SINGLETON,
+            RemoveOnDeathStrat.SINGLETON);
+    }
+
+    public static Entity makeBarracksGhost(double x, double y, Team team) {
         return new Entity(x, y, 100,
             team,
             Role.NEUTRAL,
             StillStrat.SINGLETON,
             GhostCollisionStrat.SINGLETON,
             CellHitbox.SINGLETON,
-            UpgradableImageDrawStrat.WOOD_RANGED_BARRACKS,
+            GhostDrawStrat.GHOST_BARRACKS,
             AIDoNothingStrat.SINGLETON,
             RemoveOnDeathStrat.SINGLETON);
     }

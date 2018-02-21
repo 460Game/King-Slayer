@@ -121,7 +121,10 @@ public class GameInteractionLayer extends Region  {
                     placing = Entities.makeBuiltWall(0, 0);
                     model.processMessage(new NewEntityCommand(placingGhost));
                 } else {
-                    // TODO make melee barracks
+                    cost = -2;
+                    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().team);
+                    placing = Entities.makeMeleeBarracks(0, 0, model.getLocalPlayer().team);
+                    model.processMessage(new NewEntityCommand(placingGhost));
 
                     selectingBarracks = false;
                 }
@@ -135,7 +138,7 @@ public class GameInteractionLayer extends Region  {
                     model.processMessage(new NewEntityCommand(placingGhost));
                 } else {
                     cost = -2;
-                    placingGhost = Entities.makeRangedBarracksGhost(0, 0, model.getLocalPlayer().team);
+                    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().team);
                     placing = Entities.makeRangedBarracks(0, 0, model.getLocalPlayer().team);
                     model.processMessage(new NewEntityCommand(placingGhost));
 
@@ -147,7 +150,10 @@ public class GameInteractionLayer extends Region  {
                 if (! selectingBarracks) {
                     selectingBarracks = true;
                 } else {
-                    // TODO make siege barracks
+                    cost = -2;
+                    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().team);
+                    placing = Entities.makeSiegeBarracks(0, 0, model.getLocalPlayer().team);
+                    model.processMessage(new NewEntityCommand(placingGhost));
 
                     selectingBarracks = false;
                 }
