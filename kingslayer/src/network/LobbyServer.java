@@ -29,7 +29,7 @@ public class LobbyServer implements Lobby { //extends Application {
     public Map<Integer, String> conn2PlayerName = new HashMap<>();
 
     public Map<Integer, PlayerInfo> conn2PlayerInfo = new HashMap<>();
-    public Map<RemoteConnection.RemoteModel, PlayerInfo> clientGameModelToPlayerInfo;
+    public Map<RemoteConnection.RemoteModel, PlayerInfo> clientGameModelToPlayerInfo = new HashMap<>();
 
     public Map<Integer, ClientGameModel> conn2ClientGameModel = new HashMap<>();
     public Map<RemoteConnection.RemoteModel, Pair<Team, Role>> clientGameModelToTeamAndRole;
@@ -51,9 +51,10 @@ public class LobbyServer implements Lobby { //extends Application {
 
                 //init the client to team role map
                 for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
-                    System.out.println("check serverInit: " + remoteModel.getConnectId());
+                    System.out.println("check serverInit: " + conn2PlayerInfo.get(remoteModel.getConnectId()));
                     clientGameModelToTeamAndRole.put(remoteModel,
                             conn2TeamAndRole.get(remoteModel.getConnectId()));
+
                     clientGameModelToPlayerInfo.put(remoteModel, conn2PlayerInfo.get(remoteModel.getConnectId()));
                 }
 
@@ -99,10 +100,11 @@ public class LobbyServer implements Lobby { //extends Application {
 
             @Override
             public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role, String playerName) {
-                System.out.println("Did put team and role in the map: " + connId);
+
                 conn2TeamAndRole.put(connId, new Pair<>(team, role));
                 conn2PlayerName.put(connId, playerName);
                 conn2PlayerInfo.put(connId, new PlayerInfo(team, role, playerName));
+                System.out.println("Did put team and role in the map: " + conn2PlayerInfo.get(connId).getTeam());
             }
 
         });
@@ -141,6 +143,7 @@ public class LobbyServer implements Lobby { //extends Application {
         conn2TeamAndRole = new HashMap<>();
         conn2ClientGameModel = new HashMap<>();
         clientGameModelToTeamAndRole = new HashMap<>();
+        conn2PlayerInfo = new HashMap<>();
         serverModel.stop();
 
         remoteModels = null;

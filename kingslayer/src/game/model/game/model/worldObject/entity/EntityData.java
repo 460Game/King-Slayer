@@ -54,6 +54,8 @@ public class EntityData {
      */
     Velocity velocity;
 
+    public long lastUpdateTime = -1;
+
     /**
      * Constructor for the data of an entity, given all of the relevant information.
      * @param hitbox hitbox of the entity

@@ -20,9 +20,11 @@ public abstract class UpdateStrat {
             entity.data.updateData.lastUpdate = model.nanoTime();
             return;
         }
-        long current_time = model.nanoTime();
-        update(entity, model, NANOS_TO_SECONDS * (current_time - entity.data.updateData.lastUpdate));
-        entity.data.updateData.lastUpdate = current_time;
+//        long current_time = model.nanoTime();
+//        update(entity, model, NANOS_TO_SECONDS * (current_time - entity.data.updateData.lastUpdate));
+        update(entity, model, NANOS_TO_SECONDS * entity.timeDelta);
+//        entity.data.updateData.lastUpdate = current_time;
+        entity.data.updateData.lastUpdate += entity.timeDelta;
     }
 
     public void upgrade(GameModel model) {

@@ -23,6 +23,7 @@ public class UnitCollisionStrat extends SoftCollisionStrat {
     @Override
     public void collisionSoft(GameModel model, Entity a, Entity b) {
         //TODO should push away from other entity
+//        if (a.team != b.team && (a.team == ))
     }
 
     @Override

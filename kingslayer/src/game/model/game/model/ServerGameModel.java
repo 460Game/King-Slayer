@@ -92,6 +92,7 @@ public class ServerGameModel extends GameModel {
 
         // TODO @tian set each client to the role/team the want
         clients.forEach(client -> {
+            Log.info("!!!!!!!client player: " + clientToPlayerInfo.get(client).getTeam() + clientToPlayerInfo.get(client).getRole());
             client.processMessage(new InitGameCommand(clientToPlayerInfo.get(client).getTeam(),
                     clientToPlayerInfo.get(client).getRole(), teamRoleEntityMap));
         });

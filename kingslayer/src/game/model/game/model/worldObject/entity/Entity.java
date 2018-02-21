@@ -99,6 +99,8 @@ public class Entity implements Updatable, Drawable, AIable {
      */
     public EntityData data;
 
+    public long timeDelta;
+
     /**
      * Constructor of an entity, given all of its game data.
      *
@@ -130,6 +132,8 @@ public class Entity implements Updatable, Drawable, AIable {
         this.data = new EntityData(hitbox, aiStrat.makeAIData(), drawStrat.initDrawData(),
             updateStrat.initUpdateData(), x, y, health);
         this.deathStrat = deathStrat;
+
+        this.timeDelta = 0;
     }
 
     /**
@@ -192,6 +196,13 @@ public class Entity implements Updatable, Drawable, AIable {
     @Override
     public void update(GameModel model) {
         inCollision = false;
+        if(this.data.lastUpdateTime == -1) {
+            this.data.lastUpdateTime = model.modelCurrentTime;
+            return;
+        }
+
+        this.timeDelta = model.modelCurrentTime - this.data.lastUpdateTime;
+        this.data.lastUpdateTime = model.modelCurrentTime;
 
         // TODO temp fix. entity is still in the model...
         if (this.getHealth() <= 0) {
