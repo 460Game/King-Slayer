@@ -33,7 +33,7 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
     double y = h - this.getCenterY();
 
     gc.drawImage(getImage(entity),
-        toDrawCoords(w) * entity.<Integer>get(Entity.EntityProperty.LEVEL),
+        toDrawCoords(w) * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0),
         0,
         toDrawCoords(w),
         toDrawCoords(h),

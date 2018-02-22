@@ -3,6 +3,7 @@ package game.message.toServer;
 import game.message.toClient.SetEntityCommand;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.entities.Velocity;
 
 /**
  * Message sent by a client to tell the server to move the player
@@ -45,7 +46,7 @@ public class GoDirectionRequest extends ActionRequest {
     @Override
     public void executeServer(ServerGameModel model) {
         Entity e = model.getEntity(id);
-        e.setVelocity(e.getVelocity().withMagnitude(2).withAngle(angle));
+        e.setVelocity(Velocity.NONE.withMagnitude(0.5).withAngle(angle));
         //TODO where is max speed
     }
 }

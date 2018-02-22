@@ -11,6 +11,6 @@ public abstract class UpdateStrat {
     public abstract void update(Entity entity, GameModel model);
 
     public void init(Entity entity) {
-        entity.add(VELOCITY, new Velocity(0, 0));
+        entity.add(VELOCITY, Velocity.NONE);
     }
 }

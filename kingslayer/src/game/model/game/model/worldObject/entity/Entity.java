@@ -90,6 +90,12 @@ public class Entity {
         return Optional.empty();
     }
 
+    public <T> T getOrDefault(EntityProperty key, T def) {
+        if(has(key))
+            return this.<T>get(key);
+        else return def;
+    }
+
     public <T> T get(EntityProperty key) {
         if (key.sync == PropType.LOCAL_ONLY)
             return (T) localMap.get(key);
@@ -190,7 +196,9 @@ public class Entity {
     }
 
     public void draw(GraphicsContext gc) {
-        this.<DrawStrat>oget(DRAW_STRAT).ifPresent(strat -> strat.draw(this, gc));
+        this.<DrawStrat>oget(DRAW_STRAT).ifPresent(strat ->
+
+                strat.draw(this, gc));
 
         if (!this.invincible()) {
             //TEMPORARY!!!!!!!!!
@@ -218,6 +226,7 @@ public class Entity {
     }
 
     public void translateX(double d) {
+        if(d!= 0)
         this.setX(this.getX() + d);
     }
 
@@ -226,6 +235,7 @@ public class Entity {
     }
 
     public void translateY(double d) {
+        if(d != 0)
         this.setY(this.getY() + d);
     }
 

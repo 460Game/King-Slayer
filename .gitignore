@@ -15,6 +15,7 @@ bin/
 # Package Files #
 *.jar
 !kryonet-2.21-all.jar
+!kryo-serializers-0.42.jar
 *.war
 *.ear
 *.zip
