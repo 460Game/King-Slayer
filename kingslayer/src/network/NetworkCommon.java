@@ -4,6 +4,7 @@ package network;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.minlog.Log;
+import de.javakaffee.kryoserializers.*;
 import game.message.*;
 import game.message.toClient.*;
 import game.message.toServer.*;
@@ -24,8 +25,8 @@ import game.model.game.model.worldObject.entity.drawStrat.*;
 import game.model.game.model.worldObject.entity.entities.Velocity;
 import game.model.game.model.worldObject.entity.updateStrat.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.lang.reflect.InvocationHandler;
+import java.util.*;
 
 public class NetworkCommon {
     static {
@@ -131,6 +132,33 @@ public class NetworkCommon {
         kryo.register(AnimationDrawData.class);
 
         kryo.register(RemoveOnDeathStrat.class);
+
+        kryo.register( Arrays.asList( "" ).getClass(), new ArraysAsListSerializer() );
+        kryo.register( Collections.EMPTY_LIST.getClass(), new CollectionsEmptyListSerializer() );
+        kryo.register( Collections.EMPTY_MAP.getClass(), new CollectionsEmptyMapSerializer() );
+        kryo.register( Collections.EMPTY_SET.getClass(), new CollectionsEmptySetSerializer() );
+        kryo.register( Collections.singletonList( "" ).getClass(), new CollectionsSingletonListSerializer() );
+        kryo.register( Collections.singleton( "" ).getClass(), new CollectionsSingletonSetSerializer() );
+        kryo.register( Collections.singletonMap( "", "" ).getClass(), new CollectionsSingletonMapSerializer() );
+        kryo.register( GregorianCalendar.class, new GregorianCalendarSerializer() );
+        kryo.register( InvocationHandler.class, new JdkProxySerializer() );
+        UnmodifiableCollectionsSerializer.registerSerializers( kryo );
+        SynchronizedCollectionsSerializer.registerSerializers( kryo );
+
+        kryo.register( EnumMap.class, new EnumMapSerializer() );
+//
+//        ImmutableListSerializer.registerSerializers( kryo );
+//        ImmutableSetSerializer.registerSerializers( kryo );
+//        ImmutableMapSerializer.registerSerializers( kryo );
+//        ImmutableMultimapSerializer.registerSerializers( kryo );
+//        ReverseListSerializer.registerSerializers( kryo );
+//        UnmodifiableNavigableSetSerializer.registerSerializers( kryo );
+//
+//        ArrayListMultimapSerializer.registerSerializers( kryo );
+//        HashMultimapSerializer.registerSerializers( kryo );
+//        LinkedHashMultimapSerializer.registerSerializers( kryo );
+//        LinkedListMultimapSerializer.registerSerializers( kryo );
+//        TreeMultimapSerializer.registerSerializers( kryo );
     }
 
     public static class ClientMakeModelMsg {

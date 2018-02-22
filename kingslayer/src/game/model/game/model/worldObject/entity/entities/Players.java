@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.entities;
 
+import com.esotericsoftware.minlog.Log;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
@@ -22,6 +23,7 @@ public class Players {
     // TODO scale health appropriately
 
     public static Entity makeSlayer(Double x, Double y, Team team) {
+        Log.info("Makeing slayer " + x + " " + y + " " + team);
         return new Entity(x, y,
                 hitbox,
                 UnitCollisionStrat.SINGLETON,
@@ -34,6 +36,7 @@ public class Players {
     }
 
     public static Entity makeKing(double x, double y, Team team) {
+        Log.info("Makeing king " + x + " " + y + " " + team);
         return new Entity(x, y,
                 hitbox,
                 UnitCollisionStrat.SINGLETON,

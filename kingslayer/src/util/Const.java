@@ -10,7 +10,7 @@ public abstract class Const {
     /**
      * Flag that signals whether to update in debugging mdode.
      */
-    public static boolean DEBUG_DRAW = false;//true;
+    public static boolean DEBUG_DRAW = true;//true;
 
     /**
      * Angles based on the drawing coordinate system.

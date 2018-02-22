@@ -5,29 +5,12 @@ import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Velocity;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.VELOCITY;
-import static util.Const.NANOS_TO_SECONDS;
 
 public abstract class UpdateStrat {
 
-    /**
-     * Updates the entity in the game model.
-     * @param model current game model
-     */
-    public void update(Entity entity, GameModel model) {
-        if(!entity.has(Entity.EntityProperty.LAST_UPDATE_TIME)) {
-            entity.add(Entity.EntityProperty.LAST_UPDATE_TIME, model.nanoTime());
-            return;
-        }
-//        long current_time = model.nanoTime();
-//        update(entity, model, NANOS_TO_SECONDS * (current_time - entity.data.updateData.lastUpdate));
-        update(entity, model, NANOS_TO_SECONDS * entity.timeDelta);
-//        entity.data.updateData.lastUpdate = current_time;
-        entity.set(Entity.EntityProperty.LAST_UPDATE_TIME, entity.<Long>get(Entity.EntityProperty.LAST_UPDATE_TIME) + entity.timeDelta);
-    }
-
-    protected abstract void update(Entity entity, GameModel model, double seconds);
+    public abstract void update(Entity entity, GameModel model);
 
     public void init(Entity entity) {
-        entity.add(VELOCITY, new Velocity());
+        entity.add(VELOCITY, new Velocity(0, 0));
     }
 }

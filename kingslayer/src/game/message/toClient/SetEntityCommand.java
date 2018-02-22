@@ -2,7 +2,8 @@ package game.message.toClient;
 
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.EntityData;
+
+import java.util.EnumMap;
 
 /**
  * Message sent to set an entity on a client's game model. This message
@@ -13,7 +14,7 @@ public class SetEntityCommand implements ToClientCommand {
     /**
      * EntityProperty corresponding to the entity.
      */
-    private EntityData data;
+    private EnumMap<Entity.EntityProperty, Object> data;
 
     /**
      * ID of the entity.

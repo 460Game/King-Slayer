@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity;
 
+import com.esotericsoftware.minlog.Log;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
@@ -32,7 +33,7 @@ import static util.Util.toDrawCoords;
  */
 public class Entity {
 
-    private enum PropType{
+    private enum PropType {
         ON_CHANGE_ONLY, //sent only if changed on server TODO not supported
         ACTIVE_SYNC, //will queue an update to the client if changed
         PASSIVE_SYNC, //Will be sent along with any active sync items
@@ -70,46 +71,46 @@ public class Entity {
         public final PropType sync;
     }
 
-    private EntityData localMap = new EntityData(EntityProperty.class);
-    private EntityData dataMap = new EntityData(EntityProperty.class);
+    private EnumMap<Entity.EntityProperty, Object> localMap = new EnumMap<>(EntityProperty.class);
+    private EnumMap<Entity.EntityProperty, Object> dataMap = new EnumMap<>(EntityProperty.class);
 
 
-    public void setData(EntityData data) {
+    public void setData(EnumMap<Entity.EntityProperty, Object> data) {
         this.dataMap = data;
     }
 
-    public EntityData getData() {
+    public EnumMap<Entity.EntityProperty, Object> getData() {
         return this.dataMap;
     }
 
 
     public <T> Optional<T> oget(EntityProperty key) {
-        if(has(key))
+        if (has(key))
             return Optional.of((T) dataMap.get(key));
         return Optional.empty();
     }
 
-    public <T> T get(EntityProperty key){
-        if(key.sync == PropType.LOCAL_ONLY)
+    public <T> T get(EntityProperty key) {
+        if (key.sync == PropType.LOCAL_ONLY)
             return (T) localMap.get(key);
         return (T) dataMap.get(key);
     }
 
-    public boolean has(EntityProperty key){
-        if(key.sync == PropType.LOCAL_ONLY)
+    public boolean has(EntityProperty key) {
+        if (key.sync == PropType.LOCAL_ONLY)
             return localMap.containsKey(key);
         return dataMap.containsKey(key);
     }
 
     public <T> void add(EntityProperty key, T value) {
-        if(has(key))
+        if (has(key))
             throw new RuntimeException("Already has property");
-        if(key.sync == PropType.LOCAL_ONLY)
+        if (key.sync == PropType.LOCAL_ONLY)
             localMap.put(key, key.type.cast(value));
         else {
             dataMap.put(key, key.type.cast(value));
 
-            if(key.sync == PropType.ACTIVE_SYNC)
+            if (key.sync == PropType.ACTIVE_SYNC)
                 needSync = true;
         }
     }
@@ -120,18 +121,18 @@ public class Entity {
 
     //TODO better error messages
     public <T> void set(EntityProperty key, T value) {
-        if(!has(key))
+        if (!has(key))
             throw new RuntimeException("Dosnt have prop");
-        if(key.sync == PropType.LOCAL_ONLY)
+        if (key.sync == PropType.LOCAL_ONLY)
             localMap.put(key, key.type.cast(value));
         else {
             dataMap.put(key, key.type.cast(value));
-            if(key.sync == PropType.ACTIVE_SYNC)
+            if (key.sync == PropType.ACTIVE_SYNC)
                 needSync = true;
         }
     }
 
-public transient boolean needSync = true;
+    public transient boolean needSync = true;
 
     /**
      * Checks if this entity is currently colliding with another entity.
@@ -154,7 +155,7 @@ public transient boolean needSync = true;
      */
     public transient Set<GridCell> containedIn = null;
 
-    public transient long timeDelta = 0;
+    public transient double timeDelta = 0;
 
     /**
      * ID of this entity.
@@ -168,12 +169,12 @@ public transient boolean needSync = true;
         this.add(HITBOX, hitbox);
         this.add(COLLISION_STRAT, collisionStrat);
         id = Util.random.nextLong();
-        for(Pair<EntityProperty, Object> pair : varargs)
+        for (Pair<EntityProperty, Object> pair : varargs)
             add(pair);
 
-        if(this.has(AI_STRAT))
+        if (this.has(AI_STRAT))
             this.<AIStrat>get(AI_STRAT).init(this);
-        if(this.has(UPDATE_STRAT))
+        if (this.has(UPDATE_STRAT))
             this.<UpdateStrat>get(UPDATE_STRAT).init(this);
     }
 
@@ -185,7 +186,7 @@ public transient boolean needSync = true;
     }
 
     public void updateAI(ServerGameModel model, double secondsElapsed) {
-         this.<AIStrat>oget(AI_STRAT).ifPresent(strat -> strat.updateAI(this, model, secondsElapsed));
+        this.<AIStrat>oget(AI_STRAT).ifPresent(strat -> strat.updateAI(this, model, secondsElapsed));
     }
 
     public void draw(GraphicsContext gc) {
@@ -249,12 +250,13 @@ public transient boolean needSync = true;
     }
 
     public Velocity getVelocity() {
-        return this.<Velocity>oget(VELOCITY).orElse(Velocity.NONE);
+        return this.get(VELOCITY);
     }
 
     public void setVelocity(Velocity velocity) {
         this.set(VELOCITY, velocity);
     }
+
     /**
      * Performs collisions with another entity based off of this
      * entity's colliding strategy.
@@ -267,17 +269,21 @@ public transient boolean needSync = true;
         this.<CollisionStrat>oget(COLLISION_STRAT).ifPresent(collisionStrat -> collisionStrat.collision(model, this, b));
     }
 
-    public void update(GameModel model) {
+    public void update(GameModel model, long modelCurrentTime) {
         inCollision = false;
-        if (!this.has(LAST_UPDATE_TIME)) {
-            this.add(LAST_UPDATE_TIME, model.modelCurrentTime);
-            return;
-        }
 
-        this.timeDelta = model.modelCurrentTime - this.<Long>get(LAST_UPDATE_TIME);
-        this.set(LAST_UPDATE_TIME, model.modelCurrentTime);
+        this.<UpdateStrat>oget(UPDATE_STRAT).ifPresent(updateStrat -> {
 
-        this.<UpdateStrat>oget(UPDATE_STRAT).ifPresent(updateStrat -> updateStrat.update(this, model));
+            if (!this.has(LAST_UPDATE_TIME)) {
+                this.add(LAST_UPDATE_TIME, modelCurrentTime);
+                return;
+            }
+
+            this.timeDelta = (modelCurrentTime - this.<Long>get(LAST_UPDATE_TIME)) * Const.NANOS_TO_SECONDS;
+            this.set(LAST_UPDATE_TIME, modelCurrentTime);
+
+
+            updateStrat.update(this, model);});
     }
 
     /**

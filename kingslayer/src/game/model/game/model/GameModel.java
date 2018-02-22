@@ -6,7 +6,6 @@ import game.model.game.grid.GridCell;
 import game.model.game.map.MapGenerator;
 import game.model.game.map.Tile;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.EntityData;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.WritableImage;
 
@@ -35,8 +34,6 @@ public abstract class GameModel implements Model {
     }
 
     public abstract void execute(Consumer<ServerGameModel> serverAction, Consumer<ClientGameModel> clientAction);
-
-    public long modelCurrentTime = 0;
 
     /**
      * Constructor for the game model.
@@ -141,9 +138,9 @@ public abstract class GameModel implements Model {
         messageQueue.drainTo(list);
         list.forEach(m -> m.execute(this));
 
-        modelCurrentTime = this.nanoTime();
+        long modelCurrentTime = this.nanoTime();
 
-        entities.values().forEach(e -> e.update(this));
+        entities.values().forEach(e -> e.update(this, modelCurrentTime));
         entities.values().forEach(e -> e.updateCells(this));
         allCells.forEach(cell -> cell.collideContents(this));
 
@@ -166,7 +163,7 @@ public abstract class GameModel implements Model {
     returns true on success
     returns false if unknown entity
      */
-    public boolean trySetEntityData(long id, EntityData data) {
+    public boolean trySetEntityData(long id, EnumMap<Entity.EntityProperty, Object> data) {
         if(entities.containsKey(id)) {
             entities.get(id).setData(data);
             return true;

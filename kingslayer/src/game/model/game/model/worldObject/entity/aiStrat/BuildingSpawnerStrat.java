@@ -125,7 +125,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
     private BuildingSpawnerStrat() {
     }
 
-    static class BuildingSpanwerStratAIData {
+    static class BuildingSpanwerStratAIData extends AIData {
         double elapsedTime;
         int spawnCounter;
 
