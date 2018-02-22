@@ -86,7 +86,7 @@ public class Entity {
 
     public <T> Optional<T> oget(EntityProperty key) {
         if (has(key))
-            return Optional.of((T) dataMap.get(key));
+            return Optional.of((T) get(key));
         return Optional.empty();
     }
 
@@ -231,7 +231,7 @@ public class Entity {
     }
 
     public void setY(double y) {
-        this.set(X, y);
+        this.set(Y, y);
     }
 
     public void translateY(double d) {

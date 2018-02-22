@@ -30,7 +30,7 @@ public class Players {
                 pair(HEALTH, 100.0),
             pair(TEAM, team),
             pair(ROLE, Role.SLAYER),
-         //   pair(UPDATE_STRAT, MovingStrat.SINGLETON),
+            pair(UPDATE_STRAT, MovingStrat.SINGLETON),
             pair(DRAW_STRAT, DirectionAnimationDrawStrat.SLAYER_ANIMATION),
                pair(DEATH_STRAT,  SlayerDeathStrat.SINGLETON));
     }
@@ -43,7 +43,7 @@ public class Players {
                 pair(HEALTH, 100.0),
                 pair(TEAM, team),
                 pair(ROLE, Role.KING),
-             //   pair(UPDATE_STRAT, MovingStrat.SINGLETON),
+                pair(UPDATE_STRAT, MovingStrat.SINGLETON),
                 pair(DRAW_STRAT, DirectionAnimationDrawStrat.KING_ANIMATION),
                 pair(DEATH_STRAT,  KingDeathStrat.SINGLETON));
     }

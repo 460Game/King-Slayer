@@ -1,5 +1,6 @@
 package game.view;
 
+import com.esotericsoftware.minlog.Log;
 import game.message.toClient.NewEntityCommand;
 import game.message.toServer.EntityBuildRequest;
 import game.message.toServer.ShootArrowRequest;
@@ -72,7 +73,6 @@ public class GameInteractionLayer extends Region  {
                     upgrading = false;
                   }
                 } else if (model.getLocalPlayer().getRole() == Role.SLAYER) {
-
                     double xCoords = toWorldCoords(e.getX() - getWidth() / 2);
                     double yCoords = toWorldCoords(e.getY() - getHeight() / 2);
                     double angle = Math.atan2(yCoords, xCoords);
