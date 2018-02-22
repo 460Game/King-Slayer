@@ -2,6 +2,7 @@ package game.message.toServer;
 
 import game.message.toClient.SetEntityCommand;
 import game.model.game.model.ServerGameModel;
+import game.model.game.model.worldObject.entity.Entity;
 
 /**
  * Message sent by a client to tell the server to stop the player
@@ -36,7 +37,8 @@ public class StopRequest extends ActionRequest {
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        model.getEntity(id).setVelocity(model.getEntity(id).getVelocity().withMagnitude(0));
-       // model.processMessage(new SetEntityCommand(model.getEntity(id)));
+        if(model.getEntity(id).has(Entity.EntityProperty.VELOCITY))
+            model.getEntity(id).setVelocity(model.getEntity(id).getVelocity().withMagnitude(0));
+           // model.processMessage(new SetEntityCommand(model.getEntity(id)));
     }
 }

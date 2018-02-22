@@ -188,10 +188,10 @@ public class GameView {
                 Const.DEBUG_DRAW = !Const.DEBUG_DRAW;
 
 
-            if (dir[0] == 0 && dir[1] == 0)
-                model.processMessage(new StopRequest(model.getLocalPlayer().id));
-            else
-                model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(dir[1], dir[0])));
+     //       if (dir[0] == 0 && dir[1] == 0)
+      //          model.processMessage(new StopRequest(model.getLocalPlayer().id));
+     //       else
+     //           model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(dir[1], dir[0])));
         });
 
         scene.setOnKeyReleased(e -> {
