@@ -94,6 +94,8 @@ public class Entity {
     }
 
     public <T> T get(EntityProperty key) {
+        if(!has(key))
+            throw new RuntimeException("key " + key + " does not exist in " + this);
         if (key.sync == PropType.LOCAL_ONLY || key.sync == PropType.ON_CHANGE_ONLY)
             return (T) localMap.get(key);
         return (T) dataMap.get(key);

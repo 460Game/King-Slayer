@@ -57,7 +57,7 @@ public class Minimap extends Region {
             }
             //TEMP HACK
             for (Entity player : model.getAllEntities()) {
-                if (player.getRole() != null) {
+                if (player.has(Entity.EntityProperty.ROLE)) {
                     minimapGC.setFill(player.getTeam().color);
                     minimapGC.fillOval(player.getX(), player.getY(), 3, 3);
                 }
