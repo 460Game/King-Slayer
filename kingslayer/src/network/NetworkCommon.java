@@ -165,6 +165,15 @@ public class NetworkCommon {
         kryo.register(BuildingSpawnerStrat.BuildingSpawnerStratAIData.class);
 
 
+        kryo.register(BuildingSpawnerStrat.SiegeBarracksBuildingSpawnerStrat.class);
+        kryo.register(BuildingSpawnerStrat.TowerBuildingSpawnerStrat.class);
+        kryo.register(BuildingSpawnerStrat.ExplorationBarracksBuildingSpawnerStrat.class);
+        kryo.register(BuildingSpawnerStrat.MeleeBarracksBuildingSpawnerStrat.class);
+        kryo.register(BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.class);
+        kryo.register(BuildingSpawnerStrat.ResourceCollectorBuildingSpawnerStrat.class);
+
+
+
 //        ImmutableListSerializer.registerSerializers( kryo );
 //        ImmutableSetSerializer.registerSerializers( kryo );
 //        ImmutableMapSerializer.registerSerializers( kryo );
