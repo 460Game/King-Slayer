@@ -1,5 +1,7 @@
 package game.model.game.model.worldObject.entity.entities;
 
+import util.Util;
+
 import static java.lang.Math.PI;
 
 /**
@@ -66,6 +68,9 @@ public class Velocity {
      * @param magnitude new magnitude of the velocity
      */
     public Velocity withMagnitude(double magnitude) {
+        if (Util.closeDouble(magnitude, 0, 0.00001)) {
+            return new NonMovingVelocity(getAngle());
+        }
         double angle = Math.atan2(vy, vx);
         return new Velocity(magnitude * Math.cos(angle), magnitude * Math.sin(angle));
     }

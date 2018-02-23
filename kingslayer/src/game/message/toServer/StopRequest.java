@@ -3,7 +3,6 @@ package game.message.toServer;
 import game.message.toClient.SetEntityCommand;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.entities.NonMovingVelocity;
 
 /**
  * Message sent by a client to tell the server to stop the player
@@ -39,7 +38,7 @@ public class StopRequest extends ActionRequest {
     @Override
     public void executeServer(ServerGameModel model) {
         if(model.getEntity(id).has(Entity.EntityProperty.VELOCITY))
-            model.getEntity(id).setVelocity(new NonMovingVelocity(model.getEntity(id).getVelocity().getAngle()));
+            model.getEntity(id).setVelocity(model.getEntity(id).getVelocity().withMagnitude(0));
            // model.processMessage(new SetEntityCommand(model.getEntity(id)));
     }
 }
