@@ -65,6 +65,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
 
     abstract Image getImage(Entity entity);
 
+    @Override
     public void draw(Entity entity, ClientGameModel model, GraphicsContext gc) {
 
         // Update direction of image
@@ -200,12 +201,52 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
 
         }
 
+        @Override
+        public void draw(Entity entity, ClientGameModel model, GraphicsContext gc) {
+
+            // Update direction of image
+            AnimationDrawData drawData = entity.<AnimationDrawData>get(DRAW_DATA);
+            double angle = entity.<Velocity>get(VELOCITY).getAngle();
+            if (angle >= -0.75 * PI && angle < -0.25 * PI) {
+                drawData.direction = 'N';
+            } else if (angle >= -0.25 * PI && angle < 0.25 * PI) {
+                drawData.direction = 'E';
+            } else if (angle >= 0.25 * PI && angle < 0.75 * PI) {
+                drawData.direction = 'S';
+            } else if (angle >= 0.75 * PI || angle < -0.75 * PI) {
+                drawData.direction = 'W';
+            }
+
+            // Update image being used
+            if (entity.<Velocity>get(VELOCITY).getMagnitude() != 0) {
+                drawData.count++;
+                if (drawData.count > 1) {
+                    drawData.count = 0;
+                    drawData.imageNum = (drawData.imageNum + 1) % 3;
+                }
+            } else {
+                drawData.imageNum = 2;
+            }
+
+            // TODO make new image map for 4 part animation
+            Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
+            gc.drawImage(this.getImage(entity),
+                toDrawCoords(p.x),
+                toDrawCoords(p.y),
+                toDrawCoords(getWidth()),
+                toDrawCoords(getHeight()),
+                toDrawCoords(entity.getX() - entity.getHitbox().getWidth() / 2),
+                toDrawCoords(entity.getY() - entity.getHitbox().getHeight() / 2),
+                toDrawCoords(entity.getHitbox().getWidth() * getWidth()),
+                toDrawCoords(entity.getHitbox().getHeight()) * getHeight());
+        }
+
         double getWidth() {
-            return 1;
+            return 2;
         } // TODO
 
         double getHeight() {
-            return 1;
+            return 1.75;
         } // TODO
     }
 

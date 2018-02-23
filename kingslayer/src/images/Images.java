@@ -46,8 +46,8 @@ public abstract class Images {
     public static final Image RED_MELEE_IMAGE_SHEET = getImage("slayer_red_sheet.png");
     public static final Image BLUE_SIEGE_IMAGE_SHEET = getImage("minions_siege_blue.png");
     public static final Image RED_SIEGE_IMAGE_SHEET = getImage("minions_siege_red.png");
-    public static final Image BLUE_EXPLORER_IMAGE_SHEET = getImage("minions_siege_blue.png"); // TODO
-    public static final Image RED_EXPLORER_IMAGE_SHEET = getImage("minions_siege_red.png"); // TODO
+    public static final Image BLUE_EXPLORER_IMAGE_SHEET = getImage("minions_exploration_blue.png"); // TODO
+    public static final Image RED_EXPLORER_IMAGE_SHEET = getImage("minions_exploration_red.png"); // TODO
     public static final Image BLUE_RESOURCE_MIONION_IMAGE_SHEET = getImage("minions_resource_blue.png");
     public static final Image RED_RESOURCE_MINION_IMAGE_SHEET = getImage("minions_resource_red.png");
 
