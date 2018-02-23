@@ -291,6 +291,8 @@ public class Entity {
 
 
             updateStrat.update(this, model);});
+
+        this.<DrawStrat>oget(DRAW_STRAT).ifPresent(drawStrat -> drawStrat.update(this, model));
     }
 
     /**

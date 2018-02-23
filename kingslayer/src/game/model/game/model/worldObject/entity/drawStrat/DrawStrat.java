@@ -23,4 +23,6 @@ public abstract class DrawStrat {
      */
     public abstract double getDrawZ(Entity entity);
 
+    public void update(Entity entity, Model model) {}
+
 }

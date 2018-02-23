@@ -11,6 +11,7 @@ import static util.Util.toDrawCoords;
 public class UpgradableImageDrawStrat extends ImageDrawStrat {
 
   public static final UpgradableImageDrawStrat BUILDABLE_WOOD_WALL = new BuildableWall();
+
   public static final UpgradableImageDrawStrat WOOD_RESOURCE_COLLECTOR = new ResourceCollectorImageDrawStrat();
   public static final UpgradableImageDrawStrat WOOD_BARRACKS = new BarracksImageDrawStrat();
   public static final UpgradableImageDrawStrat WOOD_ARROW_TOWER = new ArrowTowerImageDrawStrat();

@@ -20,17 +20,17 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns() {
-            return 5;
+            return 2.5;
         }
 
         @Override
         int maxActive() {
-            return 5;
+            return 10;
         }
 
         @Override
         Entity makeEntity(double x, double y, Team team) {
-            return Minions.makeMeleeMinion(x, y, team);
+            return Minions.makeMeleeMinion(x, y + 1, team);
         }
     }
 

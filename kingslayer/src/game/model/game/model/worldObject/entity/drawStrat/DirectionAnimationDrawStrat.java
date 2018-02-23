@@ -1,6 +1,7 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
 import game.model.game.model.Model;
+import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Velocity;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_DATA;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.TEAM;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.VELOCITY;
 import static java.lang.Math.decrementExact;
@@ -21,7 +23,7 @@ import static java.lang.Math.PI;
 
 public abstract class DirectionAnimationDrawStrat extends DrawStrat {
 
-  public AnimationDrawData drawData = AnimationDrawData.makeAnimated();
+//  public AnimationDrawData drawData = AnimationDrawData.makeAnimated();
   public int height = 32;
   public int width = 32;
 
@@ -67,6 +69,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
 
   public void draw(Entity entity, GraphicsContext gc) {
     try {
+      AnimationDrawData drawData = entity.<AnimationDrawData>get(DRAW_DATA);
       Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
       gc.drawImage(this.getImage(entity),
               toDrawCoords(p.x),
@@ -82,8 +85,10 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     }
   }
 
+  @Override
   public void update(Entity entity, Model model) {
     // Update direction of image
+    AnimationDrawData drawData = entity.<AnimationDrawData>get(DRAW_DATA);
     double angle = entity.<Velocity>get(VELOCITY).getAngle();
     if (angle >= -0.75 * PI && angle < -0.25 * PI) {
       drawData.direction = 'N';
@@ -98,7 +103,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     // Update image being used
     if (entity.<Velocity>get(VELOCITY).getMagnitude() != 0) {
       drawData.count++;
-      if (drawData.count > 11) {
+      if (drawData.count > 1) {
         drawData.count = 0;
         drawData.imageNum = (drawData.imageNum + 1) % 3;
       }
