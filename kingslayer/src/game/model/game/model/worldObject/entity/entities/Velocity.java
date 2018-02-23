@@ -28,7 +28,6 @@ public class Velocity {
 
     /**
      * Constructor given the components.
-     *
      * @param vx x-component of velocity
      * @param vy y-component of velocity
      */
@@ -39,17 +38,14 @@ public class Velocity {
 
     /**
      * Gets the x component of the velocity.
-     *
      * @return x component of the velocity
      */
     public double getVx() {
         return vx;
     }
 
-
     /**
      * Gets the y component of the velocity.
-     *
      * @return y component of the velocity
      */
     public double getVy() {
@@ -58,7 +54,6 @@ public class Velocity {
 
     /**
      * Gets the magnitude of the velocity.
-     *
      * @return magnitude of the velocity
      */
     public double getMagnitude() {
@@ -68,7 +63,6 @@ public class Velocity {
     /**
      * Sets the magnitude of the velocity to the one specified.
      * Need to update vx and vy as well.
-     *
      * @param magnitude new magnitude of the velocity
      */
     public Velocity withMagnitude(double magnitude) {
@@ -78,7 +72,6 @@ public class Velocity {
 
     /**
      * Gets the angle of the velocity.
-     *
      * @return angle of the velocity
      */
     public double getAngle() {
@@ -90,11 +83,9 @@ public class Velocity {
     /**
      * Sets the angle of the velocity to the one specified.
      * Need to update vx and vy as well.
-     *
      * @param angle new magnitude of the velocity
      */
     public Velocity withAngle(double angle) {
-        double magnitude = Math.sqrt(vx * vx + vy * vy);
-        return new Velocity(magnitude * Math.cos(angle), magnitude * Math.sin(angle));
+        return new Velocity(getMagnitude() * Math.cos(angle), getMagnitude() * Math.sin(angle));
     }
 }

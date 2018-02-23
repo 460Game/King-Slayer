@@ -22,6 +22,7 @@ import game.model.game.model.worldObject.entity.deathStrat.KingDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.RemoveOnDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.SlayerDeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
+import game.model.game.model.worldObject.entity.entities.NonMovingVelocity;
 import game.model.game.model.worldObject.entity.entities.Velocity;
 import game.model.game.model.worldObject.entity.updateStrat.*;
 
@@ -146,6 +147,8 @@ public class NetworkCommon {
         SynchronizedCollectionsSerializer.registerSerializers( kryo );
 
         kryo.register( EnumMap.class, new EnumMapSerializer() );
+
+        kryo.register(NonMovingVelocity.class);
 //
 //        ImmutableListSerializer.registerSerializers( kryo );
 //        ImmutableSetSerializer.registerSerializers( kryo );

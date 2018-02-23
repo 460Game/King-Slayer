@@ -46,7 +46,7 @@ public class GoDirectionRequest extends ActionRequest {
     @Override
     public void executeServer(ServerGameModel model) {
         Entity e = model.getEntity(id);
-        e.setVelocity(Velocity.NONE.withMagnitude(0.5).withAngle(angle));
+        e.setVelocity(Velocity.NONE.withMagnitude(3).withAngle(angle));
         //TODO where is max speed
     }
 }
