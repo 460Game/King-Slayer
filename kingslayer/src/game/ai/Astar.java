@@ -286,7 +286,7 @@ public class Astar {
         }
     }
 
-    // TODO call this whenever gamem odel is updated.
+    // TODO call this whenever game model is updated.
     public void updateModel(ServerGameModel model) {
         this.model = model;
         cells = model.getAllCells();

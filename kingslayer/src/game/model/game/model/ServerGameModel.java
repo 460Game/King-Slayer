@@ -36,12 +36,6 @@ public class ServerGameModel extends GameModel {
 
     private Thread updateThread;
 
-    private Astar astar;
-
-//    private Collection<GridCell> wood; // Update when destroeyd.
-
-//    private Collection<GridCell> TODO steel, stone
-
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
 
     public TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
@@ -115,10 +109,6 @@ public class ServerGameModel extends GameModel {
         }
     }
 
-    public Astar getAstar() {
-        return astar;
-    }
-
     @Override
     public String toString() {
         return "Server game model";
@@ -132,8 +122,6 @@ public class ServerGameModel extends GameModel {
         running = true;
         updateThread = new Thread(this::run, this.toString() + " Update Thread");
         updateThread.start();
-
-//        astar = new Astar(this);
 
 //        running = true;
 //        updateThread = new Thread(this::run, this.toString() + " Update Thread");

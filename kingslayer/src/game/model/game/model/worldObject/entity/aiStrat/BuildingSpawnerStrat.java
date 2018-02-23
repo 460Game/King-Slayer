@@ -4,13 +4,11 @@ import game.message.toServer.MakeEntityRequest;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.entities.Entities;
-import game.model.game.model.worldObject.entity.entities.Minions;
+import game.model.game.model.worldObject.entity.entities.*;
 import util.Util;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.AI_DATA;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
+import static java.lang.Math.*;
 
 public abstract class BuildingSpawnerStrat extends AIStrat {
 
@@ -124,13 +122,14 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
     abstract Entity makeEntity(double x, double y, Team team);
 
     private BuildingSpawnerStrat() {
+
     }
 
-    static class BuildingSpanwerStratAIData extends AIData {
+    static class BuildingSpawnerStratAIData extends AIData {
         double elapsedTime;
         int spawnCounter;
 
-        BuildingSpanwerStratAIData() {
+        BuildingSpawnerStratAIData() {
             this.elapsedTime = 0;
             this.spawnCounter = 0;
         }
@@ -138,12 +137,12 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
     @Override
     public void init(Entity entity) {
-        entity.add(AI_DATA, new BuildingSpanwerStratAIData());
+        entity.add(AI_DATA, new BuildingSpawnerStratAIData());
     }
 
     @Override
     public void updateAI(Entity entity, ServerGameModel model, double seconds) {
-        BuildingSpanwerStratAIData data = entity.<BuildingSpanwerStratAIData>get(AI_DATA);
+        BuildingSpawnerStratAIData data = entity.<BuildingSpawnerStratAIData>get(AI_DATA);
         data.elapsedTime += seconds;
         while (data.elapsedTime > timeBetweenSpawns(entity)) {
             data.elapsedTime -= timeBetweenSpawns(entity);

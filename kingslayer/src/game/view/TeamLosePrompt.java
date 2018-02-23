@@ -19,7 +19,7 @@ public class TeamLosePrompt extends Region {
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
         this.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
         this.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(3), null)));
-        Text text = new Text("Better Next Time!");
+        Text text = new Text("Better Luck Next Time!");
         text.setFont(new Font(20));
         text.setFill(Color.WHITE);
         text.setLayoutX(10);

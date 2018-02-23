@@ -19,7 +19,7 @@ public class TeamWinPrompt extends Region {
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
         this.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
         this.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(3), null)));
-        Text text = new Text("Chicken Dinner Winner Winner!");
+        Text text = new Text("Winner Winner Chicken Dinner!");
         text.setFont(new Font(20));
         text.setFill(Color.WHITE);
         text.setLayoutX(10);
