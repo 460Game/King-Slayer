@@ -8,6 +8,7 @@ import de.javakaffee.kryoserializers.*;
 import game.message.*;
 import game.message.toClient.*;
 import game.message.toServer.*;
+import game.model.game.grid.GridCell;
 import game.model.game.map.Tile;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.TeamResourceData;
@@ -171,6 +172,26 @@ public class NetworkCommon {
         kryo.register(BuildingSpawnerStrat.MeleeBarracksBuildingSpawnerStrat.class);
         kryo.register(BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.class);
         kryo.register(BuildingSpawnerStrat.ResourceCollectorBuildingSpawnerStrat.class);
+
+        kryo.register(UpgradableImageDrawStrat.BarracksImageDrawStrat.class);
+        kryo.register(UpgradableImageDrawStrat.ArrowTowerImageDrawStrat.class);
+        kryo.register(UpgradableImageDrawStrat.BoxImageDrawStrat.class);
+        kryo.register(UpgradableImageDrawStrat.StoneImageDrawStrat.class);
+        kryo.register(UpgradableImageDrawStrat.BlueArrowTowerImageDrawStrat.class);
+        kryo.register(UpgradableImageDrawStrat.RedArrowTowerImageDrawStrat.class);
+        kryo.register(UpgradableImageDrawStrat.TreasureImageDrawStrat.class);
+        kryo.register(UpgradableImageDrawStrat.BuildableWall.class);
+        kryo.register(DirectionAnimationDrawStrat.SiegeMinionDirectionAnimationDrawStrat.class);
+
+//        kryo.register(MinionStrat.RangedMinionStrat.class);
+//        kryo.register(MinionStrat.MeleeMinionStrat.class);
+//        kryo.register(MinionStrat.ResourceMinionStrat.class);
+//        kryo.register(MinionStrat.MinionStratAIData.class);
+
+//        kryo.register(HashSet.class);
+//        kryo.register(LinkedList.class);
+
+//        kryo.register(GridCell.class);
 
 
 
