@@ -18,7 +18,7 @@ import static util.Pair.pair;
 
 public class Players {
 
-    private static final double PLAYER_RADIUS = 0.35;
+    private static final double PLAYER_RADIUS = 0.45;
     
     static private CircleHitbox hitbox = new CircleHitbox(PLAYER_RADIUS);
 

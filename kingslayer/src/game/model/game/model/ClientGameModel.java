@@ -112,7 +112,7 @@ public class ClientGameModel extends GameModel {
     }
 
     public void writeBackground(WritableImage image, boolean b) {
-        this.streamCells().forEach(cell -> cell.draw(image.getPixelWriter(), this, true));
+        this.streamCells().forEach(cell -> cell.draw(image.getPixelWriter(), this, b));
     }
 
     public void changeWinningTeam(Team team) {

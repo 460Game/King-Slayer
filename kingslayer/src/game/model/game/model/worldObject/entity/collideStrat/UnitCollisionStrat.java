@@ -74,6 +74,6 @@ public class UnitCollisionStrat extends SoftCollisionStrat {
 
 //        System.out.println("New Player x: " + a.data.x);
 //        System.out.println("New Player y: " + a.data.y);
-//        a.update(model);
+//        a.draw(model);
     }
 }

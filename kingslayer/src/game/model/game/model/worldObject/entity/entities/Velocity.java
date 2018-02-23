@@ -64,7 +64,7 @@ public class Velocity {
 
     /**
      * Sets the magnitude of the velocity to the one specified.
-     * Need to update vx and vy as well.
+     * Need to draw vx and vy as well.
      * @param magnitude new magnitude of the velocity
      */
     public Velocity withMagnitude(double magnitude) {
@@ -87,7 +87,7 @@ public class Velocity {
 
     /**
      * Sets the angle of the velocity to the one specified.
-     * Need to update vx and vy as well.
+     * Need to draw vx and vy as well.
      * @param angle new magnitude of the velocity
      */
     public Velocity withAngle(double angle) {

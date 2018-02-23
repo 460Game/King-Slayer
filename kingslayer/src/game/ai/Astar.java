@@ -237,7 +237,7 @@ public class Astar {
         // Add the final cell in the path.
         path.add(current);
 
-        // While the current cell has a preceding cell in the path, update the current cell
+        // While the current cell has a preceding cell in the path, draw the current cell
         // add it to the front of the list.
         while (prevCells.keySet().contains(current)) {
             current = prevCells.get(current);
@@ -275,7 +275,7 @@ public class Astar {
 
     /**
      * Draw the path that the search found.
-     * @param gc graphics context used to update the path
+     * @param gc graphics context used to draw the path
      */
     public void draw(GraphicsContext gc) {
         if(path != null) {

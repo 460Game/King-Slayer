@@ -25,7 +25,7 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
     @Override
     public void collisionSoft(GameModel model, Entity a, Entity b) {
         // Server stops the arrow and removes it from the game. Entity b loses an
-        // appropriate amount of health. All servers update entity b's health.
+        // appropriate amount of health. All servers draw entity b's health.
         // As a precaution, on the client side, stop the arrow and remove it from the game.
         if (a.has(TEAM) && b.has(TEAM) && a.get(TEAM) != b.get(TEAM)) {
             model.execute((server) -> {

@@ -2,6 +2,7 @@ package game.model.game.model;
 
 import game.message.Message;
 import game.message.toClient.SetEntityCommand;
+import game.message.toClient.SyncEntityFeildCommand;
 import game.model.game.grid.GridCell;
 import game.model.game.map.MapGenerator;
 import game.model.game.map.Tile;
@@ -151,6 +152,10 @@ public abstract class GameModel implements Model {
                     e.needSync = false;
                     serverGameModel.processMessage(new SetEntityCommand(e));
                 }
+                e.syncRequiredFeilds.forEach(syncFeild -> {
+                    serverGameModel.processMessage(new SyncEntityFeildCommand(e, syncFeild));
+                });
+                e.syncRequiredFeilds.clear();
             });
 
         }, clientGameModel -> {});

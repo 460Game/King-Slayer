@@ -24,7 +24,7 @@ public class TreasureGhostCollisionStrat extends GhostCollisionStrat{
 
     @Override
     public void collisionSoft(GameModel model, Entity a, Entity b) {
-        // Server should remove the treasure and update the resource counts of the team that
+        // Server should remove the treasure and draw the resource counts of the team that
         // collected the treasure by a certain amount.
         Consumer<ServerGameModel> serverConsumer = (server) -> {
             server.removeByID(a.id);

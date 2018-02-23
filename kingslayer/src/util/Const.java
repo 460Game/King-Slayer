@@ -8,9 +8,9 @@ import static java.lang.Math.PI;
 public abstract class Const {
 
     /**
-     * Flag that signals whether to update in debugging mdode.
+     * Flag that signals whether to draw in debugging mdode.
      */
-    public static boolean DEBUG_DRAW = true;//true;
+    public static boolean DEBUG_DRAW = false;//true;
 
     /**
      * Angles based on the drawing coordinate system.
@@ -75,7 +75,7 @@ public abstract class Const {
     public final static int UPDATES_PER_SECOND = 60;
 
     /**
-     * Number of nanoseconds to optimally spend on each update loop.
+     * Number of nanoseconds to optimally spend on each draw loop.
      */
     public final static int UPDATE_LOOP_TIME_NANOS = 16666667;
 

@@ -40,7 +40,7 @@ public abstract class Hitbox {
      */
     public void updateCells(Entity entity, GameModel model) {
 
-        // Check if the entity has moved, so it can update the cells it is in.
+        // Check if the entity has moved, so it can draw the cells it is in.
         if (entity.getX() != entity.prevX || entity.getY() != entity.prevY) {
             // Get the set of cells the entity is currently in.
             Set<GridCell> afterSet = entity.getHitbox().getCells(entity.getX(), entity.getY(), model);

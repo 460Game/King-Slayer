@@ -3,7 +3,9 @@ package game.view;
 import com.esotericsoftware.minlog.Log;
 import game.message.toClient.NewEntityCommand;
 import game.message.toServer.EntityBuildRequest;
+import game.message.toServer.GoDirectionRequest;
 import game.message.toServer.ShootArrowRequest;
+import game.message.toServer.StopRequest;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
@@ -14,6 +16,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Region;
+import util.Const;
+import util.Util;
+
+import java.util.Set;
+import java.util.TreeSet;
 
 import static javafx.scene.input.KeyCode.*;
 import static javafx.scene.input.KeyCode.DIGIT3;
@@ -28,85 +35,76 @@ import static util.Util.toWorldCoords;
 /*
 handles interacting with the game
  */
-public class GameInteractionLayer extends Region  {
-    private Canvas uiCanvas;
+public class GameInteractionLayer extends Region {
     private ClientGameModel model;
+    private WorldPanel world;
 
     private Entity placing;
     private Entity placingGhost;
     private int cost;
-
     private boolean upgrading = false;
-
     private boolean selectingBarracks = false;
 
     public GameInteractionLayer(ClientGameModel clientGameModel) {
         this.model = clientGameModel;
-        uiCanvas = new Canvas();
-        uiCanvas.heightProperty().bind(this.heightProperty());
-        uiCanvas.widthProperty().bind(this.widthProperty());
+        world = new WorldPanel(clientGameModel);
+        world.prefHeightProperty().bind(this.heightProperty());
+        world.prefWidthProperty().bind(this.widthProperty());
+        this.getChildren().add(world);
 
-        this.getChildren().addAll(uiCanvas);
-
-        uiCanvas.setFocusTraversable(true);
-
-        uiCanvas.setOnMouseClicked(e -> {
-            MouseButton mb = e.getButton();
-
-            if (mb == PRIMARY) {
-                if (model.getLocalPlayer().getRole() == Role.KING && placing != null) {
-                    if (!placingGhost.getHitbox().getCollidesWith(model, placingGhost.getX(), placingGhost.getY()).skip(1).findAny().isPresent()) {
-                        model.processMessage(new EntityBuildRequest(placing,
+        world.onGameLeftClick((x, y) -> {
+            if (model.getLocalPlayer().getRole() == Role.KING && placing != null) {
+                if (!placingGhost.getHitbox().getCollidesWith(model, placingGhost.getX(), placingGhost.getY()).skip(1).findAny().isPresent()) {
+                    model.processMessage(new EntityBuildRequest(placing,
                             model.getLocalPlayer().getTeam(),
                             TeamResourceData.Resource.WOOD,
                             cost));
-                    }
-                    model.remove(placingGhost);
-                    placing = null;
-                } else if (upgrading) {
-                  int x = (int) (toDrawCoords(model.getLocalPlayer().getX()) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS;
-                  int y = (int) (toDrawCoords(model.getLocalPlayer().getY()) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS;
-                  Entity entity = model.getEntityAt(x, y);
-                  System.out.println("clicked at " + x + " " + y + " and hit entity " + entity);
-                  if (entity != null) {
+                }
+                model.remove(placingGhost);
+                placing = null;
+            } else if (upgrading) {
+
+                Entity entity = model.getEntityAt(x.intValue(), y.intValue());
+                System.out.println("clicked at " + x + " " + y + " and hit entity " + entity);
+                if (entity != null) {
                     entity.upgrade(); //TODO TODO
                     upgrading = false;
-                  }
-                } else if (model.getLocalPlayer().getRole() == Role.SLAYER) {
-                    double xCoords = toWorldCoords(e.getX() - getWidth() / 2);
-                    double yCoords = toWorldCoords(e.getY() - getHeight() / 2);
-                    double angle = Math.atan2(yCoords, xCoords);
-                    model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
+                }
+            } else if (model.getLocalPlayer().getRole() == Role.SLAYER) {
+                double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
+                model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
                         model.getLocalPlayer().getX(),
                         model.getLocalPlayer().getY(),
                         angle, model.getLocalPlayer().getTeam()));
-                }
-            } else if (mb == SECONDARY) {
-                if (model.getLocalPlayer().getRole() == Role.KING && placing != null) {
-                    model.remove(placingGhost);
-                    placing = null;
-                } else if (upgrading) {
-                    upgrading = false;
-                }
             }
         });
 
-        uiCanvas.setOnMouseMoved(e -> {
-            if (model.getLocalPlayer() != null && model.getLocalPlayer().getRole() == Role.KING && placing != null) {
-                double placingX = Math.floor((toDrawCoords(model.getLocalPlayer().getX()) - uiCanvas.getWidth() / 2 + e.getSceneX()) / TILE_PIXELS) + 0.5;
-                double placingY = Math.floor((toDrawCoords(model.getLocalPlayer().getY()) - uiCanvas.getHeight() / 2 + e.getSceneY()) / TILE_PIXELS) + 0.5;
-                if (Math.sqrt(Math.pow(model.getLocalPlayer().getX() - placingX, 2) + Math.pow(model.getLocalPlayer().getY() - placingY, 2)) < 5) {
-                    placing.setX(placingX) ;
-                    placing.setY(placingY) ;
+        world.onGameRightClick((x, y) -> {
+            if (model.getLocalPlayer().getRole() == Role.KING && placing != null) {
+                model.remove(placingGhost);
+                placing = null;
+            } else if (upgrading) {
+                upgrading = false;
+            }
+        });
 
-                    placingGhost.setX(placingX)  ;
+        world.onGameMouseMove((x, y) -> {
+            if (model.getLocalPlayer() != null && model.getLocalPlayer().getRole() == Role.KING && placing != null) {
+                double placingX = Math.floor(x) + 0.5;
+                double placingY = Math.floor(y) + 0.5;
+                if (Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), placingX, placingY) < 5) {
+                    placing.setX(placingX);
+                    placing.setY(placingY);
+
+                    placingGhost.setX(placingX);
                     placingGhost.setY(placingY);
                 }
             }
         });
 
-        uiCanvas.setOnKeyPressed(e -> {
-            KeyCode kc = e.getCode();
+        int[] dir = {0, 0};
+
+        world.onKeyPress(kc -> {
 
             if (placingGhost != null && kc != W && kc != A && kc != S && kc != D) {
                 model.removeByID(placingGhost.id);
@@ -147,7 +145,7 @@ public class GameInteractionLayer extends Region  {
             }
 
             if (kc == DIGIT3 || kc == NUMPAD3) {
-                if (! selectingBarracks) {
+                if (!selectingBarracks) {
                     selectingBarracks = true;
                 } else {
                     cost = -2;
@@ -174,12 +172,79 @@ public class GameInteractionLayer extends Region  {
                 }
             }
 
-          if (e.getCode() == KeyCode.E) {
-            if (model.getLocalPlayer().getRole() == Role.KING) {
-              upgrading = true;
-            }
-          }
-
         });
+
+        world.onKeyPress(E, () -> {
+            if (model.getLocalPlayer().getRole() == Role.KING) {
+                upgrading = true;
+            }
+        });
+
+        world.onKeyPress(TAB, () -> {
+            model.processMessage(new StopRequest(model.getLocalPlayer().id));
+            int role = (model.getLocalPlayer().getRole().val + 1) % 2;
+            for (Entity entity : model.getAllEntities()) {
+                if (entity.has(Entity.EntityProperty.TEAM) && entity.has(Entity.EntityProperty.ROLE) && entity.getTeam() == model.getLocalPlayer().getTeam() && entity.getRole().val == role) {
+                    model.setLocalPlayer(entity.id);
+                    break;
+                }
+            }
+        });
+
+        world.onKeyPress(CAPS, () -> {
+            Const.DEBUG_DRAW = !Const.DEBUG_DRAW;
+        });
+
+        Runnable sendMovement = () -> {
+            if (dir[0] == 0 && dir[1] == 0)
+                model.processMessage(new StopRequest(model.getLocalPlayer().id));
+            else
+                model.processMessage(new GoDirectionRequest(model.getLocalPlayer().id, Math.atan2(dir[1], dir[0])));
+        };
+
+        world.onKeyPress(() -> {
+            dir[1]--;
+            sendMovement.run();
+        }, W, UP);
+
+        world.onKeyRelease(() -> {
+            dir[1]++;
+            sendMovement.run();
+        }, W, UP);
+
+        world.onKeyRelease(() -> {
+            dir[1]--;
+            sendMovement.run();
+        }, S, DOWN);
+
+        world.onKeyPress(() -> {
+            dir[1]++;
+            sendMovement.run();
+        }, S, DOWN);
+
+        world.onKeyRelease(() -> {
+            dir[0]++;
+            sendMovement.run();
+        }, A, LEFT);
+        world.onKeyPress(() -> {
+            dir[0]--;
+            sendMovement.run();
+        }, A, LEFT);
+
+        world.onKeyRelease(() -> {
+            dir[0]--;
+            sendMovement.run();
+        }, D, RIGHT);
+
+
+        world.onKeyPress(() -> {
+            dir[0]++;
+            sendMovement.run();
+        }, D, RIGHT);
+
+    }
+
+    public void draw() {
+        world.draw();
     }
 }

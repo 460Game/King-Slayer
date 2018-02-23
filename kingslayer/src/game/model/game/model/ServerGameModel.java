@@ -217,7 +217,7 @@ public class ServerGameModel extends GameModel {
 //            public void run() {
 //                totalFrameCount[0]++;
 //
-//                ServerGameModel.this.update();
+//                ServerGameModel.this.draw();
 //                if (doAi[0]) {
 //                    updateAI(ServerGameModel.this);
 //                    doAi[0] = false;

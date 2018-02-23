@@ -4,7 +4,7 @@ import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.TeamResourceData;
 
 /**
- * Message sent to a client to update the team resources.
+ * Message sent to a client to draw the team resources.
  */
 public class UpdateResourceCommand implements ToClientCommand {
 

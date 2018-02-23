@@ -29,6 +29,6 @@ public class ActionPanel extends Region {
         this.getChildren().add(text);
     }
 
-    public void update() {
+    public void draw() {
     }
 }

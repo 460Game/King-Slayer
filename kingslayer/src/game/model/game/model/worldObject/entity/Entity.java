@@ -1,6 +1,5 @@
 package game.model.game.model.worldObject.entity;
 
-import com.esotericsoftware.minlog.Log;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.ServerGameModel;
@@ -21,7 +20,6 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.*;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.*;
-import static util.Pair.pair;
 import static util.Util.toDrawCoords;
 
 /**
@@ -32,10 +30,10 @@ import static util.Util.toDrawCoords;
 public class Entity {
 
     private enum PropType {
-        ON_CHANGE_ONLY, //sent only if changed on server TODO not supported
+        ON_CHANGE_ONLY, //sent only if changed on server
         ACTIVE_SYNC, //will queue an update to the client if changed
-        PASSIVE_SYNC, //Will be sent along with any active sync items
-        LOCAL_ONLY; // Not sent ever
+        PASSIVE_SYNC, //Will be sent along with any active sync items on every change
+        LOCAL_ONLY; // sent only with intial copy from server to client (no garentees on when intial copy is sent)
     }
 
     /**
@@ -95,28 +93,36 @@ public class Entity {
     }
 
     public <T> T get(EntityProperty key) {
-        if (key.sync == PropType.LOCAL_ONLY)
+        if (key.sync == PropType.LOCAL_ONLY || key.sync == PropType.ON_CHANGE_ONLY)
             return (T) localMap.get(key);
         return (T) dataMap.get(key);
     }
 
     public boolean has(EntityProperty key) {
-        if (key.sync == PropType.LOCAL_ONLY)
+        if (key.sync == PropType.LOCAL_ONLY || key.sync == PropType.ON_CHANGE_ONLY)
             return localMap.containsKey(key);
         return dataMap.containsKey(key);
     }
 
-    public <T> void add(EntityProperty key, T value) {
-        if (has(key))
-            throw new RuntimeException("Already has property");
-        if (key.sync == PropType.LOCAL_ONLY)
+    public <T> void setOrAdd(EntityProperty key, T value) {
+        if (key.sync == PropType.LOCAL_ONLY || key.sync == PropType.ON_CHANGE_ONLY) {
             localMap.put(key, key.type.cast(value));
+            if(key.sync == PropType.ON_CHANGE_ONLY)
+                syncRequiredFeilds.add(key);
+        }
         else {
             dataMap.put(key, key.type.cast(value));
 
             if (key.sync == PropType.ACTIVE_SYNC)
                 needSync = true;
         }
+    }
+
+
+    public <T> void add(EntityProperty key, T value) {
+        if (has(key))
+            throw new RuntimeException("Already has property");
+        this.setOrAdd(key, value);
     }
 
     private void add(Pair<EntityProperty, Object> pair) {
@@ -127,16 +133,11 @@ public class Entity {
     public <T> void set(EntityProperty key, T value) {
         if (!has(key))
             throw new RuntimeException("Dosnt have prop");
-        if (key.sync == PropType.LOCAL_ONLY)
-            localMap.put(key, key.type.cast(value));
-        else {
-            dataMap.put(key, key.type.cast(value));
-            if (key.sync == PropType.ACTIVE_SYNC)
-                needSync = true;
-        }
+        this.setOrAdd(key, value);
     }
 
     public transient boolean needSync = true;
+    public transient Set<EntityProperty> syncRequiredFeilds = EnumSet.noneOf(EntityProperty.class);
 
     /**
      * Checks if this entity is currently colliding with another entity.

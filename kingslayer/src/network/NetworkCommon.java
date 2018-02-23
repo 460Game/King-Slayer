@@ -147,8 +147,9 @@ public class NetworkCommon {
         SynchronizedCollectionsSerializer.registerSerializers( kryo );
 
         kryo.register( EnumMap.class, new EnumMapSerializer() );
-
+        kryo.register(EnumSet.class);
         kryo.register(NonMovingVelocity.class);
+        kryo.register(SyncEntityFeildCommand.class);
 //
 //        ImmutableListSerializer.registerSerializers( kryo );
 //        ImmutableSetSerializer.registerSerializers( kryo );
