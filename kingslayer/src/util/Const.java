@@ -7,6 +7,9 @@ import static java.lang.Math.PI;
  */
 public abstract class Const {
 
+
+    public static boolean FPSPrint = false;
+
     /**
      * Flag that signals whether to update in debugging mdode.
      */

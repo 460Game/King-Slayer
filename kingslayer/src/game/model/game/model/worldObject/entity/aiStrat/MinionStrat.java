@@ -321,7 +321,7 @@ public abstract class MinionStrat extends AIStrat {
         // TODO find the closest enemy in detected range or location of last enemy?
 
         // Returns the enemy king, assuming no fog of war. Could return closest king. Temporary for now? TODO
-        return model.getAllEntities().parallelStream().filter(e -> e.getTeam() != entity.getTeam() &&
+        return model.getAllEntities().parallelStream().filter(e -> e.has(Entity.EntityProperty.TEAM) && e.getTeam() != entity.getTeam() &&
                 e.has(Entity.EntityProperty.ROLE) && e.<Role>get(Entity.EntityProperty.ROLE) == Role.KING).findFirst().get();
     }
 

@@ -20,8 +20,6 @@ import static util.Const.*;
 
 public class ServerGameModel extends GameModel {
 
-    public static boolean FPSPrint = false;
-
     public ServerGameModel() {
         super(new ServerMapGenerator(GRID_X_SIZE, GRID_Y_SIZE));
     }
@@ -49,7 +47,7 @@ public class ServerGameModel extends GameModel {
     @Override
     public void processMessage(Message m) {
         if (clients == null)
-            throw new RuntimeException("Cannot receive message before init()");
+            throw new RuntimeException("Cannot receive message before init or after game end");
         if (m.sendToServer())
             this.queueMessage(m);
         if (m.sendToClient())

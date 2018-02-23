@@ -16,6 +16,7 @@ import lobby.Main;
 import java.util.*;
 
 import static images.Images.GAME_CURSOR_IMAGE;
+import static util.Const.FPSPrint;
 import static util.Util.toWorldCoords;
 
 public class GameView {
@@ -100,7 +101,7 @@ public class GameView {
             }
         };
 
-        if (ServerGameModel.FPSPrint) {
+        if (FPSPrint) {
             Timer t = new Timer();
             t.scheduleAtFixedRate(updateFPS, 1000, 1000);
         }
