@@ -23,10 +23,6 @@ import static java.lang.Math.PI;
 
 public abstract class DirectionAnimationDrawStrat extends DrawStrat {
 
-//  public AnimationDrawData drawData = AnimationDrawData.makeAnimated();
-  public int height = 32;
-  public int width = 32;
-
   public static final DirectionAnimationDrawStrat KING_ANIMATION = new KingDirectionAnimationDrawStrat();
   public static final DirectionAnimationDrawStrat SLAYER_ANIMATION = new SlayerDirectionAnimationDrawStrat();
 
@@ -74,8 +70,8 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
       gc.drawImage(this.getImage(entity),
               toDrawCoords(p.x),
               toDrawCoords(p.y),
-              width,
-              height,
+              toDrawCoords(getWidth()),
+              toDrawCoords(getHeight()),
               toDrawCoords(entity.getX() - entity.getHitbox().getWidth() / 2),
               toDrawCoords(entity.getY() - entity.getHitbox().getHeight() / 2),
               toDrawCoords(entity.getHitbox().getWidth()),
@@ -110,6 +106,14 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     } else {
       drawData.imageNum = 0;
     }
+  }
+
+  double getWidth() {
+    return 1;
+  }
+
+  double getHeight() {
+    return 1;
   }
 
   public double getDrawZ(Entity entity) {
