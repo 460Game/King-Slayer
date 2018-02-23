@@ -85,6 +85,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         int maxActive(Entity entity) {
+            System.out.println("level: " + entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return 10 + 5 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0);
         }
 

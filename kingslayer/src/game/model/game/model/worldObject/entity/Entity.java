@@ -200,9 +200,9 @@ public class Entity {
         if (!this.invincible()) {
             //TEMPORARY!!!!!!!!!
             gc.setFill(Color.RED);
-            gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getX()) - 30, 20, 3);
+            gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - 30, 20, 3);
             gc.setFill(Color.GREEN);
-            gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getX()) - 30, (getHealth() / 100) * 20, 3);
+            gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - 30, (getHealth() / 100) * 20, 3);
         }
     }
 
