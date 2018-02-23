@@ -1,10 +1,12 @@
 package game.view;
 
+import com.esotericsoftware.minlog.Log;
 import game.ai.Astar;
 import game.message.toServer.GoDirectionRequest;
 import game.message.toServer.StopRequest;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ClientGameModel;
+import game.model.game.model.ServerGameModel;
 import game.model.game.model.gameState.Loading;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
@@ -98,6 +100,21 @@ public class GameView {
                 exitPrompt, teamLosePrompt, teamWinPrompt);
 
 
+        //FPS print
+        final int[] totalFrameCount = {0};
+        TimerTask updateFPS = new TimerTask() {
+            public void run() {
+                Log.info(String.valueOf("ClientFPS: " + totalFrameCount[0]));
+                totalFrameCount[0] = 0;
+            }
+        };
+
+        if (ServerGameModel.FPSPrint) {
+            Timer t = new Timer();
+            t.scheduleAtFixedRate(updateFPS, 1000, 1000);
+        }
+
+
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -108,6 +125,8 @@ public class GameView {
                     infoPanel.setVisible(true);
                     teamLosePrompt.setVisible(false);
                     actionPanel.setVisible(true);
+
+                    totalFrameCount[0]++;
 
                     model.update();
                     worldPanel.update();
