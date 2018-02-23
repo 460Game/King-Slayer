@@ -295,6 +295,11 @@ public class Entity {
         this.<DrawStrat>oget(DRAW_STRAT).ifPresent(drawStrat -> drawStrat.update(this, model));
     }
 
+    public void upgrade() {
+        if ((int) this.get(LEVEL) < 3)
+            this.set(LEVEL, (int) this.get(LEVEL) + 1);
+    }
+
     /**
      * Gets the collision type of this entity.
      *

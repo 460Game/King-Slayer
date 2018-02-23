@@ -24,8 +24,8 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
 
         @Override
-        int maxActive() {
-            return 10;
+        int maxActive(Entity entity) {
+            return 10 + 5 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0);
         }
 
         @Override
@@ -40,12 +40,12 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns() {
-            return 5;
+            return 2.5;
         }
 
         @Override
-        int maxActive() {
-            return 5;
+        int maxActive(Entity entity) {
+            return 10 + 5 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0);
         }
 
         @Override
@@ -60,12 +60,12 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns() {
-            return 5;
+            return 2.5;
         }
 
         @Override
-        int maxActive() {
-            return 5;
+        int maxActive(Entity entity) {
+            return 10 + 5 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0);
         }
 
         @Override
@@ -80,12 +80,12 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns() {
-            return 5;
+            return 2.5;
         }
 
         @Override
-        int maxActive() {
-            return 5;
+        int maxActive(Entity entity) {
+            return 10 + 5 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0);
         }
 
         @Override
@@ -105,7 +105,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
 
         @Override
-        int maxActive() {
+        int maxActive(Entity entity) {
             return 100;
         }
 
@@ -118,7 +118,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
     abstract double timeBetweenSpawns();
 
-    abstract int maxActive();
+    abstract int maxActive(Entity entity);
 
     abstract Entity makeEntity(double x, double y, Team team);
 
@@ -146,7 +146,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         data.elapsedTime += seconds;
         while (data.elapsedTime > timeBetweenSpawns()) {
             data.elapsedTime -= timeBetweenSpawns();
-            if (data.spawnCounter < maxActive()) {
+            if (data.spawnCounter < maxActive(entity)) {
                 Entity newEntity = makeEntity(entity.getX(), entity.getY(), entity.getTeam());
                 model.processMessage(new MakeEntityRequest(newEntity));
                 newEntity.onDeath((e, serverGameModel) -> {

@@ -69,7 +69,7 @@ public class GameInteractionLayer extends Region  {
                   Entity entity = model.getEntityAt(x, y);
                   System.out.println("clicked at " + x + " " + y + " and hit entity " + entity);
                   if (entity != null) {
-                 //   entity.upgrade(model); TODO TODO
+                    entity.upgrade(); //TODO TODO
                     upgrading = false;
                   }
                 } else if (model.getLocalPlayer().getRole() == Role.SLAYER) {

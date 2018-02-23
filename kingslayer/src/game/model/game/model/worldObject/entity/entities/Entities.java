@@ -88,7 +88,8 @@ public class Entities {
                 pair(TEAM, team),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_RESOURCE_COLLECTOR),
                 pair(AI_STRAT, BuildingSpawnerStrat.ResourceCollectorBuildingSpawnerStrat.SINGLETON),
-                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
+                pair(LEVEL, 0));
     }
 
     public static Entity makeResourceCollectorGhost(double x, double y, Team team) {
@@ -107,7 +108,8 @@ public class Entities {
                 pair(HEALTH, 100.0),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.MeleeBarracksBuildingSpawnerStrat.SINGLETON),
-                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
+                pair(LEVEL, 0));
     }
 
     public static Entity makeRangedBarracks(double x, double y, Team team) {
@@ -118,7 +120,8 @@ public class Entities {
                 pair(HEALTH, 100.0),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON),
-                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
+                pair(LEVEL, 0));
     }
 
     public static Entity makeSiegeBarracks(double x, double y, Team team) {
@@ -129,7 +132,8 @@ public class Entities {
                 pair(HEALTH, 100.0),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.SiegeBarracksBuildingSpawnerStrat.SINGLETON),
-                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
+                pair(LEVEL, 0));
     }
 
     public static Entity makeBarracksGhost(double x, double y, Team team) {
