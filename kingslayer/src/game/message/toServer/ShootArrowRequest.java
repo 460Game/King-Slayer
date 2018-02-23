@@ -38,10 +38,11 @@ public class ShootArrowRequest extends ActionRequest {
 
     /**
      * Constructor for a message, given an id.
-     * @param id id of the entity wanting to shoot the arrow.
+     * @param id id of the entity wanting to shoot the arrow
      * @param x x-coordinate of the arrow
      * @param y y-coordinate of the arrow
      * @param angle angle of movement of the arrow
+     * @param team team of the entity that requested the arrow
      */
     public ShootArrowRequest(long id, double x, double y, double angle, Team team) {
         this.id = id;

@@ -10,7 +10,7 @@ public abstract class Const {
     /**
      * Flag that signals whether to update in debugging mdode.
      */
-    public static boolean DEBUG_DRAW = true;//true;
+    public static boolean DEBUG_DRAW = false;
 
     /**
      * Angles based on the drawing coordinate system.
@@ -30,6 +30,9 @@ public abstract class Const {
     public static final double NANOS_TO_SECONDS = 1e-9;
     public static final double SECONDS_TO_NANOS = 1e9;
 
+    /**
+     * Number of teams and roles that currently are supported.
+     */
     public static final int NUM_TEAMS = 3;
     public static final int NUM_ROLES = 3;
 
@@ -70,7 +73,7 @@ public abstract class Const {
 
     /**
      * Number of updates per second.
-     * Should equal 1e9/UPDATE_LOOP_TIME_NANOS = UPDATE_LOOP_TIME_NANOS.
+     * Should equal 1e9 / UPDATE_LOOP_TIME_NANOS.
      */
     public final static int UPDATES_PER_SECOND = 60;
 
@@ -84,10 +87,10 @@ public abstract class Const {
      */
     public static final int WATER_ANIM_PERIOD = UPDATES_PER_SECOND * 4;
 
-
+    // TODO
     public final static int AI_LOOP_UPDATE_PER_SECOND = 10;
 
-    public static final long AI_LOOP_UPDATE_TIME_MILI = 100;
+    public static final long AI_LOOP_UPDATE_TIME_MILLI = 100;
 
     public static final int LEVEL_WOOD = 0;
     public static final int LEVEL_STONE = 1;

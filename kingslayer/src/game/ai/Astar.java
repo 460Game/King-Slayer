@@ -1,8 +1,9 @@
 package game.ai;
 
 import game.model.game.grid.GridCell;
-import game.model.game.model.GameModel;
+import game.model.game.model.ServerGameModel;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -10,6 +11,7 @@ import java.util.*;
 import util.*;
 import java.util.stream.Collectors;
 
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_STRAT;
 import static util.Const.TILE_PIXELS;
 
 /**
@@ -21,7 +23,7 @@ public class Astar {
      * Current model of the game world. Holds the current
      * state of the map with which the search is used on.
      */
-    private GameModel model;
+    private ServerGameModel model;
 
     /**
      * Holds the set of passable cells in the current
@@ -39,18 +41,18 @@ public class Astar {
      * List of cells that make up the path that was found. First cell
      * should be the start cell, and last cell should be the end cell.
      */
-    private List<GridCell> path = null;
+    private List<GridCell> path;
 
     /**
      * Constructor for the A* pathfinder, given the current
      * model of the game world.
      * @param model current state of the game world
      */
-    public Astar(GameModel model) {
+    public Astar(ServerGameModel model) {
         this.model = model;
         cells = model.getAllCells();
-        passable = new HashSet<>();
-        findTraversableNodes();
+        passable = findTraversableCells();
+        path = new LinkedList<>();
     }
 
     /**
@@ -64,12 +66,10 @@ public class Astar {
     /**
      * Finds all of the passable nodes in the map and stores them
      * in passable.
+     * @return list of cells that are passable
      */
-    public void findTraversableNodes() {
-        passable = cells.stream().filter(GridCell::isPassable).collect(Collectors.toSet());
-//        for (GridCell node : passable)
-//            System.out.println("Node x,y: " + node.getTopLeftX() + ", " + node.getTopLeftY());
-//        System.out.println(passable.size());
+    public Set<GridCell> findTraversableCells() {
+        return cells.stream().filter(GridCell::isPassable).collect(Collectors.toSet());
     }
 
     /**
@@ -79,11 +79,11 @@ public class Astar {
      * @param b destination grid cell
      * @return the heuristic from getting from cell a to cell b
      */
-    public double heuristicValue(GridCell a, GridCell b) {
+    private double heuristicValue(GridCell a, GridCell b) {
         return Math.sqrt((a.getTopLeftX() - b.getTopLeftX()) * (a.getTopLeftX() - b.getTopLeftX()) +
                 (a.getTopLeftY() - b.getTopLeftY()) * (a.getTopLeftY() - b.getTopLeftY()));
 
-        // CHange this to diagonal distance ?
+        // Change this to diagonal distance ?
         // dx = abs(node.x - goal.x)
         //dy = abs(node.y - goal.y)
         // return D * (dx + dy) + (D2 - 2 * D) * min(dx, dy)
@@ -106,8 +106,8 @@ public class Astar {
      */
     public List<GridCell> astar(GridCell start, GridCell end) {
         // TODO may need to include finding the traversable nodes
-//        findTraversableNodes();
-        GridCell c = findClosestPassable(end);
+//        findTraversableCells();
+//        GridCell c = findClosestPassable(end);
 //        System.out.println("End coords: " + end.getTopLeftX() + ", " + end.getTopLeftY());
 //        System.out.println("Closest coords: " + c.getTopLeftX() + ", " + c.getTopLeftY());
 
@@ -145,7 +145,7 @@ public class Astar {
         // is all heuristic. Add the start cell to the discovered
         // cell set.
         g.put(start, 0.0);
-        f.put(start, heuristicValue(start, c));
+        f.put(start, heuristicValue(start, end));
         open.add(start);
 
         // Loop until the set of discovered, but not computed cells is
@@ -165,7 +165,7 @@ public class Astar {
                 }
 
             // If the cell equals the destination cell, we are done.
-            if (current.equals(c)) {
+            if (current.equals(end)) {
                return getPath(prevCell, current);
             }
 
@@ -213,7 +213,7 @@ public class Astar {
                     // Update the mappings of previous cells, g-scores, and f-scores.
                     prevCell.put(neighbor, current);
                     g.put(neighbor, tempg);
-                    f.put(neighbor, g.get(neighbor) + heuristicValue(neighbor, c));
+                    f.put(neighbor, g.get(neighbor) + heuristicValue(neighbor, end));
                 }
             }
 //            System.out.println("SIZE of open set: " + open.size());
@@ -250,19 +250,19 @@ public class Astar {
         return path;
     }
 
-    /**
-     * Finds a path using A* search given a starting cell and an ending cell. This path
-     * is stored in the "path" field.
-     * @param start the starting cell of the path
-     * @param end the destination cell of the path
-     */
-    public void findPath(GridCell start, GridCell end) {
-        findTraversableNodes();
-        path = astar(start, end);
-    }
+//    /**
+//     * Finds a path using A* search given a starting cell and an ending cell. This path
+//     * is stored in the "path" field.
+//     * @param start the starting cell of the path
+//     * @param end the destination cell of the path
+//     */
+//    public void findPath(GridCell start, GridCell end) {
+//        passable = findTraversableCells();
+//        path = astar(start, end);
+//    }
 
     public void moveToCell(Entity e, GridCell cell) {
-       e.setVelocity( e.getVelocity().withAngle(Math.atan2(cell.getCenterY() - e.getY(), cell.getCenterX() - e.getX())));
+       e.setVelocity(e.getVelocity().withAngle(Math.atan2(cell.getCenterY() - e.getY(), cell.getCenterX() - e.getX())));
     }
 
     /**
@@ -284,5 +284,29 @@ public class Astar {
             gc.strokePolyline(path.stream().mapToDouble(c -> TILE_PIXELS * (c.getTopLeftX() + 0.5)).toArray(),
                     path.stream().mapToDouble(c -> TILE_PIXELS * (c.getTopLeftY() + 0.5)).toArray(), path.size());
         }
+    }
+
+    // TODO call this whenever gamem odel is updated.
+    public void updateModel(ServerGameModel model) {
+        this.model = model;
+        cells = model.getAllCells();
+        passable = findTraversableCells();
+    }
+
+    public Set<GridCell> getWood() {
+        Set<GridCell> wood = new HashSet<>();
+        for(int x = 0; x < Const.GRID_X_SIZE; x++) {
+            for(int y = 0; y < Const.GRID_Y_SIZE; y++) {
+                if (model.getEntityAt(x, y) != null && model.getEntityAt(x, y).get(DRAW_STRAT) instanceof ImageDrawStrat.TreeImageDrawStrat) // Better way to check wood.
+                      wood.add(model.getCell(x, y));
+            }
+        }
+        return wood;
+    }
+
+    public GridCell getClosestWood(GridCell cell) {
+        return getWood().parallelStream().min((c1, c2) ->
+                Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
+                Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
     }
 }

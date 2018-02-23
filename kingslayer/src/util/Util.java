@@ -3,12 +3,8 @@ package util;
 import com.esotericsoftware.minlog.Log;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.transform.Affine;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
-
-import java.util.Random;
-import java.util.Set;
+import javafx.scene.transform.*;
+import java.util.*;
 
 import static java.lang.Math.PI;
 import static util.Const.*;
@@ -113,9 +109,9 @@ public class Util {
         return drawCords / TILE_PIXELS;
     }
 
-    public static void sleep(long milis) {
+    public static void sleep(long millis) {
         try {
-            Thread.sleep(milis);
+            Thread.sleep(millis);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -134,7 +130,8 @@ public class Util {
      * @param tlpx the top left x co-ordinate where the image will be plotted (in canvas co-ordinates).
      * @param tlpy the top left y co-ordinate where the image will be plotted (in canvas co-ordinates).
      */
-    public static void drawRotatedImage(GraphicsContext gc, Image image, double angle, double tlpx, double tlpy, double destw, double desth) {
+    public static void drawRotatedImage(GraphicsContext gc, Image image, double angle,
+                                        double tlpx, double tlpy, double destw, double desth) {
       //  gc.save(); // saves the current state on stack, including the current transform
         angle = 180 * angle/ PI;
         gc.transform(new Affine(Transform.rotate(angle, tlpx + destw / 2, tlpy + desth / 2)));
@@ -143,6 +140,13 @@ public class Util {
       //  gc.restore(); // back to original state (before rotation)
     }
 
+    /**
+     * Check if the coordinates given are within the bounds of the game map. Return
+     * true if they are; otherwise, return false.
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return true if the coordinates are within the bounds
+     */
     public static boolean checkBounds(double x, double y) {
         return x > 1 && y > 1 && x < GRID_X_SIZE - 1 && x < GRID_Y_SIZE - 1;
     }

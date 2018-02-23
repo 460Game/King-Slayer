@@ -20,7 +20,6 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.*;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.*;
-import static util.Pair.pair;
 import static util.Util.toDrawCoords;
 
 /**
@@ -34,7 +33,7 @@ public class Entity {
         ON_CHANGE_ONLY, //sent only if changed on server TODO not supported
         ACTIVE_SYNC, //will queue an update to the client if changed
         PASSIVE_SYNC, //Will be sent along with any active sync items
-        LOCAL_ONLY; // Not sent ever
+        LOCAL_ONLY // Not sent ever
     }
 
     /**

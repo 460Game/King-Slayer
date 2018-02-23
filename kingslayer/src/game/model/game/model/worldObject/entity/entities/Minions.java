@@ -28,7 +28,7 @@ public class Minions {
             pair(TEAM, team),
             pair(UPDATE_STRAT, MovingStrat.SINGLETON),
             pair(DRAW_STRAT, DirectionAnimationDrawStrat.MELEE_ANIMATION),
-            pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON), // TODO what is this?
+            pair(AI_STRAT, MinionStrat.MeleeMinionStrat.SINGLETON), // TODO what is this?
             pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
             pair(DRAW_DATA, AnimationDrawData.makeAnimated()));
     }
@@ -54,7 +54,7 @@ public class Minions {
             pair(TEAM, team),
             pair(UPDATE_STRAT, MovingStrat.SINGLETON),
             pair(DRAW_STRAT, DirectionAnimationDrawStrat.SIEGE_ANIMATION),
-            pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON),
+            pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON), // TODO
             pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
             pair(DRAW_DATA, AnimationDrawData.makeAnimated()));
     }
@@ -67,7 +67,7 @@ public class Minions {
             pair(TEAM, team),
             pair(UPDATE_STRAT, MovingStrat.SINGLETON),
             pair(DRAW_STRAT, DirectionAnimationDrawStrat.RESOURCE_MINION_ANIMATION),
-            pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON),
+            pair(AI_STRAT, MinionStrat.ResourceMinionStrat.SINGLETON),
             pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
             pair(DRAW_DATA, AnimationDrawData.makeAnimated()));
     }

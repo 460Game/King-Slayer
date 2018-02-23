@@ -1,9 +1,9 @@
 package util;
 
-public class Pair extends javafx.util.Pair{
+public class Pair extends javafx.util.Pair {
+
     /**
      * Creates a new pair
-     *
      * @param key   The key for this pair
      * @param value The value to use for this pair
      */
