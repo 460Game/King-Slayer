@@ -150,6 +150,9 @@ public class NetworkCommon {
         kryo.register(EnumSet.class);
         kryo.register(NonMovingVelocity.class);
         kryo.register(SyncEntityFeildCommand.class);
+        kryo.register(Entity.EntityProperty.class);
+        kryo.register(Tile[].class);
+        kryo.register(Tile[][].class);
 //
 //        ImmutableListSerializer.registerSerializers( kryo );
 //        ImmutableSetSerializer.registerSerializers( kryo );
