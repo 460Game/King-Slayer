@@ -72,6 +72,26 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
     }
 
+    public static class ExplorationBarracksBuildingSpawnerStrat extends BuildingSpawnerStrat {
+
+        public static final ExplorationBarracksBuildingSpawnerStrat SINGLETON = new ExplorationBarracksBuildingSpawnerStrat();
+
+        @Override
+        double timeBetweenSpawns(Entity entity) {
+            return 2.5;
+        }
+
+        @Override
+        int maxActive(Entity entity) {
+            return 10 + 5 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0);
+        }
+
+        @Override
+        Entity makeEntity(double x, double y, Team team) {
+            return Minions.makeExplorationMinion(x, y, team);
+        }
+    }
+
     public static class ResourceCollectorBuildingSpawnerStrat extends BuildingSpawnerStrat {
 
         public static final ResourceCollectorBuildingSpawnerStrat SINGLETON = new ResourceCollectorBuildingSpawnerStrat();

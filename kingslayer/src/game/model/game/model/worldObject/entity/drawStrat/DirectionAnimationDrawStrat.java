@@ -30,6 +30,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     public static final DirectionAnimationDrawStrat MELEE_ANIMATION = new MeleeMinionDirectionAnimationDrawStrat();
     public static final DirectionAnimationDrawStrat RANGED_ANIMATION = new RangedMinionDirectionAnimationDrawStrat();
     public static final DirectionAnimationDrawStrat SIEGE_ANIMATION = new SiegeMinionDirectionAnimationDrawStrat();
+    public static final DirectionAnimationDrawStrat EXPLORATION_ANIMATION = new ExplorationMinionDirectionAnimationDrawStrat();
     public static final DirectionAnimationDrawStrat RESOURCE_MINION_ANIMATION = new ResourceMinionDirectionAnimationDrawStrat();
 
     /**
@@ -183,6 +184,29 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
             }
 
         }
+    }
+
+    public static class ExplorationMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {
+        @Override
+        Image getImage(Entity entity) {
+            switch (entity.<Team>get(TEAM)) {
+                case ONE:
+                    return Images.RED_EXPLORER_IMAGE_SHEET;
+                case TWO:
+                    return Images.BLUE_EXPLORER_IMAGE_SHEET;
+                default:
+                    return null;
+            }
+
+        }
+
+        double getWidth() {
+            return 1;
+        } // TODO
+
+        double getHeight() {
+            return 1;
+        } // TODO
     }
 
     public static class ResourceMinionDirectionAnimationDrawStrat extends DirectionAnimationDrawStrat {

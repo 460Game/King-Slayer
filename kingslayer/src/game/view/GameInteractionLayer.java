@@ -166,7 +166,10 @@ public class GameInteractionLayer extends Region {
                         model.processMessage(new NewEntityCommand(placingGhost));
                     }
                 } else {
-                    // TODO make exploration barracks
+                    cost = -2;
+                    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
+                    placing = Entities.makeExplorationBarracks(0, 0, model.getLocalPlayer().getTeam());
+                    model.processMessage(new NewEntityCommand(placingGhost));
 
                     selectingBarracks = false;
                 }

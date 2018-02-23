@@ -59,6 +59,19 @@ public class Minions {
             pair(DRAW_DATA, AnimationDrawData.makeAnimated()));
     }
 
+    public static Entity makeExplorationMinion(double x, double y, Team team) {
+        return new Entity(x, y,
+            hitbox,
+            UnitCollisionStrat.SINGLETON,
+            pair(HEALTH, 100.0),
+            pair(TEAM, team),
+            pair(UPDATE_STRAT, MovingStrat.SINGLETON),
+            pair(DRAW_STRAT, DirectionAnimationDrawStrat.EXPLORATION_ANIMATION),
+            pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON), // TODO
+            pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
+            pair(DRAW_DATA, AnimationDrawData.makeAnimated()));
+    }
+
     public static Entity makeResourceMinion(double x, double y, Team team) {
         return new Entity(x, y,
             hitbox,

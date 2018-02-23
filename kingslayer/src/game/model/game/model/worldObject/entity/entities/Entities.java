@@ -136,6 +136,18 @@ public class Entities {
                 pair(LEVEL, 0));
     }
 
+    public static Entity makeExplorationBarracks(double x, double y, Team team) {
+        return new Entity(x, y,
+            CellHitbox.SINGLETON,
+            HardCollisionStrat.SINGLETON,
+            pair(TEAM, team),
+            pair(HEALTH, 100.0),
+            pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_BARRACKS),
+            pair(AI_STRAT, BuildingSpawnerStrat.ExplorationBarracksBuildingSpawnerStrat.SINGLETON),
+            pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
+            pair(LEVEL, 0));
+    }
+
     public static Entity makeBarracksGhost(double x, double y, Team team) {
         return new Entity(x, y,
                 CellHitbox.SINGLETON,
