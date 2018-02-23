@@ -28,6 +28,7 @@
         <element id="module-output" name="King Slayer" />
         <element id="file-copy" path="$PROJECT_DIR$/kryonet-2.21-all.jar" />
         <element id="library" level="project" name="jfxrt" />
+        <element id="file-copy" path="$PROJECT_DIR$/kingslayer/kryo-serializers-0.42.jar" />
       </element>
     </root>
   </artifact>

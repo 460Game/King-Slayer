@@ -151,6 +151,10 @@ public class NetworkCommon {
         kryo.register(NonMovingVelocity.class);
         kryo.register(SyncEntityFeildCommand.class);
 //
+        kryo.register(Entity.EntityProperty.class);
+        kryo.register(game.model.game.map.Tile[].class);
+        kryo.register(Tile[][].class);
+
 //        ImmutableListSerializer.registerSerializers( kryo );
 //        ImmutableSetSerializer.registerSerializers( kryo );
 //        ImmutableMapSerializer.registerSerializers( kryo );
