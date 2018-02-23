@@ -21,7 +21,7 @@ import static util.Const.*;
 
 public class ServerGameModel extends GameModel {
 
-    public static boolean FPSPrint = true;
+    public static boolean FPSPrint = false;
 
     public ServerGameModel() {
         super(new ServerMapGenerator(GRID_X_SIZE, GRID_Y_SIZE));
@@ -127,6 +127,8 @@ public class ServerGameModel extends GameModel {
 
     public void runWithTimerTask() {
         final int[] totalFrameCount = {0};
+        final int[] doAICount = {0};
+
         TimerTask updateFPS = new TimerTask() {
             public void run() {
                 Log.info(String.valueOf("Server FPS: " + totalFrameCount[0]));
@@ -139,16 +141,15 @@ public class ServerGameModel extends GameModel {
             t.scheduleAtFixedRate(updateFPS, 1000, 1000);
         }
 
-        boolean[] doAi = {false};
-
         TimerTask updateTimerTask = new TimerTask() {
             public void run() {
+                doAICount[0]++;
                 totalFrameCount[0]++;
 
                 ServerGameModel.this.update();
-                if (doAi[0]) {
+                if (doAICount[0]%Const.AI_LOOP_UPDATE_PER_SECOND == 0) {
                     updateAI(ServerGameModel.this);
-                    doAi[0] = false;
+                    doAICount[0] = 0;
                 }
 
                 for(Model model : clients)

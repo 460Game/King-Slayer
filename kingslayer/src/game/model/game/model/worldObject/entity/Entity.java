@@ -198,7 +198,7 @@ public class Entity {
 
                 strat.draw(this, model, gc));
 
-        if (!this.invincible()) {
+        if (!this.invincible() && this.getData().get(ROLE) == null) {
             //TEMPORARY!!!!!!!!!
             gc.setFill(Color.RED);
             gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - 30, 20, 3);
