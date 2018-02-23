@@ -12,6 +12,7 @@ import javafx.scene.image.WritableImage;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_STRAT;
 import static util.Const.*;
@@ -180,25 +181,6 @@ public abstract class GameModel implements Model {
             entities.put(entity.id, entity);
     }
 
-    /**
-     * returns approximately all the entities inside of the box centered at x,y with width, height
-     *
-     * @param x
-     * @param y
-     * @param w
-     * @param h
-     * @return
-     */
-    public void drawForeground(GraphicsContext gc, double x, double y, double w, double h) {
-        allCells.stream().flatMap(GridCell::streamContents).filter(entity -> entity.has(DRAW_STRAT)).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc));
-
-        if(DEBUG_DRAW)
-            allCells.stream().flatMap(GridCell::streamContents).forEach(a -> a.getHitbox().draw(gc, a));
-    }
-
-    public void writeBackground(WritableImage image, boolean b) {
-        allCells.forEach(cell -> cell.draw(image.getPixelWriter(), this, true));
-    }
 
     public Collection<Entity> getAllEntities() {
         return entities.values();
@@ -224,5 +206,9 @@ public abstract class GameModel implements Model {
         double elapsed = NANOS_TO_SECONDS * (cur - AINanoTime);
         AINanoTime = cur;
         entities.values().forEach(e -> e.updateAI(serverGameModel, elapsed));;
+    }
+
+    public Stream<GridCell> streamCells() {
+        return getAllCells().stream();
     }
 }

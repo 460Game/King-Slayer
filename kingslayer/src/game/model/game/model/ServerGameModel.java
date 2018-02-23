@@ -24,6 +24,8 @@ import static util.Const.*;
 
 public class ServerGameModel extends GameModel {
 
+    public static boolean FPSPrint = false;
+
     public ServerGameModel() {
         super(new ServerMapGenerator(GRID_X_SIZE, GRID_Y_SIZE));
     }
@@ -131,7 +133,50 @@ public class ServerGameModel extends GameModel {
         updateThread = new Thread(this::run, this.toString() + " Update Thread");
         updateThread.start();
 
-        astar = new Astar(this);
+//        astar = new Astar(this);
+
+//        running = true;
+//        updateThread = new Thread(this::run, this.toString() + " Update Thread");
+//        updateThread.start();
+
+        runWithTimerTask();
+
+    }
+
+    public void runWithTimerTask() {
+        final int[] totalFrameCount = {0};
+        final int[] doAICount = {0};
+
+        TimerTask updateFPS = new TimerTask() {
+            public void run() {
+                Log.info(String.valueOf("Server FPS: " + totalFrameCount[0]));
+                totalFrameCount[0] = 0;
+            }
+        };
+
+        if (FPSPrint) {
+            Timer t = new Timer();
+            t.scheduleAtFixedRate(updateFPS, 1000, 1000);
+        }
+
+        TimerTask updateTimerTask = new TimerTask() {
+            public void run() {
+                doAICount[0]++;
+                totalFrameCount[0]++;
+
+                ServerGameModel.this.update();
+                if (doAICount[0]%Const.AI_LOOP_UPDATE_PER_SECOND == 0) {
+                    updateAI(ServerGameModel.this);
+                    doAICount[0] = 0;
+                }
+
+                for(Model model : clients)
+                    model.processMessage(new UpdateResourceCommand(teamData.get(clientToPlayerInfo.get(model).getTeam()))); //TEMPORARY GARBAGE
+            }
+        };
+
+        Timer t = new Timer();
+        t.scheduleAtFixedRate(updateTimerTask, 0, 1000/60);
     }
 
     public void stop() {
@@ -168,9 +213,42 @@ public class ServerGameModel extends GameModel {
             }
         }, 1000, Const.AI_LOOP_UPDATE_TIME_MILLI);
 
+
+//        final int[] totalFrameCount = {0};
+//        TimerTask updateFPS = new TimerTask() {
+//            public void run() {
+//                Log.info(String.valueOf("Server FPS: " + totalFrameCount[0]));
+//                // display current totalFrameCount - previous,
+//                // OR
+//                // display current totalFrameCount, then set
+//                totalFrameCount[0] = 0;
+//            }
+//        };
+//
+//        if (FPSPrint) {
+//            Timer t = new Timer();
+//            t.scheduleAtFixedRate(updateFPS, 1000, 1000);
+//        }
+
+//        TimerTask updateTimerTask = new TimerTask() {
+//            public void run() {
+//                totalFrameCount[0]++;
+//
+//                ServerGameModel.this.update();
+//                if (doAi[0]) {
+//                    updateAI(ServerGameModel.this);
+//                    doAi[0] = false;
+//                }
+//                Thread.yield();
+//                for(Model model : clients)
+//                    model.processMessage(new UpdateResourceCommand(teamData.get(clientToPlayerInfo.get(model).getTeam()))); //TEMPORARY GARBAGE
+//            }
+//        };
+
         while (running) {
+
             this.update();
-            if(doAi[0]) {
+            if (doAi[0]) {
                 this.updateAI(this);
                 doAi[0] = false;
             }

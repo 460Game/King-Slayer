@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
+import game.model.game.model.ClientGameModel;
 import game.model.game.model.Model;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.scene.canvas.GraphicsContext;
@@ -12,7 +13,7 @@ public abstract class DrawStrat {
      * Draw the object on the game map.
      * @param gc context used to drawFG the objects
      */
-    public abstract void draw(Entity entity, GraphicsContext gc);
+    public abstract void draw(Entity entity, ClientGameModel model, GraphicsContext gc);
 
     /**
      * Everything is drawn in order of least Z to highest Z.
@@ -22,7 +23,4 @@ public abstract class DrawStrat {
      * @param entity
      */
     public abstract double getDrawZ(Entity entity);
-
-    public void update(Entity entity, Model model) {}
-
 }

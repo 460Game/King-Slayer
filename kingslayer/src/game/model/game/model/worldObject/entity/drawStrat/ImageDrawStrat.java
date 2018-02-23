@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
+import game.model.game.model.ClientGameModel;
 import game.model.game.model.worldObject.entity.Entity;
 import images.Images;
 import javafx.scene.canvas.GraphicsContext;
@@ -33,8 +34,8 @@ public abstract class ImageDrawStrat extends DrawStrat {
     abstract double getCenterX();
     abstract double getCenterY();
 
-
-    public void draw(Entity entity, GraphicsContext gc) {
+@Override
+    public void draw(Entity entity, ClientGameModel model, GraphicsContext gc) {
         double w = this.getWidth();
         double h = this.getHeight();
         double x = w - this.getCenterX();

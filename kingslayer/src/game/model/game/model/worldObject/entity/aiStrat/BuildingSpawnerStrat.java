@@ -19,7 +19,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         public static final MeleeBarracksBuildingSpawnerStrat SINGLETON = new MeleeBarracksBuildingSpawnerStrat();
 
         @Override
-        double timeBetweenSpawns() {
+        double timeBetweenSpawns(Entity entity) {
             return 2.5;
         }
 
@@ -39,7 +39,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         public static final RangedBarracksBuildingSpawnerStrat SINGLETON = new RangedBarracksBuildingSpawnerStrat();
 
         @Override
-        double timeBetweenSpawns() {
+        double timeBetweenSpawns(Entity entity) {
             return 2.5;
         }
 
@@ -59,7 +59,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         public static final SiegeBarracksBuildingSpawnerStrat SINGLETON = new SiegeBarracksBuildingSpawnerStrat();
 
         @Override
-        double timeBetweenSpawns() {
+        double timeBetweenSpawns(Entity entity) {
             return 2.5;
         }
 
@@ -79,14 +79,14 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         public static final ResourceCollectorBuildingSpawnerStrat SINGLETON = new ResourceCollectorBuildingSpawnerStrat();
 
         @Override
-        double timeBetweenSpawns() {
+        double timeBetweenSpawns(Entity entity) {
             return 2.5;
         }
 
         @Override
         int maxActive(Entity entity) {
-//            System.out.println("level: " + entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
-            return 10 + 5 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0);
+            //System.out.println("level: " + entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 10));
+            return 1;//10 + 5 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0); // TODO change back later
         }
 
         @Override
@@ -101,8 +101,8 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         public static final TowerBuildingSpawnerStrat SINGLETON = new TowerBuildingSpawnerStrat();
 
         @Override
-        double timeBetweenSpawns() {
-            return 0.1;
+        double timeBetweenSpawns(Entity entity) {
+            return 0.1 - 0.02 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0);
         }
 
         @Override
@@ -117,7 +117,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
     }
 
-    abstract double timeBetweenSpawns();
+    abstract double timeBetweenSpawns(Entity entity);
 
     abstract int maxActive(Entity entity);
 
@@ -145,8 +145,8 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
     public void updateAI(Entity entity, ServerGameModel model, double seconds) {
         BuildingSpanwerStratAIData data = entity.<BuildingSpanwerStratAIData>get(AI_DATA);
         data.elapsedTime += seconds;
-        while (data.elapsedTime > timeBetweenSpawns()) {
-            data.elapsedTime -= timeBetweenSpawns();
+        while (data.elapsedTime > timeBetweenSpawns(entity)) {
+            data.elapsedTime -= timeBetweenSpawns(entity);
             if (data.spawnCounter < maxActive(entity)) {
                 Entity newEntity = makeEntity(entity.getX(), entity.getY(), entity.getTeam());
                 model.processMessage(new MakeEntityRequest(newEntity));

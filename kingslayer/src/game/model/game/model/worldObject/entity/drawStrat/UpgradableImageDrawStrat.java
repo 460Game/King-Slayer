@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
+import game.model.game.model.ClientGameModel;
 import game.model.game.model.GameModel;
 import game.model.game.model.worldObject.entity.Entity;
 import images.Images;
@@ -27,7 +28,7 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
   }
 
   @Override
-  public void draw(Entity entity, GraphicsContext gc) {
+  public void draw(Entity entity, ClientGameModel gameModel, GraphicsContext gc) {
     double w = this.getWidth();
     double h = this.getHeight();
     double x = w - this.getCenterX();
