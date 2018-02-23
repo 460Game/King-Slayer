@@ -1,6 +1,5 @@
 package game.message.toServer;
 
-import game.message.toClient.SetEntityCommand;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.worldObject.entity.Entity;
 
@@ -39,6 +38,5 @@ public class StopRequest extends ActionRequest {
     public void executeServer(ServerGameModel model) {
         if(model.getEntity(id).has(Entity.EntityProperty.VELOCITY))
             model.getEntity(id).setVelocity(model.getEntity(id).getVelocity().withMagnitude(0));
-           // model.processMessage(new SetEntityCommand(model.getEntity(id)));
     }
 }

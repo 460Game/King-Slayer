@@ -63,7 +63,7 @@ public abstract class GameModel implements Model {
             for (int j = 0; j < util.Const.GRID_Y_SIZE; j++)
                 allCells.add(grid[i][j]);
 
-        generator.makeStartingEntities().forEach(e -> entities.put(e.id ,e));
+        generator.makeStartingEntities().forEach(e -> entities.put(e.id, e));
     }
 
     /**

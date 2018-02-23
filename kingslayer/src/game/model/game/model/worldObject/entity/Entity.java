@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity;
 
+import com.esotericsoftware.minlog.Log;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.ServerGameModel;

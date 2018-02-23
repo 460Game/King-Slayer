@@ -27,6 +27,10 @@ public class RemoveEntityCommand implements ToClientCommand {
         this.entityID = id;
     }
 
+    /**
+     * Constructor of a message, given an entity to be removed.
+     * @param entity entity to be removed
+     */
     public RemoveEntityCommand(Entity entity) {
         this.entityID = entity.id;
     }

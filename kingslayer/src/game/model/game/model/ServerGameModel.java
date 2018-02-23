@@ -1,21 +1,24 @@
 package game.model.game.model;
 
 import com.esotericsoftware.minlog.Log;
+import game.ai.Astar;
 import game.message.*;
 import game.message.toClient.*;
+import game.model.game.grid.GridCell;
 import game.model.game.map.ServerMapGenerator;
 import game.model.game.map.Tile;
-import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
 import lobby.PlayerInfo;
 import util.Const;
 
 import java.util.*;
 import java.util.function.Consumer;
 
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_STRAT;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.TEAM;
 import static util.Const.*;
 
@@ -32,6 +35,12 @@ public class ServerGameModel extends GameModel {
     private Map<? extends Model, PlayerInfo> clientToPlayerInfo;
 
     private Thread updateThread;
+
+    private Astar astar;
+
+//    private Collection<GridCell> wood; // Update when destroeyd.
+
+//    private Collection<GridCell> TODO steel, stone
 
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
 
@@ -106,6 +115,10 @@ public class ServerGameModel extends GameModel {
         }
     }
 
+    public Astar getAstar() {
+        return astar;
+    }
+
     @Override
     public String toString() {
         return "Server game model";
@@ -116,6 +129,11 @@ public class ServerGameModel extends GameModel {
     public void start() {
         Log.info("Starting Server model");
         if (running) throw new RuntimeException("Cannot start server model when already running");
+        running = true;
+        updateThread = new Thread(this::run, this.toString() + " Update Thread");
+        updateThread.start();
+
+//        astar = new Astar(this);
 
 //        running = true;
 //        updateThread = new Thread(this::run, this.toString() + " Update Thread");
@@ -159,7 +177,6 @@ public class ServerGameModel extends GameModel {
 
         Timer t = new Timer();
         t.scheduleAtFixedRate(updateTimerTask, 0, 1000/60);
-
     }
 
     public void stop() {
@@ -194,7 +211,7 @@ public class ServerGameModel extends GameModel {
             public void run() {
                 doAi[0] = true;
             }
-        }, 1000, Const.AI_LOOP_UPDATE_TIME_MILI);
+        }, 1000, Const.AI_LOOP_UPDATE_TIME_MILLI);
 
 
 //        final int[] totalFrameCount = {0};
@@ -256,5 +273,4 @@ public class ServerGameModel extends GameModel {
         super.removeByID(entityID);
         clients.forEach(client -> client.processMessage(new RemoveEntityCommand(entityID)));
     }
-
 }

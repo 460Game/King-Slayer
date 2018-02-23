@@ -2,9 +2,7 @@ package game.message.toClient;
 
 import game.model.game.map.Tile;
 import game.model.game.model.ClientGameModel;
-import game.model.game.model.team.Role;
-import game.model.game.model.team.Team;
-import game.model.game.model.team.TeamRoleEntityMap;
+import game.model.game.model.team.*;
 
 /**
  * This message is sent to the client after the server has sent
@@ -28,6 +26,9 @@ public class InitGameCommand implements ToClientCommand {
      */
     private TeamRoleEntityMap map;
 
+    /**
+     * Tiles in the game world.
+     */
     private Tile[][] gameMap;
 
     /**
@@ -36,6 +37,7 @@ public class InitGameCommand implements ToClientCommand {
      * @param team team of the client
      * @param role role of the client
      * @param map mapping from team and role to ID
+     * @param gameMap tiles in the game created by the server
      */
     public InitGameCommand(Team team, Role role, TeamRoleEntityMap map, Tile[][] gameMap) {
         this.team = team;
