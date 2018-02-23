@@ -15,6 +15,7 @@ import util.Const;
 import java.util.*;
 import java.util.function.Consumer;
 
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.PLAYER_NAME;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.TEAM;
 import static util.Const.*;
 
@@ -29,6 +30,7 @@ public class ServerGameModel extends GameModel {
     private Map<? extends Model, PlayerInfo> clientToPlayerInfo;
 
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
+    private Thread updateThread;
 
     public TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
 
@@ -72,6 +74,17 @@ public class ServerGameModel extends GameModel {
             }
         }
 
+        for (Entity entity : players) {
+            entity.setOrAdd(PLAYER_NAME, "");
+        }
+
+        clients.forEach(client -> {
+            getEntity(teamRoleEntityMap.getEntity(clientToPlayerInfo.get(client).getTeam(),
+                    clientToPlayerInfo.get(client).getRole())).setOrAdd(PLAYER_NAME, "Test");
+            System.out.println((String)getEntity(teamRoleEntityMap.getEntity(clientToPlayerInfo.get(client).getTeam(),
+                    clientToPlayerInfo.get(client).getRole())).get(PLAYER_NAME));
+        });
+
         // Send all entities to clients
         for (Entity entity : this.getAllEntities())
             this.processMessage(new NewEntityCommand(entity));
@@ -112,7 +125,46 @@ public class ServerGameModel extends GameModel {
         Log.info("Starting Server model");
         if (running) throw new RuntimeException("Cannot start server model when already running");
         running = true;
+//
+//        final int[] totalFrameCount = {0};
+//        final int[] doAICount = {0};
+//
+//        TimerTask updateFPS = new TimerTask() {
+//            public void run() {
+//                Log.info(String.valueOf("Server FPS: " + totalFrameCount[0]));
+//                totalFrameCount[0] = 0;
+//            }
+//        };
+//
+//        if (FPSPrint) {
+//            Timer t = new Timer();
+//            t.scheduleAtFixedRate(updateFPS, 1000, 1000);
+//        }
+//
+//        TimerTask updateTimerTask = new TimerTask() {
+//            public void run() {
+//                doAICount[0]++;
+//                totalFrameCount[0]++;
+//
+//                ServerGameModel.this.update();
+//                if (doAICount[0] % Const.AI_LOOP_UPDATE_PER_FRAMES == 0) {
+//                    updateAI(ServerGameModel.this);
+//                    doAICount[0] = 0;
+//                }
+//
+//                for (Model model : clients)
+//                    model.processMessage(new UpdateResourceCommand(teamData.get(clientToPlayerInfo.get(model).getTeam()))); //TEMPORARY GARBAGE
+//            }
+//        };
+//
+//        t.scheduleAtFixedRate(updateTimerTask, 0, 1000 / 60);
+        running = true;
+//        updateThread = new Thread(this::runWithTimerTask, this.toString() + " Update Thread");
+//        updateThread.start();
+        runWithTimerTask();
+    }
 
+    public void runWithTimerTask() {
         final int[] totalFrameCount = {0};
         final int[] doAICount = {0};
 
@@ -134,18 +186,18 @@ public class ServerGameModel extends GameModel {
                 totalFrameCount[0]++;
 
                 ServerGameModel.this.update();
-                if (doAICount[0] % Const.AI_LOOP_UPDATE_PER_FRAMES == 0) {
+                if (doAICount[0]%Const.AI_LOOP_UPDATE_PER_FRAMES == 0) {
                     updateAI(ServerGameModel.this);
                     doAICount[0] = 0;
                 }
 
-                for (Model model : clients)
+                for(Model model : clients)
                     model.processMessage(new UpdateResourceCommand(teamData.get(clientToPlayerInfo.get(model).getTeam()))); //TEMPORARY GARBAGE
             }
         };
 
-        t.scheduleAtFixedRate(updateTimerTask, 0, 1000 / 60);
-
+        Timer t = new Timer();
+        t.scheduleAtFixedRate(updateTimerTask, 10, 1000/60);
     }
 
     private Timer t = new Timer();
