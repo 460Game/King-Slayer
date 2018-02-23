@@ -131,10 +131,6 @@ public abstract class GameModel implements Model {
         entities.remove(entity.id);
     }
 
-    public void setTile(int x, int y, Tile tile) {
-        grid[x][y].setTile(tile, this);
-    }
-
     public void update() {
         ArrayList<Message> list = new ArrayList<>();
         messageQueue.drainTo(list);

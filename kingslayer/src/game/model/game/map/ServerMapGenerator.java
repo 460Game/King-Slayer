@@ -43,7 +43,7 @@ public class ServerMapGenerator implements MapGenerator {
             for (int j = 0; j < this.mapH; j++)
                 grid[i][j] = TS.unset;
 
-        makeMap(680063342784308026L);
+        makeMap(680063342784308025L);
     }
 
     @Override

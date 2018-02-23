@@ -45,9 +45,9 @@ public class GameInteractionLayer extends Region {
     private boolean upgrading = false;
     private boolean selectingBarracks = false;
 
-    public GameInteractionLayer(ClientGameModel clientGameModel) {
+    public GameInteractionLayer(ClientGameModel clientGameModel, WorldPanel worldPanel) {
         this.model = clientGameModel;
-        world = new WorldPanel(clientGameModel);
+        world = worldPanel;
         world.prefHeightProperty().bind(this.heightProperty());
         world.prefWidthProperty().bind(this.widthProperty());
         this.getChildren().add(world);

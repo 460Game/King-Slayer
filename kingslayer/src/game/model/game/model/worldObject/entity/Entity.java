@@ -249,10 +249,6 @@ public class Entity {
         return this.<DrawStrat>get(DRAW_STRAT).getDrawZ(this);
     }
 
-    public long lastUpdate() {
-        return this.get(LAST_UPDATE_TIME);
-    }
-
     public Team getTeam() {
         return this.get(TEAM);
     }

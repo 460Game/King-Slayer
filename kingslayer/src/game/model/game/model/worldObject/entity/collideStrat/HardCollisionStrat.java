@@ -27,9 +27,8 @@ public class HardCollisionStrat extends CollisionStrat {
      * @param b entity colliding with
      */
     public final void collision(GameModel model, Entity a, Entity b) {
-        if(b.getCollideType() == CollideType.HARD || b.getCollideType() == CollideType.WATER) {
+        if(b.getCollideType() == CollideType.HARD || b.getCollideType() == CollideType.WATER)
             Log.error("Hard objects colliding " + a + " and " + b);
-        }
     }
     @Override
     public final CollideType getCollideType() {

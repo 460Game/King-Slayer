@@ -1,7 +1,6 @@
 package game.view;
 
 import game.model.game.model.GameModel;
-import game.model.game.model.team.Role;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.scene.ImageCursor;
 import javafx.scene.canvas.Canvas;
@@ -18,12 +17,14 @@ import static images.Images.CURSOR_IMAGE;
  */
 public class Minimap extends Region {
 
+    private WorldPanel world;
     private GameModel model;
     private Canvas minimapCanvas;
     private GraphicsContext minimapGC;
 
-    Minimap(GameModel model) {
+    Minimap(GameModel model, WorldPanel world) {
         this.model = model;
+        this.world = world;
         minimapCanvas = new Canvas();
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
         minimapGC = minimapCanvas.getGraphicsContext2D();
@@ -51,7 +52,10 @@ public class Minimap extends Region {
 
             for (int x = 0; x < model.getMapWidth(); x++) {
                 for (int y = 0; y < model.getMapHeight(); y++) {
-                    minimapGC.setFill(model.getTile(x, y).getColor());
+                 //   if(model.getCell(x,y).streamContents().filter(e -> e.) != 0)
+                //        minimapGC.setFill(Color.BLACK);
+                //    else
+                        minimapGC.setFill(model.getTile(x, y).getColor());
                     minimapGC.fillRect(x, y, 2, 2);
                 }
             }
@@ -60,8 +64,12 @@ public class Minimap extends Region {
                 if (player.has(Entity.EntityProperty.ROLE)) {
                     minimapGC.setFill(player.getTeam().color);
                     minimapGC.fillOval(player.getX(), player.getY(), 3, 3);
+                } else if(player.has(Entity.EntityProperty.TEAM)){
+                    minimapGC.setFill(player.getTeam().color);
+                    minimapGC.fillOval(player.getX(), player.getY(), 1, 1);
                 }
             }
+            minimapGC.strokeRect(world.getCamX() - world.getCamW()/2, world.getCamY() - world.getCamH()/2, world.getCamW(), world.getCamH());
         }
     }
 }

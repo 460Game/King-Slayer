@@ -72,13 +72,37 @@ public class WorldPanel extends Region {
    private double xt;
     private double yt;
 
+    private double x;
+    private double y;
+
+    public double getCamX() {
+        return x;
+    }
+
+    public double getCamY() {
+        return y;
+    }
+
+    public double getCamW() {
+        return gameW;
+    }
+
+    public double getCamH() {
+        return gameH;
+    }
+
+    private double gameW;
+    private double gameH;
+
     public void draw() {
-        double x = model.getLocalPlayer().getX() + 0.1 * toWorldCoords(mouseX - getWidth()/2);
-        double y = model.getLocalPlayer().getY() + 0.15 * toWorldCoords(mouseY - getHeight()/2);
-        double gameW = toWorldCoords(getWidth() / scaleFactor[0]);
-        double gameH = toWorldCoords(getHeight() / scaleFactor[0]);
-        xt = -toDrawCoords(Math.min(Math.max(gameW/2, x), model.getMapWidth() - gameW/2) * scaleFactor[0]) + getWidth() / 2;
-        yt = -toDrawCoords(Math.min(Math.max(gameH/2, y), model.getMapHeight() - gameH/2) * scaleFactor[0]) + getHeight() / 2;
+        x = model.getLocalPlayer().getX() + 0.1 * toWorldCoords(mouseX - getWidth()/2);
+        y = model.getLocalPlayer().getY() + 0.15 * toWorldCoords(mouseY - getHeight()/2);
+        x = Math.min(Math.max(gameW/2, x), model.getMapWidth() - gameW/2);
+        y = Math.min(Math.max(gameH/2, y), model.getMapHeight() - gameH/2);
+        gameW = toWorldCoords(getWidth() / scaleFactor[0]);
+        gameH = toWorldCoords(getHeight() / scaleFactor[0]);
+        xt = -toDrawCoords(x * scaleFactor[0]) + getWidth() / 2;
+        yt = -toDrawCoords(y * scaleFactor[0]) + getHeight() / 2;
         fgGC.setTransform(new Affine());
         bgGC.setTransform(new Affine());
         fgGC.translate(xt, yt);

@@ -40,8 +40,9 @@ public class GameView {
             model.update();
         }
 
-        Minimap minimap = new Minimap(model);
-        GameInteractionLayer gameInteractionLayer = new GameInteractionLayer(model);
+        WorldPanel worldPanel = new WorldPanel(model);
+        GameInteractionLayer gameInteractionLayer = new GameInteractionLayer(model, worldPanel);
+        Minimap minimap = new Minimap(model, worldPanel);
         InfoPanel infoPanel = new InfoPanel(model);
         ActionPanel actionPanel = new ActionPanel(model);
         ResourcePanel resourcePanel = new ResourcePanel(model);
