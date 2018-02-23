@@ -84,7 +84,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
         // Update image being used
         if (entity.<Velocity>get(VELOCITY).getMagnitude() != 0) {
             drawData.count++;
-            if (drawData.count > 1) {
+            if (drawData.count > 11) {
                 drawData.count = 0;
                 drawData.imageNum = (drawData.imageNum + 1) % 3;
             }
@@ -220,19 +220,19 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
             // Update image being used
             if (entity.<Velocity>get(VELOCITY).getMagnitude() != 0) {
                 drawData.count++;
-                if (drawData.count > 1) {
+                if (drawData.count > 8) {
                     drawData.count = 0;
-                    drawData.imageNum = (drawData.imageNum + 1) % 3;
+                    drawData.imageNum = (drawData.imageNum + 1) % 4;
                 }
             } else {
-                drawData.imageNum = 2;
+                drawData.imageNum = 1;
             }
 
             // TODO make new image map for 4 part animation
             Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
             gc.drawImage(this.getImage(entity),
-                toDrawCoords(p.x),
-                toDrawCoords(p.y),
+                toDrawCoords(p.x * getWidth()),
+                toDrawCoords(p.y * getHeight()),
                 toDrawCoords(getWidth()),
                 toDrawCoords(getHeight()),
                 toDrawCoords(entity.getX() - entity.getHitbox().getWidth() / 2),
@@ -241,12 +241,14 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
                 toDrawCoords(entity.getHitbox().getHeight()) * getHeight());
         }
 
+        @Override
         double getWidth() {
-            return 2;
+            return 1.90625;
         } // TODO
 
+        @Override
         double getHeight() {
-            return 1.75;
+            return 1.84375;
         } // TODO
     }
 
