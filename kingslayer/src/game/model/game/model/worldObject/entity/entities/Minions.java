@@ -67,7 +67,7 @@ public class Minions {
             pair(TEAM, team),
             pair(UPDATE_STRAT, MovingStrat.SINGLETON),
             pair(DRAW_STRAT, DirectionAnimationDrawStrat.RESOURCE_MINION_ANIMATION),
-            pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON),
+            pair(AI_STRAT, MinionStrat.ResourceMinionStrat.SINGLETON),
             pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
             pair(DRAW_DATA, AnimationDrawData.makeAnimated()));
     }

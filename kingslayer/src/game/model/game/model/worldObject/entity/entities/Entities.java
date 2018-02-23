@@ -153,7 +153,8 @@ public class Entities {
                 pair(HEALTH, 100.0),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_ARROW_TOWER),
                 pair(AI_STRAT, BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON),
-                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
+                pair(LEVEL, 0));
     }
 
     public static Entity makeArrowTowerGhost(double x, double y, Team team) {
