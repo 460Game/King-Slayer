@@ -298,7 +298,7 @@ public class Entity {
     }
 
     public void upgrade() {
-        if ((int) this.get(LEVEL) < 3) {
+        if (this.has(LEVEL) && (int) this.get(LEVEL) < 3) {
             this.set(LEVEL, (int) this.get(LEVEL) + 1);
             this.set(HEALTH, (double) this.get(HEALTH) + 10);
         }

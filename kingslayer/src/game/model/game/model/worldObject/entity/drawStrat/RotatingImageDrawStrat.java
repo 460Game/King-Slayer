@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
+import game.model.game.model.ClientGameModel;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Velocity;
 import images.Images;
@@ -13,12 +14,13 @@ import static util.Util.toDrawCoords;
 
 public abstract class RotatingImageDrawStrat extends ImageDrawStrat {
     public static final ImageDrawStrat ARROW_IMAGE_DRAW_STRAT = new ArrowImageDrawStrat();
+
     private RotatingImageDrawStrat() {
         super();
     }
 
-
-    public void draw(Entity entity, GraphicsContext gc) {
+    @Override
+    public void draw(Entity entity, ClientGameModel model, GraphicsContext gc) {
         double w = this.getWidth();
         double h = this.getHeight();
         double x = w - this.getCenterX();
@@ -36,7 +38,7 @@ public abstract class RotatingImageDrawStrat extends ImageDrawStrat {
 
     public static class ArrowImageDrawStrat extends RotatingImageDrawStrat {
 
-        public static final DrawStrat SINGLETON = new ArrowImageDrawStrat();
+//        public static final DrawStrat SINGLETON = new ArrowImageDrawStrat();
 
         @Override
         Image getImage() {
