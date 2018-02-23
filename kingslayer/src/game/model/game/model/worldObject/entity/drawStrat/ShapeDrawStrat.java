@@ -1,6 +1,7 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
 
+import game.model.game.model.ClientGameModel;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -16,7 +17,8 @@ public class ShapeDrawStrat extends DrawStrat {
         return null;
     }
 
-    public void draw(Entity entity, GraphicsContext gc) {
+    @Override
+    public void draw(Entity entity, ClientGameModel model, GraphicsContext gc) {
         gc.setFill(Color.color(1,1,1,1));
         entity.getHitbox().draw(gc, entity);
     }

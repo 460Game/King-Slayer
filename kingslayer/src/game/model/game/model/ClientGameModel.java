@@ -3,6 +3,7 @@ package game.model.game.model;
 import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.message.toServer.RequestEntityRequest;
+import game.model.game.grid.GridCell;
 import game.model.game.map.ClientMapGenerator;
 import game.model.game.map.Tile;
 import game.model.game.model.gameState.GameState;
@@ -13,8 +14,14 @@ import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.WritableImage;
 
+import java.util.Comparator;
 import java.util.function.Consumer;
+
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_STRAT;
+import static util.Const.DEBUG_DRAW;
 
 public class ClientGameModel extends GameModel {
 
@@ -85,6 +92,27 @@ public class ClientGameModel extends GameModel {
     @Override
     public void execute(Consumer<ServerGameModel> serverAction, Consumer<ClientGameModel> clientAction) {
         clientAction.accept(this);
+    }
+
+
+    /**
+     * returns approximately all the entities inside of the box centered at x,y with width, height
+     *
+     * @param x
+     * @param y
+     * @param w
+     * @param h
+     * @return
+     */
+    public void drawForeground(GraphicsContext gc, double x, double y, double w, double h) {
+        this.streamCells().flatMap(GridCell::streamContents).filter(entity -> entity.has(DRAW_STRAT)).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc, this));
+
+        if(DEBUG_DRAW)
+            this.streamCells().flatMap(GridCell::streamContents).forEach(a -> a.getHitbox().draw(gc, a));
+    }
+
+    public void writeBackground(WritableImage image, boolean b) {
+        this.streamCells().forEach(cell -> cell.draw(image.getPixelWriter(), this, true));
     }
 
     public void changeWinningTeam(Team team) {

@@ -2,6 +2,7 @@ package game.model.game.model.worldObject.entity;
 
 import com.esotericsoftware.minlog.Log;
 import game.model.game.grid.GridCell;
+import game.model.game.model.ClientGameModel;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.*;
 import game.model.game.model.worldObject.entity.aiStrat.*;
@@ -192,10 +193,10 @@ public class Entity {
         this.<AIStrat>oget(AI_STRAT).ifPresent(strat -> strat.updateAI(this, model, secondsElapsed));
     }
 
-    public void draw(GraphicsContext gc) {
+    public void draw(GraphicsContext gc, ClientGameModel model) {
         this.<DrawStrat>oget(DRAW_STRAT).ifPresent(strat ->
 
-                strat.draw(this, gc));
+                strat.draw(this, model, gc));
 
         if (!this.invincible()) {
             //TEMPORARY!!!!!!!!!
@@ -290,9 +291,8 @@ public class Entity {
             this.set(LAST_UPDATE_TIME, modelCurrentTime);
 
 
-            updateStrat.update(this, model);});
-
-        this.<DrawStrat>oget(DRAW_STRAT).ifPresent(drawStrat -> drawStrat.update(this, model));
+            updateStrat.update(this, model);
+        });
     }
 
     public void upgrade() {
