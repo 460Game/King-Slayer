@@ -1,7 +1,5 @@
 package game.model.game.model.worldObject.entity.aiStrat;
 
-
-import com.esotericsoftware.kryonet.Server;
 import game.ai.Astar;
 import game.message.toClient.SetEntityCommand;
 import game.model.game.grid.GridCell;
