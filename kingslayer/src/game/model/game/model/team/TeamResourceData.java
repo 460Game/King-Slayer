@@ -22,6 +22,13 @@ public class TeamResourceData {
         }
     }
 
+    public static Map<Integer, Resource> levelToResource = new HashMap<>();
+    static {
+        levelToResource.put(0, Resource.WOOD);
+        levelToResource.put(1, Resource.STONE);
+        levelToResource.put(2, Resource.METAL);
+    }
+
     private Map<Resource, Integer> resources = new HashMap<>();
 
 //    /**

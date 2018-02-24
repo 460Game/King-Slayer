@@ -108,6 +108,7 @@ public class NetworkCommon {
         kryo.register(UpdateResourceCommand.class);
         kryo.register(ActionRequest.class);
         kryo.register(GoDirectionRequest.class);
+        kryo.register(UpgradeEntityRequest.class);
 
         kryo.register(TeamRoleEntityMap.class);
         kryo.register(long[][].class);

@@ -2,10 +2,7 @@ package game.view;
 
 import com.esotericsoftware.minlog.Log;
 import game.message.toClient.NewEntityCommand;
-import game.message.toServer.EntityBuildRequest;
-import game.message.toServer.GoDirectionRequest;
-import game.message.toServer.ShootArrowRequest;
-import game.message.toServer.StopRequest;
+import game.message.toServer.*;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
@@ -67,7 +64,7 @@ public class GameInteractionLayer extends Region {
                 Entity entity = model.getEntityAt(x.intValue(), y.intValue());
                 System.out.println("clicked at " + x + " " + y + " and hit entity " + entity);
                 if (entity != null) {
-                    entity.upgrade(); //TODO TODO
+                    model.processMessage(new UpgradeEntityRequest(entity));
                     upgrading = false;
                 }
             } else if (model.getLocalPlayer().getRole() == Role.SLAYER) {
