@@ -8,6 +8,7 @@ import game.model.game.model.worldObject.entity.entities.*;
 import util.Util;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.AI_DATA;
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.HEALTH;
 import static java.lang.Math.*;
 
 public abstract class BuildingSpawnerStrat extends AIStrat {
@@ -27,8 +28,10 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
 
         @Override
-        Entity makeEntity(double x, double y, Team team) {
-            return Minions.makeMeleeMinion(x, y + 1, team);
+        Entity makeEntity(double x, double y, Team team, Entity entity) {
+            Entity minion = Minions.makeMeleeMinion(x, y + 1, team);
+            minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
+            return minion;
         }
     }
 
@@ -47,8 +50,10 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
 
         @Override
-        Entity makeEntity(double x, double y, Team team) {
-            return Minions.makeRangedMinion(x, y, team);
+        Entity makeEntity(double x, double y, Team team, Entity entity) {
+            Entity minion = Minions.makeRangedMinion(x, y + 1, team);
+            minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
+            return minion;
         }
     }
 
@@ -67,8 +72,10 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
 
         @Override
-        Entity makeEntity(double x, double y, Team team) {
-            return Minions.makeSiegeMinion(x, y, team);
+        Entity makeEntity(double x, double y, Team team, Entity entity) {
+            Entity minion = Minions.makeSiegeMinion(x, y + 1, team);
+            minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
+            return minion;
         }
     }
 
@@ -87,8 +94,10 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
 
         @Override
-        Entity makeEntity(double x, double y, Team team) {
-            return Minions.makeExplorationMinion(x, y, team);
+        Entity makeEntity(double x, double y, Team team, Entity entity) {
+            Entity minion = Minions.makeExplorationMinion(x, y + 1, team);
+            minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
+            return minion;
         }
     }
 
@@ -108,8 +117,10 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
 
         @Override
-        Entity makeEntity(double x, double y, Team team) {
-            return Minions.makeResourceMinion(x, y, team);
+        Entity makeEntity(double x, double y, Team team, Entity entity) {
+            Entity minion = Minions.makeResourceMinion(x, y + 1, team);
+            minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
+            return minion;
         }
     }
 
@@ -129,7 +140,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
 
         @Override
-        Entity makeEntity(double x, double y, Team team) {
+        Entity makeEntity(double x, double y, Team team, Entity entity) {
             double dir = Util.random.nextDouble() * 2 * Math.PI;
             return Entities.makeArrow(x + cos(dir), y + sin(dir), dir, team);
         }
@@ -139,7 +150,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
     abstract int maxActive(Entity entity);
 
-    abstract Entity makeEntity(double x, double y, Team team);
+    abstract Entity makeEntity(double x, double y, Team team, Entity entity);
 
     private BuildingSpawnerStrat() {
 
@@ -167,7 +178,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         while (data.elapsedTime > timeBetweenSpawns(entity)) {
             data.elapsedTime -= timeBetweenSpawns(entity);
             if (data.spawnCounter < maxActive(entity)) {
-                Entity newEntity = makeEntity(entity.getX(), entity.getY(), entity.getTeam());
+                Entity newEntity = makeEntity(entity.getX(), entity.getY(), entity.getTeam(), entity);
                 model.processMessage(new MakeEntityRequest(newEntity));
                 newEntity.onDeath((e, serverGameModel) -> {
                     data.spawnCounter--;
