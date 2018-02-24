@@ -110,6 +110,7 @@ public class NetworkCommon {
         kryo.register(ActionRequest.class);
         kryo.register(GoDirectionRequest.class);
         kryo.register(UpgradeEntityRequest.class);
+        kryo.register(SellEntityRequest.class);
 
         kryo.register(TeamRoleEntityMap.class);
         kryo.register(long[][].class);
@@ -183,16 +184,19 @@ public class NetworkCommon {
         kryo.register(UpgradableImageDrawStrat.TreasureImageDrawStrat.class);
         kryo.register(UpgradableImageDrawStrat.BuildableWall.class);
         kryo.register(DirectionAnimationDrawStrat.SiegeMinionDirectionAnimationDrawStrat.class);
+        kryo.register(DirectionAnimationDrawStrat.MeleeMinionDirectionAnimationDrawStrat.class);
+        kryo.register(DirectionAnimationDrawStrat.RangedMinionDirectionAnimationDrawStrat.class);
+        kryo.register(DirectionAnimationDrawStrat.ResourceMinionDirectionAnimationDrawStrat.class);
 
-//        kryo.register(MinionStrat.RangedMinionStrat.class);
-//        kryo.register(MinionStrat.MeleeMinionStrat.class);
-//        kryo.register(MinionStrat.ResourceMinionStrat.class);
-//        kryo.register(MinionStrat.MinionStratAIData.class);
+        kryo.register(MinionStrat.RangedMinionStrat.class);
+        kryo.register(MinionStrat.MeleeMinionStrat.class);
+        kryo.register(MinionStrat.ResourceMinionStrat.class);
+        kryo.register(MinionStrat.MinionStratAIData.class);
 
-//        kryo.register(HashSet.class);
-//        kryo.register(LinkedList.class);
+        kryo.register(HashSet.class);
+        kryo.register(LinkedList.class);
 
-//        kryo.register(GridCell.class);
+        kryo.register(GridCell.class);
 
 
 

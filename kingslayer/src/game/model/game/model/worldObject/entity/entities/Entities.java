@@ -64,13 +64,15 @@ public class Entities {
                 pair(DRAW_STRAT, ImageDrawStrat.BOX_IMAGE_DRAW_STRAT));
     }
 
-    public static Entity makeBuiltWall(double x, double y) {
+    public static Entity makeBuiltWall(double x, double y, Team team) {
         return new Entity(x, y,
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(HEALTH, 100.0),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.BUILDABLE_WOOD_WALL),
-                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
+                pair(TEAM, team),
+                pair(LEVEL, 0));
     }
 
     public static Entity makeGhostWall(double x, double y) {
