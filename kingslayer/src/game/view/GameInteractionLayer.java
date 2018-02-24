@@ -128,7 +128,7 @@ public class GameInteractionLayer extends Region {
                     placing = Entities.makeBuiltWall(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
                 } else {
-                    cost = -2;
+                    cost = -10;
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
                     placing = Entities.makeMeleeBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
@@ -139,12 +139,12 @@ public class GameInteractionLayer extends Region {
 
             if ((kc == DIGIT2 || kc == NUMPAD2) && model.getLocalPlayer().getRole() == Role.KING) {
                 if (!selectingBarracks) {
-                    cost = -2;
+                    cost = -10;
                     placingGhost = Entities.makeResourceCollectorGhost(0, 0, model.getLocalPlayer().getTeam());
                     placing = Entities.makeResourceCollector(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
                 } else {
-                    cost = -2;
+                    cost = -10;
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
                     placing = Entities.makeRangedBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
@@ -157,7 +157,7 @@ public class GameInteractionLayer extends Region {
                 if (!selectingBarracks) {
                     selectingBarracks = true;
                 } else {
-                    cost = -2;
+                    cost = -10;
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
                     placing = Entities.makeSiegeBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
@@ -175,7 +175,7 @@ public class GameInteractionLayer extends Region {
                         model.processMessage(new NewEntityCommand(placingGhost));
                     }
                 } else {
-                    cost = -2;
+                    cost = -10;
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
                     placing = Entities.makeExplorationBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));

@@ -1,5 +1,6 @@
 package game.message.toServer;
 
+import game.message.toClient.NewEntityCommand;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
@@ -11,31 +12,32 @@ import game.model.game.model.worldObject.entity.Entity;
 public class UpgradeEntityRequest implements ToServerRequest {
 
   /**
-   * Entity to be made.
+   * Entity to be upgraded.
    */
-  private Entity entity;
+  private long entityID;
 
   public UpgradeEntityRequest() {
-
   }
 
   /**
-   * Constructor of the request, given an entity to be made.
+   * Constructor of the request, given an entity to be upgraded.
    * @param entity entity to be made
    */
   public UpgradeEntityRequest(Entity entity) {
-    this.entity = entity;
+    this.entityID = entity.id;
   }
 
   /**
-   * Creates the entity in the server.
+   * Updates the entity in the server.
    * @param model the game model on the game server
    */
   @Override
   public void executeServer(ServerGameModel model) {
-    if (model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL)), -10)) {
+    Entity entity = model.getEntity(entityID);
+    if (entity.has(Entity.EntityProperty.LEVEL) &&
+        model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL)), -10)) {
       entity.upgrade();
-      model.makeEntity(entity);
+      model.processMessage(new NewEntityCommand(entity));
     }
   }
 }

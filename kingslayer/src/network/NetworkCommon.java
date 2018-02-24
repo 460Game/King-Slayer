@@ -27,6 +27,7 @@ import game.model.game.model.worldObject.entity.entities.NonMovingVelocity;
 import game.model.game.model.worldObject.entity.entities.Velocity;
 import game.model.game.model.worldObject.entity.updateStrat.*;
 
+import java.awt.*;
 import java.lang.reflect.InvocationHandler;
 import java.util.*;
 
@@ -195,6 +196,7 @@ public class NetworkCommon {
 
         kryo.register(HashSet.class);
         kryo.register(LinkedList.class);
+        kryo.register(Point.class);
 
         kryo.register(GridCell.class);
 
