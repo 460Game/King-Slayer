@@ -237,7 +237,7 @@ public abstract class MinionStrat extends AIStrat {
         }
     }
 
-    static class MinionStratAIData extends AIData {
+    public static class MinionStratAIData extends AIData {
         private List<GridCell> path;
         private Collection<Entity> detected;
         private Collection<Entity> attackable;

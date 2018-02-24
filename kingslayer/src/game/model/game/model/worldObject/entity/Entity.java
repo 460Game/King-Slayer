@@ -57,7 +57,8 @@ public class Entity {
         DRAW_STRAT(DrawStrat.class, PropType.ON_CHANGE_ONLY),
         UPDATE_STRAT(UpdateStrat.class, PropType.ON_CHANGE_ONLY),
         COLLISION_STRAT(CollisionStrat.class, PropType.ON_CHANGE_ONLY),
-        DEATH_STRAT(DeathStrat.class, PropType.ON_CHANGE_ONLY);
+        DEATH_STRAT(DeathStrat.class, PropType.ON_CHANGE_ONLY),
+        PLAYER_NAME(String.class, PropType.ON_CHANGE_ONLY);
 
         EntityProperty(Class type, PropType sync) {
             this.type = type;
@@ -202,12 +203,26 @@ public class Entity {
 
                 strat.draw(this, model, gc));
 
-        if (!this.invincible()) {
+        if (!this.invincible() && this.getData().get(ROLE) == null) {
             //TEMPORARY!!!!!!!!!
             gc.setFill(Color.RED);
             gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - 30, 20, 3);
             gc.setFill(Color.GREEN);
             gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - 30, (getHealth() / 100) * 20, 3);
+        }
+
+        if (!this.invincible() && this.getData().get(ROLE) != null) {
+            gc.setFill(Color.RED);
+            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, 40, 6);
+            gc.setFill(Color.GREEN);
+            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, (getHealth() / 100) * 40, 6);
+            gc.setStroke(Color.WHITE);
+//            System.out.println((String)get(PLAYER_NAME));
+            String name = this.get(PLAYER_NAME);
+            if (name.length() >= 1) {
+//                System.out.println("Hello");
+                gc.strokeText(name, toDrawCoords(getX()) - 3.5 * name.length(), toDrawCoords(getY()) - 30);
+            }
         }
     }
 
