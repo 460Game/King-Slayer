@@ -196,6 +196,8 @@ public class NetworkCommon {
         kryo.register(MinionStrat.ResourceMinionStrat.class);
         kryo.register(MinionStrat.MinionStratAIData.class);
 
+        kryo.register(kryo.register(game.model.game.model.worldObject.entity.EntitySpawner.class));
+
         kryo.register(HashSet.class);
         kryo.register(LinkedList.class);
         kryo.register(Point.class);
