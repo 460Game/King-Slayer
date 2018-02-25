@@ -130,12 +130,10 @@ public class GameInteractionLayer extends Region {
                 if (!selectingBarracks) {
                     placingGhost = Entities.makeGhostWall(0, 0);
                     spawner = EntitySpawner.WALL_SPAWNER;
-//                    placing = Entities.makeBuiltWall(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
                 } else {
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
                     spawner = EntitySpawner.MELEE_BARRACKS_SPAWNER;
-//                    placing = Entities.makeMeleeBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
 
                     selectingBarracks = false;
@@ -146,12 +144,10 @@ public class GameInteractionLayer extends Region {
                 if (!selectingBarracks) {
                     placingGhost = Entities.makeResourceCollectorGhost(0, 0, model.getLocalPlayer().getTeam());
                     spawner = EntitySpawner.RESOURCE_COLLETOR_SPAWNER;
-//                    placing = Entities.makeResourceCollector(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
                 } else {
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
                     spawner = EntitySpawner.RANGED_BARRACKS_SPAWNER;
-//                    placing = Entities.makeRangedBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
 
                     selectingBarracks = false;
@@ -164,7 +160,6 @@ public class GameInteractionLayer extends Region {
                 } else {
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
                     spawner = EntitySpawner.SIEGE_BARRACKS_SPAWNER;
-//                    placing = Entities.makeSiegeBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
 
                     selectingBarracks = false;
@@ -176,13 +171,11 @@ public class GameInteractionLayer extends Region {
                     if (model.getLocalPlayer().getRole() == Role.KING) {
                         placingGhost = Entities.makeArrowTowerGhost(0, 0, model.getLocalPlayer().getTeam());
                         spawner = EntitySpawner.ARROW_TOWER_SPAWNER;
-//                        placing = Entities.makeArrowTower(0, 0, model.getLocalPlayer().getTeam());
                         model.processMessage(new NewEntityCommand(placingGhost));
                     }
                 } else {
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
                     spawner = EntitySpawner.EXPLORATION_BARRACKS_SPAWNER;
-//                    placing = Entities.makeExplorationBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
 
                     selectingBarracks = false;
@@ -204,24 +197,6 @@ public class GameInteractionLayer extends Region {
             }
 
         });
-
-//        world.onKeyPress(E, () -> {
-//            System.out.println("pressed E");
-//            if (model.getLocalPlayer().getRole() == Role.KING) {
-//                System.out.println("are king");
-//                world.setCursor(new ImageCursor(UPGRADE_CURSOR_IMAGE, UPGRADE_CURSOR_IMAGE.getWidth() / 2, UPGRADE_CURSOR_IMAGE.getHeight() / 2));
-//                upgrading = true;
-//            }
-//        });
-
-//        world.onKeyPress(Q, () -> {
-//            System.out.println("pressed Q");
-//            if (model.getLocalPlayer().getRole() == Role.KING) {
-//                world.setCursor(new ImageCursor(DELETE_CURSOR_IMAGE, DELETE_CURSOR_IMAGE.getWidth() / 2, DELETE_CURSOR_IMAGE.getHeight() / 2));
-//                deleting = true;
-//            }
-//            System.out.println("did it work? " + deleting);
-//        });
 
         world.onKeyPress(TAB, () -> {
             model.processMessage(new StopRequest(model.getLocalPlayer().id));

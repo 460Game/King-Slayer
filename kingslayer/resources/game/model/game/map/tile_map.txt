@@ -203,6 +203,11 @@ UUG
 UDU
 GUG
 
+8 12 Four corners
+GUG
+UDU
+GUG
+
 9 5 Two corners, one edge
 _G_
 UDU
