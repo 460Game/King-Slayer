@@ -71,7 +71,7 @@ public class GameInteractionLayer extends Region {
                 }
             } else if (model.getLocalPlayer().getRole() == Role.SLAYER) {
                 double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
-                model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
+                model.processMessage(new SlayerMeleeRequest(model.getLocalPlayer().id,
                         model.getLocalPlayer().getX(),
                         model.getLocalPlayer().getY(),
                         angle, model.getLocalPlayer().getTeam()));
@@ -88,6 +88,12 @@ public class GameInteractionLayer extends Region {
                 deleting = false;
             } else if (selectingBarracks) {
                 selectingBarracks = false;
+            } else if (model.getLocalPlayer().getRole() == Role.SLAYER) {
+                double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
+                model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
+                        model.getLocalPlayer().getX(),
+                        model.getLocalPlayer().getY(),
+                        angle, model.getLocalPlayer().getTeam()));
             }
         });
 

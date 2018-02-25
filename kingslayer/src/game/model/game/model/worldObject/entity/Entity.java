@@ -10,6 +10,7 @@ import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import game.model.game.model.worldObject.entity.deathStrat.DeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
 import game.model.game.model.worldObject.entity.entities.Velocity;
+import game.model.game.model.worldObject.entity.slayer.SlayerData;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
@@ -58,7 +59,8 @@ public class Entity {
         UPDATE_STRAT(UpdateStrat.class, PropType.ON_CHANGE_ONLY),
         COLLISION_STRAT(CollisionStrat.class, PropType.ON_CHANGE_ONLY),
         DEATH_STRAT(DeathStrat.class, PropType.ON_CHANGE_ONLY),
-        PLAYER_NAME(String.class, PropType.ON_CHANGE_ONLY);
+        PLAYER_NAME(String.class, PropType.ON_CHANGE_ONLY),
+        SLAYER_DATA(SlayerData.class, PropType.ACTIVE_SYNC);
 
         EntityProperty(Class type, PropType sync) {
             this.type = type;
