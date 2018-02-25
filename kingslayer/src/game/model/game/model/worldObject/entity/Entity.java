@@ -10,6 +10,7 @@ import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import game.model.game.model.worldObject.entity.deathStrat.DeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
 import game.model.game.model.worldObject.entity.entities.Velocity;
+import game.model.game.model.worldObject.entity.slayer.SlayerData;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
@@ -53,13 +54,14 @@ public class Entity {
         RESOURCETYPE(TeamResourceData.Resource.class, PropType.LOCAL_ONLY), //TODO change this
         DRAW_DATA(DrawData.class, PropType.LOCAL_ONLY),
         VELOCITY(Velocity.class, PropType.ACTIVE_SYNC),
-        AI_STRAT(AIStrat.class, PropType.LOCAL_ONLY), // TODO change this
-        AI_DATA(AIData.class, PropType.LOCAL_ONLY), // TODO change this
+        AI_STRAT(AIStrat.class, PropType.SERVER_ONLY), // TODO change this
+        AI_DATA(AIData.class, PropType.SERVER_ONLY), // TODO change this
         DRAW_STRAT(DrawStrat.class, PropType.ON_CHANGE_ONLY),
         UPDATE_STRAT(UpdateStrat.class, PropType.ON_CHANGE_ONLY),
         COLLISION_STRAT(CollisionStrat.class, PropType.ON_CHANGE_ONLY),
         DEATH_STRAT(DeathStrat.class, PropType.ON_CHANGE_ONLY),
-        PLAYER_NAME(String.class, PropType.ON_CHANGE_ONLY);
+        PLAYER_NAME(String.class, PropType.ON_CHANGE_ONLY),
+        SLAYER_DATA(SlayerData.class, PropType.ACTIVE_SYNC);
 
         EntityProperty(Class type, PropType sync) {
             this.type = type;
@@ -217,11 +219,32 @@ public class Entity {
             gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - 30, (getHealth() / 100) * 20, 3);
         }
 
-        if (!this.invincible() && this.getData().get(ROLE) != null) {
+        if (!this.invincible() && this.getData().get(ROLE) == Role.KING) {
             gc.setFill(Color.RED);
             gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, 40, 6);
             gc.setFill(Color.GREEN);
             gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, (getHealth() / 100) * 40, 6);
+            gc.setStroke(Color.WHITE);
+//            System.out.println((String)get(PLAYER_NAME));
+            String name = this.get(PLAYER_NAME);
+            if (name.length() >= 1) {
+//                System.out.println("Hello");
+                gc.strokeText(name, toDrawCoords(getX()) - 3.5 * name.length(), toDrawCoords(getY()) - 30);
+            }
+        }
+
+        if (!this.invincible() && this.getData().get(ROLE) == Role.SLAYER) {
+            gc.setFill(Color.RED);
+            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, 40, 6);
+            gc.setFill(Color.GREEN);
+            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, (getHealth() / 100) * 40, 6);
+
+            gc.setFill(Color.GREY);
+            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 24, 40, 6);
+            gc.setFill(Color.BLUE);
+            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 24,
+                    (((SlayerData)this.getData().get(SLAYER_DATA)).magic / 100.00) * 40, 6);
+
             gc.setStroke(Color.WHITE);
 //            System.out.println((String)get(PLAYER_NAME));
             String name = this.get(PLAYER_NAME);

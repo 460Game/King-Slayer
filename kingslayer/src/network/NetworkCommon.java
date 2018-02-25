@@ -25,6 +25,8 @@ import game.model.game.model.worldObject.entity.deathStrat.SlayerDeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
 import game.model.game.model.worldObject.entity.entities.NonMovingVelocity;
 import game.model.game.model.worldObject.entity.entities.Velocity;
+import game.model.game.model.worldObject.entity.slayer.SlayerData;
+import game.model.game.model.worldObject.entity.slayer.SlayerUpdateStrat;
 import game.model.game.model.worldObject.entity.updateStrat.*;
 
 import java.awt.*;
@@ -194,11 +196,17 @@ public class NetworkCommon {
         kryo.register(MinionStrat.ResourceMinionStrat.class);
         kryo.register(MinionStrat.MinionStratAIData.class);
 
+        kryo.register(kryo.register(game.model.game.model.worldObject.entity.EntitySpawner.class));
+
         kryo.register(HashSet.class);
         kryo.register(LinkedList.class);
         kryo.register(Point.class);
 
-        kryo.register(GridCell.class);
+        kryo.register(SlayerData.class);
+        kryo.register(SlayerUpdateStrat.class);
+        kryo.register(SlayerMeleeRequest.class);
+
+//        kryo.register(GridCell.class);
 
 
 

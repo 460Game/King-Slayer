@@ -6,16 +6,16 @@ import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.EntitySpawner;
 import game.model.game.model.worldObject.entity.entities.Entities;
 import javafx.scene.ImageCursor;
 import javafx.scene.layout.Region;
 import util.Const;
 import util.Util;
 
-import static images.Images.CURSOR_IMAGE;
 //import static images.Images.DELETE_CURSOR_IMAGE;
-import static images.Images.GAME_CURSOR_IMAGE;
 //import static images.Images.UPGRADE_CURSOR_IMAGE;
+import static images.Images.*;
 import static javafx.scene.input.KeyCode.*;
 import static javafx.scene.input.KeyCode.DIGIT3;
 import static javafx.scene.input.KeyCode.DIGIT4;
@@ -29,9 +29,9 @@ public class GameInteractionLayer extends Region {
     private ClientGameModel model;
     private WorldPanel world;
 
-    private Entity placing;
+//    private Entity placing;
+    private EntitySpawner spawner;
     private Entity placingGhost;
-    private int cost;
     private boolean upgrading = false;
     private boolean deleting = false;
     private boolean selectingBarracks = false;
@@ -44,15 +44,13 @@ public class GameInteractionLayer extends Region {
         this.getChildren().add(world);
 
         world.onGameLeftClick((x, y) -> {
-            if (model.getLocalPlayer().getRole() == Role.KING && placing != null) {
+            if (model.getLocalPlayer().getRole() == Role.KING && spawner != null) {
                 if (!placingGhost.getHitbox().getCollidesWith(model, placingGhost.getX(), placingGhost.getY()).skip(1).findAny().isPresent()) {
-                    model.processMessage(new EntityBuildRequest(placing,
-                            model.getLocalPlayer().getTeam(),
-                            TeamResourceData.Resource.WOOD,
-                            cost));
+                    model.processMessage(new EntityBuildRequest(spawner,
+                            model.getLocalPlayer().getTeam()));
+                    model.remove(placingGhost);
+                    spawner = null;
                 }
-                model.remove(placingGhost);
-                placing = null;
             } else if (upgrading) {
                 Entity entity = model.getEntityAt(x.intValue(), y.intValue());
                 System.out.println("clicked at " + x + " " + y + " and hit entity " + entity);
@@ -71,7 +69,7 @@ public class GameInteractionLayer extends Region {
                 }
             } else if (model.getLocalPlayer().getRole() == Role.SLAYER) {
                 double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
-                model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
+                model.processMessage(new SlayerMeleeRequest(model.getLocalPlayer().id,
                         model.getLocalPlayer().getX(),
                         model.getLocalPlayer().getY(),
                         angle, model.getLocalPlayer().getTeam()));
@@ -79,25 +77,31 @@ public class GameInteractionLayer extends Region {
         });
 
         world.onGameRightClick((x, y) -> {
-            if (model.getLocalPlayer().getRole() == Role.KING && placing != null) {
+            if (model.getLocalPlayer().getRole() == Role.KING && spawner != null) {
                 model.remove(placingGhost);
-                placing = null;
+                spawner = null;
             } else if (upgrading) {
                 upgrading = false;
             } else if (deleting) {
                 deleting = false;
             } else if (selectingBarracks) {
                 selectingBarracks = false;
+            } else if (model.getLocalPlayer().getRole() == Role.SLAYER) {
+                double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
+                model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
+                        model.getLocalPlayer().getX(),
+                        model.getLocalPlayer().getY(),
+                        angle, model.getLocalPlayer().getTeam()));
             }
         });
 
         world.onGameMouseMove((x, y) -> {
-            if (model.getLocalPlayer() != null && model.getLocalPlayer().getRole() == Role.KING && placing != null) {
+            if (model.getLocalPlayer() != null && model.getLocalPlayer().getRole() == Role.KING && spawner != null) {
                 double placingX = Math.floor(x) + 0.5;
                 double placingY = Math.floor(y) + 0.5;
                 if (Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), placingX, placingY) < 5) {
-                    placing.setX(placingX);
-                    placing.setY(placingY);
+                    spawner.x = placingX;
+                    spawner.y = placingY;
 
                     placingGhost.setX(placingX);
                     placingGhost.setY(placingY);
@@ -112,7 +116,7 @@ public class GameInteractionLayer extends Region {
             if (placingGhost != null && kc != W && kc != A && kc != S && kc != D) {
                 model.removeByID(placingGhost.id);
                 placingGhost = null;
-                placing = null;
+                spawner = null;
             }
 
             if ((upgrading || deleting) && kc != W && kc != A && kc != S && kc != D) {
@@ -124,14 +128,14 @@ public class GameInteractionLayer extends Region {
 
             if ((kc == DIGIT1 || kc == NUMPAD1) && model.getLocalPlayer().getRole() == Role.KING) {
                 if (!selectingBarracks) {
-                    cost = -10;
                     placingGhost = Entities.makeGhostWall(0, 0);
-                    placing = Entities.makeBuiltWall(0, 0, model.getLocalPlayer().getTeam());
+                    spawner = EntitySpawner.WALL_SPAWNER;
+//                    placing = Entities.makeBuiltWall(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
                 } else {
-                    cost = -10;
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-                    placing = Entities.makeMeleeBarracks(0, 0, model.getLocalPlayer().getTeam());
+                    spawner = EntitySpawner.MELEE_BARRACKS_SPAWNER;
+//                    placing = Entities.makeMeleeBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
 
                     selectingBarracks = false;
@@ -140,14 +144,14 @@ public class GameInteractionLayer extends Region {
 
             if ((kc == DIGIT2 || kc == NUMPAD2) && model.getLocalPlayer().getRole() == Role.KING) {
                 if (!selectingBarracks) {
-                    cost = -10;
                     placingGhost = Entities.makeResourceCollectorGhost(0, 0, model.getLocalPlayer().getTeam());
-                    placing = Entities.makeResourceCollector(0, 0, model.getLocalPlayer().getTeam());
+                    spawner = EntitySpawner.RESOURCE_COLLETOR_SPAWNER;
+//                    placing = Entities.makeResourceCollector(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
                 } else {
-                    cost = -10;
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-                    placing = Entities.makeRangedBarracks(0, 0, model.getLocalPlayer().getTeam());
+                    spawner = EntitySpawner.RANGED_BARRACKS_SPAWNER;
+//                    placing = Entities.makeRangedBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
 
                     selectingBarracks = false;
@@ -158,9 +162,9 @@ public class GameInteractionLayer extends Region {
                 if (!selectingBarracks) {
                     selectingBarracks = true;
                 } else {
-                    cost = -10;
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-                    placing = Entities.makeSiegeBarracks(0, 0, model.getLocalPlayer().getTeam());
+                    spawner = EntitySpawner.SIEGE_BARRACKS_SPAWNER;
+//                    placing = Entities.makeSiegeBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
 
                     selectingBarracks = false;
@@ -170,15 +174,15 @@ public class GameInteractionLayer extends Region {
             if (kc == DIGIT4 || kc == NUMPAD4) {
                 if (!selectingBarracks) {
                     if (model.getLocalPlayer().getRole() == Role.KING) {
-                        cost = -20;
                         placingGhost = Entities.makeArrowTowerGhost(0, 0, model.getLocalPlayer().getTeam());
-                        placing = Entities.makeArrowTower(0, 0, model.getLocalPlayer().getTeam());
+                        spawner = EntitySpawner.ARROW_TOWER_SPAWNER;
+//                        placing = Entities.makeArrowTower(0, 0, model.getLocalPlayer().getTeam());
                         model.processMessage(new NewEntityCommand(placingGhost));
                     }
                 } else {
-                    cost = -10;
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-                    placing = Entities.makeExplorationBarracks(0, 0, model.getLocalPlayer().getTeam());
+                    spawner = EntitySpawner.EXPLORATION_BARRACKS_SPAWNER;
+//                    placing = Entities.makeExplorationBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
 
                     selectingBarracks = false;
@@ -187,14 +191,14 @@ public class GameInteractionLayer extends Region {
 
             if (kc == E) {
                 if (model.getLocalPlayer().getRole() == Role.KING) {
-                    //    world.setCursor(new ImageCursor(UPGRADE_CURSOR_IMAGE, UPGRADE_CURSOR_IMAGE.getWidth() / 2, UPGRADE_CURSOR_IMAGE.getHeight() / 2));
+                    world.setCursor(new ImageCursor(UPGRADE_CURSOR_IMAGE, UPGRADE_CURSOR_IMAGE.getWidth() / 2, UPGRADE_CURSOR_IMAGE.getHeight() / 2));
                     upgrading = true;
                 }
             }
 
             if (kc == Q) {
                 if (model.getLocalPlayer().getRole() == Role.KING) {
-                   // world.setCursor(new ImageCursor(DELETE_CURSOR_IMAGE, DELETE_CURSOR_IMAGE.getWidth() / 2, DELETE_CURSOR_IMAGE.getHeight() / 2));
+                    world.setCursor(new ImageCursor(DELETE_CURSOR_IMAGE, DELETE_CURSOR_IMAGE.getWidth() / 2, DELETE_CURSOR_IMAGE.getHeight() / 2));
                     deleting = true;
                 }
             }

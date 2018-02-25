@@ -4,6 +4,7 @@ import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Entities;
+import game.model.game.model.worldObject.entity.slayer.SlayerData;
 
 /**
  * Message sent by a client to tell the server that it wants
@@ -63,6 +64,14 @@ public class ShootArrowRequest extends ActionRequest {
      */
     @Override
     public void executeServer(ServerGameModel model) {
+        SlayerData curSlayerData =
+                SlayerData.copyOf((SlayerData)model.getEntity(id).get(Entity.EntityProperty.SLAYER_DATA));
+        if (curSlayerData.magic < SlayerData.arrowCost) {
+            return;
+        }
+        curSlayerData.magic -= SlayerData.arrowCost;
+        model.getEntity(id).set(Entity.EntityProperty.SLAYER_DATA, curSlayerData);
+
         Entity arrow = Entities.makeArrow(x, y, angle, team);
         model.makeEntity(arrow);
     }

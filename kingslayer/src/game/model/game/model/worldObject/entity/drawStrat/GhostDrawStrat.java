@@ -5,6 +5,7 @@ import game.model.game.model.worldObject.entity.Entity;
 import images.Images;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 import static util.Util.toDrawCoords;
 
@@ -13,6 +14,7 @@ public class GhostDrawStrat extends ImageDrawStrat {
   public static final GhostDrawStrat GHOSTWALL = new WallGhostDrawStrat();
   public static final GhostDrawStrat GHOST_COLLECTOR = new ResourceCollectorGhostDrawStrat();
   public static final GhostDrawStrat GHOST_BARRACKS = new BarracksGhostDrawStrat();
+  public static final GhostDrawStrat GHOST_ARROW_TOWER = new ArrowTowerGhostDrawStrat();
 
   @Override
   public DrawData initDrawData() {
@@ -62,6 +64,14 @@ public class GhostDrawStrat extends ImageDrawStrat {
         toDrawCoords(w),
         toDrawCoords(h));
     gc.setGlobalAlpha(1.0);
+
+    if (entity.inCollision) {
+      gc.setFill(new Color(1.0, 0.0, 0.0, 0.35));
+      gc.fillRect(toDrawCoords(entity.getX() - x),
+          toDrawCoords(entity.getY() - y),
+          toDrawCoords(w),
+          toDrawCoords(h));
+    }
   }
 
   @Override
@@ -108,6 +118,22 @@ public class GhostDrawStrat extends ImageDrawStrat {
     }
 
     private BarracksGhostDrawStrat() {
+    }
+  }
+
+  public static class ArrowTowerGhostDrawStrat extends GhostDrawStrat {
+    public Image getImage(Entity entity) {
+      switch (entity.getTeam()) {
+        case ONE:
+          return Images.RED_WOOD_ARROW_TOWER_IMAGE;
+        case TWO:
+          return Images.BLUE_WOOD_ARROW_TOWER_IMAGE;
+        default:
+          return null;
+      }
+    }
+
+    private ArrowTowerGhostDrawStrat() {
     }
   }
 }
