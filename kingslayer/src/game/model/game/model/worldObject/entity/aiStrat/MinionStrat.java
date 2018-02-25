@@ -243,7 +243,7 @@ public abstract class MinionStrat extends AIStrat {
         private Collection<Entity> attackable;
 
         MinionStratAIData() {
-            path = new LinkedList<>();
+            path = new ArrayList<>();
             detected = new HashSet<>();
             attackable = new HashSet<>();
         }

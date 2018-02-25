@@ -171,7 +171,7 @@ public class Main extends Application {
         window.setX(2);
         window.setY(2);
         window.setTitle("King Slayer");
-        window.setFullScreen(true);
+      //  window.setFullScreen(true);
 
         items[0].setOnActivate(this::connectForm);
         items[0].setActive(true);

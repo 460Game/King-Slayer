@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.aiStrat;
 
+import com.esotericsoftware.minlog.Log;
 import game.message.toServer.MakeEntityRequest;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
@@ -168,11 +169,13 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
     @Override
     public void init(Entity entity) {
+        Log.info("INIT AI " + entity);
         entity.add(AI_DATA, new BuildingSpawnerStratAIData());
     }
 
     @Override
     public void updateAI(Entity entity, ServerGameModel model, double seconds) {
+        Log.info("UPDATE AI " + entity);
         BuildingSpawnerStratAIData data = entity.<BuildingSpawnerStratAIData>get(AI_DATA);
         data.elapsedTime += seconds;
         while (data.elapsedTime > timeBetweenSpawns(entity)) {
