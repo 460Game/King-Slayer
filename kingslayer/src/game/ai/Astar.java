@@ -297,8 +297,9 @@ public class Astar {
         Set<GridCell> wood = new HashSet<>();
         for(int x = 0; x < Const.GRID_X_SIZE; x++) {
             for(int y = 0; y < Const.GRID_Y_SIZE; y++) {
-                if (model.getEntityAt(x, y) != null && model.getEntityAt(x, y).get(DRAW_STRAT) instanceof ImageDrawStrat.TreeImageDrawStrat) // Better way to check wood.
-                      wood.add(model.getCell(x, y));
+                //This erors
+//                if (model.getEntityAt(x, y) != null && model.getEntityAt(x, y).get(DRAW_STRAT) instanceof ImageDrawStrat.TreeImageDrawStrat) // Better way to check wood.
+   //                   wood.add(model.getCell(x, y));
             }
         }
         return wood;

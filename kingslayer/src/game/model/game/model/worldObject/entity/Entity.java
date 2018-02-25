@@ -53,8 +53,8 @@ public class Entity {
         ROLE(Role.class, PropType.ACTIVE_SYNC),
         DRAW_DATA(DrawData.class, PropType.LOCAL_ONLY),
         VELOCITY(Velocity.class, PropType.ACTIVE_SYNC),
-        AI_STRAT(AIStrat.class, PropType.LOCAL_ONLY), // TODO change this
-        AI_DATA(AIData.class, PropType.LOCAL_ONLY), // TODO change this
+        AI_STRAT(AIStrat.class, PropType.SERVER_ONLY), // TODO change this
+        AI_DATA(AIData.class, PropType.SERVER_ONLY), // TODO change this
         DRAW_STRAT(DrawStrat.class, PropType.ON_CHANGE_ONLY),
         UPDATE_STRAT(UpdateStrat.class, PropType.ON_CHANGE_ONLY),
         COLLISION_STRAT(CollisionStrat.class, PropType.ON_CHANGE_ONLY),

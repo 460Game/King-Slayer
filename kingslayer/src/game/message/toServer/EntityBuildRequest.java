@@ -4,6 +4,7 @@ import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.EntitySpawner;
 
 /**
  * Message sent to create an entity in a client's game model. This message
@@ -14,7 +15,7 @@ public class EntityBuildRequest implements ToServerRequest {
     /**
      * Entity to be made.
      */
-    private Entity entity;
+    private EntitySpawner entity;
 
     /**
      * Team that created the entity.
@@ -22,27 +23,12 @@ public class EntityBuildRequest implements ToServerRequest {
     private Team creator;
 
     /**
-     * Resource that may be changed.
-     */
-    private TeamResourceData.Resource resource;
-
-    /**
-     * Amount of resource that was changed.
-     */
-    private int change;
-
-    /**
      * Constructor of a message, given an entity to be created.
-     * @param entity entity to be created
-     * @param creator team creating the entity
-     * @param resource resource that may be changed
-     * @param change amount of resource changed
+     * @param entitySpawner entity to be created
      */
-    public EntityBuildRequest(Entity entity, Team creator, TeamResourceData.Resource resource, int change) {
-        this.entity = entity;
-        this.creator = creator;
-        this.resource = resource;
-        this.change = change;
+    public EntityBuildRequest(EntitySpawner entitySpawner, Team team) {
+        this.entity = entitySpawner;
+        this.creator = team;
     }
 
     /**
@@ -56,7 +42,7 @@ public class EntityBuildRequest implements ToServerRequest {
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        if (model.changeResource(creator, resource, change))
-            model.makeEntity(entity);
+        if (model.changeResource(creator, entity.resource, entity.cost))
+            model.makeEntity(entity.makeEntity(creator));
     }
 }
