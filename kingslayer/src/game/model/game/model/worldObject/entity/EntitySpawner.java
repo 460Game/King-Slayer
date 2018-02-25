@@ -5,7 +5,7 @@ import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.entities.Entities;
 
 public enum EntitySpawner {
-  WALL_SPAWNER(TeamResourceData.Resource.WOOD, -10) {
+  WALL_SPAWNER(TeamResourceData.Resource.WOOD, -5) {
     @Override
     public Entity makeEntity(Team team) {
       return Entities.makeBuiltWall(x, y, team);
@@ -17,31 +17,31 @@ public enum EntitySpawner {
       return Entities.makeResourceCollector(x, y, team);
     }
   },
-  MELEE_BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, -10) {
+  MELEE_BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, -15) {
     @Override
     public Entity makeEntity(Team team) {
       return Entities.makeMeleeBarracks(x, y, team);
     }
   },
-  RANGED_BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, -10) {
+  RANGED_BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, -15) {
     @Override
     public Entity makeEntity(Team team) {
       return Entities.makeRangedBarracks(x, y, team);
     }
   },
-  SIEGE_BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, -10) {
+  SIEGE_BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, -15) {
     @Override
     public Entity makeEntity(Team team) {
       return Entities.makeSiegeBarracks(x, y, team);
     }
   },
-  EXPLORATION_BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, -10) {
+  EXPLORATION_BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, -15) {
     @Override
     public Entity makeEntity(Team team) {
       return Entities.makeExplorationBarracks(x, y, team);
     }
   },
-  ARROW_TOWER_SPAWNER(TeamResourceData.Resource.WOOD, -10) {
+  ARROW_TOWER_SPAWNER(TeamResourceData.Resource.WOOD, -20) {
     @Override
     public Entity makeEntity(Team team) {
       return Entities.makeArrowTower(x, y, team);
