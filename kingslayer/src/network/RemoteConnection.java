@@ -342,7 +342,7 @@ public class RemoteConnection {
     private void consumeReceivedMsg() {
         while (running && currentThread() == consumeQueueMsgThread) {
             try {
-                sleep(100);
+                sleep(10);
             } catch (InterruptedException e) {
 //                e.printStackTrace();
                 currentThread().interrupt();
@@ -359,7 +359,7 @@ public class RemoteConnection {
         while (running && currentThread() == sendQueueMsgThread) {
 
             try {
-                sleep(50);
+                sleep(5);
             } catch (InterruptedException e) {
                 currentThread().interrupt();
             }

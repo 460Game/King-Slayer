@@ -12,9 +12,10 @@ import javafx.scene.layout.Region;
 import util.Const;
 import util.Util;
 
-import static images.Images.DELETE_CURSOR_IMAGE;
+import static images.Images.CURSOR_IMAGE;
+//import static images.Images.DELETE_CURSOR_IMAGE;
 import static images.Images.GAME_CURSOR_IMAGE;
-import static images.Images.UPGRADE_CURSOR_IMAGE;
+//import static images.Images.UPGRADE_CURSOR_IMAGE;
 import static javafx.scene.input.KeyCode.*;
 import static javafx.scene.input.KeyCode.DIGIT3;
 import static javafx.scene.input.KeyCode.DIGIT4;
@@ -70,7 +71,7 @@ public class GameInteractionLayer extends Region {
                 }
             } else if (model.getLocalPlayer().getRole() == Role.SLAYER) {
                 double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
-                model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
+                model.processMessage(new SlayerMeleeRequest(model.getLocalPlayer().id,
                         model.getLocalPlayer().getX(),
                         model.getLocalPlayer().getY(),
                         angle, model.getLocalPlayer().getTeam()));
@@ -87,6 +88,12 @@ public class GameInteractionLayer extends Region {
                 deleting = false;
             } else if (selectingBarracks) {
                 selectingBarracks = false;
+            } else if (model.getLocalPlayer().getRole() == Role.SLAYER) {
+                double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
+                model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
+                        model.getLocalPlayer().getX(),
+                        model.getLocalPlayer().getY(),
+                        angle, model.getLocalPlayer().getTeam()));
             }
         });
 
@@ -186,14 +193,14 @@ public class GameInteractionLayer extends Region {
 
             if (kc == E) {
                 if (model.getLocalPlayer().getRole() == Role.KING) {
-                    world.setCursor(new ImageCursor(UPGRADE_CURSOR_IMAGE, UPGRADE_CURSOR_IMAGE.getWidth() / 2, UPGRADE_CURSOR_IMAGE.getHeight() / 2));
+                    //    world.setCursor(new ImageCursor(UPGRADE_CURSOR_IMAGE, UPGRADE_CURSOR_IMAGE.getWidth() / 2, UPGRADE_CURSOR_IMAGE.getHeight() / 2));
                     upgrading = true;
                 }
             }
 
             if (kc == Q) {
                 if (model.getLocalPlayer().getRole() == Role.KING) {
-                    world.setCursor(new ImageCursor(DELETE_CURSOR_IMAGE, DELETE_CURSOR_IMAGE.getWidth() / 2, DELETE_CURSOR_IMAGE.getHeight() / 2));
+                   // world.setCursor(new ImageCursor(DELETE_CURSOR_IMAGE, DELETE_CURSOR_IMAGE.getWidth() / 2, DELETE_CURSOR_IMAGE.getHeight() / 2));
                     deleting = true;
                 }
             }

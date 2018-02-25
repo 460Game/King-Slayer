@@ -9,6 +9,7 @@ import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class MinionStrat extends AIStrat {
 
@@ -166,6 +167,8 @@ public abstract class MinionStrat extends AIStrat {
 
         public static final ResourceMinionStrat SINGLETON = new ResourceMinionStrat();
 
+        private static boolean hasResource;
+
         @Override
         double attackRange() {
             return -1;
@@ -178,28 +181,33 @@ public abstract class MinionStrat extends AIStrat {
 
         @Override
         void handleEnemyDetected() {
+            // Clear current path and run away
 
         }
 
         @Override
         void handleEnemyAttackable() {
-
+            handleEnemyDetected();
         }
 
         @Override
         void wander(MinionStratAIData data, Entity entity, ServerGameModel model) {
 
-            // TODO make this work with only one initialized astar in the model.
-            Astar astar = new Astar(model);
-//            Astar astar = model.getAstar();
+            Astar astar = model.getAstar();
 
-            Entity king = getClosestEnemy(data, entity, model);
             int entityx = (int) (double) entity.getX();
             int entityy = (int) (double) entity.getY();
-            int x = (int) (double) model.getEntity(king.id).getX();
-            int y = (int) (double) model.getEntity(king.id).getY();
-//            int x = astar.getClosestWood(model.getCell(entityx, entityy)).getTopLeftX();
-//            int y = astar.getClosestWood(model.getCell(entityx, entityy)).getTopLeftY();
+
+            if (!hasResource) {
+//                int x = astar.getClosestWood(model.getCell(entityx, entityy)).getTopLeftX();
+//                int y = astar.getClosestWood(model.getCell(entityx, entityy)).getTopLeftY();
+            } else {
+//                int x = getClosestCollector();
+//                int y = getClosestCollector();
+            }
+
+            int x = astar.getClosestWood(model.getCell(entityx, entityy)).getTopLeftX();
+            int y = astar.getClosestWood(model.getCell(entityx, entityy)).getTopLeftY();
 
             // Check if path exists and king has moved, then generate a new path.
             if (data.path.size() > 0 && data.path.get(data.path.size() - 1).getTopLeftX() != x &&
@@ -230,10 +238,10 @@ public abstract class MinionStrat extends AIStrat {
             }
 
             model.processMessage(new SetEntityCommand(entity));
-
-            Random rand = new Random();
-            if (rand.nextDouble() < 0.1)
-                model.changeResource(entity.getTeam(), TeamResourceData.Resource.WOOD, 1);
+//
+//            Random rand = new Random();
+//            if (rand.nextDouble() < 0.1)
+//                model.changeResource(entity.getTeam(), TeamResourceData.Resource.WOOD, 1);
         }
     }
 
@@ -243,7 +251,7 @@ public abstract class MinionStrat extends AIStrat {
         private Collection<Entity> attackable;
 
         MinionStratAIData() {
-            path = new LinkedList<>();
+            path = new ArrayList<>();
             detected = new HashSet<>();
             attackable = new HashSet<>();
         }
@@ -283,11 +291,25 @@ public abstract class MinionStrat extends AIStrat {
      * @return the enemy entities that this minion can detect
      */
     Collection<Entity> detectedEnemies(Entity entity, ServerGameModel model) {
-        // TODO look at all enemies within the detect Range
-        // If there are any in LOS within detect range or around a wall with a closer range (maybe)
-        // put that in the collection of entities that minion can detect.
-        // ignore arrows or try to dodge
-        return new HashSet<>();
+        // TODO If there are any around a wall with a closer range (maybe)
+        // TODO ignore arrows or try to dodge
+
+        Collection<Entity> enemies = new HashSet<>();
+        double x = entity.getX();
+        double y = entity.getY();
+        double range = ((MinionStrat) entity.get(Entity.EntityProperty.AI_STRAT)).detectRange();
+
+        // Add enemies within the range of this entity and in the line of sight of this enemy.
+        for (int i = (int) (x - range); i <= (int) (x + range); i++) {
+            for (int j = (int) (y - range); j <= (int) (y + range); j++) {
+                enemies.addAll(model.getCell(i, j).getContents().stream().filter(e ->
+                        util.Util.dist(x, y, e.getX(), e.getY()) <= range
+                                && e.getTeam() != entity.getTeam()
+                                && checkLineOfSight(entity, e, model)).collect(Collectors.toSet()));
+            }
+        }
+
+        return enemies;
     }
 
     /**
@@ -299,12 +321,26 @@ public abstract class MinionStrat extends AIStrat {
     Collection<Entity> attackableEnemies(Entity entity, ServerGameModel model) {
         if (attackRange() == -1)
             return new HashSet<>();
-        else
-            return new HashSet<>();
-        // TODO look at all enemies within attack range
-        // IF there are any in LOS within attack range, put in collection of entities that minion can detect.
+
         // Minions shouldn't count enemies around a wall as attackable.
-        // ignore arrows
+        // TODO ignore arrows
+
+        Collection<Entity> enemies = new HashSet<>();
+        double x = entity.getX();
+        double y = entity.getY();
+        double range = ((MinionStrat) entity.get(Entity.EntityProperty.AI_STRAT)).attackRange();
+
+        // Add enemies within the range of this entity and in the line of sight of this enemy.
+        for (int i = (int) (x - range); i <= (int) (x + range); i++) {
+            for (int j = (int) (y - range); j <= (int) (y + range); j++) {
+                enemies.addAll(model.getCell(i, j).getContents().stream().filter(e ->
+                        util.Util.dist(x, y, e.getX(), e.getY()) <= range
+                                && e.getTeam() != entity.getTeam()
+                                && checkLineOfSight(entity, e, model)).collect(Collectors.toSet()));
+            }
+        }
+
+        return enemies;
     }
 
     /**
@@ -317,13 +353,109 @@ public abstract class MinionStrat extends AIStrat {
      * @return the closest enemy to this minion
      */
     Entity getClosestEnemy(MinionStratAIData data, Entity entity, ServerGameModel model) {
+        if (!data.attackable.isEmpty()) {
+            return data.attackable.stream().min((e1, e2) ->
+                    Double.compare(util.Util.dist(e1.getX(), e1.getY(), entity.getX(), entity.getY()),
+                    util.Util.dist(e2.getX(), e2.getY(), entity.getX(), entity.getY()))).get();
+        }
 
-        // TODO find the closest enemy in detected range or location of last enemy?
+        // TODO location of last enemy seen?
 
         // Returns the enemy king, assuming no fog of war. Could return closest king. Temporary for now? TODO
         return model.getAllEntities().parallelStream().filter(e -> e.has(Entity.EntityProperty.TEAM) && e.getTeam() != entity.getTeam() &&
                 e.has(Entity.EntityProperty.ROLE) && e.<Role>get(Entity.EntityProperty.ROLE) == Role.KING).findFirst().get();
     }
+
+    /**
+     * Check if entity b is in the line of sight of entity a. Line of sight
+     * would be a circle of a set radius around the entity not blocked by any
+     * walls or hard objects. Entity b should be given as an enemy of entity
+     * a. Return true if entity b is in the line of sight of entity a;
+     * return false otherwise.
+     * http://playtechs.blogspot.com/2007/03/raytracing-on-grid.html
+     * @param a entity looking
+     * @param b entity to check for line of sight
+     * @return true if b is in the line of sight of a
+     */
+    boolean checkLineOfSight(Entity a, Entity b, ServerGameModel model) {
+        // Get x and y coordinate of both entities.
+        double ax = a.getX();
+        double ay = a.getY();
+        double bx = b.getX();
+        double by = b.getY();
+
+        // Find how far in each component the two entities are.
+        double dy = Math.abs(by - ay);
+        double dx = Math.abs(bx - ax);
+
+        int x = (int) Math.floor(a.getX());
+        int y = (int) Math.floor(a.getY());
+
+        // Number of grid cells to check.
+        int n = 1;
+
+        // How much to increment x, y after each grid cell check. Should be -1, 0, or 1.
+        int xinc, yinc;
+        double error;
+
+        if (dx == 0) {
+            xinc = 0;
+            error = Double.POSITIVE_INFINITY;
+        } else if (bx > ax) {
+            xinc = 1;
+            n += (int) Math.floor(bx) - x;
+            error = (Math.floor(ax) + 1 - ax) * dy;
+        } else {
+            xinc = -1;
+            n += x - (int) Math.floor(bx);
+            error = (ax - Math.floor(ax)) * dy;
+        }
+
+        if (dy == 0) {
+            yinc = 0;
+            error -= Double.POSITIVE_INFINITY;
+        } else if (by > ay) {
+            yinc = 1;
+            n += (int) Math.floor(by) - y;
+            error -= (Math.floor(ay) + 1 - ay) * dx;
+        } else {
+            yinc = -1;
+            n += y - (int) Math.floor(by);
+            error -= (ay - Math.floor(ay)) * dx;
+        }
+
+        while (true) {
+
+            // Check if cell x, y has a wall.
+            if (!model.getCell(x, y).isPassable())
+                return false;
+
+            if (--n == 0)
+                break;
+
+            if (error > 0) {
+                y += yinc;
+                error -= dx;
+            } else if (error < 0) {
+                x += xinc;
+                error += dy;
+            } else {
+                // Error = 0 case. Intersects the corner of a grid cell. Need to check
+                // all of the 3 other corners.
+                // May need to check this case.
+                if (!model.getCell(x - 1, y - 1).isPassable() || !model.getCell(x - 1, y).isPassable() ||
+                        !model.getCell(x, y - 1).isPassable())
+                    return false;
+                x += xinc;
+                y += yinc;
+                error += (dy - dx);
+                n--;
+            }
+        }
+        return true;
+    }
+
+    // Look at for fov/los: http://www.adammil.net/blog/v125_Roguelike_Vision_Algorithms.html
 
     /**
      * Makes the minion wander around. This is performed as a last resort, if there are no
@@ -346,19 +478,19 @@ public abstract class MinionStrat extends AIStrat {
 
         // First, scan for any attackable enemies if the minion can attack.
         // If there are any attackable enemies, perform the appropriate action.
-        data.attackable = attackableEnemies(entity, model);
-        if (data.attackable.size() > 0) {
-            handleEnemyAttackable();
-            return;
-        }
-
-        // Next, scan for any enemies in the area. If there are enemies in the range,
-        // perform the appropriate action.
-        data.detected = detectedEnemies(entity, model);
-        if (data.detected.size() > 0) {
-            handleEnemyDetected();
-            return;
-        }
+//        data.attackable = attackableEnemies(entity, model);
+//        if (data.attackable.size() > 0) {
+//            handleEnemyAttackable();
+//            return;
+//        }
+//
+//        // Next, scan for any enemies in the area. If there are enemies in the range,
+//        // perform the appropriate action.
+//        data.detected = detectedEnemies(entity, model);
+//        if (data.detected.size() > 0) {
+//            handleEnemyDetected();
+//            return;
+//        }
 
         // If the minion has no other tasks to do, attack or handle detected enemies, it
         // should "wander." This is either moving on a set path to perform a task or

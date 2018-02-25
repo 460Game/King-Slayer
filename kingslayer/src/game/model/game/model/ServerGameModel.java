@@ -1,6 +1,7 @@
 package game.model.game.model;
 
 import com.esotericsoftware.minlog.Log;
+import game.ai.Astar;
 import game.message.*;
 import game.message.toClient.*;
 import game.model.game.map.ServerMapGenerator;
@@ -9,6 +10,7 @@ import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import lobby.PlayerInfo;
 import util.Const;
 
@@ -29,8 +31,11 @@ public class ServerGameModel extends GameModel {
 
     private Map<? extends Model, PlayerInfo> clientToPlayerInfo;
 
+    private Astar astar;
+
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
     private Thread updateThread;
+    TimerTask updateTimerTask;
 
     public TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
 
@@ -80,9 +85,10 @@ public class ServerGameModel extends GameModel {
 
         clients.forEach(client -> {
             getEntity(teamRoleEntityMap.getEntity(clientToPlayerInfo.get(client).getTeam(),
-                    clientToPlayerInfo.get(client).getRole())).setOrAdd(PLAYER_NAME, "Test");
-            System.out.println((String)getEntity(teamRoleEntityMap.getEntity(clientToPlayerInfo.get(client).getTeam(),
-                    clientToPlayerInfo.get(client).getRole())).get(PLAYER_NAME));
+                    clientToPlayerInfo.get(client).getRole())).setOrAdd(PLAYER_NAME,
+                    clientToPlayerInfoMap.get(client).getPlayerName());
+//            System.out.println((String)getEntity(teamRoleEntityMap.getEntity(clientToPlayerInfo.get(client).getTeam(),
+//                    clientToPlayerInfo.get(client).getRole())).get(PLAYER_NAME));
         });
 
         // Send all entities to clients
@@ -108,10 +114,13 @@ public class ServerGameModel extends GameModel {
 
         // TODO @tian set each client to the role/team the want
         clients.forEach(client -> {
-            Log.info("!!!!!!!client player: " + clientToPlayerInfo.get(client).getTeam() + clientToPlayerInfo.get(client).getRole());
+            Log.info("!!!!!!!client player: " +
+                    clientToPlayerInfo.get(client).getTeam() + clientToPlayerInfo.get(client).getRole());
             client.processMessage(new InitGameCommand(clientToPlayerInfo.get(client).getTeam(),
                     clientToPlayerInfo.get(client).getRole(), teamRoleEntityMap, tiles));
         });
+
+        astar = new Astar(this);
     }
 
     @Override
@@ -180,7 +189,7 @@ public class ServerGameModel extends GameModel {
             t.scheduleAtFixedRate(updateFPS, 1000, 1000);
         }
 
-        TimerTask updateTimerTask = new TimerTask() {
+        updateTimerTask = new TimerTask() {
             public void run() {
                 doAICount[0]++;
                 totalFrameCount[0]++;
@@ -209,6 +218,9 @@ public class ServerGameModel extends GameModel {
         teamRoleEntityMap = null;
         clients = null;
         t.cancel();
+
+        updateTimerTask.cancel();
+
         System.out.println("old server model stop");
     }
 
@@ -219,6 +231,8 @@ public class ServerGameModel extends GameModel {
 
     public void makeEntity(Entity e) {
         this.setEntity(e);
+        if (e.getCollideType() == CollisionStrat.CollideType.HARD)
+            astar.updateModel(this);
     }
 
     @Override
@@ -227,7 +241,16 @@ public class ServerGameModel extends GameModel {
     }
 
     public void removeByID(long entityID) {
+        boolean isHard = false;
+        if (getEntity(entityID).getCollideType() == CollisionStrat.CollideType.HARD)
+            isHard = true;
         super.removeByID(entityID);
         clients.forEach(client -> client.processMessage(new RemoveEntityCommand(entityID)));
+        if (isHard)
+            astar.updateModel(this);
+    }
+
+    public Astar getAstar() {
+        return astar;
     }
 }
