@@ -231,9 +231,11 @@ public abstract class MinionStrat extends AIStrat {
 
             model.processMessage(new SetEntityCommand(entity));
 
-            Random rand = new Random();
-            if (rand.nextDouble() < 0.1)
-                model.changeResource(entity.getTeam(), TeamResourceData.Resource.WOOD, 1);
+            System.out.println(checkLineOfSight(entity, king, model));
+//
+//            Random rand = new Random();
+//            if (rand.nextDouble() < 0.1)
+//                model.changeResource(entity.getTeam(), TeamResourceData.Resource.WOOD, 1);
         }
     }
 
@@ -287,7 +289,9 @@ public abstract class MinionStrat extends AIStrat {
         // If there are any in LOS within detect range or around a wall with a closer range (maybe)
         // put that in the collection of entities that minion can detect.
         // ignore arrows or try to dodge
-        return new HashSet<>();
+        Collection<Entity> enemies = new HashSet<>();
+
+        return enemies;
     }
 
     /**
@@ -324,6 +328,90 @@ public abstract class MinionStrat extends AIStrat {
         return model.getAllEntities().parallelStream().filter(e -> e.has(Entity.EntityProperty.TEAM) && e.getTeam() != entity.getTeam() &&
                 e.has(Entity.EntityProperty.ROLE) && e.<Role>get(Entity.EntityProperty.ROLE) == Role.KING).findFirst().get();
     }
+
+    /**
+     * Check if entity b is in the line of sight of entity a. Line of sight
+     * would be a circle of a set radius around the entity not blocked by any
+     * walls or hard objects. Entity b should be given as an enemy of entity
+     * a. Return true if entity b is in the line of sight of entity a;
+     * return false otherwise.
+     * http://playtechs.blogspot.com/2007/03/raytracing-on-grid.html
+     * @param a entity looking
+     * @param b entity to check for line of sight
+     * @return true if b is in the line of sight of a
+     */
+    boolean checkLineOfSight(Entity a, Entity b, ServerGameModel model) {
+        double ax = a.getX();
+        double ay = a.getY();
+        double bx = b.getX();
+        double by = b.getY();
+
+        double dy = Math.abs(by - ay);
+        double dx = Math.abs(bx - ax);
+
+        int x = (int) Math.floor(a.getX());
+        int y = (int) Math.floor(a.getY());
+
+        int n = 1;
+        int xinc, yinc;
+        double error;
+
+        if (dx == 0) {
+            xinc = 0;
+            error = Double.POSITIVE_INFINITY;
+        } else if (bx > ax) {
+            xinc = 1;
+            n += (int) Math.floor(bx) - x;
+            error = (Math.floor(ax) + 1 - ax) * dy;
+        } else {
+            xinc = -1;
+            n += x - (int) Math.floor(bx);
+            error = (ax - Math.floor(ax)) * dy;
+        }
+
+        if (dy == 0) {
+            yinc = 0;
+            error -= Double.POSITIVE_INFINITY;
+        } else if (by > ay) {
+            yinc = 1;
+            n += (int) Math.floor(by) - y;
+            error -= (Math.floor(ay) + 1 - ay) * dx;
+        } else {
+            yinc = -1;
+            n += y - (int) Math.floor(by);
+            error -= (ay - Math.floor(ay)) * dx;
+        }
+
+        while (true) {
+
+            // check for los here on x,y
+            if (!model.getCell(x, y).isPassable())
+                return false;
+
+            if (--n == 0)
+                break;
+
+            if (error > 0) {
+                y += yinc;
+                error -= dx;
+            } else if (error < 0) {
+                x += xinc;
+                error += dy;
+            } else {
+                // error == 0 case
+                if (!model.getCell(x - 1, y - 1).isPassable())
+                    return false;
+                x += xinc;
+                y += yinc;
+                error += (dy - dx);
+                n--;
+                // need to check if goes directly between 2 impassable cells
+            }
+        }
+        return true;
+    }
+
+    // Look at for fov/los: http://www.adammil.net/blog/v125_Roguelike_Vision_Algorithms.html
 
     /**
      * Makes the minion wander around. This is performed as a last resort, if there are no
