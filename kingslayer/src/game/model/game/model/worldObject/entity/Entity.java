@@ -218,11 +218,32 @@ public class Entity {
             gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - 30, (getHealth() / 100) * 20, 3);
         }
 
-        if (!this.invincible() && this.getData().get(ROLE) != null) {
+        if (!this.invincible() && this.getData().get(ROLE) == Role.KING) {
             gc.setFill(Color.RED);
             gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, 40, 6);
             gc.setFill(Color.GREEN);
             gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, (getHealth() / 100) * 40, 6);
+            gc.setStroke(Color.WHITE);
+//            System.out.println((String)get(PLAYER_NAME));
+            String name = this.get(PLAYER_NAME);
+            if (name.length() >= 1) {
+//                System.out.println("Hello");
+                gc.strokeText(name, toDrawCoords(getX()) - 3.5 * name.length(), toDrawCoords(getY()) - 30);
+            }
+        }
+
+        if (!this.invincible() && this.getData().get(ROLE) == Role.SLAYER) {
+            gc.setFill(Color.RED);
+            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, 40, 6);
+            gc.setFill(Color.GREEN);
+            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, (getHealth() / 100) * 40, 6);
+
+            gc.setFill(Color.GREY);
+            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 24, 40, 6);
+            gc.setFill(Color.BLUE);
+            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 24,
+                    (((SlayerData)this.getData().get(SLAYER_DATA)).magic / 100) * 40, 6);
+
             gc.setStroke(Color.WHITE);
 //            System.out.println((String)get(PLAYER_NAME));
             String name = this.get(PLAYER_NAME);

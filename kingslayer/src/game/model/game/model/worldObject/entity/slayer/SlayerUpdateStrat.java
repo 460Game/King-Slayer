@@ -13,6 +13,10 @@ public class SlayerUpdateStrat extends MovingStrat {
     public void update(Entity entity, GameModel model) {
         SlayerData slayerData = SlayerData.copyOf((SlayerData) entity.get(Entity.EntityProperty.SLAYER_DATA));
 
+        if (slayerData.magic < 100) {
+            slayerData.magic++;
+        }
+
         if (slayerData.meleeLastTime > 0) {
 
             slayerData.meleeLastTime -= entity.timeDelta;
