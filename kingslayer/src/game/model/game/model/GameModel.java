@@ -141,6 +141,7 @@ public abstract class GameModel implements Model {
         entities.values().forEach(e -> e.update(this, modelCurrentTime));
         entities.values().forEach(e -> e.updateCells(this));
         allCells.forEach(cell -> cell.collideContents(this));
+        allCells.forEach(cell -> cell.updateLOS(this));
 
         this.execute(serverGameModel -> {
             entities.values().forEach(e -> {

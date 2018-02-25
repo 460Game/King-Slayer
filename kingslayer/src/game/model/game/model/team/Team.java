@@ -10,12 +10,12 @@ public enum Team {
     /**
      * Team 1's players, minions, and towers.
      */
-    ONE(1, Color.RED),
+    ONE(0, Color.RED),
 
     /**
      * Team 2's players, minions, and towers.
      */
-    TWO(2, Color.BLUE);
+    TWO(1, Color.BLUE);
 
     /**
      * Team number of the entity.
