@@ -28,7 +28,6 @@ public class SellEntityRequest implements ToServerRequest {
    */
   @Override
   public void executeServer(ServerGameModel model) {
-    System.out.println("deleting, level: " + entity.<Integer>get(Entity.EntityProperty.LEVEL));
     if (entity.has(Entity.EntityProperty.LEVEL)) {
       model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL)), 5);
       model.removeByID(entity.id);
