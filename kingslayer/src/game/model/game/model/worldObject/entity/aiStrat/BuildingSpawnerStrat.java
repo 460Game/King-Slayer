@@ -114,7 +114,8 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         @Override
         int maxActive(Entity entity) {
 //            System.out.println("level: " + entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 10));
-            return 10 + 5 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0); // TODO change back later
+//            return 10 + 5 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0); // TODO change back later
+            return 1;
         }
 
         @Override
@@ -169,13 +170,13 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
     @Override
     public void init(Entity entity) {
-        Log.info("INIT AI " + entity);
+//        Log.info("INIT AI " + entity);
         entity.add(AI_DATA, new BuildingSpawnerStratAIData());
     }
 
     @Override
     public void updateAI(Entity entity, ServerGameModel model, double seconds) {
-        Log.info("UPDATE AI " + entity);
+//        Log.info("UPDATE AI " + entity);
         BuildingSpawnerStratAIData data = entity.<BuildingSpawnerStratAIData>get(AI_DATA);
         data.elapsedTime += seconds;
         while (data.elapsedTime > timeBetweenSpawns(entity)) {
