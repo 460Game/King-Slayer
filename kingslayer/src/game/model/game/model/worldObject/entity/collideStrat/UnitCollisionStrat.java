@@ -2,11 +2,15 @@ package game.model.game.model.worldObject.entity.collideStrat;
 
 import com.esotericsoftware.minlog.Log;
 import game.model.game.model.GameModel;
+import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.slayer.SlayerData;
 import util.Const;
 import util.Util;
 
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.ROLE;
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.SLAYER_DATA;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.TEAM;
 import static java.lang.Math.PI;
 import static util.Const.*;
@@ -30,8 +34,19 @@ public class UnitCollisionStrat extends SoftCollisionStrat {
         a.translateY(-1.5 * Math.sin(collisionAngle) * a.timeDelta);
 
         if (a.has(TEAM) && b.has(TEAM) && a.get(TEAM) != b.get(TEAM)) {
-            a.decreaseHealthBy(model,  a.timeDelta);
-            b.decreaseHealthBy(model, b.timeDelta);
+            if (a.has(ROLE)) {
+                if (a.get(ROLE) == Role.SLAYER) {
+                    if (((SlayerData)a.get(SLAYER_DATA)).meleeLastTime > 0) {
+                        b.decreaseHealthBy(model, SlayerData.meleeDamage * b.timeDelta);
+                    } else {
+                        b.decreaseHealthBy(model, b.timeDelta);
+                    }
+                }
+            } else {
+//                a.decreaseHealthBy(model,  a.timeDelta);
+                b.decreaseHealthBy(model, b.timeDelta);
+            }
+
         }
     }
 
