@@ -195,8 +195,8 @@ public abstract class MinionStrat extends AIStrat {
 
             Astar astar = model.getAstar();
 
-            int entityx = (int) (double) entity.getX();
-            int entityy = (int) (double) entity.getY();
+            double entityx = entity.getX();
+            double entityy = entity.getY();
 
             if (!hasResource) {
 //                int x = astar.getClosestWood(model.getCell(entityx, entityy)).getTopLeftX();
@@ -206,20 +206,26 @@ public abstract class MinionStrat extends AIStrat {
 //                int y = getClosestCollector();
             }
 
-            int x = astar.getClosestWood(model.getCell(entityx, entityy)).getTopLeftX();
-            int y = astar.getClosestWood(model.getCell(entityx, entityy)).getTopLeftY();
+            // TODO case where collector is destroyed where does minion go?
 
-            // Check if path exists and king has moved, then generate a new path.
+            int x = astar.getClosestWood(model.getCell((int) entityx, (int) entityy)).getTopLeftX();
+            int y = astar.getClosestWood(model.getCell((int) entityx, (int) entityy)).getTopLeftY();
+
+            if (data.path.size() > 0)
+                System.out.println("Final destination cell: "+ data.path.get(data.path.size() - 1).getTopLeftX() + ", " +
+                    data.path.get(data.path.size() - 1).getTopLeftY());
+
+            // Check if path exists and resource disappeared, then generate a new path.
             if (data.path.size() > 0 && data.path.get(data.path.size() - 1).getTopLeftX() != x &&
                     data.path.get(data.path.size() - 1).getTopLeftY() != y) {
                 data.path.clear();
-                data.path = astar.astar(model.getCell(entityx, entityy), model.getCell(x, y));
+                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
 
             // If nothing in path and not at destination, generate a path.
             if (data.path.size() == 0 && entityx != x && entityy != y) {
-                data.path = astar.astar(model.getCell(entityx, entityy), model.getCell(x, y));
+                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
             // might need to check for empty path
@@ -227,7 +233,7 @@ public abstract class MinionStrat extends AIStrat {
             if (entityx == x && entityy == y)
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
             else if (data.path.size() > 0) {
-                if (entityx == data.path.get(0).getTopLeftX() && entityy == data.path.get(0).getTopLeftY())
+                if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY())
                     data.path.remove(0);
                 else {
                     // Keep moving if cells are in path.

@@ -50,6 +50,7 @@ public class Entity {
         Y(Double.class, PropType.PASSIVE_SYNC),
         TEAM(Team.class, PropType.ACTIVE_SYNC),
         ROLE(Role.class, PropType.ACTIVE_SYNC),
+        RESOURCETYPE(TeamResourceData.Resource.class, PropType.LOCAL_ONLY), //TODO change this
         DRAW_DATA(DrawData.class, PropType.LOCAL_ONLY),
         VELOCITY(Velocity.class, PropType.ACTIVE_SYNC),
         AI_STRAT(AIStrat.class, PropType.LOCAL_ONLY), // TODO change this

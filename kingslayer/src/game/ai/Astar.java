@@ -105,14 +105,8 @@ public class Astar {
      * @return a list of grid cells describing the path from the start to the end
      */
     public List<GridCell> astar(GridCell start, GridCell end) {
-        // TODO may need to include finding the traversable nodes
-//        findTraversableCells();
-//        GridCell c = findClosestPassable(end);
-//        System.out.println("End coords: " + end.getTopLeftX() + ", " + end.getTopLeftY());
-//        System.out.println("Closest coords: " + c.getTopLeftX() + ", " + c.getTopLeftY());
-
-        if (!passable.contains(end))
-            throw new RuntimeException("Destination cell is not passable.");
+//        if (!passable.contains(end))
+//            throw new RuntimeException("Destination cell is not passable.");
         // TODO may just pick a cell nearby.
 
         // Set of cells already considered.
@@ -134,12 +128,13 @@ public class Astar {
         Map<GridCell, Double> f = new HashMap<>();
 
         // Scores are set to infinity for all the cells in the beginning.
-        for (GridCell node : passable) {
-            g.put(node, Double.POSITIVE_INFINITY);
-            f.put(node, Double.POSITIVE_INFINITY);
+        for (GridCell cell : passable) {
+            g.put(cell, Double.POSITIVE_INFINITY);
+            f.put(cell, Double.POSITIVE_INFINITY);
         }
 
-//        System.out.println("Traversable passable : " + passable.size());
+        g.put(end, Double.POSITIVE_INFINITY);
+        f.put(end, Double.POSITIVE_INFINITY);
 
         // G-score of the start cell is 0. F-score of the start cell
         // is all heuristic. Add the start cell to the discovered
@@ -151,8 +146,6 @@ public class Astar {
         // Loop until the set of discovered, but not computed cells is
         // empty.
         while(!open.isEmpty()) {
-//            System.out.println("ANOTHER LOOP");
-
             // Temporary variables.
             GridCell current = start;
             double score = Double.POSITIVE_INFINITY;
@@ -177,7 +170,6 @@ public class Astar {
             // Look at all neighbors of the current cell, checking for the boundaries of the map.
             for (int i = Math.max(0, current.getTopLeftX() - 1); i <= Math.min(current.getTopLeftX() + 1, model.getMapWidth() - 1); i++) {
                 for (int j = Math.max(0, current.getTopLeftY() - 1); j <= Math.min(current.getTopLeftY() + 1, model.getMapHeight() - 1); j++) {
-//                    System.out.println(" ENTERING neighborLOOP at " + i + ", " + j);
 
                     // Check if the diagonals are passable.
                     if (!model.getCell(i, current.getTopLeftY()).isPassable() &&
@@ -188,7 +180,7 @@ public class Astar {
                     GridCell neighbor = model.getCell(i, j);
 
                     // If the neighbor is not passable, cannot be in the path.
-                    if (!this.passable.contains(neighbor))
+                    if (!this.passable.contains(neighbor) && !neighbor.equals(end))
                         continue;
 
                     // If the neighbor was already looked at, ignore it.
@@ -208,15 +200,12 @@ public class Astar {
                     if (tempg >= g.get(neighbor))
                         continue;
 
-//                    System.out.println("Calculated distance");
-
                     // Update the mappings of previous cells, g-scores, and f-scores.
                     prevCell.put(neighbor, current);
                     g.put(neighbor, tempg);
                     f.put(neighbor, g.get(neighbor) + heuristicValue(neighbor, end));
                 }
             }
-//            System.out.println("SIZE of open set: " + open.size());
         }
 
         // A* couldn't find a path due to obstacles
@@ -243,26 +232,15 @@ public class Astar {
             current = prevCells.get(current);
             path.add(0, current);
         }
-
-//        System.out.println("Path size: " + path.size());
-//        for (GridCell cell : path)
-//            System.out.println("Cell x, y: " + cell.getTopLeftX() + ", " + cell.getTopLeftY());
         return path;
     }
 
-//    /**
-//     * Finds a path using A* search given a starting cell and an ending cell. This path
-//     * is stored in the "path" field.
-//     * @param start the starting cell of the path
-//     * @param end the destination cell of the path
-//     */
-//    public void findPath(GridCell start, GridCell end) {
-//        passable = findTraversableCells();
-//        path = astar(start, end);
-//    }
-
     public void moveToCell(Entity e, GridCell cell) {
        e.setVelocity(e.getVelocity().withAngle(Math.atan2(cell.getCenterY() - e.getY(), cell.getCenterX() - e.getX())));
+    }
+
+    public void moveToPoint(Entity e, double x, double y) {
+        e.setVelocity(e.getVelocity().withAngle(Math.atan2(y - e.getY(), x - e.getX())));
     }
 
     /**
@@ -286,27 +264,28 @@ public class Astar {
         }
     }
 
-    // TODO call this whenever game model is updated.
     public void updateModel(ServerGameModel model) {
         this.model = model;
         cells = model.getAllCells();
         passable = findTraversableCells();
     }
 
-    public Set<GridCell> getWood() {
-        Set<GridCell> wood = new HashSet<>();
-        for(int x = 0; x < Const.GRID_X_SIZE; x++) {
-            for(int y = 0; y < Const.GRID_Y_SIZE; y++) {
-                if (model.getEntityAt(x, y) != null && model.getEntityAt(x, y).get(DRAW_STRAT) instanceof ImageDrawStrat.TreeImageDrawStrat) // Better way to check wood.
-                      wood.add(model.getCell(x, y));
-            }
-        }
-        return wood;
-    }
-
     public GridCell getClosestWood(GridCell cell) {
-        return getWood().parallelStream().min((c1, c2) ->
+        // TODO make more efficient
+        return model.getWood().parallelStream().min((c1, c2) ->
                 Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
                 Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
+    }
+
+    public GridCell getClosestStone(GridCell cell) {
+        return model.getStone().parallelStream().min((c1, c2) ->
+                Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
+                        Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
+    }
+
+    public GridCell getClosestMetal(GridCell cell) {
+        return model.getMetal().parallelStream().min((c1, c2) ->
+                Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
+                        Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
     }
 }
