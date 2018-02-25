@@ -10,8 +10,8 @@ public abstract class Images {
     public static final Image LOGO_TEXT_IMAGE = getImage("logotext.png");
     public static final Image CURSOR_IMAGE = getImage("cursor.png");
     public static final Image GAME_CURSOR_IMAGE = getImage("gamecursor.png");
-    //public static final Image UPGRADE_CURSOR_IMAGE = getImage("upgrade_cursor.png");
-    //public static final Image DELETE_CURSOR_IMAGE = getImage("delete_cursor.png");
+    public static final Image UPGRADE_CURSOR_IMAGE = getImage("upgrade_cursor.png");
+    public static final Image DELETE_CURSOR_IMAGE = getImage("delete_cursor.png");
 
     public static final Image WALL_BUILDABLE_IMAGE = getImage("wall_buildable.png");
     public static final Image WALLS_BUILDABLE_IMAGE = getImage("walls_buildable.png");
@@ -25,6 +25,8 @@ public abstract class Images {
     public static final Image BLUE_WOOD_BARRACKS_IMAGE = getImage("barracks_wood_blue.png");
     public static final Image RED_ARROW_TOWER_IMAGE = getImage("arrow_towers_red.png");
     public static final Image BLUE_ARROW_TOWER_IMAGE = getImage("arrow_towers_blue.png");
+    public static final Image RED_WOOD_ARROW_TOWER_IMAGE = getImage("arrow_tower_wood_red.png");
+    public static final Image BLUE_WOOD_ARROW_TOWER_IMAGE = getImage("arrow_tower_wood_blue.png");
 
     public static final Image TREASURE_IMAGE = getImage("treasure.png");
     public static final Image ARROW_IMAGE = getImage("arrow.png");

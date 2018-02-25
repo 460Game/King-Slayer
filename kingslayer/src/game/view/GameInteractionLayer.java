@@ -12,10 +12,9 @@ import javafx.scene.layout.Region;
 import util.Const;
 import util.Util;
 
-import static images.Images.CURSOR_IMAGE;
 //import static images.Images.DELETE_CURSOR_IMAGE;
-import static images.Images.GAME_CURSOR_IMAGE;
 //import static images.Images.UPGRADE_CURSOR_IMAGE;
+import static images.Images.*;
 import static javafx.scene.input.KeyCode.*;
 import static javafx.scene.input.KeyCode.DIGIT3;
 import static javafx.scene.input.KeyCode.DIGIT4;
@@ -50,9 +49,9 @@ public class GameInteractionLayer extends Region {
                             model.getLocalPlayer().getTeam(),
                             TeamResourceData.Resource.WOOD,
                             cost));
+                    model.remove(placingGhost);
+                    placing = null;
                 }
-                model.remove(placingGhost);
-                placing = null;
             } else if (upgrading) {
                 Entity entity = model.getEntityAt(x.intValue(), y.intValue());
                 System.out.println("clicked at " + x + " " + y + " and hit entity " + entity);
@@ -193,14 +192,14 @@ public class GameInteractionLayer extends Region {
 
             if (kc == E) {
                 if (model.getLocalPlayer().getRole() == Role.KING) {
-                    //    world.setCursor(new ImageCursor(UPGRADE_CURSOR_IMAGE, UPGRADE_CURSOR_IMAGE.getWidth() / 2, UPGRADE_CURSOR_IMAGE.getHeight() / 2));
+                    world.setCursor(new ImageCursor(UPGRADE_CURSOR_IMAGE, UPGRADE_CURSOR_IMAGE.getWidth() / 2, UPGRADE_CURSOR_IMAGE.getHeight() / 2));
                     upgrading = true;
                 }
             }
 
             if (kc == Q) {
                 if (model.getLocalPlayer().getRole() == Role.KING) {
-                   // world.setCursor(new ImageCursor(DELETE_CURSOR_IMAGE, DELETE_CURSOR_IMAGE.getWidth() / 2, DELETE_CURSOR_IMAGE.getHeight() / 2));
+                    world.setCursor(new ImageCursor(DELETE_CURSOR_IMAGE, DELETE_CURSOR_IMAGE.getWidth() / 2, DELETE_CURSOR_IMAGE.getHeight() / 2));
                     deleting = true;
                 }
             }

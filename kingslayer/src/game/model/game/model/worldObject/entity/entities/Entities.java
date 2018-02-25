@@ -175,7 +175,7 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 GhostCollisionStrat.SINGLETON,
                 pair(TEAM, team),
-                pair(DRAW_STRAT, UpgradableImageDrawStrat.ARROW_TOWER),
+                pair(DRAW_STRAT, GhostDrawStrat.GHOST_ARROW_TOWER),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
     }
 
