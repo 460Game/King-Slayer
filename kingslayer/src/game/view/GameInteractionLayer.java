@@ -129,14 +129,12 @@ public class GameInteractionLayer extends Region {
             if ((kc == DIGIT1 || kc == NUMPAD1) && model.getLocalPlayer().getRole() == Role.KING) {
                 if (!selectingBarracks) {
                     placingGhost = Entities.makeGhostWall(0, 0);
-                    spawner = new EntitySpawner((point, team) -> Entities.makeBuiltWall(point.getKey(), point.getValue(), team),
-                        TeamResourceData.Resource.WOOD, -10, 0, 0);
+                    spawner = EntitySpawner.WALL_SPAWNER;
 //                    placing = Entities.makeBuiltWall(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
                 } else {
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-                    spawner = new EntitySpawner((point, team) -> Entities.makeMeleeBarracks(point.getKey(), point.getValue(), team),
-                        TeamResourceData.Resource.WOOD, -10, 0, 0);
+                    spawner = EntitySpawner.MELEE_BARRACKS_SPAWNER;
 //                    placing = Entities.makeMeleeBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
 
@@ -147,14 +145,12 @@ public class GameInteractionLayer extends Region {
             if ((kc == DIGIT2 || kc == NUMPAD2) && model.getLocalPlayer().getRole() == Role.KING) {
                 if (!selectingBarracks) {
                     placingGhost = Entities.makeResourceCollectorGhost(0, 0, model.getLocalPlayer().getTeam());
-                    spawner = new EntitySpawner((point, team) -> Entities.makeResourceCollector(point.getKey(), point.getValue(), team),
-                        TeamResourceData.Resource.WOOD, -10, 0, 0);
+                    spawner = EntitySpawner.RESOURCE_COLLETOR_SPAWNER;
 //                    placing = Entities.makeResourceCollector(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
                 } else {
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-                    spawner = new EntitySpawner((point, team) -> Entities.makeRangedBarracks(point.getKey(), point.getValue(), team),
-                        TeamResourceData.Resource.WOOD, -10, 0, 0);
+                    spawner = EntitySpawner.RANGED_BARRACKS_SPAWNER;
 //                    placing = Entities.makeRangedBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
 
@@ -167,8 +163,7 @@ public class GameInteractionLayer extends Region {
                     selectingBarracks = true;
                 } else {
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-                    spawner = new EntitySpawner((point, team) -> Entities.makeSiegeBarracks(point.getKey(), point.getValue(), team),
-                        TeamResourceData.Resource.WOOD, -10, 0, 0);
+                    spawner = EntitySpawner.SIEGE_BARRACKS_SPAWNER;
 //                    placing = Entities.makeSiegeBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
 
@@ -180,15 +175,13 @@ public class GameInteractionLayer extends Region {
                 if (!selectingBarracks) {
                     if (model.getLocalPlayer().getRole() == Role.KING) {
                         placingGhost = Entities.makeArrowTowerGhost(0, 0, model.getLocalPlayer().getTeam());
-                        spawner = new EntitySpawner((point, team) -> Entities.makeArrowTower(point.getKey(), point.getValue(), team),
-                            TeamResourceData.Resource.WOOD, -20, 0, 0);
+                        spawner = EntitySpawner.ARROW_TOWER_SPAWNER;
 //                        placing = Entities.makeArrowTower(0, 0, model.getLocalPlayer().getTeam());
                         model.processMessage(new NewEntityCommand(placingGhost));
                     }
                 } else {
                     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-                    spawner = new EntitySpawner((point, team) -> Entities.makeExplorationBarracks(point.getKey(), point.getValue(), team),
-                        TeamResourceData.Resource.WOOD, -10, 0, 0);
+                    spawner = EntitySpawner.EXPLORATION_BARRACKS_SPAWNER;
 //                    placing = Entities.makeExplorationBarracks(0, 0, model.getLocalPlayer().getTeam());
                     model.processMessage(new NewEntityCommand(placingGhost));
 
