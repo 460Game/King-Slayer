@@ -242,7 +242,7 @@ public class Entity {
             gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 24, 40, 6);
             gc.setFill(Color.BLUE);
             gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 24,
-                    (((SlayerData)this.getData().get(SLAYER_DATA)).magic / 100) * 40, 6);
+                    (((SlayerData)this.getData().get(SLAYER_DATA)).magic / 100.00) * 40, 6);
 
             gc.setStroke(Color.WHITE);
 //            System.out.println((String)get(PLAYER_NAME));

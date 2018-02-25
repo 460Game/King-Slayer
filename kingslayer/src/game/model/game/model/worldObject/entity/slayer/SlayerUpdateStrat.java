@@ -14,13 +14,12 @@ public class SlayerUpdateStrat extends MovingStrat {
         SlayerData slayerData = SlayerData.copyOf((SlayerData) entity.get(Entity.EntityProperty.SLAYER_DATA));
 
         if (slayerData.magic < 100) {
-            slayerData.magic++;
+            slayerData.magic += 1 * entity.timeDelta;
         }
 
         if (slayerData.meleeLastTime > 0) {
 
             slayerData.meleeLastTime -= entity.timeDelta;
-            entity.set(Entity.EntityProperty.SLAYER_DATA, slayerData);
             Velocity v = new Velocity().withMagnitude(SlayerData.meleeSpeed).withAngle(slayerData.meleeAngle);
             entity.translateX( v.getVx()
                     * entity.timeDelta);
@@ -30,6 +29,7 @@ public class SlayerUpdateStrat extends MovingStrat {
             entity.translateX(entity.getVelocity().getVx() * entity.timeDelta);
             entity.translateY(entity.getVelocity().getVy() * entity.timeDelta);
         }
+        entity.set(Entity.EntityProperty.SLAYER_DATA, slayerData);
 
     }
 }

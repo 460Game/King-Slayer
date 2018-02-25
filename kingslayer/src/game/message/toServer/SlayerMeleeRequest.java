@@ -44,12 +44,12 @@ public class SlayerMeleeRequest extends ActionRequest {
         //TODO: make sure I can simply set it here
         SlayerData curSlayerData =
                 SlayerData.copyOf((SlayerData)model.getEntity(id).get(Entity.EntityProperty.SLAYER_DATA));
-        if (curSlayerData.meleeLastTime > 0) {
+        if (curSlayerData.meleeLastTime > 0 || curSlayerData.magic < SlayerData.meleeCost) {
             return;
         } else {
             curSlayerData.meleeLastTime = 0.5;
             curSlayerData.meleeAngle = angle;
-
+            curSlayerData.magic -= SlayerData.meleeCost;
         }
 
         model.getEntity(id).set(Entity.EntityProperty.SLAYER_DATA, curSlayerData);
