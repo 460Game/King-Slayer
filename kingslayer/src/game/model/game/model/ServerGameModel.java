@@ -35,6 +35,7 @@ public class ServerGameModel extends GameModel {
 
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
     private Thread updateThread;
+    TimerTask updateTimerTask;
 
     public TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
 
@@ -84,9 +85,10 @@ public class ServerGameModel extends GameModel {
 
         clients.forEach(client -> {
             getEntity(teamRoleEntityMap.getEntity(clientToPlayerInfo.get(client).getTeam(),
-                    clientToPlayerInfo.get(client).getRole())).setOrAdd(PLAYER_NAME, "Test");
-            System.out.println((String)getEntity(teamRoleEntityMap.getEntity(clientToPlayerInfo.get(client).getTeam(),
-                    clientToPlayerInfo.get(client).getRole())).get(PLAYER_NAME));
+                    clientToPlayerInfo.get(client).getRole())).setOrAdd(PLAYER_NAME,
+                    clientToPlayerInfoMap.get(client).getPlayerName());
+//            System.out.println((String)getEntity(teamRoleEntityMap.getEntity(clientToPlayerInfo.get(client).getTeam(),
+//                    clientToPlayerInfo.get(client).getRole())).get(PLAYER_NAME));
         });
 
         // Send all entities to clients
@@ -112,7 +114,8 @@ public class ServerGameModel extends GameModel {
 
         // TODO @tian set each client to the role/team the want
         clients.forEach(client -> {
-            Log.info("!!!!!!!client player: " + clientToPlayerInfo.get(client).getTeam() + clientToPlayerInfo.get(client).getRole());
+            Log.info("!!!!!!!client player: " +
+                    clientToPlayerInfo.get(client).getTeam() + clientToPlayerInfo.get(client).getRole());
             client.processMessage(new InitGameCommand(clientToPlayerInfo.get(client).getTeam(),
                     clientToPlayerInfo.get(client).getRole(), teamRoleEntityMap, tiles));
         });
@@ -186,7 +189,7 @@ public class ServerGameModel extends GameModel {
             t.scheduleAtFixedRate(updateFPS, 1000, 1000);
         }
 
-        TimerTask updateTimerTask = new TimerTask() {
+        updateTimerTask = new TimerTask() {
             public void run() {
                 doAICount[0]++;
                 totalFrameCount[0]++;
@@ -215,6 +218,9 @@ public class ServerGameModel extends GameModel {
         teamRoleEntityMap = null;
         clients = null;
         t.cancel();
+
+        updateTimerTask.cancel();
+
         System.out.println("old server model stop");
     }
 
