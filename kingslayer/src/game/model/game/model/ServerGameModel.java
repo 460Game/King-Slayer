@@ -4,6 +4,7 @@ import com.esotericsoftware.minlog.Log;
 import game.ai.Astar;
 import game.message.*;
 import game.message.toClient.*;
+import game.model.game.grid.GridCell;
 import game.model.game.map.ServerMapGenerator;
 import game.model.game.map.Tile;
 import game.model.game.model.team.Team;
@@ -16,8 +17,10 @@ import util.Const;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.PLAYER_NAME;
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.RESOURCETYPE;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.TEAM;
 import static util.Const.*;
 
@@ -32,6 +35,12 @@ public class ServerGameModel extends GameModel {
     private Map<? extends Model, PlayerInfo> clientToPlayerInfo;
 
     private Astar astar;
+
+    private Collection<GridCell> wood;
+
+    private Collection<GridCell> stone;
+
+    private Collection<GridCell> metal;
 
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
     private Thread updateThread;
@@ -121,6 +130,10 @@ public class ServerGameModel extends GameModel {
         });
 
         astar = new Astar(this);
+
+        wood = new HashSet<>();
+        stone = new HashSet<>();
+        metal = new HashSet<>();
     }
 
     @Override
@@ -241,16 +254,59 @@ public class ServerGameModel extends GameModel {
     }
 
     public void removeByID(long entityID) {
+        // Check if wall/tree/building/hard object is being removed.
         boolean isHard = false;
         if (getEntity(entityID).getCollideType() == CollisionStrat.CollideType.HARD)
             isHard = true;
+
+        // Check if the entity removed is a tree. If so, remove that cell from the corresponding resource set.
+        if (getEntity(entityID).has(RESOURCETYPE)) {
+            if (getEntity(entityID).get(RESOURCETYPE) == TeamResourceData.Resource.WOOD)
+                wood.remove(getCell((int) (double) getEntity(entityID).getX(), (int) (double) getEntity(entityID).getY()));
+            else if (getEntity(entityID).get(RESOURCETYPE) == TeamResourceData.Resource.STONE)
+                stone.remove(getCell((int) (double) getEntity(entityID).getX(), (int) (double) getEntity(entityID).getY()));
+            else if (getEntity(entityID).get(RESOURCETYPE) == TeamResourceData.Resource.METAL)
+                metal.remove(getCell((int) (double) getEntity(entityID).getX(), (int) (double) getEntity(entityID).getY()));
+        }
+
         super.removeByID(entityID);
         clients.forEach(client -> client.processMessage(new RemoveEntityCommand(entityID)));
+
+        // Update model used in astar if a hard object is removed.
         if (isHard)
             astar.updateModel(this);
     }
 
     public Astar getAstar() {
         return astar;
+    }
+
+    public Collection<GridCell> getWood() { return wood; }
+
+    public Collection<GridCell> getStone() { return stone; }
+
+    public Collection<GridCell> getMetal() { return metal; }
+
+    @Override
+    public void update() {
+        super.update();
+        if (wood.isEmpty()) {
+            Set<Entity> woods = getAllEntities().stream().filter(e -> e.has(RESOURCETYPE)
+                    && e.get(RESOURCETYPE) == TeamResourceData.Resource.WOOD).collect(Collectors.toSet());
+            for (Entity e : woods)
+                wood.addAll(e.containedIn);
+        }
+        if (stone.isEmpty()) {
+            Set<Entity> stones = getAllEntities().stream().filter(e -> e.has(RESOURCETYPE)
+                    && e.get(RESOURCETYPE) == TeamResourceData.Resource.STONE).collect(Collectors.toSet());
+            for (Entity e : stones)
+                stone.addAll(e.containedIn);
+        }
+        if (metal.isEmpty()) {
+            Set<Entity> metals = getAllEntities().stream().filter(e -> e.has(RESOURCETYPE)
+                    && e.get(RESOURCETYPE) == TeamResourceData.Resource.METAL).collect(Collectors.toSet());
+            for (Entity e : metals)
+                metal.addAll(e.containedIn);
+        }
     }
 }

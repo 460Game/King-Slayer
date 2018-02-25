@@ -1,6 +1,7 @@
 package game.model.game.model.worldObject.entity.entities;
 
 import game.model.game.model.team.Team;
+import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.aiStrat.BuildingSpawnerStrat;
 import game.model.game.model.worldObject.entity.collideStrat.*;
@@ -32,6 +33,7 @@ public class Entities {
         return new Entity(x, y,
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
+                pair(RESOURCETYPE, TeamResourceData.Resource.WOOD),
                 pair(DRAW_STRAT, ImageDrawStrat.TREE_IMAGE_DRAW_STRAT)); // TODO death
     }
 
@@ -39,6 +41,7 @@ public class Entities {
         return new Entity(x, y,
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
+                pair(RESOURCETYPE, TeamResourceData.Resource.STONE),
                 pair(DRAW_STRAT, ImageDrawStrat.STONE_IMAGE_DRAW_STRAT)); // TODO death
     }
 
@@ -46,6 +49,7 @@ public class Entities {
         return new Entity(x, y,
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
+                pair(RESOURCETYPE, TeamResourceData.Resource.METAL),
                 pair(DRAW_STRAT, ImageDrawStrat.METAL_IMAGE_DRAW_STRAT)); // TODO death
     }
 
