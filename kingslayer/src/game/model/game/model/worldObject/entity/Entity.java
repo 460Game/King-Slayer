@@ -1,6 +1,5 @@
 package game.model.game.model.worldObject.entity;
 
-import com.esotericsoftware.minlog.Log;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.ServerGameModel;
@@ -34,7 +33,8 @@ public class Entity {
         ON_CHANGE_ONLY, //sent only if changed on server
         ACTIVE_SYNC, //will queue an update to the client if changed
         PASSIVE_SYNC, //Will be sent along with any active sync items on every change
-        LOCAL_ONLY; // sent only with intial copy from server to client (no garentees on when intial copy is sent)
+        LOCAL_ONLY, // sent only with intial copy from server to client (no garentees on when intial copy is sent)
+        SERVER_ONLY; //used by server and only server - not serializable
     }
 
     /**
@@ -52,8 +52,8 @@ public class Entity {
         ROLE(Role.class, PropType.ACTIVE_SYNC),
         DRAW_DATA(DrawData.class, PropType.LOCAL_ONLY),
         VELOCITY(Velocity.class, PropType.ACTIVE_SYNC),
-        AI_STRAT(AIStrat.class, PropType.LOCAL_ONLY),
-        AI_DATA(AIData.class, PropType.LOCAL_ONLY),
+        AI_STRAT(AIStrat.class, PropType.SERVER_ONLY),
+        AI_DATA(AIData.class, PropType.SERVER_ONLY),
         DRAW_STRAT(DrawStrat.class, PropType.ON_CHANGE_ONLY),
         UPDATE_STRAT(UpdateStrat.class, PropType.ON_CHANGE_ONLY),
         COLLISION_STRAT(CollisionStrat.class, PropType.ON_CHANGE_ONLY),
@@ -69,6 +69,7 @@ public class Entity {
         public final PropType sync;
     }
 
+    private transient EnumMap<Entity.EntityProperty, Object> serverMap = new EnumMap<>(EntityProperty.class);
     private EnumMap<Entity.EntityProperty, Object> localMap = new EnumMap<>(EntityProperty.class);
     private EnumMap<Entity.EntityProperty, Object> dataMap = new EnumMap<>(EntityProperty.class);
 
@@ -89,39 +90,43 @@ public class Entity {
     }
 
     public <T> T getOrDefault(EntityProperty key, T def) {
-        if(has(key))
+        if (has(key))
             return this.<T>get(key);
         else return def;
     }
 
     public <T> T get(EntityProperty key) {
-        if(!has(key))
+        if (!has(key))
             throw new RuntimeException("key " + key + " does not exist in " + this);
+        if (key.sync == PropType.SERVER_ONLY)
+            return (T) serverMap.get(key);
         if (key.sync == PropType.LOCAL_ONLY || key.sync == PropType.ON_CHANGE_ONLY)
             return (T) localMap.get(key);
         return (T) dataMap.get(key);
     }
 
     public boolean has(EntityProperty key) {
+        if (key.sync == PropType.SERVER_ONLY)
+            return serverMap.containsKey(key);
         if (key.sync == PropType.LOCAL_ONLY || key.sync == PropType.ON_CHANGE_ONLY)
             return localMap.containsKey(key);
         return dataMap.containsKey(key);
     }
 
     public <T> void setOrAdd(EntityProperty key, T value) {
-        if (key.sync == PropType.LOCAL_ONLY || key.sync == PropType.ON_CHANGE_ONLY) {
+        if (key.sync == PropType.SERVER_ONLY) {
+            serverMap.put(key, key.type.cast(value));
+        } else if (key.sync == PropType.LOCAL_ONLY || key.sync == PropType.ON_CHANGE_ONLY) {
             localMap.put(key, key.type.cast(value));
-            if(key.sync == PropType.ON_CHANGE_ONLY)
+            if (key.sync == PropType.ON_CHANGE_ONLY)
                 syncRequiredFeilds.add(key);
-        }
-        else {
+        } else {
             dataMap.put(key, key.type.cast(value));
 
             if (key.sync == PropType.ACTIVE_SYNC)
                 needSync = true;
         }
     }
-
 
     public <T> void add(EntityProperty key, T value) {
         if (has(key))
@@ -243,8 +248,8 @@ public class Entity {
     }
 
     public void translateX(double d) {
-        if(d!= 0)
-        this.setX(this.getX() + d);
+        if (d != 0)
+            this.setX(this.getX() + d);
     }
 
     public void setY(double y) {
@@ -252,8 +257,8 @@ public class Entity {
     }
 
     public void translateY(double d) {
-        if(d != 0)
-        this.setY(this.getY() + d);
+        if (d != 0)
+            this.setY(this.getY() + d);
     }
 
     private boolean invincible() {
