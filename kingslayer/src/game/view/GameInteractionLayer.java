@@ -71,6 +71,7 @@ public class GameInteractionLayer extends Region {
                 }
             } else if (model.getLocalPlayer().getRole() == Role.SLAYER) {
                 double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
+                System.out.println("angle1: " + angle);
                 model.processMessage(new SlayerMeleeRequest(model.getLocalPlayer().id,
                         model.getLocalPlayer().getX(),
                         model.getLocalPlayer().getY(),

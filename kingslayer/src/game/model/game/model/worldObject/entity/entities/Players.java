@@ -12,6 +12,7 @@ import game.model.game.model.worldObject.entity.drawStrat.AnimateDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.AnimationDrawData;
 import game.model.game.model.worldObject.entity.drawStrat.DirectionAnimationDrawStrat;
 import game.model.game.model.worldObject.entity.slayer.SlayerData;
+import game.model.game.model.worldObject.entity.slayer.SlayerUpdateStrat;
 import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.*;
@@ -33,7 +34,7 @@ public class Players {
             pair(HEALTH, 100.0),
             pair(TEAM, team),
             pair(ROLE, Role.SLAYER),
-            pair(UPDATE_STRAT, MovingStrat.SINGLETON),
+            pair(UPDATE_STRAT, SlayerUpdateStrat.SINGLETON),
             pair(DRAW_STRAT, DirectionAnimationDrawStrat.SLAYER_ANIMATION),
             pair(DEATH_STRAT, SlayerDeathStrat.SINGLETON),
             pair(DRAW_DATA, AnimationDrawData.makeAnimated()),

@@ -2,6 +2,8 @@ package game.message.toServer;
 
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
+import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.slayer.SlayerData;
 
 public class SlayerMeleeRequest extends ActionRequest {
     /**
@@ -36,8 +38,21 @@ public class SlayerMeleeRequest extends ActionRequest {
         this.angle = angle;
         this.team = team;
     }
+
     @Override
     public void executeServer(ServerGameModel model) {
-//        model.getEntity(id).setOrAdd();
+        //TODO: make sure I can simply set it here
+        SlayerData curSlayerData =
+                SlayerData.copyOf((SlayerData)model.getEntity(id).get(Entity.EntityProperty.SLAYER_DATA));
+        if (curSlayerData.meleeLastTime > 0) {
+            return;
+        } else {
+            curSlayerData.meleeLastTime = 0.5;
+            curSlayerData.meleeAngle = angle;
+
+        }
+
+        model.getEntity(id).set(Entity.EntityProperty.SLAYER_DATA, curSlayerData);
+
     }
 }
