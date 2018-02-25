@@ -1,6 +1,5 @@
 package game.model.game.model.worldObject.entity.entities;
 
-import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.aiStrat.BuildingSpawnerStrat;
@@ -88,7 +87,7 @@ public class Entities {
                 HardCollisionStrat.SINGLETON,
                 pair(HEALTH, 100.0),
                 pair(TEAM, team),
-                pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_RESOURCE_COLLECTOR),
+                pair(DRAW_STRAT, UpgradableImageDrawStrat.RESOURCE_COLLECTOR),
                 pair(AI_STRAT, BuildingSpawnerStrat.ResourceCollectorBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(LEVEL, 0));
@@ -108,7 +107,7 @@ public class Entities {
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
                 pair(HEALTH, 100.0),
-                pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_BARRACKS),
+                pair(DRAW_STRAT, UpgradableImageDrawStrat.BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.MeleeBarracksBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(LEVEL, 0));
@@ -120,7 +119,7 @@ public class Entities {
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
                 pair(HEALTH, 100.0),
-                pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_BARRACKS),
+                pair(DRAW_STRAT, UpgradableImageDrawStrat.BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(LEVEL, 0));
@@ -132,7 +131,7 @@ public class Entities {
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
                 pair(HEALTH, 100.0),
-                pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_BARRACKS),
+                pair(DRAW_STRAT, UpgradableImageDrawStrat.BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.SiegeBarracksBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(LEVEL, 0));
@@ -144,7 +143,7 @@ public class Entities {
             HardCollisionStrat.SINGLETON,
             pair(TEAM, team),
             pair(HEALTH, 100.0),
-            pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_BARRACKS),
+            pair(DRAW_STRAT, UpgradableImageDrawStrat.BARRACKS),
             pair(AI_STRAT, BuildingSpawnerStrat.ExplorationBarracksBuildingSpawnerStrat.SINGLETON),
             pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
             pair(LEVEL, 0));
@@ -165,7 +164,7 @@ public class Entities {
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
                 pair(HEALTH, 100.0),
-                pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_ARROW_TOWER),
+                pair(DRAW_STRAT, UpgradableImageDrawStrat.ARROW_TOWER),
                 pair(AI_STRAT, BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(LEVEL, 0));
@@ -176,7 +175,7 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 GhostCollisionStrat.SINGLETON,
                 pair(TEAM, team),
-                pair(DRAW_STRAT, UpgradableImageDrawStrat.WOOD_ARROW_TOWER),
+                pair(DRAW_STRAT, UpgradableImageDrawStrat.ARROW_TOWER),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
     }
 
