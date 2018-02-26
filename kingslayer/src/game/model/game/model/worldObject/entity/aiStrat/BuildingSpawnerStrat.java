@@ -38,7 +38,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity) {
             Entity minion = Minions.makeMeleeMinion(x, y + 1, team);
-            minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
+           // minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
     }
@@ -60,7 +60,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity) {
             Entity minion = Minions.makeRangedMinion(x, y + 1, team);
-            minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
+         //   minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
     }
@@ -82,7 +82,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity) {
             Entity minion = Minions.makeSiegeMinion(x, y + 1, team);
-            minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
+          //  minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
     }
@@ -104,7 +104,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity) {
             Entity minion = Minions.makeExplorationMinion(x, y + 1, team);
-            minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
+           // minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
     }
@@ -128,7 +128,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity) {
             Entity minion = Minions.makeResourceMinion(x, y + 1, team);
-            minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
+         //   minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
     }

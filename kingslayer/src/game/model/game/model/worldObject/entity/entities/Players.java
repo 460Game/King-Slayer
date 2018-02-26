@@ -31,7 +31,7 @@ public class Players {
         return new Entity(x, y,
             hitbox,
             UnitCollisionStrat.SINGLETON,
-            pair(HEALTH, 100.0),
+            pair(HEALTH, 50.0),
             pair(TEAM, team),
             pair(ROLE, Role.SLAYER),
             pair(UPDATE_STRAT, SlayerUpdateStrat.SINGLETON),
@@ -39,7 +39,8 @@ public class Players {
             pair(DEATH_STRAT, SlayerDeathStrat.SINGLETON),
             pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
             pair(SLAYER_DATA, new SlayerData()),
-        pair(SIGHT_RADIUS, 5));
+        pair(SIGHT_RADIUS, 5),
+                pair(MAX_HEALTH, 50.0));
     }
 
     public static Entity makeKing(double x, double y, Team team) {
@@ -47,13 +48,14 @@ public class Players {
         return new Entity(x, y,
             hitbox,
             UnitCollisionStrat.SINGLETON,
-            pair(HEALTH, 100.0),
+            pair(HEALTH, 75.0),
             pair(TEAM, team),
             pair(ROLE, Role.KING),
             pair(UPDATE_STRAT, MovingStrat.SINGLETON),
             pair(DRAW_STRAT, DirectionAnimationDrawStrat.KING_ANIMATION),
             pair(DEATH_STRAT, KingDeathStrat.SINGLETON),
             pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
-                pair(SIGHT_RADIUS, 7));
+                pair(SIGHT_RADIUS, 7),
+                pair(MAX_HEALTH, 75.0));
     }
 }

@@ -31,6 +31,7 @@ import static util.Util.toDrawCoords;
  */
 public class Entity {
 
+
     private enum PropType {
         ON_CHANGE_ONLY, //sent only if changed on server
         ACTIVE_SYNC, //will queue an update to the client if changed
@@ -47,6 +48,7 @@ public class Entity {
         LAST_UPDATE_TIME(Long.class, PropType.PASSIVE_SYNC),
         LEVEL(Integer.class, PropType.ACTIVE_SYNC),
         HEALTH(Double.class, PropType.ACTIVE_SYNC),
+        MAX_HEALTH(Double.class, PropType.ACTIVE_SYNC),
         HITBOX(Hitbox.class, PropType.ACTIVE_SYNC),
         X(Double.class, PropType.PASSIVE_SYNC),
         Y(Double.class, PropType.PASSIVE_SYNC),
@@ -222,14 +224,14 @@ public class Entity {
             gc.setFill(Color.RED);
             gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - 30, 20, 3);
             gc.setFill(Color.GREEN);
-            gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - 30, (getHealth() / 100) * 20, 3);
+            gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - 30, (getHealth() / getMaxHealth()) * 20, 3);
         }
 
         if (!this.invincible() && this.getData().get(ROLE) == Role.KING) {
             gc.setFill(Color.RED);
             gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, 40, 6);
             gc.setFill(Color.GREEN);
-            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, (getHealth() / 100) * 40, 6);
+            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, (getHealth() / getMaxHealth()) * 40, 6);
             gc.setStroke(Color.WHITE);
 //            System.out.println((String)get(PLAYER_NAME));
             String name = this.get(PLAYER_NAME);
@@ -243,7 +245,7 @@ public class Entity {
             gc.setFill(Color.RED);
             gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, 40, 6);
             gc.setFill(Color.GREEN);
-            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, (getHealth() / 100) * 40, 6);
+            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, (getHealth() / getMaxHealth()) * 40, 6);
 
             gc.setFill(Color.GREY);
             gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 24, 40, 6);
@@ -412,6 +414,10 @@ public class Entity {
 
     public double getHealth() {
         return this.get(HEALTH);
+    }
+
+    public double getMaxHealth() {
+        return this.get(MAX_HEALTH);
     }
 
     public void onDeath(ServerCallBack deathHandler) {

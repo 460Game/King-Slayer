@@ -22,71 +22,76 @@ public class Minions {
 
     public static Entity makeMeleeMinion(double x, double y, Team team) {
         return new Entity(x, y,
-            hitbox,
-            UnitCollisionStrat.SINGLETON,
-            pair(HEALTH, 5.0),
-            pair(TEAM, team),
-            pair(UPDATE_STRAT, MovingStrat.SINGLETON),
-            pair(DRAW_STRAT, DirectionAnimationDrawStrat.MELEE_ANIMATION),
-            pair(AI_STRAT, MinionStrat.MeleeMinionStrat.SINGLETON), // TODO what is this?
-            pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
-            pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
-                pair(SIGHT_RADIUS, 3));
+                hitbox,
+                UnitCollisionStrat.SINGLETON,
+                pair(TEAM, team),
+                pair(UPDATE_STRAT, MovingStrat.SINGLETON),
+                pair(DRAW_STRAT, DirectionAnimationDrawStrat.MELEE_ANIMATION),
+                pair(AI_STRAT, MinionStrat.MeleeMinionStrat.SINGLETON), // TODO what is this?
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
+                pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
+                pair(SIGHT_RADIUS, 3),
+                pair(HEALTH, 5.0),
+                pair(MAX_HEALTH, 5.0));
     }
 
     public static Entity makeRangedMinion(double x, double y, Team team) {
         return new Entity(x, y,
-            hitbox,
-            UnitCollisionStrat.SINGLETON,
-            pair(HEALTH, 5.0),
-            pair(TEAM, team),
-            pair(UPDATE_STRAT, MovingStrat.SINGLETON),
-            pair(DRAW_STRAT, DirectionAnimationDrawStrat.RANGED_ANIMATION),
-            pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON),
-            pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
-            pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
-                pair(SIGHT_RADIUS, 3));
+                hitbox,
+                UnitCollisionStrat.SINGLETON,
+                pair(TEAM, team),
+                pair(UPDATE_STRAT, MovingStrat.SINGLETON),
+                pair(DRAW_STRAT, DirectionAnimationDrawStrat.RANGED_ANIMATION),
+                pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON),
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
+                pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
+                pair(SIGHT_RADIUS, 3),
+                pair(HEALTH, 5.0),
+                pair(MAX_HEALTH, 5.0));
     }
 
     public static Entity makeSiegeMinion(double x, double y, Team team) {
         return new Entity(x, y,
-            hitbox,
-            UnitCollisionStrat.SINGLETON,
-            pair(HEALTH, 5.0),
-            pair(TEAM, team),
-            pair(UPDATE_STRAT, MovingStrat.SINGLETON),
-            pair(DRAW_STRAT, DirectionAnimationDrawStrat.SIEGE_ANIMATION),
-            pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON), // TODO
-            pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
-            pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
-                pair(SIGHT_RADIUS, 3));
+                hitbox,
+                UnitCollisionStrat.SINGLETON,
+                pair(TEAM, team),
+                pair(UPDATE_STRAT, MovingStrat.SINGLETON),
+                pair(DRAW_STRAT, DirectionAnimationDrawStrat.SIEGE_ANIMATION),
+                pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON), // TODO
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
+                pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
+                pair(SIGHT_RADIUS, 3),
+                pair(HEALTH, 5.0),
+                pair(MAX_HEALTH, 5.0));
     }
 
     public static Entity makeExplorationMinion(double x, double y, Team team) {
         return new Entity(x, y,
-            hitbox,
-            UnitCollisionStrat.SINGLETON,
-            pair(HEALTH, 5.0),
-            pair(TEAM, team),
-            pair(UPDATE_STRAT, MovingStrat.SINGLETON),
-            pair(DRAW_STRAT, DirectionAnimationDrawStrat.EXPLORATION_ANIMATION),
-            pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON), // TODO
-            pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
-            pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
-                pair(SIGHT_RADIUS, 4));
+                hitbox,
+                UnitCollisionStrat.SINGLETON,
+                pair(TEAM, team),
+                pair(UPDATE_STRAT, MovingStrat.SINGLETON),
+                pair(DRAW_STRAT, DirectionAnimationDrawStrat.EXPLORATION_ANIMATION),
+                pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON), // TODO
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
+                pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
+                pair(SIGHT_RADIUS, 4),
+                pair(HEALTH, 5.0),
+                pair(MAX_HEALTH, 5.0));
     }
 
     public static Entity makeResourceMinion(double x, double y, Team team) {
         return new Entity(x, y,
-            hitbox,
-            UnitCollisionStrat.SINGLETON,
-            pair(HEALTH, 5.0),
-            pair(TEAM, team),
-            pair(UPDATE_STRAT, MovingStrat.SINGLETON),
-            pair(DRAW_STRAT, DirectionAnimationDrawStrat.RESOURCE_MINION_ANIMATION),
-            pair(AI_STRAT, MinionStrat.ResourceMinionStrat.SINGLETON),
-            pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
-            pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
-                pair(SIGHT_RADIUS, 3));
+                hitbox,
+                UnitCollisionStrat.SINGLETON,
+                pair(TEAM, team),
+                pair(UPDATE_STRAT, MovingStrat.SINGLETON),
+                pair(DRAW_STRAT, DirectionAnimationDrawStrat.RESOURCE_MINION_ANIMATION),
+                pair(AI_STRAT, MinionStrat.ResourceMinionStrat.SINGLETON),
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
+                pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
+                pair(SIGHT_RADIUS, 3),
+                pair(HEALTH, 5.0),
+                pair(MAX_HEALTH, 5.0));
     }
 }
