@@ -2,7 +2,7 @@ package game.model.game.model.worldObject.entity.slayer;
 
 public class SlayerData {
     public final static int meleeSpeed = 8;
-    public final static int meleeDamage = 10;
+    public final static int meleeDamage = 50;
     public final static int arrowCost = 10;
     public final static int meleeCost = 5;
 

@@ -69,7 +69,7 @@ public enum Tile {
      *
      * @return color of the tile
      */
-    public Paint getColor() {
+    public Color getColor() {
         return color;
     }
 }

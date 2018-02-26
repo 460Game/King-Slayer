@@ -16,12 +16,16 @@ import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
+import util.Util;
 
 import java.util.Comparator;
 import java.util.function.Consumer;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_STRAT;
 import static util.Const.DEBUG_DRAW;
+import static util.Util.toDrawCoords;
+import static util.Util.toWorldCoords;
 
 public class ClientGameModel extends GameModel {
 
@@ -105,7 +109,15 @@ public class ClientGameModel extends GameModel {
      * @return
      */
     public void drawForeground(GraphicsContext gc, double x, double y, double w, double h) {
-        this.streamCells().flatMap(GridCell::streamContents).filter(entity -> entity.has(DRAW_STRAT)).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc, this));
+        this.streamCells().filter(cell -> cell.isVisable(this.getLocalPlayer().getTeam())).flatMap(GridCell::streamContents).filter(entity -> entity.has(DRAW_STRAT)).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc, this));
+        this.streamCells().filter(cell -> !cell.isVisable(this.getLocalPlayer().getTeam())).forEach(cell -> {
+            if(cell.isExplored(this.getLocalPlayer().getTeam()))
+                gc.setFill(Color.color(0,0,0,0.3));
+            else
+                gc.setFill(Color.GRAY);
+            gc.fillRect(toDrawCoords(cell.getTopLeftX()), toDrawCoords(cell.getTopLeftY()), toDrawCoords(1), toDrawCoords(1));
+
+        });
 
         if(DEBUG_DRAW)
             this.streamCells().flatMap(GridCell::streamContents).forEach(a -> a.getHitbox().draw(gc, a));

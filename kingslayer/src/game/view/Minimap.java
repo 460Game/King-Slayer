@@ -1,5 +1,6 @@
 package game.view;
 
+import game.model.game.model.ClientGameModel;
 import game.model.game.model.GameModel;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.scene.ImageCursor;
@@ -18,11 +19,11 @@ import static images.Images.CURSOR_IMAGE;
 public class Minimap extends Region {
 
     private WorldPanel world;
-    private GameModel model;
+    private ClientGameModel model;
     private Canvas minimapCanvas;
     private GraphicsContext minimapGC;
 
-    Minimap(GameModel model, WorldPanel world) {
+    Minimap(ClientGameModel model, WorldPanel world) {
         this.model = model;
         this.world = world;
         minimapCanvas = new Canvas();
@@ -55,7 +56,12 @@ public class Minimap extends Region {
                  //   if(model.getCell(x,y).streamContents().filter(e -> e.) != 0)
                 //        minimapGC.setFill(Color.BLACK);
                 //    else
+                    if(model.getCell(x,y).isVisable(model.getLocalPlayer().getTeam()))
                         minimapGC.setFill(model.getTile(x, y).getColor());
+                    else if(model.getCell(x,y).isExplored(model.getLocalPlayer().getTeam()))
+                        minimapGC.setFill(model.getTile(x, y).getColor().interpolate(Color.BLACK, 0.7));
+                    else
+                        minimapGC.setFill(Color.BLACK);
                     minimapGC.fillRect(x, y, 2, 2);
                 }
             }
@@ -69,6 +75,8 @@ public class Minimap extends Region {
                     minimapGC.fillOval(player.getX(), player.getY(), 1, 1);
                 }
             }
+
+            minimapGC.setStroke(Color.WHITE);
             minimapGC.strokeRect(world.getCamX() - world.getCamW()/2, world.getCamY() - world.getCamH()/2, world.getCamW(), world.getCamH());
         }
     }
