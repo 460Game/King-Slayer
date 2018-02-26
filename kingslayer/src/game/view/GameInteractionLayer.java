@@ -81,8 +81,10 @@ public class GameInteractionLayer extends Region {
                 spawner = null;
             } else if (upgrading) {
                 upgrading = false;
+                world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
             } else if (deleting) {
                 deleting = false;
+                world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
             } else if (selectingBarracks) {
                 selectingBarracks = false;
             } else if (model.getLocalPlayer().getRole() == Role.SLAYER) {
@@ -92,6 +94,10 @@ public class GameInteractionLayer extends Region {
                         model.getLocalPlayer().getY(),
                         angle, model.getLocalPlayer().getTeam()));
             }
+
+//            if (spawner != null) {
+//                world.
+//            }
         });
 
         world.onGameMouseMove((x, y) -> {
