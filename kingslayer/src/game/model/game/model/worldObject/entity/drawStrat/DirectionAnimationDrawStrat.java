@@ -109,7 +109,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
             if (slayerData.meleeLastTime > 0) {
                 ColorAdjust colorAdjust = new ColorAdjust();
                 colorAdjust.setBrightness(0.5);
-                colorAdjust.setHue(0.6);
+//                colorAdjust.setHue(0.6);
                 gc.setEffect(colorAdjust);
 //                gc.applyEffect(colorAdjust);
             }
