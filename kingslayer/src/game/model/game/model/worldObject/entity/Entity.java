@@ -51,11 +51,13 @@ public class Entity {
         Y(Double.class, PropType.PASSIVE_SYNC),
         TEAM(Team.class, PropType.ACTIVE_SYNC),
         ROLE(Role.class, PropType.ACTIVE_SYNC),
-        RESOURCETYPE(TeamResourceData.Resource.class, PropType.LOCAL_ONLY), //TODO change this
+        RESOURCETYPE(TeamResourceData.Resource.class, PropType.SERVER_ONLY),
+        RESOURCEAMOUNT(Integer.class, PropType.SERVER_ONLY),
+        BUILDINGTYPE(BuildingSpawnerStrat.BuildingType.class, PropType.SERVER_ONLY),
         DRAW_DATA(DrawData.class, PropType.LOCAL_ONLY),
         VELOCITY(Velocity.class, PropType.ACTIVE_SYNC),
-        AI_STRAT(AIStrat.class, PropType.SERVER_ONLY), // TODO change this
-        AI_DATA(AIData.class, PropType.SERVER_ONLY), // TODO change this
+        AI_STRAT(AIStrat.class, PropType.SERVER_ONLY),
+        AI_DATA(AIData.class, PropType.SERVER_ONLY),
         DRAW_STRAT(DrawStrat.class, PropType.ON_CHANGE_ONLY),
         UPDATE_STRAT(UpdateStrat.class, PropType.ON_CHANGE_ONLY),
         COLLISION_STRAT(CollisionStrat.class, PropType.ON_CHANGE_ONLY),
@@ -340,6 +342,10 @@ public class Entity {
 
             updateStrat.update(this, model);
         });
+//
+//        if (has(RESOURCEAMOUNT) && (int) get(RESOURCEAMOUNT) <= 0) {
+//            entityDie(model);
+//        }
     }
 
     public void upgrade() {
@@ -395,6 +401,12 @@ public class Entity {
         this.set(HEALTH, this.<Double>get(HEALTH) - decrement);
         if (this.<Double>get(HEALTH) <= 0)
             entityDie(model);
+    }
+
+    public void decreaseResourceAmount(GameModel model, int decrement) {
+        this.set(RESOURCEAMOUNT, (int) get(RESOURCEAMOUNT) - decrement);
+        if ((int) this.get(RESOURCEAMOUNT) <= 0)
+            entityDie(model); // TODO FIX THIS
     }
 
     public double getHealth() {

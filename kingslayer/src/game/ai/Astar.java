@@ -2,6 +2,7 @@ package game.ai;
 
 import game.model.game.grid.GridCell;
 import game.model.game.model.ServerGameModel;
+import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
 import javafx.scene.canvas.GraphicsContext;
@@ -287,5 +288,17 @@ public class Astar {
         return model.getMetal().parallelStream().min((c1, c2) ->
                 Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
                         Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
+    }
+
+    public GridCell getClosestCollector(GridCell cell, Team team) {
+        if (team == Team.ONE)
+            return model.getTeam1collector().parallelStream().min((c1, c2) ->
+                    Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
+                            Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
+        else
+            return model.getTeam2collector().parallelStream().min((c1, c2) ->
+                Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
+                        Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
+        // TODO support multiple teams
     }
 }

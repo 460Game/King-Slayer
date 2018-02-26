@@ -95,4 +95,8 @@ public abstract class Const {
     public static final int LEVEL_WOOD = 0;
     public static final int LEVEL_STONE = 1;
     public static final int LEVEL_METAL = 2;
+
+    public static final int FIRST_LEVEL_WOOD_COLLECTED = 5;
+    public static final int SECOND_LEVEL_WOOD_COLLECTED = 10;
+    public static final int THIRD_LEVEL_WOOD_COLLECTED = 15;
 }
