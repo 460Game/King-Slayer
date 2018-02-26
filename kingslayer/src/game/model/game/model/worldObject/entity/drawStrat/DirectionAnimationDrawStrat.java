@@ -75,7 +75,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
         AnimationDrawData drawData = entity.<AnimationDrawData>get(DRAW_DATA);
 
         double angle = 0;
-        if (entity.getRole() == Role.SLAYER) {//Think of a better way to handle it.
+        if (entity.has(ROLE) && entity.getRole() == Role.SLAYER) {//Think of a better way to handle it.
 
             SlayerData slayerData = (SlayerData) entity.getData().get(SLAYER_DATA);
             if (slayerData.meleeLastTime > 0) {
