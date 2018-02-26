@@ -407,7 +407,7 @@ public class Entity {
     public void decreaseResourceAmount(GameModel model, int decrement) {
         this.set(RESOURCEAMOUNT, (int) get(RESOURCEAMOUNT) - decrement);
         if ((int) this.get(RESOURCEAMOUNT) <= 0)
-            model.processMessage(new RemoveEntityRequest(this)); // TODO FIX THIS
+            model.processMessage(new RemoveEntityRequest(this));
     }
 
     public double getHealth() {

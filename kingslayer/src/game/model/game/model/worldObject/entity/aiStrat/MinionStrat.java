@@ -46,37 +46,36 @@ public abstract class MinionStrat extends AIStrat {
 
         @Override
         void wander(MinionStratAIData data, Entity entity, ServerGameModel model) {
-            // TODO make this work with only one initialized astar in the model.
-            Astar astar = new Astar(model);
-//            Astar astar = model.getAstar();
 
+            Astar astar = model.getAstar();
+
+            // Get current position.
+            double entityx = entity.getX();
+            double entityy = entity.getY();
+
+            // Get destination.
             Entity king = getClosestEnemy(data, entity, model);
-            int entityx = (int) (double) entity.getX();
-            int entityy = (int) (double) entity.getY();
             int x = (int) (double) model.getEntity(king.id).getX();
             int y = (int) (double) model.getEntity(king.id).getY();
-//            int x = astar.getClosestWood(model.getCell(entityx, entityy)).getTopLeftX();
-//            int y = astar.getClosestWood(model.getCell(entityx, entityy)).getTopLeftY();
 
             // Check if path exists and king has moved, then generate a new path.
-            if (data.path.size() > 0 && data.path.get(data.path.size() - 1).getTopLeftX() != x &&
-                    data.path.get(data.path.size() - 1).getTopLeftY() != y) {
+            if (data.path.size() > 0 && !king.containedIn.contains(data.path.get(data.path.size() - 1))) {
                 data.path.clear();
-                data.path = astar.astar(model.getCell(entityx, entityy), model.getCell(x, y));
+                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
-            // If nothing in path and not at destination, generate a path.
-
-            if (data.path.size() == 0 && entityx != x && entityy != y) {
-                data.path = astar.astar(model.getCell(entityx, entityy), model.getCell(x, y));
+            // If nothing in path and not at destination, generate a path. TODO might need better check
+            if (data.path.size() == 0 && !entity.checkCollision(king.getHitbox(), king.getX(), king.getY())) {//entityx != x && entityy != y) {
+                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
-            // might need to check for empty path
-
-            if (entityx == x && entityy == y)
+            // Check if reached destination.
+            if (entity.containedIn.contains(model.getCell(x, y))) {
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
+                data.path.clear();
+            }
             else if (data.path.size() > 0) {
-                if (entityx == data.path.get(0).getTopLeftX() && entityy == data.path.get(0).getTopLeftY())
+                if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY())
                     data.path.remove(0);
                 else {
                     // Keep moving if cells are in path.
@@ -122,35 +121,35 @@ public abstract class MinionStrat extends AIStrat {
         @Override
         void wander(MinionStratAIData data, Entity entity, ServerGameModel model) {
 
-            // TODO make this work with only one initialized astar in the model.
-            Astar astar = new Astar(model);
-//            Astar astar = model.getAstar();
+            Astar astar = model.getAstar();
 
-            Entity enemy = getClosestEnemy(data, entity, model);
-            int entityx = (int) (double) entity.getX();
-            int entityy = (int) (double) entity.getY();
-            int x = (int) (double) model.getEntity(enemy.id).getX();
-            int y = (int) (double) model.getEntity(enemy.id).getY();
+            // Get current position.
+            double entityx = entity.getX();
+            double entityy = entity.getY();
 
-            // Check if path exists and enemy has moved, then generate a new path.
-            if (data.path.size() > 0 && data.path.get(data.path.size() - 1).getTopLeftX() != x &&
-                    data.path.get(data.path.size() - 1).getTopLeftY() != y) {
+            // Get destination.
+            Entity king = getClosestEnemy(data, entity, model);
+            int x = (int) (double) model.getEntity(king.id).getX();
+            int y = (int) (double) model.getEntity(king.id).getY();
+
+            // Check if path exists and king has moved, then generate a new path.
+            if (data.path.size() > 0 && !king.containedIn.contains(data.path.get(data.path.size() - 1))) {
                 data.path.clear();
-                data.path = astar.astar(model.getCell(entityx, entityy), model.getCell(x, y));
+                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
-            // If nothing in path and not at destination, generate a path.
-
-            if (data.path.size() == 0 && entityx != x && entityy != y) {
-                data.path = astar.astar(model.getCell(entityx, entityy), model.getCell(x, y));
+            // If nothing in path and not at destination, generate a path. TODO might need better check
+            if (data.path.size() == 0 && !entity.checkCollision(king.getHitbox(), king.getX(), king.getY())) {//entityx != x && entityy != y) {
+                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
-            // might need to check for empty path
-
-            if (entityx == x && entityy == y)
+            // Check if reached destination.
+            if (entity.containedIn.contains(model.getCell(x, y))) {
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
+                data.path.clear();
+            }
             else if (data.path.size() > 0) {
-                if (entityx == data.path.get(0).getTopLeftX() && entityy == data.path.get(0).getTopLeftY())
+                if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY())
                     data.path.remove(0);
                 else {
                     // Keep moving if cells are in path.
@@ -167,10 +166,6 @@ public abstract class MinionStrat extends AIStrat {
     public static class ResourceMinionStrat extends MinionStrat {
 
         public static final ResourceMinionStrat SINGLETON = new ResourceMinionStrat();
-
-        private static boolean hasResource = false;
-
-        private static int resourceHeld = 0;
 
         @Override
         double attackRange() {
@@ -206,7 +201,7 @@ public abstract class MinionStrat extends AIStrat {
             int x, y;
 
             // Check if the minion should go to a resource or back to a collector.
-            if (!hasResource) {
+            if (!data.hasResource) {
                 x = astar.getClosestWood(model.getCell((int) entityx, (int) entityy)).getTopLeftX();
                 y = astar.getClosestWood(model.getCell((int) entityx, (int) entityy)).getTopLeftY();
             } else {
@@ -235,13 +230,13 @@ public abstract class MinionStrat extends AIStrat {
                 data.path.clear();
 
                 // Update resource counts if applicable, and change path destination.
-                hasResource = !hasResource;
-                if (hasResource) {
-                    resourceHeld += Math.min(Const.FIRST_LEVEL_WOOD_COLLECTED, model.getEntityAt(x, y).get(Entity.EntityProperty.RESOURCEAMOUNT));
-                    model.getEntityAt(x, y).decreaseResourceAmount(model, resourceHeld);
+                data.hasResource = !data.hasResource;
+                if (data.hasResource) {
+                    data.resourceHeld += Math.min(Const.FIRST_LEVEL_WOOD_COLLECTED, model.getEntityAt(x, y).get(Entity.EntityProperty.RESOURCEAMOUNT));
+                    model.getEntityAt(x, y).decreaseResourceAmount(model, data.resourceHeld);
                 } else {
-                    model.changeResource(entity.getTeam(), TeamResourceData.Resource.WOOD, resourceHeld); // TODO change this to match lvl.
-                    resourceHeld = 0;
+                    model.changeResource(entity.getTeam(), TeamResourceData.Resource.WOOD, data.resourceHeld); // TODO change this to match lvl.
+                    data.resourceHeld = 0;
                 }
             } else if (data.path.size() > 0) {
                 if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY())
@@ -262,11 +257,15 @@ public abstract class MinionStrat extends AIStrat {
         private List<GridCell> path;
         private Collection<Entity> detected;
         private Collection<Entity> attackable;
+        private boolean hasResource;
+        private int resourceHeld;
 
         MinionStratAIData() {
             path = new ArrayList<>();
             detected = new HashSet<>();
             attackable = new HashSet<>();
+            hasResource = false;
+            resourceHeld = 0;
         }
     }
 

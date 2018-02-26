@@ -1,5 +1,6 @@
 package game.ai;
 
+import com.esotericsoftware.minlog.Log;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
@@ -210,8 +211,8 @@ public class Astar {
         }
 
         // A* couldn't find a path due to obstacles
-        throw new RuntimeException("A* failed to produce a path.");
-        // TODO fix diagonal paths where tiles cannot be passed through
+        Log.error("A* failed to produce a path.");
+        return new LinkedList<>();
     }
 
     /**
