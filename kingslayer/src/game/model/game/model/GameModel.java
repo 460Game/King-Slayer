@@ -107,12 +107,8 @@ public abstract class GameModel implements Model {
         return grid[x][y].getTile();
     }
 
-    public Entity getEntityAt(int x, int y) {
-        for (Entity e: getAllEntities()) {
-            if ((int) (double)e.getX() == x && (int) (double)e.getY() == y)
-                return e;
-        }
-        return null;
+    public Collection<Entity> getEntitiesAt(int x, int y) {
+        return getCell(x, y).getContents();
     }
 
     /**

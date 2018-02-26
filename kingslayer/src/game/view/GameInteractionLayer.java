@@ -4,7 +4,6 @@ import game.message.toClient.NewEntityCommand;
 import game.message.toServer.*;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.team.Role;
-import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntitySpawner;
 import game.model.game.model.worldObject.entity.entities.Entities;
@@ -20,7 +19,6 @@ import static javafx.scene.input.KeyCode.*;
 import static javafx.scene.input.KeyCode.DIGIT3;
 import static javafx.scene.input.KeyCode.DIGIT4;
 import static javafx.scene.input.KeyCode.NUMPAD4;
-import static util.Const.TILE_PIXELS;
 import static util.Util.toWorldCoords;
 
 /*
@@ -53,7 +51,7 @@ public class GameInteractionLayer extends Region {
                     spawner = null;
                 }
             } else if (upgrading) {
-                Entity entity = model.getEntityAt(x.intValue(), y.intValue());
+                Entity entity = model.getEntitiesAt(x.intValue(), y.intValue());
                 System.out.println("clicked at " + x + " " + y + " and hit entity " + entity);
                 if (entity != null) {
                     model.processMessage(new UpgradeEntityRequest(entity));
@@ -61,7 +59,7 @@ public class GameInteractionLayer extends Region {
                     world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
                 }
             } else if (deleting) {
-                Entity entity = model.getEntityAt(x.intValue(), y.intValue());
+                Entity entity = model.getEntitiesAt(x.intValue(), y.intValue());
                 System.out.println("clicked at " + x + " " + y + " and hit entity " + entity + " to sell");
                 if (entity != null) {
                     model.processMessage(new SellEntityRequest(entity));

@@ -232,8 +232,10 @@ public abstract class MinionStrat extends AIStrat {
                 // Update resource counts if applicable, and change path destination.
                 data.hasResource = !data.hasResource;
                 if (data.hasResource) {
-                    data.resourceHeld += Math.min(Const.FIRST_LEVEL_WOOD_COLLECTED, model.getEntityAt(x, y).get(Entity.EntityProperty.RESOURCEAMOUNT));
-                    model.getEntityAt(x, y).decreaseResourceAmount(model, data.resourceHeld);
+                    Entity res = model.getEntitiesAt(x, y).stream().filter(e ->
+                            e.has(Entity.EntityProperty.RESOURCEAMOUNT)).findFirst().get();
+                    data.resourceHeld += Math.min(Const.FIRST_LEVEL_WOOD_COLLECTED, res.get(Entity.EntityProperty.RESOURCEAMOUNT));
+                    res.decreaseResourceAmount(model, data.resourceHeld);
                 } else {
                     model.changeResource(entity.getTeam(), TeamResourceData.Resource.WOOD, data.resourceHeld); // TODO change this to match lvl.
                     data.resourceHeld = 0;
