@@ -49,7 +49,7 @@ public class GridCell {
      */
     private Tile tile;
 
-    private int[] losRanges;
+    public int[] losRanges;
     private boolean[] explored;
 
     /**
@@ -95,32 +95,28 @@ public class GridCell {
 
         boolean passable = this.isPassable();
 
-        getNeighbors(gameModel).forEach(n-> {
-            for (int i = 0; i < losRanges.length; i++) {
-                int range = n.losRanges[i] - 1;
-                if(!passable)
-                    range = Math.min(1, range);
-                if (losRanges[i] < range) {
-                    losRanges[i] = range;
-                    explored[i] = true;
-                }
-            }
-        });
-    }
-
-    private void updateLOS(GameModel gameModel) {
-
         for (Team team : Team.values()) {
             losRanges[team.team] = 0;
-        }
+    }
 
-        //TODO more effecent then recompute every time
         this.streamContents().filter(entity -> entity.has(TEAM) && entity.has(SIGHT_RADIUS)).forEach(entity -> {
             int sr = entity.get(SIGHT_RADIUS);
             int tm = entity.getTeam().team;
             if (losRanges[tm] < sr) {
                 losRanges[tm] = sr;
                 explored[tm] = true;
+            }
+        });
+
+        getNeighbors(gameModel).forEach(neighbor -> {
+            for (int i = 0; i < losRanges.length; i++) {
+                int range = neighbor.losRanges[i] - 1;
+                if(!passable)
+                    range = Math.min(1, range);
+                if (losRanges[i] < range) {
+                    losRanges[i] = range;
+                    explored[i] = true;
+                }
             }
         });
     }
@@ -133,6 +129,8 @@ public class GridCell {
         return explored[team.team];
     }
 
+    private boolean isPassibleMemo = false;
+    private boolean isPassibleMemoized = false;
     /**
      * Returns true if the cell is able to be passed through, or equivalently,
      * if a pathing enemy should try to go through this tile. A cell is
@@ -141,8 +139,11 @@ public class GridCell {
      * @return true if the cell is able to be walked through
      */
     public boolean isPassable() {
-        return contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD
+        if(isPassibleMemoized)
+            return isPassibleMemo;
+        isPassibleMemo = contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD
                 || e.getCollideType() == CollisionStrat.CollideType.WATER);
+        return isPassibleMemo;
     }
 
     /**
@@ -170,9 +171,7 @@ public class GridCell {
      */
     public void addContents(GameModel model, Entity o) {
         contents.add(o);
-        this.updateLOS(model);
-        //    if(o.has(TEAM) && o.has(SIGHT_RADIUS)) TODO
-        //      losRanges.get(o.getTeam()).intValue()
+        isPassibleMemoized = false;
     }
 
     /**
@@ -182,9 +181,7 @@ public class GridCell {
      */
     public void removeContents(GameModel model, Entity o) {
         contents.remove(o);
-        this.updateLOS(model);
-        //if(o.has(TEAM) && o.has(SIGHT_RADIUS)) TODO
-        //    losRanges.get(o.getTeam()).remove(o.<Integer>get(SIGHT_RADIUS));
+        isPassibleMemoized = false;
     }
 
     private static Map<String, Point> TILE_MAP;
@@ -216,7 +213,6 @@ public class GridCell {
         matches.put('B', Arrays.asList('B', 'J', 'X', 'U', 'E', '_'));
     }
 
-    private Point maxPoint = new Point(0, 0);
 
     /**
      * Draws the tile in a specified cell on the map.
@@ -224,7 +220,7 @@ public class GridCell {
      * @param firstAnimation TODO
      */
     public void draw(PixelWriter writer, GameModel model, boolean firstAnimation) {
-
+        Point maxPoint = new Point(0, 0);
         StringBuilder hashKey = new StringBuilder();
 
         for (int j = -1; j < 2; j++)
@@ -315,16 +311,6 @@ public class GridCell {
      */
     public void setTile(Tile tile, GameModel model) {
         this.tile = tile;
-    }
-
-    /**
-     * Remove all entities that have the specified id from the
-     * cell.
-     *
-     * @param entityID the id of the entity to be removed
-     */
-    public void removeByID(long entityID) {
-        contents.removeIf(o -> o.id == entityID);
     }
 
     /**

@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_STRAT;
 import static util.Const.DEBUG_DRAW;
 import static util.Util.toDrawCoords;
+import static util.Util.toWorldCoords;
 
 public class ClientGameModel extends GameModel {
 
@@ -113,8 +114,9 @@ public class ClientGameModel extends GameModel {
             if(cell.isExplored(this.getLocalPlayer().getTeam()))
                 gc.setFill(Color.color(0,0,0,0.3));
             else
-                gc.setFill(Color.BLACK);
+                gc.setFill(Color.GRAY);
             gc.fillRect(toDrawCoords(cell.getTopLeftX()), toDrawCoords(cell.getTopLeftY()), toDrawCoords(1), toDrawCoords(1));
+
         });
 
         if(DEBUG_DRAW)
