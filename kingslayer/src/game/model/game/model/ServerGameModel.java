@@ -266,6 +266,7 @@ public class ServerGameModel extends GameModel {
         serverAction.accept(this);
     }
 
+    @Override
     public void removeByID(long entityID) {
         // Check if wall/tree/building/hard object is being removed.
         boolean isHard = false;

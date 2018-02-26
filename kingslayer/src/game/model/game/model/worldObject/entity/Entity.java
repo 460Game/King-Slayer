@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity;
 
+import game.message.toServer.RemoveEntityRequest;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.ServerGameModel;
@@ -406,7 +407,7 @@ public class Entity {
     public void decreaseResourceAmount(GameModel model, int decrement) {
         this.set(RESOURCEAMOUNT, (int) get(RESOURCEAMOUNT) - decrement);
         if ((int) this.get(RESOURCEAMOUNT) <= 0)
-            entityDie(model); // TODO FIX THIS
+            model.processMessage(new RemoveEntityRequest(this)); // TODO FIX THIS
     }
 
     public double getHealth() {
