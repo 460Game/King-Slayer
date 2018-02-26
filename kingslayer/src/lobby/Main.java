@@ -475,6 +475,7 @@ public class Main extends Application {
         lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
             @Override
             public void showChoiceTeamAndRoleScene() {
+                System.out.println("Set team and role scene again");
                 Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
             }
         }, this);
