@@ -11,6 +11,7 @@ import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.aiStrat.BuildingSpawnerStrat;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import lobby.PlayerInfo;
 import util.Const;
@@ -19,9 +20,7 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static game.model.game.model.worldObject.entity.Entity.EntityProperty.PLAYER_NAME;
-import static game.model.game.model.worldObject.entity.Entity.EntityProperty.RESOURCETYPE;
-import static game.model.game.model.worldObject.entity.Entity.EntityProperty.TEAM;
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.*;
 import static util.Const.*;
 
 public class ServerGameModel extends GameModel {
@@ -41,6 +40,14 @@ public class ServerGameModel extends GameModel {
     private Collection<GridCell> stone;
 
     private Collection<GridCell> metal;
+
+    private Collection<GridCell> team1collector;
+
+    private Collection<GridCell> team2collector;
+
+    private boolean addedBuilding;
+
+    private Entity building;
 
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
     private Thread updateThread;
@@ -134,6 +141,8 @@ public class ServerGameModel extends GameModel {
         wood = new HashSet<>();
         stone = new HashSet<>();
         metal = new HashSet<>();
+        team1collector = new HashSet<>();
+        team2collector = new HashSet<>();
     }
 
     @Override
@@ -246,6 +255,10 @@ public class ServerGameModel extends GameModel {
         this.setEntity(e);
         if (e.getCollideType() == CollisionStrat.CollideType.HARD)
             astar.updateModel(this);
+        if (e.has(BUILDINGTYPE)) {
+            addedBuilding = true;
+            building = e;
+        }
     }
 
     @Override
@@ -267,6 +280,13 @@ public class ServerGameModel extends GameModel {
                 stone.remove(getCell((int) (double) getEntity(entityID).getX(), (int) (double) getEntity(entityID).getY()));
             else if (getEntity(entityID).get(RESOURCETYPE) == TeamResourceData.Resource.METAL)
                 metal.remove(getCell((int) (double) getEntity(entityID).getX(), (int) (double) getEntity(entityID).getY()));
+        } else if (getEntity(entityID).has(BUILDINGTYPE)) {
+            if (getEntity(entityID).get(BUILDINGTYPE) == BuildingSpawnerStrat.BuildingType.COLLECTOR) {
+                if (getEntity(entityID).getTeam() == Team.ONE)
+                    team1collector.removeAll(getEntity(entityID).containedIn);
+                else
+                    team2collector.removeAll(getEntity(entityID).containedIn); // TODO support multiple teams?
+            }
         }
 
         super.removeByID(entityID);
@@ -287,26 +307,40 @@ public class ServerGameModel extends GameModel {
 
     public Collection<GridCell> getMetal() { return metal; }
 
+    public Collection<GridCell> getTeam1collector() { return team1collector; }
+
+    public Collection<GridCell> getTeam2collector() { return team2collector; }
+
     @Override
     public void update() {
         super.update();
         if (wood.isEmpty()) {
             Set<Entity> woods = getAllEntities().stream().filter(e -> e.has(RESOURCETYPE)
                     && e.get(RESOURCETYPE) == TeamResourceData.Resource.WOOD).collect(Collectors.toSet());
-            for (Entity e : woods)
-                wood.addAll(e.containedIn);
+            if (woods != null)
+                for (Entity e : woods)
+                    wood.addAll(e.containedIn);
         }
         if (stone.isEmpty()) {
             Set<Entity> stones = getAllEntities().stream().filter(e -> e.has(RESOURCETYPE)
                     && e.get(RESOURCETYPE) == TeamResourceData.Resource.STONE).collect(Collectors.toSet());
-            for (Entity e : stones)
-                stone.addAll(e.containedIn);
+            if (stones != null)
+                for (Entity e : stones)
+                    stone.addAll(e.containedIn);
         }
         if (metal.isEmpty()) {
             Set<Entity> metals = getAllEntities().stream().filter(e -> e.has(RESOURCETYPE)
                     && e.get(RESOURCETYPE) == TeamResourceData.Resource.METAL).collect(Collectors.toSet());
-            for (Entity e : metals)
-                metal.addAll(e.containedIn);
+            if (metals != null)
+                for (Entity e : metals)
+                    metal.addAll(e.containedIn);
+        }
+        if (addedBuilding) {
+            if (building.get(BUILDINGTYPE) == BuildingSpawnerStrat.BuildingType.COLLECTOR)
+                if (building.getTeam() == Team.ONE)
+                    team1collector.addAll(building.containedIn);
+                else
+                    team2collector.addAll(building.containedIn); // TODO support multiple teams?
         }
     }
 }

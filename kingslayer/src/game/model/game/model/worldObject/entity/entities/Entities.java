@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.entities;
 
+import com.sun.org.apache.regexp.internal.RE;
 import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
@@ -34,7 +35,9 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(RESOURCETYPE, TeamResourceData.Resource.WOOD),
-                pair(DRAW_STRAT, ImageDrawStrat.TREE_IMAGE_DRAW_STRAT)); // TODO death
+                pair(RESOURCEAMOUNT, 15), // TODO
+                pair(DRAW_STRAT, ImageDrawStrat.TREE_IMAGE_DRAW_STRAT),
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON)); // TODO death
     }
 
     public static Entity makeStone(double x, double y) {
@@ -42,7 +45,9 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(RESOURCETYPE, TeamResourceData.Resource.STONE),
-                pair(DRAW_STRAT, ImageDrawStrat.STONE_IMAGE_DRAW_STRAT)); // TODO death
+                pair(RESOURCEAMOUNT, 15), // TODO
+                pair(DRAW_STRAT, ImageDrawStrat.STONE_IMAGE_DRAW_STRAT),
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON)); // TODO death
     }
 
     public static Entity makeMetal(double x, double y) {
@@ -50,7 +55,9 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(RESOURCETYPE, TeamResourceData.Resource.METAL),
-                pair(DRAW_STRAT, ImageDrawStrat.METAL_IMAGE_DRAW_STRAT)); // TODO death
+                pair(RESOURCEAMOUNT, 15), // TODO
+                pair(DRAW_STRAT, ImageDrawStrat.METAL_IMAGE_DRAW_STRAT),
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON)); // TODO death
     }
 
     public static Entity makeWall(double x, double y) {
@@ -91,6 +98,7 @@ public class Entities {
                 HardCollisionStrat.SINGLETON,
                 pair(HEALTH, 100.0),
                 pair(TEAM, team),
+                pair(BUILDINGTYPE, BuildingSpawnerStrat.BuildingType.COLLECTOR),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.RESOURCE_COLLECTOR),
                 pair(AI_STRAT, BuildingSpawnerStrat.ResourceCollectorBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
@@ -111,6 +119,7 @@ public class Entities {
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
                 pair(HEALTH, 100.0),
+                pair(BUILDINGTYPE, BuildingSpawnerStrat.BuildingType.BARRACKS),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.MeleeBarracksBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
@@ -123,6 +132,7 @@ public class Entities {
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
                 pair(HEALTH, 100.0),
+                pair(BUILDINGTYPE, BuildingSpawnerStrat.BuildingType.BARRACKS),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
@@ -135,6 +145,7 @@ public class Entities {
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
                 pair(HEALTH, 100.0),
+                pair(BUILDINGTYPE, BuildingSpawnerStrat.BuildingType.BARRACKS),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.SiegeBarracksBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
@@ -147,6 +158,7 @@ public class Entities {
             HardCollisionStrat.SINGLETON,
             pair(TEAM, team),
             pair(HEALTH, 100.0),
+                pair(BUILDINGTYPE, BuildingSpawnerStrat.BuildingType.EXPLORER),
             pair(DRAW_STRAT, UpgradableImageDrawStrat.BARRACKS),
             pair(AI_STRAT, BuildingSpawnerStrat.ExplorationBarracksBuildingSpawnerStrat.SINGLETON),
             pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
@@ -168,6 +180,7 @@ public class Entities {
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
                 pair(HEALTH, 100.0),
+                pair(BUILDINGTYPE, BuildingSpawnerStrat.BuildingType.TOWER),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.ARROW_TOWER),
                 pair(AI_STRAT, BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),

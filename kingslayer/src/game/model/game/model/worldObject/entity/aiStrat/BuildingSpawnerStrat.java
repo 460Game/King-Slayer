@@ -14,6 +14,13 @@ import static java.lang.Math.*;
 
 public abstract class BuildingSpawnerStrat extends AIStrat {
 
+    public enum BuildingType {
+        COLLECTOR,
+        TOWER,
+        EXPLORER,
+        BARRACKS
+    }
+
     public static class MeleeBarracksBuildingSpawnerStrat extends BuildingSpawnerStrat {
 
         public static final MeleeBarracksBuildingSpawnerStrat SINGLETON = new MeleeBarracksBuildingSpawnerStrat();

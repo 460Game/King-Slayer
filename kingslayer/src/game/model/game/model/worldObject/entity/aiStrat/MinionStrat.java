@@ -7,6 +7,7 @@ import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
+import util.Const;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -167,7 +168,9 @@ public abstract class MinionStrat extends AIStrat {
 
         public static final ResourceMinionStrat SINGLETON = new ResourceMinionStrat();
 
-        private static boolean hasResource;
+        private static boolean hasResource = false;
+
+        private static int resourceHeld = 0;
 
         @Override
         double attackRange() {
@@ -195,44 +198,52 @@ public abstract class MinionStrat extends AIStrat {
 
             Astar astar = model.getAstar();
 
+            // Get current position.
             double entityx = entity.getX();
             double entityy = entity.getY();
 
+            // Holds the final destination.
+            int x, y;
+
+            // Check if the minion should go to a resource or back to a collector.
             if (!hasResource) {
-//                int x = astar.getClosestWood(model.getCell(entityx, entityy)).getTopLeftX();
-//                int y = astar.getClosestWood(model.getCell(entityx, entityy)).getTopLeftY();
+                x = astar.getClosestWood(model.getCell((int) entityx, (int) entityy)).getTopLeftX();
+                y = astar.getClosestWood(model.getCell((int) entityx, (int) entityy)).getTopLeftY();
             } else {
-//                int x = getClosestCollector();
-//                int y = getClosestCollector();
+                x = astar.getClosestCollector(model.getCell((int) entityx, (int) entityy), entity.getTeam()).getTopLeftX();
+                y = astar.getClosestCollector(model.getCell((int) entityx, (int) entityy), entity.getTeam()).getTopLeftY();
             }
 
-            // TODO case where collector is destroyed where does minion go?
-
-            int x = astar.getClosestWood(model.getCell((int) entityx, (int) entityy)).getTopLeftX();
-            int y = astar.getClosestWood(model.getCell((int) entityx, (int) entityy)).getTopLeftY();
-
-            if (data.path.size() > 0)
-                System.out.println("Final destination cell: "+ data.path.get(data.path.size() - 1).getTopLeftX() + ", " +
-                    data.path.get(data.path.size() - 1).getTopLeftY());
+//            // TODO case where collector is destroyed where does minion go?
 
             // Check if path exists and resource disappeared, then generate a new path.
-            if (data.path.size() > 0 && data.path.get(data.path.size() - 1).getTopLeftX() != x &&
-                    data.path.get(data.path.size() - 1).getTopLeftY() != y) {
+            if (data.path.size() > 0 && (data.path.get(data.path.size() - 1).getTopLeftX() != x ||
+                    data.path.get(data.path.size() - 1).getTopLeftY() != y)) {
                 data.path.clear();
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
-
-            // If nothing in path and not at destination, generate a path.
+            // If nothing in path and not at destination, generate a path. TODO might need better check
             if (data.path.size() == 0 && entityx != x && entityy != y) {
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
-            // might need to check for empty path
-
-            if (entityx == x && entityy == y)
+            // Check if reached destination.
+            if (entity.containedIn.contains(model.getCell(x, y))) {
+                // Stop movement and clear path.
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
-            else if (data.path.size() > 0) {
+                data.path.clear();
+
+                // Update resource counts if applicable, and change path destination.
+                hasResource = !hasResource;
+                if (hasResource) {
+                    resourceHeld += Math.min(Const.FIRST_LEVEL_WOOD_COLLECTED, model.getEntityAt(x, y).get(Entity.EntityProperty.RESOURCEAMOUNT));
+                    model.getEntityAt(x, y).decreaseResourceAmount(model, resourceHeld);
+                } else {
+                    model.changeResource(entity.getTeam(), TeamResourceData.Resource.WOOD, resourceHeld); // TODO change this to match lvl.
+                    resourceHeld = 0;
+                }
+            } else if (data.path.size() > 0) {
                 if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY())
                     data.path.remove(0);
                 else {
@@ -244,10 +255,6 @@ public abstract class MinionStrat extends AIStrat {
             }
 
             model.processMessage(new SetEntityCommand(entity));
-//
-//            Random rand = new Random();
-//            if (rand.nextDouble() < 0.1)
-//                model.changeResource(entity.getTeam(), TeamResourceData.Resource.WOOD, 1);
         }
     }
 
@@ -284,7 +291,7 @@ public abstract class MinionStrat extends AIStrat {
     // TODO attacking minions can chase closest enemy and collectors should run away
 
     /**
-     * Handles the ation to perform when the minion detects
+     * Handles the action to perform when the minion detects
      * an attackable enemy.
      */
     abstract void handleEnemyAttackable();
