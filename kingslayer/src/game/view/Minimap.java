@@ -58,6 +58,8 @@ public class Minimap extends Region {
                 //    else
                     if(model.getCell(x,y).isVisable(model.getLocalPlayer().getTeam()))
                         minimapGC.setFill(model.getTile(x, y).getColor());
+                    else if(model.getCell(x,y).isExplored(model.getLocalPlayer().getTeam()))
+                        minimapGC.setFill(model.getTile(x, y).getColor().interpolate(Color.BLACK, 0.7));
                     else
                         minimapGC.setFill(Color.BLACK);
                     minimapGC.fillRect(x, y, 2, 2);
@@ -73,6 +75,8 @@ public class Minimap extends Region {
                     minimapGC.fillOval(player.getX(), player.getY(), 1, 1);
                 }
             }
+
+            minimapGC.setStroke(Color.WHITE);
             minimapGC.strokeRect(world.getCamX() - world.getCamW()/2, world.getCamY() - world.getCamH()/2, world.getCamW(), world.getCamH());
         }
     }

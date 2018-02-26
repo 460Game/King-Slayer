@@ -50,6 +50,7 @@ public class GridCell {
     private Tile tile;
 
     private int[] losRanges;
+    private boolean[] explored;
 
     /**
      * Constructor for a grid cell.
@@ -62,8 +63,10 @@ public class GridCell {
         this.y = y;
         this.tile = Tile.UNSET;
         losRanges = new int[Team.values().length];
+        explored = new boolean[Team.values().length];
         for (Team team : Team.values()) {
             losRanges[team.team] = 0;
+            explored[team.team] = false;
         }
     }
 
@@ -101,19 +104,29 @@ public class GridCell {
             int tm = entity.getTeam().team;
             if (losRanges[tm] < sr) {
                 losRanges[tm] = sr;
+                explored[tm] = true;
             }
         });
 
         getNeighbors(gameModel).forEach(n-> {
             for (int i = 0; i < losRanges.length; i++) {
-                if (losRanges[i] < n.losRanges[i] - 1)
-                    losRanges[i] = n.losRanges[i] - 1;
+                int range = n.losRanges[i] - 1;
+                if(!passable)
+                    range = Math.min(1, range);
+                if (losRanges[i] < range) {
+                    losRanges[i] = range;
+                    explored[i] = true;
+                }
             }
         });
     }
 
     public boolean isVisable(Team team) {
         return losRanges[team.team] != 0;
+    }
+
+    public boolean isExplored(Team team) {
+        return explored[team.team];
     }
 
     /**

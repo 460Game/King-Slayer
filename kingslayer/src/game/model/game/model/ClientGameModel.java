@@ -110,7 +110,10 @@ public class ClientGameModel extends GameModel {
     public void drawForeground(GraphicsContext gc, double x, double y, double w, double h) {
         this.streamCells().filter(cell -> cell.isVisable(this.getLocalPlayer().getTeam())).flatMap(GridCell::streamContents).filter(entity -> entity.has(DRAW_STRAT)).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc, this));
         this.streamCells().filter(cell -> !cell.isVisable(this.getLocalPlayer().getTeam())).forEach(cell -> {
-            gc.setFill(Color.BLACK);
+            if(cell.isExplored(this.getLocalPlayer().getTeam()))
+                gc.setFill(Color.color(0,0,0,0.3));
+            else
+                gc.setFill(Color.BLACK);
             gc.fillRect(toDrawCoords(cell.getTopLeftX()), toDrawCoords(cell.getTopLeftY()), toDrawCoords(1), toDrawCoords(1));
         });
 
