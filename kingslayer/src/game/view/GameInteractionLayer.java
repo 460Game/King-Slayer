@@ -20,6 +20,7 @@ import static javafx.scene.input.KeyCode.*;
 import static javafx.scene.input.KeyCode.DIGIT3;
 import static javafx.scene.input.KeyCode.DIGIT4;
 import static javafx.scene.input.KeyCode.NUMPAD4;
+import static util.Const.TILE_PIXELS;
 import static util.Util.toWorldCoords;
 
 /*
@@ -47,7 +48,7 @@ public class GameInteractionLayer extends Region {
             if (model.getLocalPlayer().getRole() == Role.KING && spawner != null) {
                 if (!placingGhost.getHitbox().getCollidesWith(model, placingGhost.getX(), placingGhost.getY()).skip(1).findAny().isPresent()) {
                     model.processMessage(new EntityBuildRequest(spawner,
-                            model.getLocalPlayer().getTeam()));
+                            model.getLocalPlayer().getTeam(), Math.floor(x) + 0.5, Math.floor(y) + 0.5));
                     model.remove(placingGhost);
                     spawner = null;
                 }
@@ -100,9 +101,6 @@ public class GameInteractionLayer extends Region {
                 double placingX = Math.floor(x) + 0.5;
                 double placingY = Math.floor(y) + 0.5;
                 if (Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), placingX, placingY) < 5) {
-                    spawner.x = placingX;
-                    spawner.y = placingY;
-
                     placingGhost.setX(placingX);
                     placingGhost.setY(placingY);
                 }

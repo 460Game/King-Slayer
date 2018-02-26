@@ -22,13 +22,18 @@ public class EntityBuildRequest implements ToServerRequest {
      */
     private Team creator;
 
+    private double x;
+    private double y;
+
     /**
      * Constructor of a message, given an entity to be created.
      * @param entitySpawner entity to be created
      */
-    public EntityBuildRequest(EntitySpawner entitySpawner, Team team) {
+    public EntityBuildRequest(EntitySpawner entitySpawner, Team team, double x, double y) {
         this.entity = entitySpawner;
         this.creator = team;
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -43,6 +48,6 @@ public class EntityBuildRequest implements ToServerRequest {
     @Override
     public void executeServer(ServerGameModel model) {
         if (model.changeResource(creator, entity.resource, entity.cost))
-            model.makeEntity(entity.makeEntity(creator));
+            model.makeEntity(entity.makeEntity(x, y, creator));
     }
 }
