@@ -3,6 +3,7 @@ package game.model.game.grid;
 import com.esotericsoftware.minlog.Log;
 import game.model.game.model.GameModel;
 import game.model.game.map.Tile;
+import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
@@ -15,6 +16,8 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.SIGHT_RADIUS;
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.TEAM;
 import static images.Images.TILE_IMAGE;
 import static util.Const.TILE_PIXELS;
 import static util.Util.toDrawCoords;
@@ -46,8 +49,12 @@ public class GridCell {
      */
     private Tile tile;
 
+    private int[] losRanges;
+    private boolean[] explored;
+
     /**
      * Constructor for a grid cell.
+     *
      * @param x x-coordinate of the top left of the cell
      * @param y y-coordinate of the top left of the cell
      */
@@ -55,6 +62,12 @@ public class GridCell {
         this.x = x;
         this.y = y;
         this.tile = Tile.UNSET;
+        losRanges = new int[Team.values().length];
+        explored = new boolean[Team.values().length];
+        for (Team team : Team.values()) {
+            losRanges[team.team] = 0;
+            explored[team.team] = false;
+        }
     }
 
     /**
@@ -64,10 +77,67 @@ public class GridCell {
 
     }
 
+
+    public Stream<GridCell> getNeighbors(GameModel model) {
+        Stream.Builder<GridCell> builder = Stream.builder();
+        if(this.x > 0)
+        builder.add(model.getCell(this.x - 1, y));
+        if(this.x < model.getMapWidth() - 1)
+        builder.add(model.getCell(this.x + 1, y));
+        if(this.y > 0)
+        builder.add(model.getCell(this.x , y - 1));
+        if(this.y < model.getMapHeight() - 1)
+        builder.add(model.getCell(this.x, this.y + 1));
+        return builder.build();
+    }
+
+    public void updatePeriodicLOS(GameModel gameModel) {
+
+        boolean passable = this.isPassable();
+
+        getNeighbors(gameModel).forEach(n-> {
+            for (int i = 0; i < losRanges.length; i++) {
+                int range = n.losRanges[i] - 1;
+                if(!passable)
+                    range = Math.min(1, range);
+                if (losRanges[i] < range) {
+                    losRanges[i] = range;
+                    explored[i] = true;
+                }
+            }
+        });
+    }
+
+    private void updateLOS(GameModel gameModel) {
+
+        for (Team team : Team.values()) {
+            losRanges[team.team] = 0;
+        }
+
+        //TODO more effecent then recompute every time
+        this.streamContents().filter(entity -> entity.has(TEAM) && entity.has(SIGHT_RADIUS)).forEach(entity -> {
+            int sr = entity.get(SIGHT_RADIUS);
+            int tm = entity.getTeam().team;
+            if (losRanges[tm] < sr) {
+                losRanges[tm] = sr;
+                explored[tm] = true;
+            }
+        });
+    }
+
+    public boolean isVisable(Team team) {
+        return losRanges[team.team] != 0;
+    }
+
+    public boolean isExplored(Team team) {
+        return explored[team.team];
+    }
+
     /**
      * Returns true if the cell is able to be passed through, or equivalently,
      * if a pathing enemy should try to go through this tile. A cell is
      * considered unpassable if it has a cell getHitbox occupying it.
+     *
      * @return true if the cell is able to be walked through
      */
     public boolean isPassable() {
@@ -77,6 +147,7 @@ public class GridCell {
 
     /**
      * Gets the contents of the cell.
+     *
      * @return the current contents of the cell
      */
     public Collection<Entity> getContents() {
@@ -85,6 +156,7 @@ public class GridCell {
 
     /**
      * Gets the contents of the cell.
+     *
      * @return the current contents of the cell
      */
     public Stream<Entity> streamContents() {
@@ -93,18 +165,26 @@ public class GridCell {
 
     /**
      * Adds the specified entity to this cell.
+     *
      * @param o the entity to be added to this cell
      */
-    public void addContents(Entity o) {
+    public void addContents(GameModel model, Entity o) {
         contents.add(o);
+        this.updateLOS(model);
+        //    if(o.has(TEAM) && o.has(SIGHT_RADIUS)) TODO
+        //      losRanges.get(o.getTeam()).intValue()
     }
 
     /**
      * Removes the specified entity from this cell.
+     *
      * @param o the entity to be removed from this cell
      */
-    public void removeContents(Entity o) {
+    public void removeContents(GameModel model, Entity o) {
         contents.remove(o);
+        this.updateLOS(model);
+        //if(o.has(TEAM) && o.has(SIGHT_RADIUS)) TODO
+        //    losRanges.get(o.getTeam()).remove(o.<Integer>get(SIGHT_RADIUS));
     }
 
     private static Map<String, Point> TILE_MAP;
@@ -140,6 +220,7 @@ public class GridCell {
 
     /**
      * Draws the tile in a specified cell on the map.
+     *
      * @param firstAnimation TODO
      */
     public void draw(PixelWriter writer, GameModel model, boolean firstAnimation) {
@@ -172,22 +253,22 @@ public class GridCell {
         PixelReader reader = TILE_IMAGE.getPixelReader();
         if (!firstAnimation && this.tile.tupleNum == 'W')
             writer.setPixels(
-                toDrawCoords(x),
-                toDrawCoords(y),
-                TILE_IMAGE_TILE_SIZE,
-                TILE_IMAGE_TILE_SIZE,
-                reader,
-                (maxPoint.x + 10) * TILE_IMAGE_TILE_SIZE,
-                maxPoint.y * TILE_IMAGE_TILE_SIZE);
+                    toDrawCoords(x),
+                    toDrawCoords(y),
+                    TILE_IMAGE_TILE_SIZE,
+                    TILE_IMAGE_TILE_SIZE,
+                    reader,
+                    (maxPoint.x + 10) * TILE_IMAGE_TILE_SIZE,
+                    maxPoint.y * TILE_IMAGE_TILE_SIZE);
         else
             writer.setPixels(
-                toDrawCoords(x),
-                toDrawCoords(y),
-                TILE_IMAGE_TILE_SIZE,
-                TILE_IMAGE_TILE_SIZE,
-                reader,
-                maxPoint.x * TILE_IMAGE_TILE_SIZE,
-                maxPoint.y * TILE_IMAGE_TILE_SIZE);
+                    toDrawCoords(x),
+                    toDrawCoords(y),
+                    TILE_IMAGE_TILE_SIZE,
+                    TILE_IMAGE_TILE_SIZE,
+                    reader,
+                    maxPoint.x * TILE_IMAGE_TILE_SIZE,
+                    maxPoint.y * TILE_IMAGE_TILE_SIZE);
 
 
     }
@@ -195,11 +276,12 @@ public class GridCell {
     /**
      * Perform collisions between the current contents of the cell.
      * The collisions are handled based on the entities involved.
+     *
      * @param model current model of the game
      */
     public void collideContents(GameModel model) {
         // TODO fix collisions in different cells (2 objects in 2 cells will collide twice)
-        for(int i = 0; i < contents.size(); i++) {
+        for (int i = 0; i < contents.size(); i++) {
             for (int j = 0; j < i; j++) {
                 if (i < contents.size() && j < contents.size()) { //Here because elements may be removed during this loop (arrows)
                     Entity a = contents.get(i);
@@ -219,6 +301,7 @@ public class GridCell {
 
     /**
      * Gets the current tile type of the cell.
+     *
      * @return the current tile type of the cell
      */
     public Tile getTile() {
@@ -227,6 +310,7 @@ public class GridCell {
 
     /**
      * Sets the tile of the cell to the specified tile
+     *
      * @param tile the new tile type of the cell
      */
     public void setTile(Tile tile, GameModel model) {
@@ -236,6 +320,7 @@ public class GridCell {
     /**
      * Remove all entities that have the specified id from the
      * cell.
+     *
      * @param entityID the id of the entity to be removed
      */
     public void removeByID(long entityID) {
@@ -244,6 +329,7 @@ public class GridCell {
 
     /**
      * Gets the x coordinate of the top left of this grid cell.
+     *
      * @return the x coordinate of the top left of this grid cell
      */
     public int getTopLeftX() {
@@ -252,6 +338,7 @@ public class GridCell {
 
     /**
      * Gets the y coordinate of the top left of this grid cell.
+     *
      * @return the y coordinate of the top left of this grid cell
      */
     public int getTopLeftY() {
@@ -260,6 +347,7 @@ public class GridCell {
 
     /**
      * Gets the x coordinate of the center of this grid cell.
+     *
      * @return the x coordinate of the center of this grid cell
      */
     public double getCenterX() {
@@ -268,6 +356,7 @@ public class GridCell {
 
     /**
      * Gets the y coordinate of the center of this grid cell.
+     *
      * @return the y coordinate of the center of this grid cell
      */
     public double getCenterY() {
@@ -281,5 +370,7 @@ public class GridCell {
     }
 
     @Override
-    public int hashCode() { return (int) (0.5 * (x + y) * (x + y + 1)) + y; }
+    public int hashCode() {
+        return (int) (0.5 * (x + y) * (x + y + 1)) + y;
+    }
 }

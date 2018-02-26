@@ -63,12 +63,12 @@ public abstract class Hitbox {
             if (entity.containedIn != null)
                 for (GridCell cell : entity.containedIn)
                     if (!afterSet.contains(cell))
-                        cell.removeContents(entity);
+                        cell.removeContents(model, entity);
 
             // Add the entity to the cells contents for each cell it is currently in.
             for (GridCell cell : afterSet)
                 if (!cell.getContents().contains(entity))
-                    cell.addContents(entity);
+                    cell.addContents(model, entity);
 
             // Update the cells that it is currently in and its previous x, y coordinates.
             entity.containedIn = afterSet;

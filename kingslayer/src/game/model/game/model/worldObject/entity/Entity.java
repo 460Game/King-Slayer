@@ -61,7 +61,10 @@ public class Entity {
         COLLISION_STRAT(CollisionStrat.class, PropType.ON_CHANGE_ONLY),
         DEATH_STRAT(DeathStrat.class, PropType.ON_CHANGE_ONLY),
         PLAYER_NAME(String.class, PropType.ON_CHANGE_ONLY),
-        SLAYER_DATA(SlayerData.class, PropType.ACTIVE_SYNC);
+        SLAYER_DATA(SlayerData.class, PropType.ACTIVE_SYNC),
+        SIGHT_RADIUS(Integer.class, PropType.ON_CHANGE_ONLY)
+
+        ;
 
         EntityProperty(Class type, PropType sync) {
             this.type = type;
