@@ -75,6 +75,7 @@ public class NetworkCommon {
         kryo.register(RequestEntityRequest.class);
         kryo.register(NewEntityCommand.class);
         kryo.register(Entity.class);
+        kryo.register(RemoveEntityRequest.class);
 
 
         kryo.register(ImageDrawStrat.WallImageDrawStrat.class);
