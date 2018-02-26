@@ -38,7 +38,7 @@ public class Minions {
         return new Entity(x, y,
             hitbox,
             UnitCollisionStrat.SINGLETON,
-            pair(HEALTH, 100.0),
+            pair(HEALTH, 5.0),
             pair(TEAM, team),
             pair(UPDATE_STRAT, MovingStrat.SINGLETON),
             pair(DRAW_STRAT, DirectionAnimationDrawStrat.RANGED_ANIMATION),
