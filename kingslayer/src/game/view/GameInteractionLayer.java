@@ -51,7 +51,7 @@ public class GameInteractionLayer extends Region {
                     spawner = null;
                 }
             } else if (upgrading) {
-                Entity entity = model.getEntitiesAt(x.intValue(), y.intValue());
+                Entity entity = model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get();
                 System.out.println("clicked at " + x + " " + y + " and hit entity " + entity);
                 if (entity != null) {
                     model.processMessage(new UpgradeEntityRequest(entity));
@@ -59,7 +59,7 @@ public class GameInteractionLayer extends Region {
                     world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
                 }
             } else if (deleting) {
-                Entity entity = model.getEntitiesAt(x.intValue(), y.intValue());
+                Entity entity = model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get();
                 System.out.println("clicked at " + x + " " + y + " and hit entity " + entity + " to sell");
                 if (entity != null) {
                     model.processMessage(new SellEntityRequest(entity));
