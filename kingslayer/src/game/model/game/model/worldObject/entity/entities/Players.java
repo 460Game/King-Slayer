@@ -54,6 +54,6 @@ public class Players {
             pair(DRAW_STRAT, DirectionAnimationDrawStrat.KING_ANIMATION),
             pair(DEATH_STRAT, KingDeathStrat.SINGLETON),
             pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
-                pair(SIGHT_RADIUS, 2));
+                pair(SIGHT_RADIUS, 7));
     }
 }
