@@ -6,8 +6,12 @@ import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Velocity;
+import game.model.game.model.worldObject.entity.slayer.SlayerData;
 import images.Images;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 
 import java.awt.*;
@@ -16,9 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_DATA;
-import static game.model.game.model.worldObject.entity.Entity.EntityProperty.TEAM;
-import static game.model.game.model.worldObject.entity.Entity.EntityProperty.VELOCITY;
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.*;
 import static java.lang.Math.decrementExact;
 import static util.Util.toDrawCoords;
 import static java.lang.Math.PI;
@@ -71,7 +73,66 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
 
         // Update direction of image
         AnimationDrawData drawData = entity.<AnimationDrawData>get(DRAW_DATA);
-        double angle = entity.<Velocity>get(VELOCITY).getAngle();
+
+        double angle = 0;
+        if (entity.getRole() == Role.SLAYER) {//Think of a better way to handle it.
+
+            SlayerData slayerData = (SlayerData) entity.getData().get(SLAYER_DATA);
+            if (slayerData.meleeLastTime > 0) {
+                angle = slayerData.meleeAngle;
+            } else {
+                angle = entity.<Velocity>get(VELOCITY).getAngle();
+            }
+            if (angle >= -0.75 * PI && angle < -0.25 * PI) {
+                drawData.direction = 'N';
+            } else if (angle >= -0.25 * PI && angle < 0.25 * PI) {
+                drawData.direction = 'E';
+            } else if (angle >= 0.25 * PI && angle < 0.75 * PI) {
+                drawData.direction = 'S';
+            } else if (angle >= 0.75 * PI || angle < -0.75 * PI) {
+                drawData.direction = 'W';
+            }
+
+            // Update image being used
+            if (entity.<Velocity>get(VELOCITY).getMagnitude() != 0 || slayerData.meleeLastTime > 0) {
+                drawData.count++;
+                if (drawData.count > 11) {
+                    drawData.count = 0;
+                    drawData.imageNum = (drawData.imageNum + 1) % 3;
+                }
+            } else {
+                drawData.imageNum = 0;
+            }
+
+            Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
+
+            if (slayerData.meleeLastTime > 0) {
+                ColorAdjust colorAdjust = new ColorAdjust();
+                colorAdjust.setBrightness(0.5);
+                colorAdjust.setHue(0.6);
+                gc.setEffect(colorAdjust);
+//                gc.applyEffect(colorAdjust);
+            }
+
+
+            gc.drawImage(this.getImage(entity),
+                    toDrawCoords(p.x),
+                    toDrawCoords(p.y),
+                    toDrawCoords(getWidth()),
+                    toDrawCoords(getHeight()),
+                    toDrawCoords(entity.getX() - entity.getHitbox().getWidth() / 2),
+                    toDrawCoords(entity.getY() - entity.getHitbox().getHeight() / 2),
+                    toDrawCoords(entity.getHitbox().getWidth()),
+                    toDrawCoords(entity.getHitbox().getHeight()));
+
+            gc.setEffect(null);
+            return;
+        }
+
+
+
+        angle = entity.<Velocity>get(VELOCITY).getAngle();
+
         if (angle >= -0.75 * PI && angle < -0.25 * PI) {
             drawData.direction = 'N';
         } else if (angle >= -0.25 * PI && angle < 0.25 * PI) {
