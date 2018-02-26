@@ -191,6 +191,7 @@ public class NetworkCommon {
         kryo.register(DirectionAnimationDrawStrat.MeleeMinionDirectionAnimationDrawStrat.class);
         kryo.register(DirectionAnimationDrawStrat.RangedMinionDirectionAnimationDrawStrat.class);
         kryo.register(DirectionAnimationDrawStrat.ResourceMinionDirectionAnimationDrawStrat.class);
+        kryo.register(DirectionAnimationDrawStrat.ExplorationMinionDirectionAnimationDrawStrat.class);
 
         kryo.register(MinionStrat.RangedMinionStrat.class);
         kryo.register(MinionStrat.MeleeMinionStrat.class);
