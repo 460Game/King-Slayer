@@ -127,7 +127,7 @@ public abstract class GameModel implements Model {
 
     public void remove(Entity entity) {
         if(entity.containedIn != null)
-            entity.containedIn.forEach(cell -> cell.removeContents(entity));
+            entity.containedIn.forEach(cell -> cell.removeContents(this, entity));
         entities.remove(entity.id);
     }
 
@@ -141,7 +141,7 @@ public abstract class GameModel implements Model {
         entities.values().forEach(e -> e.update(this, modelCurrentTime));
         entities.values().forEach(e -> e.updateCells(this));
         allCells.forEach(cell -> cell.collideContents(this));
-        allCells.forEach(cell -> cell.updateLOS(this));
+        allCells.forEach(cell -> cell.updatePeriodicLOS(this));
 
         this.execute(serverGameModel -> {
             entities.values().forEach(e -> {

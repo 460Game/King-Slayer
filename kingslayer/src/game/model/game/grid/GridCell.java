@@ -91,8 +91,24 @@ public class GridCell {
         return builder.build();
     }
 
-    public void updateLOS(GameModel gameModel) {
+    public void updatePeriodicLOS(GameModel gameModel) {
+
         boolean passable = this.isPassable();
+
+        getNeighbors(gameModel).forEach(n-> {
+            for (int i = 0; i < losRanges.length; i++) {
+                int range = n.losRanges[i] - 1;
+                if(!passable)
+                    range = Math.min(1, range);
+                if (losRanges[i] < range) {
+                    losRanges[i] = range;
+                    explored[i] = true;
+                }
+            }
+        });
+    }
+
+    private void updateLOS(GameModel gameModel) {
 
         for (Team team : Team.values()) {
             losRanges[team.team] = 0;
@@ -105,18 +121,6 @@ public class GridCell {
             if (losRanges[tm] < sr) {
                 losRanges[tm] = sr;
                 explored[tm] = true;
-            }
-        });
-
-        getNeighbors(gameModel).forEach(n-> {
-            for (int i = 0; i < losRanges.length; i++) {
-                int range = n.losRanges[i] - 1;
-                if(!passable)
-                    range = Math.min(1, range);
-                if (losRanges[i] < range) {
-                    losRanges[i] = range;
-                    explored[i] = true;
-                }
             }
         });
     }
@@ -164,8 +168,9 @@ public class GridCell {
      *
      * @param o the entity to be added to this cell
      */
-    public void addContents(Entity o) {
+    public void addContents(GameModel model, Entity o) {
         contents.add(o);
+        this.updateLOS(model);
         //    if(o.has(TEAM) && o.has(SIGHT_RADIUS)) TODO
         //      losRanges.get(o.getTeam()).intValue()
     }
@@ -175,8 +180,9 @@ public class GridCell {
      *
      * @param o the entity to be removed from this cell
      */
-    public void removeContents(Entity o) {
+    public void removeContents(GameModel model, Entity o) {
         contents.remove(o);
+        this.updateLOS(model);
         //if(o.has(TEAM) && o.has(SIGHT_RADIUS)) TODO
         //    losRanges.get(o.getTeam()).remove(o.<Integer>get(SIGHT_RADIUS));
     }
@@ -367,5 +373,4 @@ public class GridCell {
     public int hashCode() {
         return (int) (0.5 * (x + y) * (x + y + 1)) + y;
     }
-
 }
