@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.collideStrat;
 
+import com.esotericsoftware.minlog.Log;
 import game.model.game.model.GameModel;
 import game.model.game.model.worldObject.entity.Entity;
 
@@ -17,7 +18,7 @@ public class WaterCollisionStrat extends CollisionStrat {
     @Override
     public void collision(GameModel model, Entity a, Entity b) {
         if (b.getCollideType() == CollideType.HARD || b.getCollideType() == CollideType.WATER) {
-            throw new RuntimeException("Hard objects colliding " + a.getHitbox() + " and " + b.getHitbox());
+            Log.error("Hard objects colliding " + a.getHitbox() + " and " + b.getHitbox() + " type " + b.getCollideType());
         }
     }
 
