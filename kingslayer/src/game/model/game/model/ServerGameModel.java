@@ -207,8 +207,8 @@ public class ServerGameModel extends GameModel {
         };
 
         if (FPSPrint) {
-            Timer t = new Timer();
-            t.scheduleAtFixedRate(updateFPS, 1000, 1000);
+            Timer t2 = new Timer();
+            t2.scheduleAtFixedRate(updateFPS, 1000, 1000);
         }
 
         updateTimerTask = new TimerTask() {
@@ -227,7 +227,7 @@ public class ServerGameModel extends GameModel {
             }
         };
 
-        Timer t = new Timer();
+        t = new Timer();
         t.scheduleAtFixedRate(updateTimerTask, 10, 1000/60);
     }
 

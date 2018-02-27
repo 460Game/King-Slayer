@@ -208,12 +208,16 @@ public class GameView {
     }
 
     public void restart() {
-        mainApp.restart(window);
+
         timer.stop();
 
         timer = null;
+
+        int status = mainApp.restart(window);
+
         model = null;
         mainApp = null;
         window = null;
+
     }
 }

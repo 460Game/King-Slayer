@@ -211,7 +211,7 @@ public class Astar {
         }
 
         // A* couldn't find a path due to obstacles
-        Log.error("A* failed to produce a path.");
+     //   Log.error("A* failed to produce a path.");
         return new LinkedList<>();
     }
 

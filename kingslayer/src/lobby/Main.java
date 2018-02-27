@@ -141,7 +141,7 @@ public class Main extends Application {
 
     private Stage window;
 
-    public void restart(Stage window) {
+    public int restart(Stage window) {
 //        window.setScene(chooseTeamAndRoleScene());
         if (lobbyClient != null) {
             System.out.println("client lobby restartFromReadyPage");
@@ -475,6 +475,7 @@ public class Main extends Application {
         lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
             @Override
             public void showChoiceTeamAndRoleScene() {
+                System.out.println("Set team and role scene again");
                 Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
             }
         }, this);
