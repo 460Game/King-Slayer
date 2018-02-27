@@ -32,7 +32,7 @@ public class TeamLosePrompt extends Region {
         Button rematch = new Button("Rematch");
         confirm.setTranslateX(100);
         confirm.setTranslateY(100);
-        rematch.setTranslateX(200);
+        rematch.setTranslateX(280);
         rematch.setTranslateY(100);
 
         confirm.setOnAction(l -> {

@@ -30,7 +30,7 @@ public class TeamWinPrompt extends Region {
         Button rematch = new Button("Rematch");
         back_to_lobby.setTranslateX(100);
         back_to_lobby.setTranslateY(100);
-        rematch.setTranslateX(200);
+        rematch.setTranslateX(280);
         rematch.setTranslateY(100);
         back_to_lobby.setOnAction(l -> {
             //TODO: change this to be another class
