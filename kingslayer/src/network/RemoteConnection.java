@@ -134,7 +134,9 @@ public class RemoteConnection {
             sendQueueMsgThread.start();
             consumeQueueMsgThread.start();
 
+
             client.sendTCP(new NetworkCommon.ClientRestartMsg());
+            Log.info("client sent restart message");
             return 0;
         }
     }
@@ -203,6 +205,9 @@ public class RemoteConnection {
 
                     if (obj instanceof NetworkCommon.ClientRestartMsg) {
                         restartClientList.put(connection.getID(), connection);
+
+                        Log.info("restart number: " + restartClientList.size());
+
                         if (restartClientList.size() == clientList.size()) {
                             System.out.println("begin restart");
                             server.sendToAllTCP(new NetworkCommon.AllClientConnectMsg());

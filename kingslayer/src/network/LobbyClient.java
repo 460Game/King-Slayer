@@ -132,7 +132,7 @@ public class LobbyClient implements Lobby {//extends Application {
         clientGameModel = null;
         serverModel = null;
         int status = client.restartFromReadyPage();
-        System.out.println("want it to be null: " + gameView);
+        System.out.println("want it to be null: " + gameView + " status: " + status);
         return status;
     }
 
