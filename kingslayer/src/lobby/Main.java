@@ -429,6 +429,7 @@ public class Main extends Application {
 //        window.maximizedProperty().addListener(resize);
 
         double[] bgOpac = new double[]{2.0};
+        animator.stop();
         animator = new AnimationTimer() {
 
         @Override

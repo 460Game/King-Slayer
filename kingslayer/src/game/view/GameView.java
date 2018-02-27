@@ -147,18 +147,18 @@ public class GameView {
 
                 } else if (model.getWinningTeam() == model.getLocalPlayer().getTeam()) {
                     teamWinPrompt.setVisible(true);
-                    gameInteractionLayer.setVisible(false);
-                    resourcePanel.setVisible(false);
-                    minimap.setVisible(false);
-                    infoPanel.setVisible(false);
-                    actionPanel.setVisible(false);
+//                    gameInteractionLayer.setVisible(false);
+//                    resourcePanel.setVisible(false);
+//                    minimap.setVisible(false);
+//                    infoPanel.setVisible(false);
+//                    actionPanel.setVisible(false);
                 } else {
-                    gameInteractionLayer.setVisible(false);
-                    resourcePanel.setVisible(false);
-                    minimap.setVisible(false);
-                    infoPanel.setVisible(false);
+//                    gameInteractionLayer.setVisible(false);
+//                    resourcePanel.setVisible(false);
+//                    minimap.setVisible(false);
+//                    infoPanel.setVisible(false);
                     teamLosePrompt.setVisible(true);
-                    actionPanel.setVisible(false);
+//                    actionPanel.setVisible(false);
                 }
 
             }
@@ -178,7 +178,6 @@ public class GameView {
 
             if (kc == KeyCode.ESCAPE)
                 exitPrompt.setVisible(!exitPrompt.isVisible());
-
             if (kc == TAB) {
                 model.processMessage(new StopRequest(model.getLocalPlayer().id));
                 int role = (model.getLocalPlayer().getRole().val + 1) % 2;
