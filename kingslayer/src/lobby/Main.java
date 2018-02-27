@@ -143,17 +143,16 @@ public class Main extends Application {
 
     public int restart(Stage window) {
 //        window.setScene(chooseTeamAndRoleScene());
-        int status = 0;
         if (lobbyClient != null) {
             System.out.println("client lobby restartFromReadyPage");
-            status = lobbyClient.restartFromReadyPage();
+            int status = lobbyClient.restartFromReadyPage();
         }
 
         if (lobbyServer != null) {
             System.out.println("server lobby restartFromReadyPage");
-            status = lobbyServer.restartFromReadyPage();
+            int status = lobbyServer.restartFromReadyPage();
         }
-        return status;
+        return 0;
     }
 
     @Override
@@ -286,21 +285,29 @@ public class Main extends Application {
         teamChoice = new ChoiceBox<>();
         teamChoice.getItems().add(Team.ONE);
         teamChoice.getItems().add(Team.TWO);
+        teamChoice.setPrefSize(200, 60);
+        teamChoice.setStyle("-fx-font: 30px \"Serif\";");
         GridPane.setConstraints(teamChoice, 0, 0);
         grid.getChildren().add(teamChoice);
 
         roleChoice = new ChoiceBox<>();
         roleChoice.getItems().add(Role.KING);
         roleChoice.getItems().add(Role.SLAYER);
+        roleChoice.setPrefSize(200, 60);
+        roleChoice.setStyle("-fx-font: 30px \"Serif\";");
         GridPane.setConstraints(roleChoice, 1, 0);
         grid.getChildren().add(roleChoice);
 
         playerName = new TextField();
         playerName.setPromptText("Enter player name.");
+        playerName.setPrefSize(200, 60);
+        playerName.setFont(Font.font(30));
         GridPane.setConstraints(playerName, 2, 0);
         grid.getChildren().add(playerName);
 
         Button ready = new Button("Ready");
+        ready.setPrefSize(200, 60);
+        ready.setFont(Font.font(20));
         GridPane.setConstraints(ready, 3, 0);
         grid.getChildren().add(ready);
 
@@ -321,19 +328,30 @@ public class Main extends Application {
 
     private GridPane ipForm() {
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(window.getHeight()/2, 100, window.getHeight()/2 + 100, 100));
-        grid.setVgap(5);
+        grid.setPadding(new Insets(window.getHeight()/2, 200, window.getHeight()/2 + 100, 200));
+        grid.setVgap(50);
         grid.setHgap(5);
 
         //Defining the Name text field
         final TextField ip = new TextField();
+        ip.setPrefSize(600, 80);
         ip.setPromptText("Enter ip.");
         ip.setPrefColumnCount(100);
+
+        ip.setFont(Font.font("Verdana",30));
+//        ip.fontProperty().set(Font.font(20));
+
+//        ip.setScaleX(10);
+//        ip.setScaleY(5);
+
 //        ip.getText();
         GridPane.setConstraints(ip, 0, 0);
         grid.getChildren().add(ip);
 
         Button connect = new Button("Connect");
+        connect.fontProperty().set(Font.font(20));
+
+        connect.setPrefSize(200, 80);
         GridPane.setConstraints(connect, 1, 0);
         grid.getChildren().add(connect);
 
@@ -443,11 +461,15 @@ public class Main extends Application {
         final TextField numOfPlayer = new TextField();
         numOfPlayer.setPromptText("Enter Number Of Players.");
         numOfPlayer.setPrefColumnCount(100);
+        numOfPlayer.setPrefSize(800, 60);
+        numOfPlayer.setFont(Font.font ("Verdana", 30));
 
         GridPane.setConstraints(numOfPlayer, 0, 0);
         grid.getChildren().add(numOfPlayer);
 
         Button set = new Button("set");
+        set.setPrefSize(100, 60);
+        set.setFont(Font.font ("Verdana", 20));
         GridPane.setConstraints(set, 1, 0);
         grid.getChildren().add(set);
 
