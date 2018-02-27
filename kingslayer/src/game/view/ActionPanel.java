@@ -16,6 +16,9 @@ import static images.Images.CURSOR_IMAGE;
  */
 public class ActionPanel extends Region {
     private GameModel model;
+
+    public ActionPanel() {}
+
     public ActionPanel(ClientGameModel model) {
         this.model = model;
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
