@@ -46,13 +46,16 @@ public class GameView {
 
         WorldPanel worldPanel = new WorldPanel(model);
         GameInteractionLayer gameInteractionLayer;
-        if (model.getLocalPlayer().getRole() == Role.KING)
+        ActionPanel actionPanel;
+        if (model.getLocalPlayer().getRole() == Role.KING) {
             gameInteractionLayer = new KingGameInteractionLayer(model, worldPanel);
-        else
+            actionPanel = new KingActionPanel(model, (KingGameInteractionLayer) gameInteractionLayer);
+        } else {
             gameInteractionLayer = new SlayerGameInteractionLayer(model, worldPanel);
+            actionPanel = new ActionPanel(model);
+        }
         Minimap minimap = new Minimap(model, worldPanel);
         InfoPanel infoPanel = new InfoPanel(model);
-        ActionPanel actionPanel = new ActionPanel(model);
         ResourcePanel resourcePanel = new ResourcePanel(model);
         ExitPrompt exitPrompt = new ExitPrompt(model);
         TeamWinPrompt teamWinPrompt = new TeamWinPrompt(model, this);

@@ -143,16 +143,17 @@ public class Main extends Application {
 
     public int restart(Stage window) {
 //        window.setScene(chooseTeamAndRoleScene());
+        int status = 0;
         if (lobbyClient != null) {
             System.out.println("client lobby restartFromReadyPage");
-            int status = lobbyClient.restartFromReadyPage();
+            status = lobbyClient.restartFromReadyPage();
         }
 
         if (lobbyServer != null) {
             System.out.println("server lobby restartFromReadyPage");
-            int status = lobbyServer.restartFromReadyPage();
+            status = lobbyServer.restartFromReadyPage();
         }
-
+        return status;
     }
 
     @Override
