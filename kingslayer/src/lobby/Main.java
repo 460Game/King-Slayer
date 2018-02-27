@@ -8,6 +8,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -500,7 +501,15 @@ public class Main extends Application {
             @Override
             public void showChoiceTeamAndRoleScene() {
                 System.out.println("Set team and role scene again");
-                Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
+//                Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
+                Task show = new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        Platform.runLater(()->window.setScene(chooseTeamAndRoleScene()));
+                        return null;
+                    }
+                };
+                new Thread(show).start();
             }
         }, this);
 
