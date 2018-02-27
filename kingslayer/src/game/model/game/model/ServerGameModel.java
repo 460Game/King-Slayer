@@ -69,8 +69,10 @@ public class ServerGameModel extends GameModel {
 
     @Override
     public void processMessage(Message m) {
-        if (clients == null)
-            throw new RuntimeException("Cannot receive message before init or after game end");
+        if (clients == null) {
+            Log.info("Cannot receive message before init or after game end");
+            return;
+        }
         if (m.sendToServer())
             this.queueMessage(m);
         if (m.sendToClient())
