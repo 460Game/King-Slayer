@@ -34,7 +34,7 @@ public class WorldPanel extends Region {
     private Canvas uiCanvas;
     private GraphicsContext fgGC;
     private GraphicsContext bgGC;
-    private GraphicsContext uiGC;
+    public GraphicsContext uiGC;
 
     double mouseX = 0;
     double mouseY = 0;
@@ -69,7 +69,7 @@ public class WorldPanel extends Region {
     private double[] scaleFactor = {2};
     private int waterTick[] = {0};
 
-   private double xt;
+    private double xt;
     private double yt;
 
     private double x;

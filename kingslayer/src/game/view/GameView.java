@@ -1,9 +1,12 @@
 package game.view;
 
 import com.esotericsoftware.minlog.Log;
+import game.message.toServer.StopRequest;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.gameState.Loading;
+import game.model.game.model.team.Role;
+import game.model.game.model.worldObject.entity.Entity;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
@@ -16,6 +19,7 @@ import lobby.Main;
 import java.util.*;
 
 import static images.Images.GAME_CURSOR_IMAGE;
+import static javafx.scene.input.KeyCode.TAB;
 import static util.Const.FPSPrint;
 import static util.Util.toWorldCoords;
 
@@ -41,7 +45,11 @@ public class GameView {
         }
 
         WorldPanel worldPanel = new WorldPanel(model);
-        GameInteractionLayer gameInteractionLayer = new GameInteractionLayer(model, worldPanel);
+        GameInteractionLayer gameInteractionLayer;
+        if (model.getLocalPlayer().getRole() == Role.KING)
+            gameInteractionLayer = new KingGameInteractionLayer(model, worldPanel);
+        else
+            gameInteractionLayer = new SlayerGameInteractionLayer(model, worldPanel);
         Minimap minimap = new Minimap(model, worldPanel);
         InfoPanel infoPanel = new InfoPanel(model);
         ActionPanel actionPanel = new ActionPanel(model);
@@ -165,9 +173,22 @@ public class GameView {
         scene.setOnKeyPressed(e -> {
             KeyCode kc = e.getCode();
 
-
             if (kc == KeyCode.ESCAPE)
                 exitPrompt.setVisible(!exitPrompt.isVisible());
+
+            if (kc == TAB) {
+                model.processMessage(new StopRequest(model.getLocalPlayer().id));
+                int role = (model.getLocalPlayer().getRole().val + 1) % 2;
+                for (Entity entity : model.getAllEntities()) {
+                    if (entity.has(Entity.EntityProperty.TEAM) &&
+                        entity.has(Entity.EntityProperty.ROLE) &&
+                        entity.getTeam() == model.getLocalPlayer().getTeam() &&
+                        entity.getRole().val == role) {
+                        model.setLocalPlayer(entity.id);
+                        break;
+                    }
+                }
+            }
         });
 
 
