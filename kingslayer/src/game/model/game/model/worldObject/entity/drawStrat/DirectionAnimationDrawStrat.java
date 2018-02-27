@@ -96,7 +96,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
             // Update image being used
             if (entity.<Velocity>get(VELOCITY).getMagnitude() != 0 || slayerData.meleeLastTime > 0) {
                 drawData.count++;
-                if (drawData.count > 2) {
+                if (drawData.count > 11) {
                     drawData.count = 0;
                     drawData.imageNum = (drawData.imageNum + 1) % 3;
                 }
@@ -127,35 +127,34 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
 
             gc.setEffect(null);
             return;
-        }
-
-
-
-        angle = entity.<Velocity>get(VELOCITY).getAngle();
-
-        if (angle >= -0.75 * PI && angle < -0.25 * PI) {
-            drawData.direction = 'N';
-        } else if (angle >= -0.25 * PI && angle < 0.25 * PI) {
-            drawData.direction = 'E';
-        } else if (angle >= 0.25 * PI && angle < 0.75 * PI) {
-            drawData.direction = 'S';
-        } else if (angle >= 0.75 * PI || angle < -0.75 * PI) {
-            drawData.direction = 'W';
-        }
-
-        // Update image being used
-        if (entity.<Velocity>get(VELOCITY).getMagnitude() != 0) {
-            drawData.count++;
-            if (drawData.count > 11) {
-                drawData.count = 0;
-                drawData.imageNum = (drawData.imageNum + 1) % 3;
-            }
         } else {
-            drawData.imageNum = 0;
-        }
 
-        Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
-        gc.drawImage(this.getImage(entity),
+
+            angle = entity.<Velocity>get(VELOCITY).getAngle();
+
+            if (angle >= -0.75 * PI && angle < -0.25 * PI) {
+                drawData.direction = 'N';
+            } else if (angle >= -0.25 * PI && angle < 0.25 * PI) {
+                drawData.direction = 'E';
+            } else if (angle >= 0.25 * PI && angle < 0.75 * PI) {
+                drawData.direction = 'S';
+            } else if (angle >= 0.75 * PI || angle < -0.75 * PI) {
+                drawData.direction = 'W';
+            }
+
+            // Update image being used
+            if (entity.<Velocity>get(VELOCITY).getMagnitude() != 0) {
+                drawData.count++;
+                if (drawData.count > 11) {
+                    drawData.count = 0;
+                    drawData.imageNum = (drawData.imageNum + 1) % 3;
+                }
+            } else {
+                drawData.imageNum = 0;
+            }
+
+            Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
+            gc.drawImage(this.getImage(entity),
                 toDrawCoords(p.x),
                 toDrawCoords(p.y),
                 toDrawCoords(getWidth()),
@@ -164,6 +163,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
                 toDrawCoords(entity.getY() - entity.getHitbox().getHeight() / 2),
                 toDrawCoords(entity.getHitbox().getWidth()),
                 toDrawCoords(entity.getHitbox().getHeight()));
+        }
     }
 
     double getWidth() {
@@ -282,7 +282,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
             // Update image being used
             if (entity.<Velocity>get(VELOCITY).getMagnitude() != 0) {
                 drawData.count++;
-                if (drawData.count > 2) {
+                if (drawData.count > 5) {
                     drawData.count = 0;
                     drawData.imageNum = (drawData.imageNum + 1) % 4;
                 }
