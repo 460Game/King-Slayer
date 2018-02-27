@@ -19,7 +19,7 @@ public class TeamWinPrompt extends Region {
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
         this.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
         this.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(3), null)));
-        Text text = new Text("Winner Winner Chicken Dinner!");
+        Text text = new Text("Chicken Dinner Winner Winner!");
         text.setFont(new Font(20));
         text.setFill(Color.WHITE);
         text.setLayoutX(10);
@@ -30,7 +30,7 @@ public class TeamWinPrompt extends Region {
         Button rematch = new Button("Rematch");
         back_to_lobby.setTranslateX(100);
         back_to_lobby.setTranslateY(100);
-        rematch.setTranslateX(400);
+        rematch.setTranslateX(200);
         rematch.setTranslateY(100);
         back_to_lobby.setOnAction(l -> {
             //TODO: change this to be another class

@@ -1,6 +1,7 @@
 package game.view;
 
 import game.model.game.model.ClientGameModel;
+
 import javafx.application.Platform;
 import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
@@ -19,6 +20,7 @@ public class TeamLosePrompt extends Region {
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
         this.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
         this.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(3), null)));
+
         Text text = new Text("Better Luck Next Time!");
         text.setFont(new Font(20));
         text.setFill(Color.WHITE);
@@ -30,7 +32,7 @@ public class TeamLosePrompt extends Region {
         Button rematch = new Button("Rematch");
         confirm.setTranslateX(100);
         confirm.setTranslateY(100);
-        rematch.setTranslateX(400);
+        rematch.setTranslateX(200);
         rematch.setTranslateY(100);
 
         confirm.setOnAction(l -> {
