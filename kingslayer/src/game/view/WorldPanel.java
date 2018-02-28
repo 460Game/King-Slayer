@@ -175,7 +175,12 @@ public class WorldPanel extends Region {
             screenSizeZoom = Util.dist(0,0, this.getWidth(), this.getHeight())/ Const.SCREEN_DIAG_STD_SIZE;
             scaleFactor = userZoom * screenSizeZoom;
         });
-
+        this.setOnMouseMoved(e ->{
+            mouseX = e.getX();
+            mouseY = e.getY();
+            if(mouseMoveAction != null)
+                mouseMoveAction.accept(screenToGameX(e.getX()), screenToGameY(e.getY()));
+        });
     }
 
     public double screenToGameX(double x) {
@@ -198,6 +203,7 @@ public class WorldPanel extends Region {
 
     private BiConsumer<Double, Double> leftClick = null;
     private BiConsumer<Double, Double> rightClick = null;
+    private BiConsumer<Double, Double>  mouseMoveAction = null;
 
     void onGameLeftClick(BiConsumer<Double, Double> consumer) {
         leftClick = consumer;
@@ -246,11 +252,7 @@ public class WorldPanel extends Region {
     }
 
     public void onGameMouseMove(BiConsumer<Double, Double> consumer) {
-        this.setOnMouseMoved(e ->{
-            mouseX = e.getX();
-            mouseY = e.getY();
-            consumer.accept(screenToGameX(e.getX()), screenToGameY(e.getY()));
-        });
+        mouseMoveAction = consumer;
     }
 
     public void setMiniPos(double x, double y) {
