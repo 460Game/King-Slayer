@@ -35,7 +35,6 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
                 a.entityDie(client);
             });
         }
-        // TODO should arrows go through minions/teammates?
     }
 
     @Override

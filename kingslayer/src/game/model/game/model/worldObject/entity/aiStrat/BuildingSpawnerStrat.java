@@ -161,8 +161,6 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         public static final TowerBuildingSpawnerStrat SINGLETON = new TowerBuildingSpawnerStrat();
 
-        public static double attackRange = 5.0;
-
         @Override
         boolean canAttack() {
             return true;
@@ -170,7 +168,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns(Entity entity) {
-            return 0.1 - 0.02 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0);
+            return 1 - 0.02 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0);
         }
 
         @Override
