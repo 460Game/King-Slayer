@@ -296,6 +296,13 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         while (true) {
 
+            // Check if cell x, y has a wall.
+            if (!a.containedIn.contains(model.getCell(x, y)) && !model.getCell(x, y).isPassable())
+                return false;
+
+            if (--n == 0)
+                break;
+
             if (error > 0) {
                 y += yinc;
                 error -= dx;
@@ -315,13 +322,6 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
                 n--;
             }
 
-            // TODO Check
-            // Check if cell x, y has a wall.
-            if (!model.getCell(x, y).isPassable())
-                return false;
-
-            if (--n == 0)
-                break;
         }
         return true;
     }

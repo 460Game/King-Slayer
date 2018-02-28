@@ -339,6 +339,7 @@ public class ServerGameModel extends GameModel {
                     metal.addAll(e.containedIn);
         }
         if (addedBuilding) {
+            addedBuilding = false;
             if (building.get(BUILDINGTYPE) == BuildingSpawnerStrat.BuildingType.COLLECTOR)
                 if (building.getTeam() == Team.ONE)
                     team1collector.addAll(building.containedIn);
