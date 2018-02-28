@@ -16,7 +16,6 @@ public class SlayerDeathStrat extends DeathStrat {
         System.out.println("slayer dies");
         Consumer<ServerGameModel> serverConsumer = (server) -> {
             server.processMessage(new RemoveEntityRequest(entity));
-            server.teamWin((entity.getTeam() == Team.ONE) ? Team.TWO : Team.ONE);
 //            server.getClients().forEach(client -> client.processMessage(new SetEntityCommand(b)));
         };
         model.execute(serverConsumer, (client) -> {
