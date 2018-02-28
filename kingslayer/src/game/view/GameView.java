@@ -8,6 +8,7 @@ import game.model.game.model.gameState.Loading;
 import game.model.game.model.team.Role;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.animation.AnimationTimer;
+import javafx.beans.binding.Bindings;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -19,6 +20,7 @@ import lobby.Main;
 import java.util.*;
 
 import static images.Images.GAME_CURSOR_IMAGE;
+import static javafx.scene.input.KeyCode.F11;
 import static javafx.scene.input.KeyCode.TAB;
 import static util.Const.FPSPrint;
 import static util.Util.toWorldCoords;
@@ -52,10 +54,9 @@ public class GameView {
             actionPanel = new KingActionPanel(model, (KingGameInteractionLayer) gameInteractionLayer);
         } else {
             gameInteractionLayer = new SlayerGameInteractionLayer(model, worldPanel);
-            actionPanel = new ActionPanel(model);
+            actionPanel = new SlayerActionPanel(model, (SlayerGameInteractionLayer) gameInteractionLayer);
         }
         Minimap minimap = new Minimap(model, worldPanel);
-        InfoPanel infoPanel = new InfoPanel(model);
         ResourcePanel resourcePanel = new ResourcePanel(model);
         ExitPrompt exitPrompt = new ExitPrompt(model);
         TeamWinPrompt teamWinPrompt = new TeamWinPrompt(model, this);
@@ -67,19 +68,14 @@ public class GameView {
         minimap.prefHeightProperty().bind(window.heightProperty().multiply(0.35));
         minimap.layoutYProperty().bind(window.heightProperty().multiply(0.65));
 
-        infoPanel.prefWidthProperty().bind(window.widthProperty().multiply(0.5));
-        infoPanel.prefHeightProperty().bind(window.heightProperty().multiply(0.1));
-        infoPanel.layoutXProperty().bind(window.widthProperty().multiply(0.5));
-        infoPanel.layoutYProperty().bind(window.heightProperty().multiply(0.9));
+        actionPanel.setPrefWidth(500);
+        actionPanel.setPrefHeight(100);
+        actionPanel.layoutXProperty().bind(Bindings.max(minimap.widthProperty(), window.widthProperty().divide(2).subtract(250)));
+        actionPanel.layoutYProperty().bind(window.heightProperty().subtract(100));
 
-        actionPanel.prefWidthProperty().bind(window.widthProperty().subtract(minimap.prefWidthProperty()).subtract(infoPanel.prefWidthProperty()));
-        actionPanel.prefHeightProperty().bind(window.heightProperty().multiply(0.2));
-        actionPanel.layoutXProperty().bind(minimap.widthProperty());
-        actionPanel.layoutYProperty().bind(window.heightProperty().multiply(0.8));
-
-        resourcePanel.prefWidthProperty().bind(window.widthProperty().multiply(0.2));
-        resourcePanel.prefHeightProperty().bind(window.heightProperty().multiply(0.05));
-        resourcePanel.layoutXProperty().bind(window.widthProperty().multiply(0.8));
+        resourcePanel.setPrefWidth(300);
+        resourcePanel.setPrefHeight(40);
+        resourcePanel.layoutXProperty().bind(window.widthProperty().subtract(300));
 
         exitPrompt.prefHeightProperty().bind(window.heightProperty().multiply(0.3));
         exitPrompt.prefWidthProperty().bind(window.widthProperty().multiply(0.3));
@@ -100,20 +96,28 @@ public class GameView {
         teamLosePrompt.setVisible(false);
         teamWinPrompt.setVisible(false);
 
-        root.getChildren().addAll(gameInteractionLayer, minimap, infoPanel, actionPanel, resourcePanel,
+        root.getChildren().addAll(gameInteractionLayer, minimap, actionPanel, resourcePanel,
                 exitPrompt, teamLosePrompt, teamWinPrompt);
 
 
-        //FPS print
         final int[] totalFrameCount = {0};
-        TimerTask updateFPS = new TimerTask() {
-            public void run() {
-                Log.info(String.valueOf("ClientFPS: " + totalFrameCount[0]));
-                totalFrameCount[0] = 0;
-            }
-        };
 
         if (FPSPrint) {
+
+            FPSPanel fpsPanel = new FPSPanel();
+            fpsPanel.setPrefHeight(50);
+            fpsPanel.setPrefWidth(50);
+            root.getChildren().add(fpsPanel);
+
+            //FPS print
+            TimerTask updateFPS = new TimerTask() {
+                public void run() {
+                    fpsPanel.setFPS(totalFrameCount[0]);
+                    totalFrameCount[0] = 0;
+                }
+            };
+
+
             Timer t = new Timer();
             t.scheduleAtFixedRate(updateFPS, 1000, 1000);
         }
@@ -125,7 +129,6 @@ public class GameView {
                 gameInteractionLayer.setVisible(true);
                 resourcePanel.setVisible(true);
                 minimap.setVisible(true);
-                infoPanel.setVisible(true);
                 teamLosePrompt.setVisible(false);
                 actionPanel.setVisible(true);
 
@@ -135,14 +138,12 @@ public class GameView {
                 gameInteractionLayer.draw();
                 resourcePanel.draw();
                 minimap.draw();
-                infoPanel.draw();
                 actionPanel.draw();
 
                 //TODO dont do this
                 resourcePanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
                 minimap.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-                infoPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-                actionPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+               actionPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
 
 //                if (model.getWinningTeam() == null) {
 //                    gameInteractionLayer.setVisible(true);
@@ -228,6 +229,9 @@ public class GameView {
                         break;
                     }
                 }
+            }
+            if(kc == F11) {
+                window.setFullScreen(!window.isFullScreen());
             }
         });
 

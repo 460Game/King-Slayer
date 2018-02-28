@@ -51,21 +51,17 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           }
         }
       } else if (upgrading) {
-        Entity entity = model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get();
-        System.out.println("clicked at " + x + " " + y + " and hit entity " + entity);
-        if (entity != null) {
+        model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
           model.processMessage(new UpgradeEntityRequest(entity));
           upgrading = false;
           world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
-        }
+        });
       } else if (deleting) {
-        Entity entity = model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get();
-        System.out.println("clicked at " + x + " " + y + " and hit entity " + entity + " to sell");
-        if (entity != null) {
+        model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
           model.processMessage(new SellEntityRequest(entity));
           deleting = false;
           world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
-        }
+        });
       }
     });
 

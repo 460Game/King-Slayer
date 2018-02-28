@@ -20,8 +20,10 @@ import java.util.Map;
  */
 public class SingleplayerController {
     Main mainApp;
-    public SingleplayerController(Main mainApp) {
+    Role role;
+    public SingleplayerController(Main mainApp, Role role) {
         this.mainApp = mainApp;
+        this.role = role;
     }
 
     public void start(Stage primaryStage) throws Exception {
@@ -29,7 +31,7 @@ public class SingleplayerController {
         ClientGameModel clientModel = new ClientGameModel(new CopyingModelWrapper(serverModel));
         Map<Model, PlayerInfo> testingMap = new HashMap<>();
         Model clientGameModel2 = new CopyingModelWrapper(clientModel);
-        testingMap.put(clientGameModel2, new PlayerInfo(Team.TWO, Role.KING, "testName"));
+        testingMap.put(clientGameModel2, new PlayerInfo(Team.ONE, role, "tester"));
         serverModel.init(Collections.singleton(clientGameModel2), testingMap);
         serverModel.start();
 
