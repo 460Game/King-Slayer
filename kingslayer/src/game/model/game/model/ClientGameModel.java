@@ -126,7 +126,7 @@ public class ClientGameModel extends GameModel {
         List<GridCell> explored = new ArrayList<>();
         List<GridCell> invis = new ArrayList<>();
 
-        Team team = this.getLocalPlayer().getTeam();
+        Team team = getTeam();
         for (int i = (int) Math.max(0,x); i < Math.min(Math.ceil(x + w), this.getMapWidth()-1); i++) {
             for (int j = (int) Math.max(0, y); j < Math.min(Math.ceil(y + h), this.getMapHeight()); j++) {
                 GridCell cell = this.getCell(i, j);
@@ -159,12 +159,12 @@ public class ClientGameModel extends GameModel {
     }
 
     public void changeWinningTeam(Team team) {
-        if (winningTeam == getLocalPlayer().getTeam()) return; //already won
+        if (winningTeam == getTeam()) return; //already won
         winningTeam = team;
     }
 
     public void changeLosingTeam(Team team) {
-        if (losingTeam == getLocalPlayer().getTeam()) return; //already lost
+        if (losingTeam == getTeam()) return; //already lost
         losingTeam = team;
     }
 
