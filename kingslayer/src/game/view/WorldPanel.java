@@ -9,6 +9,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Region;
 import javafx.scene.transform.Affine;
+import util.Const;
+import util.Util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,8 +68,10 @@ public class WorldPanel extends Region {
 
     }
 
-    private double[] scaleFactor = {2};
-    private int waterTick[] = {0};
+    private double scaleFactor = 2;
+    private double userZoom = 1;
+    private double screenSizeZoom = 2;
+    private int waterTick = 0;
 
     private double xt;
     private double yt;
@@ -99,28 +103,31 @@ public class WorldPanel extends Region {
         y = model.getLocalPlayer().getY() + 0.15 * toWorldCoords(mouseY - getHeight()/2);
         x = Math.min(Math.max(gameW/2, x), model.getMapWidth() - gameW/2);
         y = Math.min(Math.max(gameH/2, y), model.getMapHeight() - gameH/2);
-        gameW = toWorldCoords(getWidth() / scaleFactor[0]);
-        gameH = toWorldCoords(getHeight() / scaleFactor[0]);
-        xt = -toDrawCoords(x * scaleFactor[0]) + getWidth() / 2;
-        yt = -toDrawCoords(y * scaleFactor[0]) + getHeight() / 2;
+        gameW = toWorldCoords(getWidth() / scaleFactor);
+        gameH = toWorldCoords(getHeight() / scaleFactor);
+        xt = -toDrawCoords(x * scaleFactor) + getWidth() / 2;
+        yt = -toDrawCoords(y * scaleFactor) + getHeight() / 2;
         fgGC.setTransform(new Affine());
         bgGC.setTransform(new Affine());
         fgGC.translate(xt, yt);
         bgGC.translate(xt, yt);
-        fgGC.transform(new Affine(Affine.scale(scaleFactor[0], scaleFactor[0])));
-        bgGC.transform(new Affine(Affine.scale(scaleFactor[0], scaleFactor[0])));
+        fgGC.transform(new Affine(Affine.scale(scaleFactor, scaleFactor)));
+        bgGC.transform(new Affine(Affine.scale(scaleFactor, scaleFactor)));
 
         fgGC.clearRect(-1111, -11111, 11111111, 1111111);
-        bgGC.drawImage(waterTick[0] > WATER_ANIM_PERIOD / 2 ? BGImage1 : BGImage2, 0, 0);
+        bgGC.drawImage(waterTick > WATER_ANIM_PERIOD / 2 ? BGImage1 : BGImage2, 0, 0);
         model.drawForeground(fgGC, GRID_X_SIZE / 2, GRID_Y_SIZE / 2, gameW, gameH);
-        waterTick[0] = (waterTick[0] + 1) % WATER_ANIM_PERIOD;
+        waterTick = (waterTick + 1) % WATER_ANIM_PERIOD;
 
 
         this.setOnScroll(e -> {
             if(e.getDeltaY() > 0)
-                scaleFactor[0] *= 1.111111111111111;
+                userZoom *= 1.111111111111111;
             else
-                scaleFactor[0] *= 0.9;
+                userZoom *= 0.9;
+            userZoom = Math.min(userZoom, Const.MAX_ZOOM);
+            userZoom = Math.max(userZoom, Const.MIN_ZOOM);
+            scaleFactor = userZoom * screenSizeZoom;
         });
 
         this.setOnKeyPressed(e -> {
@@ -149,14 +156,23 @@ public class WorldPanel extends Region {
                 rightClick.accept(screenToGameX(e.getX()), screenToGameY(e.getY()));
         });
 
+        this.widthProperty().addListener(e -> {
+            screenSizeZoom = Util.dist(0,0, this.getWidth(), this.getHeight())/ Const.SCREEN_DIAG_STD_SIZE;
+            scaleFactor = userZoom * screenSizeZoom;
+        });
+        this.heightProperty().addListener(e -> {
+            screenSizeZoom = Util.dist(0,0, this.getWidth(), this.getHeight())/ Const.SCREEN_DIAG_STD_SIZE;
+            scaleFactor = userZoom * screenSizeZoom;
+        });
+
     }
 
     public double screenToGameX(double x) {
-        return (x- xt)/TILE_PIXELS / scaleFactor[0] ;
+        return (x- xt)/TILE_PIXELS / scaleFactor ;
     }
 
     public double screenToGameY(double y) {
-        return (y - yt) / TILE_PIXELS / scaleFactor[0];
+        return (y - yt) / TILE_PIXELS / scaleFactor;
     }
 
     private Set<KeyCode> currentlyPressed = new TreeSet<>();

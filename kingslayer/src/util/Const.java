@@ -8,7 +8,10 @@ import static java.lang.Math.PI;
 public abstract class Const {
 
 
-    public static boolean FPSPrint = false;
+    public static final double SCREEN_DIAG_STD_SIZE = 800;
+    public static final double MAX_ZOOM = 2;
+    public static final double MIN_ZOOM = 0.8;
+    public static boolean FPSPrint = true;
 
     /**
      * Flag that signals whether to update in debugging mdode.

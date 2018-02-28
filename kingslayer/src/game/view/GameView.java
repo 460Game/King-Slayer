@@ -73,9 +73,9 @@ public class GameView {
         actionPanel.layoutXProperty().bind(Bindings.max(minimap.widthProperty(), window.widthProperty().divide(2).subtract(250)));
         actionPanel.layoutYProperty().bind(window.heightProperty().subtract(100));
 
-        resourcePanel.prefWidthProperty().bind(window.widthProperty().multiply(0.2));
-        resourcePanel.prefHeightProperty().bind(window.heightProperty().multiply(0.05));
-        resourcePanel.layoutXProperty().bind(window.widthProperty().multiply(0.8));
+        resourcePanel.setPrefWidth(300);
+        resourcePanel.setPrefHeight(40);
+        resourcePanel.layoutXProperty().bind(window.widthProperty().subtract(300));
 
         exitPrompt.prefHeightProperty().bind(window.heightProperty().multiply(0.3));
         exitPrompt.prefWidthProperty().bind(window.widthProperty().multiply(0.3));
@@ -100,16 +100,24 @@ public class GameView {
                 exitPrompt, teamLosePrompt, teamWinPrompt);
 
 
-        //FPS print
         final int[] totalFrameCount = {0};
-        TimerTask updateFPS = new TimerTask() {
-            public void run() {
-                Log.info(String.valueOf("ClientFPS: " + totalFrameCount[0]));
-                totalFrameCount[0] = 0;
-            }
-        };
 
         if (FPSPrint) {
+
+            FPSPanel fpsPanel = new FPSPanel();
+            fpsPanel.setPrefHeight(50);
+            fpsPanel.setPrefWidth(50);
+            root.getChildren().add(fpsPanel);
+
+            //FPS print
+            TimerTask updateFPS = new TimerTask() {
+                public void run() {
+                    fpsPanel.setFPS(totalFrameCount[0]);
+                    totalFrameCount[0] = 0;
+                }
+            };
+
+
             Timer t = new Timer();
             t.scheduleAtFixedRate(updateFPS, 1000, 1000);
         }
@@ -223,7 +231,7 @@ public class GameView {
                 }
             }
             if(kc == F11) {
-                window.setFullScreen(true);
+                window.setFullScreen(!window.isFullScreen());
             }
         });
 
