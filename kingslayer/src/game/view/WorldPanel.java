@@ -100,7 +100,7 @@ public class WorldPanel extends Region {
     private double gameH;
 
     public void draw() {
-        if (model.clientLoseControl)
+        if (model.clientLoseControl || model.getLocalPlayer() == null)
             return;
 
         if(!useMinimap) {
