@@ -2,13 +2,10 @@ package game.model.game.model.worldObject.entity.collideStrat;
 
 import game.message.toClient.SetEntityCommand;
 import game.model.game.model.*;
-import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 
-import java.util.function.Consumer;
-
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.TEAM;
-import static util.Util.checkBounds;
+import static util.Util.checkBoundsForArrows;
 import static util.Const.*;
 
 /**
@@ -45,8 +42,8 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
     public void collisionWater(GameModel model, Entity a, Entity b) {
         // Normally an arrow should go over water fine. This check only stops the arrow
         // from going out of the bounds of the map and causing an error.
-        if (!checkBounds(a.getX() - a.getHitbox().getRadius(ANGLE_LEFT), a.getY() - a.getHitbox().getRadius(ANGLE_UP)) ||
-                !checkBounds(a.getX() + a.getHitbox().getRadius(ANGLE_RIGHT), a.getY() + a.getHitbox().getRadius(ANGLE_DOWN))) {
+        if (!checkBoundsForArrows(a.getX() - a.getHitbox().getRadius(ANGLE_LEFT), a.getY() - a.getHitbox().getRadius(ANGLE_UP)) ||
+                !checkBoundsForArrows(a.getX() + a.getHitbox().getRadius(ANGLE_RIGHT), a.getY() + a.getHitbox().getRadius(ANGLE_DOWN))) {
             a.setVelocity(a.getVelocity().withMagnitude(0));
             a.entityDie(model);
         }
