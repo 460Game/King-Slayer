@@ -7,6 +7,7 @@ import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntitySpawner;
 import game.model.game.model.worldObject.entity.entities.Entities;
 import javafx.scene.ImageCursor;
+import javafx.scene.control.Button;
 import util.Util;
 
 //import static images.Images.DELETE_CURSOR_IMAGE;
@@ -41,14 +42,12 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
     world.onGameLeftClick((x, y) -> {
       if (spawner != null) {
-        if (!placingGhost.getHitbox().getCollidesWith(model, placingGhost.getX(), placingGhost.getY()).skip(1).findAny().isPresent()) {
-          model.processMessage(new EntityBuildRequest(spawner,
-              model.getLocalPlayer().getTeam(), Math.floor(x) + 0.5, Math.floor(y) + 0.5));
-          if (!holding) {
-            model.remove(placingGhost);
-            spawner = null;
-            placingGhost = null;
-          }
+        model.processMessage(new EntityBuildRequest(spawner,
+            model.getLocalPlayer().getTeam(), Math.floor(x) + 0.5, Math.floor(y) + 0.5, placingGhost.getHitbox()));
+        if (!holding) {
+          model.remove(placingGhost);
+          spawner = null;
+          placingGhost = null;
         }
       } else if (upgrading) {
         model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {

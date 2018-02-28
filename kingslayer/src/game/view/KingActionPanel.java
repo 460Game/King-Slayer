@@ -40,6 +40,7 @@ public class KingActionPanel extends ActionPanel {
     wall.setOnAction(e -> {
       gameInteractionLayer.clearSelection();
       gameInteractionLayer.selectWall();
+      wall.disarm();
     });
 
     Button resource = new Button("2", new ImageView((model.getLocalPlayer().getTeam() == Team.ONE) ?
@@ -49,6 +50,9 @@ public class KingActionPanel extends ActionPanel {
     resource.setOnAction(e -> {
       gameInteractionLayer.clearSelection();
       gameInteractionLayer.selectResourceCollector();
+    });
+    resource.setOnMouseReleased(e -> {
+      System.out.println("blahhhhhhh!");
     });
 
     Button selectBarracks = new Button("3", new ImageView((model.getLocalPlayer().getTeam() == Team.ONE) ?
@@ -69,6 +73,7 @@ public class KingActionPanel extends ActionPanel {
     arrowTower.setOnAction(e -> {
       gameInteractionLayer.clearSelection();
       gameInteractionLayer.selectArrowTower();
+      arrowTower.disarm();
     });
 
     Button trap = new Button("TODO 5");//, new ImageView((model.getLocalPlayer().getTeam() == Team.ONE) ?
@@ -76,6 +81,7 @@ public class KingActionPanel extends ActionPanel {
     grid.add(trap, 4, 0);
     trap.setOnAction(e -> {
       gameInteractionLayer.clearSelection();
+      trap.disarm();
     });
 
     Button upgrade = new Button("E", new ImageView(Images.UPGRADE_CURSOR_IMAGE));
@@ -84,6 +90,7 @@ public class KingActionPanel extends ActionPanel {
     upgrade.setOnAction(e -> {
       gameInteractionLayer.clearSelection();
       gameInteractionLayer.selectUpgrade();
+      upgrade.disarm();
     });
 
     Button delete = new Button("Q", new ImageView(Images.DELETE_CURSOR_IMAGE));
@@ -92,6 +99,7 @@ public class KingActionPanel extends ActionPanel {
     delete.setOnAction(e -> {
       gameInteractionLayer.clearSelection();
       gameInteractionLayer.selectDelete();
+      delete.disarm();
     });
 
 
