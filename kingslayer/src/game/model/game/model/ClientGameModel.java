@@ -144,7 +144,6 @@ public class ClientGameModel extends GameModel {
         invis.forEach(cell -> {
             gc.drawImage(Images.FOG_GREY_IMAGE, toDrawCoords(cell.getTopLeftX()-0.5), toDrawCoords(cell.getTopLeftY()-0.5), toDrawCoords(2), toDrawCoords(2));
       });
-        gc.setEffect(null);
 
         if (DEBUG_DRAW)
             this.streamCells().flatMap(GridCell::streamContents).forEach(a -> a.getHitbox().draw(gc, a));

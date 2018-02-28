@@ -33,13 +33,14 @@ public class Minimap extends Region {
 
         this.getChildren().add(minimapCanvas);
 
-        minimapCanvas.heightProperty().bind(this.heightProperty().subtract(20));
-        minimapCanvas.widthProperty().bind(this.widthProperty().subtract(20));
-        minimapCanvas.translateXProperty().setValue(10);
-        minimapCanvas.translateYProperty().setValue(10);
+        minimapCanvas.heightProperty().bind(this.heightProperty().subtract(50));
+        minimapCanvas.widthProperty().bind(this.widthProperty().subtract(50));
+        minimapCanvas.translateXProperty().setValue(25);
+        minimapCanvas.translateYProperty().setValue(25);
 
         this.setOnMouseDragged(e -> {
-            world.setMiniPos(e.getX()/4, e.getY()/4);
+            world.setMiniPos( -3+(e.getX())/minimapGC.getCanvas().getWidth() * (model.getMapWidth()-8),
+                     -3+(e.getY())/minimapGC.getCanvas().getHeight() * (model.getMapHeight()-8));
         });
 
         this.setOnMousePressed(e -> {
@@ -62,13 +63,13 @@ public class Minimap extends Region {
         if (tick == 5) {
             tick = 0;
             minimapGC.setTransform(new Affine(Transform.scale(
-                    minimapGC.getCanvas().getWidth() / (model.getMapWidth()-6),
-                    minimapGC.getCanvas().getHeight() / (model.getMapHeight()-6))));
+                    minimapGC.getCanvas().getWidth() / (model.getMapWidth()-8),
+                    minimapGC.getCanvas().getHeight() / (model.getMapHeight()-8))));
             minimapGC.clearRect(0, 0, minimapCanvas.getWidth(), minimapCanvas.getHeight());
             minimapGC.setGlobalAlpha(0.3);
 
-            for (int x = 4; x < model.getMapWidth()-3; x++) {
-                for (int y = 4; y < model.getMapHeight()-3; y++) {
+            for (int x = 4; x < model.getMapWidth()-4; x++) {
+                for (int y = 4; y < model.getMapHeight()-4; y++) {
                         if (model.getCell(x, y).isVisable(model.getLocalPlayer().getTeam()))
                             minimapGC.setFill(model.getTile(x, y).getColor());
                         else if (model.getCell(x, y).isExplored(model.getLocalPlayer().getTeam()))
@@ -93,7 +94,7 @@ public class Minimap extends Region {
                 });
             }
             minimapGC.setStroke(Color.WHITE);
-            minimapGC.strokeRect(world.getCamX() - world.getCamW() / 2, world.getCamY() - world.getCamH() / 2, world.getCamW(), world.getCamH());
+            minimapGC.strokeRect(world.getCamX() - 2 - world.getCamW() / 2, world.getCamY() - 2 - world.getCamH() / 2, world.getCamW(), world.getCamH());
         }
 
 

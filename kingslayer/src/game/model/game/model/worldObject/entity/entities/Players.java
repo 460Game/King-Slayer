@@ -39,7 +39,7 @@ public class Players {
             pair(DEATH_STRAT, SlayerDeathStrat.SINGLETON),
             pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
             pair(SLAYER_DATA, new SlayerData()),
-        pair(SIGHT_RADIUS, 5),
+        pair(SIGHT_RADIUS, 10),
                 pair(MAX_HEALTH, 50.0));
     }
 
@@ -55,7 +55,7 @@ public class Players {
             pair(DRAW_STRAT, DirectionAnimationDrawStrat.KING_ANIMATION),
             pair(DEATH_STRAT, KingDeathStrat.SINGLETON),
             pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
-                pair(SIGHT_RADIUS, 7),
+                pair(SIGHT_RADIUS, 10),
                 pair(MAX_HEALTH, 75.0));
     }
 }

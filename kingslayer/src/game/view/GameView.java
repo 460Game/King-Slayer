@@ -74,9 +74,9 @@ public class GameView {
         actionPanel.layoutXProperty().bind(Bindings.max(minimap.widthProperty(), window.widthProperty().divide(2).subtract(250)));
         actionPanel.layoutYProperty().bind(window.heightProperty().subtract(100));
 
-        resourcePanel.setPrefWidth(300);
-        resourcePanel.setPrefHeight(40);
-        resourcePanel.layoutXProperty().bind(window.widthProperty().subtract(300));
+       // resourcePanel.setPrefWidth(300);
+      //  resourcePanel.setPrefHeight(40);
+        resourcePanel.layoutXProperty().bind(window.widthProperty().subtract(resourcePanel.widthProperty()));
 
         exitPrompt.prefHeightProperty().bind(window.heightProperty().multiply(0.3));
         exitPrompt.prefWidthProperty().bind(window.widthProperty().multiply(0.3));
