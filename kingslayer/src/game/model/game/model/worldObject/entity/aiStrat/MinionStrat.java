@@ -457,7 +457,7 @@ public abstract class MinionStrat extends AIStrat {
         while (true) {
 
             // Check if cell x, y has a wall.
-            if (!model.getCell(x, y).isPassable())
+            if (!b.containedIn.contains(model.getCell(x, y)) && !model.getCell(x, y).isPassable())
                 return false;
 
             if (--n == 0)
