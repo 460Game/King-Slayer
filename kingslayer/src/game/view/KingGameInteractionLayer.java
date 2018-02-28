@@ -172,9 +172,12 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         this.selectDelete();
       }
 
+      if (kc == SHIFT)
+        holding = true;
+
     });
 
-    world.onKeyRelease(e -> {
+    world.onKeyRelease(kc -> {
       holding = false;
     });
   }
