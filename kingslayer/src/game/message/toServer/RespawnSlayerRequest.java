@@ -1,6 +1,7 @@
 package game.message.toServer;
 
 import game.message.toClient.NewEntityCommand;
+import game.message.toClient.RespawnSlayerCommand;
 import game.model.game.model.Model;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
@@ -21,7 +22,7 @@ public class RespawnSlayerRequest extends ActionRequest {
         double y = king.get(Entity.EntityProperty.Y);
         model.processMessage(new MakeEntityRequest(Players.makeSlayer(x, y, myTeam)));
         for (Model client : model.getClients()) {
-            client.processMessage(new NewEntityCommand(Players.makeSlayer(x, y, myTeam)));
+            client.processMessage(new RespawnSlayerCommand());
         }
     }
 }
