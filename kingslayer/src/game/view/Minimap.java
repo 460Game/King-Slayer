@@ -9,6 +9,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
+import util.Const;
+import util.Util;
 
 import static images.Images.CURSOR_IMAGE;
 
@@ -60,42 +62,38 @@ public class Minimap extends Region {
         if (tick == 5) {
             tick = 0;
             minimapGC.setTransform(new Affine(Transform.scale(
-                    minimapGC.getCanvas().getWidth() / model.getMapWidth(),
-                    minimapGC.getCanvas().getHeight() / model.getMapHeight())));
+                    minimapGC.getCanvas().getWidth() / (model.getMapWidth()-6),
+                    minimapGC.getCanvas().getHeight() / (model.getMapHeight()-6))));
             minimapGC.clearRect(0, 0, minimapCanvas.getWidth(), minimapCanvas.getHeight());
             minimapGC.setGlobalAlpha(0.3);
 
-            for (int x = 0; x < model.getMapWidth(); x++) {
-                for (int y = 0; y < model.getMapHeight(); y++) {
-                    //   if(model.getCell(x,y).streamContents().filter(e -> e.) != 0)
-                    //        minimapGC.setFill(Color.BLACK);
-                    //    else
-                    if (model.getCell(x, y).isVisable(model.getLocalPlayer().getTeam()))
-                        minimapGC.setFill(model.getTile(x, y).getColor());
-                    else if (model.getCell(x, y).isExplored(model.getLocalPlayer().getTeam()))
-                        minimapGC.setFill(model.getTile(x, y).getColor().interpolate(Color.BLACK, 0.7));
-                    else
-                        minimapGC.setFill(Color.BLACK);
-                    minimapGC.fillRect(x, y, 2, 2);
+            for (int x = 4; x < model.getMapWidth()-3; x++) {
+                for (int y = 4; y < model.getMapHeight()-3; y++) {
+                        if (model.getCell(x, y).isVisable(model.getLocalPlayer().getTeam()))
+                            minimapGC.setFill(model.getTile(x, y).getColor());
+                        else if (model.getCell(x, y).isExplored(model.getLocalPlayer().getTeam()))
+                            minimapGC.setFill(model.getTile(x, y).getColor().interpolate(Color.BLACK, 0.7));
+                        else
+                            minimapGC.setFill(Color.BLACK);
+                        minimapGC.fillRect(x - 3, y - 3, 2, 2);
                 }
             }
-            //TEMP HACK
+            minimapGC.setGlobalAlpha(1);
             for (Entity player : model.getAllEntities()) {
                 player.containedIn.stream().findAny().ifPresent(cell -> {
                     if (cell.isVisable(model.getLocalPlayer().getTeam())) {
                         if (player.has(Entity.EntityProperty.ROLE)) {
                             minimapGC.setFill(player.getTeam().color);
-                            minimapGC.fillOval(player.getX(), player.getY(), 3, 3);
+                            minimapGC.fillOval(player.getX()-3, player.getY()-3, 3, 3);
                         } else if (player.has(Entity.EntityProperty.TEAM)) {
                             minimapGC.setFill(player.getTeam().color);
-                            minimapGC.fillOval(player.getX(), player.getY(), 1, 1);
+                            minimapGC.fillOval(player.getX()-3, player.getY()-3, 1, 1);
                         }
                     }
                 });
             }
             minimapGC.setStroke(Color.WHITE);
             minimapGC.strokeRect(world.getCamX() - world.getCamW() / 2, world.getCamY() - world.getCamH() / 2, world.getCamW(), world.getCamH());
-
         }
 
 
