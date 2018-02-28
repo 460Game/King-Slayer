@@ -40,7 +40,7 @@ public class ClientGameModel extends GameModel {
 
     Team winningTeam = null;
     Team losingTeam = null;
-
+    Team thisTeam;
 
     public ClientGameModel(Model server) {
         super(new ClientMapGenerator());
@@ -64,6 +64,11 @@ public class ClientGameModel extends GameModel {
     public void setLocalPlayer(long localPlayer) {
         Log.info("Set local player");
         this.localPlayer = localPlayer;
+        thisTeam = getEntity(localPlayer).getTeam();
+    }
+
+    public Team getTeam() {
+        return thisTeam;
     }
 
     private Model server;

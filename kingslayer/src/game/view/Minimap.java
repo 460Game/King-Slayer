@@ -70,9 +70,9 @@ public class Minimap extends Region {
 
             for (int x = 4; x < model.getMapWidth()-4; x++) {
                 for (int y = 4; y < model.getMapHeight()-4; y++) {
-                        if (model.getCell(x, y).isVisable(model.getLocalPlayer().getTeam()))
+                        if (model.getCell(x, y).isVisable(model.getTeam()))
                             minimapGC.setFill(model.getTile(x, y).getColor());
-                        else if (model.getCell(x, y).isExplored(model.getLocalPlayer().getTeam()))
+                        else if (model.getCell(x, y).isExplored(model.getTeam()))
                             minimapGC.setFill(model.getTile(x, y).getColor().interpolate(Color.BLACK, 0.7));
                         else
                             minimapGC.setFill(Color.BLACK);
@@ -82,7 +82,7 @@ public class Minimap extends Region {
             minimapGC.setGlobalAlpha(1);
             for (Entity player : model.getAllEntities()) {
                 player.containedIn.stream().findAny().ifPresent(cell -> {
-                    if (cell.isVisable(model.getLocalPlayer().getTeam())) {
+                    if (cell.isVisable(model.getTeam())) {
                         if (player.has(Entity.EntityProperty.ROLE)) {
                             minimapGC.setFill(player.getTeam().color);
                             minimapGC.fillOval(player.getX()-3, player.getY()-3, 3, 3);
