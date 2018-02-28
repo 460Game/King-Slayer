@@ -77,8 +77,8 @@ public class Main extends Application {
     MenuItem[] items = new MenuItem[]{
         new MenuItem("Join LAN"),
         new MenuItem("Host LAN"),
-        new MenuItem("Solo Game"),
-        new MenuItem("Tutorial Game"),
+        new MenuItem("Solo Game King"),
+        new MenuItem("Solo Game Slayer"),
         new MenuItem("Options"),
         new MenuItem("Exit")};
 
@@ -177,8 +177,8 @@ public class Main extends Application {
         items[0].setOnActivate(this::connectForm);
         items[0].setActive(true);
         items[1].setOnActivate(this::guiSetNumOfPlayer);
-        items[2].setOnActivate(this::testGame);
-        items[3].setOnActivate(this::howToPlay);
+        items[2].setOnActivate(this::testGameKing);
+        items[3].setOnActivate(this::testGameSlayer);
         items[4].setOnActivate(this::options);
         items[5].setOnActivate(this::exit);
         menuBox = new VBox(10, items);
@@ -557,10 +557,20 @@ public class Main extends Application {
         Thread.sleep(2000);
     }
 
-    private void testGame() {
+    private void testGameSlayer() {
         Log.info("TEST GAME SELECTED");
         try {
-            new SingleplayerController(this).start(window);
+            new SingleplayerController(this, Role.SLAYER).start(window);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        animator.stop();
+    }
+
+    private void testGameKing() {
+        Log.info("TEST GAME SELECTED");
+        try {
+            new SingleplayerController(this, Role.KING).start(window);
         } catch (Exception e) {
             e.printStackTrace();
         }
