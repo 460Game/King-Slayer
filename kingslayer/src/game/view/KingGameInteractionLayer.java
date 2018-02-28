@@ -6,8 +6,10 @@ import game.model.game.model.ClientGameModel;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntitySpawner;
 import game.model.game.model.worldObject.entity.entities.Entities;
+import javafx.geometry.Point2D;
 import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
 import util.Util;
 
 //import static images.Images.DELETE_CURSOR_IMAGE;
@@ -17,6 +19,7 @@ import static javafx.scene.input.KeyCode.*;
 import static javafx.scene.input.KeyCode.DIGIT3;
 import static javafx.scene.input.KeyCode.DIGIT4;
 import static javafx.scene.input.KeyCode.NUMPAD4;
+import static util.Util.toDrawCoords;
 import static util.Util.toWorldCoords;
 
 /*
@@ -98,13 +101,13 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         }
       }
 
-//            if (placingGhost != null) {
-//                world.uiGC.clearRect(0, 0, world.uiGC.getCanvas().getWidth(), world.uiGC.getCanvas().getHeight());
-//                world.uiGC.setFill(new Color(1, 1, 1, 0.25));
-////                double placementX =
-//                Point2D placement = screenToLocal(toDrawCoords(model.getLocalPlayer().getX()), toDrawCoords(model.getLocalPlayer().getY()));
-//                world.uiGC.fillOval(placement.getX(), placement.getY(), toDrawCoords(11), toDrawCoords(11));
-//            }
+      if (placingGhost != null) {
+        world.uiGC.clearRect(0, 0, world.uiGC.getCanvas().getWidth(), world.uiGC.getCanvas().getHeight());
+        world.uiGC.setFill(new Color(1, 1, 1, 0.25));
+        world.uiGC.fillOval(world.gameToScreenX(model.getLocalPlayer().getX()) - toDrawCoords(9.75),
+            world.gameToScreenY(model.getLocalPlayer().getY()) - toDrawCoords(9.75),
+            toDrawCoords(19.5), toDrawCoords(19.5));
+      }
     });
 
     world.onKeyPress(kc -> {

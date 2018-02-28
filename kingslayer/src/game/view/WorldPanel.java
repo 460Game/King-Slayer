@@ -186,6 +186,14 @@ public class WorldPanel extends Region {
         return (y - yt) / TILE_PIXELS / scaleFactor;
     }
 
+    public double gameToScreenX(double x) {
+        return x * scaleFactor * TILE_PIXELS + xt;
+    }
+
+    public double gameToScreenY(double y) {
+        return y * scaleFactor * TILE_PIXELS + yt;
+    }
+
     private Set<KeyCode> currentlyPressed = new TreeSet<>();
 
     private BiConsumer<Double, Double> leftClick = null;
