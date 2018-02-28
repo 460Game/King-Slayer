@@ -11,9 +11,11 @@ import game.model.game.model.worldObject.entity.entities.Players;
 
 public class RespawnSlayerRequest extends ActionRequest {
     Team myTeam;
+    String name;
     public RespawnSlayerRequest() {}
-    public RespawnSlayerRequest(Team team) {
+    public RespawnSlayerRequest(Team team, String name) {
         myTeam = team;
+        this.name = name;
     }
     @Override
     public void executeServer(ServerGameModel model) {
@@ -21,6 +23,7 @@ public class RespawnSlayerRequest extends ActionRequest {
         double x = king.get(Entity.EntityProperty.X);
         double y = king.get(Entity.EntityProperty.Y);
         Entity entity = Players.makeSlayer(x, y, myTeam);
+        entity.set(Entity.EntityProperty.PLAYER_NAME, name);
         model.processMessage(new MakeEntityRequest(entity));
         model.processMessage(new NewEntityCommand(entity));
         model.processMessage(new RespawnSlayerCommand(entity.id));
