@@ -149,9 +149,9 @@ public class GameView {
                 minimap.draw();
                 actionPanel.draw();
 
-                if (model.getWinningTeam() != null && model.getWinningTeam() == model.getLocalPlayer().getTeam()) {
+                if (model.getWinningTeam() != null && model.getWinningTeam() == model.getTeam()) {
                     teamWinPrompt.setVisible(true);
-                } else if (model.getWinningTeam() != null && model.getWinningTeam() != model.getLocalPlayer().getTeam()) {
+                } else if (model.getWinningTeam() != null && model.getWinningTeam() != model.getTeam()) {
                     teamLosePrompt.setVisible(true);
                 }
             }
