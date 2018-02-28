@@ -236,14 +236,14 @@ public class ServerGameModel extends GameModel {
     private Timer t = new Timer();
 
     public void stop() {
+        updateTimerTask.cancel();
+        t.cancel();
         running = false;
         clientToPlayerInfo = null;
         teamData = null;
         teamRoleEntityMap = null;
         clients = null;
-        t.cancel();
 
-        updateTimerTask.cancel();
 
         System.out.println("old server model stop");
     }
