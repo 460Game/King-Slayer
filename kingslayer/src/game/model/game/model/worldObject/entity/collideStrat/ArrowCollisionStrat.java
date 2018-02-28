@@ -29,7 +29,7 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
                 a.setVelocity(a.getVelocity().withMagnitude(0));
                 a.entityDie(server);
                 b.decreaseHealthBy(model, 5);
-                server.getClients().forEach(client -> client.processMessage(new SetEntityCommand(b)));
+                server.processMessage(new SetEntityCommand(b));
             }, (client) -> {
                 a.setVelocity(a.getVelocity().withMagnitude(0));
                 a.entityDie(client);
