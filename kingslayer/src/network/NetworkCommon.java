@@ -8,7 +8,6 @@ import de.javakaffee.kryoserializers.*;
 import game.message.*;
 import game.message.toClient.*;
 import game.message.toServer.*;
-import game.model.game.grid.GridCell;
 import game.model.game.map.Tile;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.TeamResourceData;
@@ -156,7 +155,7 @@ public class NetworkCommon {
         kryo.register( EnumMap.class, new EnumMapSerializer() );
         kryo.register(EnumSet.class);
         kryo.register(NonMovingVelocity.class);
-        kryo.register(SyncEntityFeildCommand.class);
+        kryo.register(SyncEntityFieldCommand.class);
         kryo.register(Entity.EntityProperty.class);
         kryo.register(Tile[].class);
         kryo.register(Tile[][].class);

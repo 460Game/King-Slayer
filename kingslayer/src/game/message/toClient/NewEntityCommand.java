@@ -31,7 +31,7 @@ public class NewEntityCommand implements ToClientCommand {
 
     /**
      * Add the entity to the client model.
-     * @param model the game model on the client.
+     * @param model the game model on the client
      */
     @Override
     public void executeClient(ClientGameModel model) {

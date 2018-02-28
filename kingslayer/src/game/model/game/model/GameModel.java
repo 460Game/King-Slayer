@@ -2,20 +2,18 @@ package game.model.game.model;
 
 import game.message.Message;
 import game.message.toClient.SetEntityCommand;
-import game.message.toClient.SyncEntityFeildCommand;
+import game.message.toClient.SyncEntityFieldCommand;
 import game.model.game.grid.GridCell;
 import game.model.game.map.MapGenerator;
 import game.model.game.map.Tile;
 import game.model.game.model.worldObject.entity.Entity;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.WritableImage;
+import util.Util;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_STRAT;
 import static util.Const.*;
 
 public abstract class GameModel implements Model {
@@ -146,7 +144,7 @@ public abstract class GameModel implements Model {
                     serverGameModel.processMessage(new SetEntityCommand(e));
                 }
                 e.syncRequiredFeilds.forEach(syncFeild -> {
-                    serverGameModel.processMessage(new SyncEntityFeildCommand(e, syncFeild));
+                    serverGameModel.processMessage(new SyncEntityFieldCommand(e, syncFeild));
                 });
                 e.syncRequiredFeilds.clear();
             });
@@ -156,6 +154,18 @@ public abstract class GameModel implements Model {
 
     public Collection<GridCell> getAllCells() {
         return allCells;
+    }
+
+    public Set<GridCell> getNeighbors(GridCell cell) {
+        Set<GridCell> neighbors = new HashSet<>();
+        for (int i = cell.getTopLeftX() - 1; i <= cell.getTopLeftX() + 1; i++) {
+            for (int j = cell.getTopLeftY() - 1; j <= cell.getTopLeftY() + 1; j++) {
+                if (Util.checkBounds(i, j)) {
+                    neighbors.add(getCell(i, j));
+                }
+            }
+        }
+        return neighbors;
     }
 
     /*

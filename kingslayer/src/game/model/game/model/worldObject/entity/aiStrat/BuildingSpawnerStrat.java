@@ -2,11 +2,16 @@ package game.model.game.model.worldObject.entity.aiStrat;
 
 import com.esotericsoftware.minlog.Log;
 import game.message.toServer.MakeEntityRequest;
+import game.model.game.grid.GridCell;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.*;
 import util.Util;
+
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.AI_DATA;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.HEALTH;
@@ -36,8 +41,8 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
 
         @Override
-        Entity makeEntity(double x, double y, Team team, Entity entity) {
-            Entity minion = Minions.makeMeleeMinion(x, y + 1, team);
+        Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
+            Entity minion = Minions.makeMeleeMinion(x, y, team);
            // minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
@@ -58,8 +63,8 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
 
         @Override
-        Entity makeEntity(double x, double y, Team team, Entity entity) {
-            Entity minion = Minions.makeRangedMinion(x, y + 1, team);
+        Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
+            Entity minion = Minions.makeRangedMinion(x, y, team);
          //   minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
@@ -80,8 +85,8 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
 
         @Override
-        Entity makeEntity(double x, double y, Team team, Entity entity) {
-            Entity minion = Minions.makeSiegeMinion(x, y + 1, team);
+        Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
+            Entity minion = Minions.makeSiegeMinion(x, y, team);
           //  minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
@@ -102,8 +107,8 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
 
         @Override
-        Entity makeEntity(double x, double y, Team team, Entity entity) {
-            Entity minion = Minions.makeExplorationMinion(x, y + 1, team);
+        Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
+            Entity minion = Minions.makeExplorationMinion(x, y, team);
            // minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
@@ -126,8 +131,9 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
 
         @Override
-        Entity makeEntity(double x, double y, Team team, Entity entity) {
-            Entity minion = Minions.makeResourceMinion(x, y + 1, team);
+        Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
+
+            Entity minion = Minions.makeResourceMinion(x, y, team);
          //   minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
@@ -149,7 +155,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         }
 
         @Override
-        Entity makeEntity(double x, double y, Team team, Entity entity) {
+        Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
             double dir = Util.random.nextDouble() * 2 * Math.PI;
             return Entities.makeArrow(x + cos(dir), y + sin(dir), dir, team);
         }
@@ -159,7 +165,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
     abstract int maxActive(Entity entity);
 
-    abstract Entity makeEntity(double x, double y, Team team, Entity entity);
+    abstract Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model);
 
     private BuildingSpawnerStrat() {
 
@@ -189,12 +195,20 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         while (data.elapsedTime > timeBetweenSpawns(entity)) {
             data.elapsedTime -= timeBetweenSpawns(entity);
             if (data.spawnCounter < maxActive(entity)) {
-                Entity newEntity = makeEntity(entity.getX(), entity.getY(), entity.getTeam(), entity);
-                model.processMessage(new MakeEntityRequest(newEntity));
-                newEntity.onDeath((e, serverGameModel) -> {
-                    data.spawnCounter--;
-                });
-                data.spawnCounter++;
+                Set<GridCell> neighbors = model.getNeighbors(model.getCell((int) (double) entity.getX(), (int) (double) entity.getY()));
+                Set<GridCell> passable = neighbors.stream().filter(GridCell::isPassable).collect(Collectors.toSet());
+                if (passable.contains(model.getCell((int) (double) entity.getX(), (int) (double) entity.getY() + 1))) {
+                    Entity newEntity = makeEntity(entity.getX(), entity.getY() + 1, entity.getTeam(), entity, model);
+                    model.processMessage(new MakeEntityRequest(newEntity));
+                    newEntity.onDeath((e, serverGameModel) -> data.spawnCounter--);
+                    data.spawnCounter++;
+                } else if (!passable.isEmpty()) {
+                    Entity newEntity = makeEntity(passable.iterator().next().getCenterX(),
+                            passable.iterator().next().getCenterY(), entity.getTeam(), entity, model);
+                    model.processMessage(new MakeEntityRequest(newEntity));
+                    newEntity.onDeath((e, serverGameModel) -> data.spawnCounter--);
+                    data.spawnCounter++;
+                }
             }
         }
     }

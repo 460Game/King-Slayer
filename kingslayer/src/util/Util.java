@@ -141,13 +141,25 @@ public class Util {
     }
 
     /**
-     * Check if the coordinates given are within the bounds of the game map. Return
-     * true if they are; otherwise, return false.
+     * Check if the coordinates given are within the bounds of the game map for moving arrows. This
+     * is a little smaller than the game world bounds because the arrow still moving may cause errors.
+     * Return true if they are; otherwise, return false.
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return true if the coordinates are within the bounds
+     */
+    public static boolean checkBoundsForArrows(double x, double y) {
+        return x > 1 && y > 1 && x < GRID_X_SIZE - 1 && y < GRID_Y_SIZE - 1;
+    }
+
+    /**
+     * Check if the coordinates given are within the bounds of the game map.
+     * Return true if they are; otherwise, return false.
      * @param x x-coordinate
      * @param y y-coordinate
      * @return true if the coordinates are within the bounds
      */
     public static boolean checkBounds(double x, double y) {
-        return x > 1 && y > 1 && x < GRID_X_SIZE - 1 && x < GRID_Y_SIZE - 1;
+        return x >= 0 && y >= 0 && x <= GRID_X_SIZE - 1 && y <= GRID_Y_SIZE - 1;
     }
 }
