@@ -250,7 +250,7 @@ public class ServerGameModel extends GameModel {
 
     public void teamWin(Team winTeam) {
         this.processMessage(new TeamWinCommand(winTeam));
-        stop();
+//        stop();
     }
 
     public void makeEntity(Entity e) {
