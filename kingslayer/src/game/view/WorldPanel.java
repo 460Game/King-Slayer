@@ -40,6 +40,7 @@ public class WorldPanel extends Region {
 
     double mouseX = 0;
     double mouseY = 0;
+    boolean useMinimap = false;
 
     WorldPanel(ClientGameModel model) {
         this.model = model;
@@ -99,8 +100,10 @@ public class WorldPanel extends Region {
     private double gameH;
 
     public void draw() {
-        x = model.getLocalPlayer().getX() + 0.1 * toWorldCoords(mouseX - getWidth()/2);
-        y = model.getLocalPlayer().getY() + 0.15 * toWorldCoords(mouseY - getHeight()/2);
+        if(!useMinimap) {
+            x = model.getLocalPlayer().getX() + 0.1 * toWorldCoords(mouseX - getWidth() / 2);
+            y = model.getLocalPlayer().getY() + 0.15 * toWorldCoords(mouseY - getHeight() / 2);
+        }
         x = Math.min(Math.max(gameW/2, x), model.getMapWidth() - gameW/2);
         y = Math.min(Math.max(gameH/2, y), model.getMapHeight() - gameH/2);
         gameW = toWorldCoords(getWidth() / scaleFactor);
@@ -232,5 +235,18 @@ public class WorldPanel extends Region {
             mouseY = e.getY();
             consumer.accept(screenToGameX(e.getX()), screenToGameY(e.getY()));
         });
+    }
+
+    public void setMiniPos(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void miniDown() {
+        useMinimap = true;
+    }
+
+    public void miniUp() {
+        useMinimap= false;
     }
 }

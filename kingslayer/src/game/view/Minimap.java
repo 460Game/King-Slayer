@@ -1,7 +1,6 @@
 package game.view;
 
 import game.model.game.model.ClientGameModel;
-import game.model.game.model.GameModel;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.scene.ImageCursor;
 import javafx.scene.canvas.Canvas;
@@ -37,6 +36,22 @@ public class Minimap extends Region {
         minimapCanvas.translateXProperty().setValue(10);
         minimapCanvas.translateYProperty().setValue(10);
         this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
+
+        this.setOnMouseDragged(e -> {
+            world.setMiniPos(e.getX()/4, e.getY()/4);
+        });
+
+        this.setOnMousePressed(e -> {
+            world.miniDown();
+        });
+
+        this.setOnMouseExited(e -> {
+            world.miniUp();
+        });
+
+        this.setOnMouseReleased(e -> {
+            world.miniUp();
+        });
     }
 
     private int tick = 0;
