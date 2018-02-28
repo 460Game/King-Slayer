@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_STRAT;
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.PLAYER_NAME;
 import static util.Const.DEBUG_DRAW;
 import static util.Util.toDrawCoords;
 import static util.Util.toWorldCoords;
@@ -44,6 +45,7 @@ public class ClientGameModel extends GameModel {
     Team winningTeam = null;
     Team losingTeam = null;
     Team thisTeam;
+String name;
 
     public ClientGameModel(Model server) {
         super(new ClientMapGenerator());
@@ -68,6 +70,7 @@ public class ClientGameModel extends GameModel {
         Log.info("Set local player");
         this.localPlayer = localPlayer;
         thisTeam = getEntity(localPlayer).getTeam();
+        name= getLocalPlayer().get(PLAYER_NAME);
     }
 
     public Team getTeam() {
@@ -186,6 +189,10 @@ public class ClientGameModel extends GameModel {
     }
 
     public void respawnSlayerRequest() {
-        server.processMessage(new RespawnSlayerRequest(getTeam()));
+        server.processMessage(new RespawnSlayerRequest(getTeam(), getName()));
+    }
+
+    public String getName() {
+        return name;
     }
 }

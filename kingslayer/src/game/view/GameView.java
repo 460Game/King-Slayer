@@ -128,7 +128,7 @@ public class GameView {
             @Override
             public void handle(long now) {
                 if (model.clientLoseControl) {
-                    if (model.respawnCnt >= 100) {
+                    if (model.respawnCnt == 100) {
                         System.out.println(model.respawnCnt);
                         model.respawnSlayerRequest();
                     } else
