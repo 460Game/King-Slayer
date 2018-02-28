@@ -20,9 +20,8 @@ public class RespawnSlayerRequest extends ActionRequest {
         Entity king = model.getEntity(model.teamRoleEntityMap.getEntity(myTeam, Role.KING));
         double x = king.get(Entity.EntityProperty.X);
         double y = king.get(Entity.EntityProperty.Y);
-        model.processMessage(new MakeEntityRequest(Players.makeSlayer(x, y, myTeam)));
-        for (Model client : model.getClients()) {
-            client.processMessage(new RespawnSlayerCommand());
-        }
+        Entity entity = Players.makeSlayer(x, y, myTeam);
+        model.processMessage(new MakeEntityRequest(entity));
+        model.processMessage(new RespawnSlayerCommand(entity.id));
     }
 }

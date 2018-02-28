@@ -6,6 +6,7 @@ public class SlayerDieCommand implements ToClientCommand {
 
     private long id;
 
+    private SlayerDieCommand() {}
     public SlayerDieCommand(long id) {
         this.id = id;
     }
