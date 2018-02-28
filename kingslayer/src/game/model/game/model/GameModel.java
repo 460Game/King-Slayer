@@ -37,6 +37,12 @@ public abstract class GameModel implements Model {
 
     public abstract void execute(Consumer<ServerGameModel> serverAction, Consumer<ClientGameModel> clientAction);
 
+    //temporary
+    //need to clean up
+    public int respawnCnt = 0;
+    public double respawnX;
+    public double respawnY;
+
     /**
      * Constructor for the game model.
      * @param generator map generator for this game model

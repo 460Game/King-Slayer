@@ -206,6 +206,7 @@ public class NetworkCommon {
         kryo.register(SlayerData.class);
         kryo.register(SlayerUpdateStrat.class);
         kryo.register(SlayerMeleeRequest.class);
+        kryo.register(RespawnSlayerRequest.class);
 
 //        kryo.register(GridCell.class);
 
