@@ -74,8 +74,8 @@ public class GameView {
         actionPanel.layoutXProperty().bind(Bindings.max(minimap.widthProperty(), window.widthProperty().divide(2).subtract(250)));
         actionPanel.layoutYProperty().bind(window.heightProperty().subtract(100));
 
-       // resourcePanel.setPrefWidth(300);
-      //  resourcePanel.setPrefHeight(40);
+        // resourcePanel.setPrefWidth(300);
+        //  resourcePanel.setPrefHeight(40);
         resourcePanel.layoutXProperty().bind(window.widthProperty().subtract(resourcePanel.widthProperty()));
 
         exitPrompt.prefHeightProperty().bind(window.heightProperty().multiply(0.3));
@@ -131,8 +131,8 @@ public class GameView {
                     if (model.respawnCnt == 100) {
                         System.out.println(model.respawnCnt);
                         model.respawnSlayerRequest();
-                    } else
-                        model.respawnCnt++;
+                    }
+                    model.respawnCnt++;
                 }
 
                 gameInteractionLayer.setVisible(true);
@@ -172,7 +172,7 @@ public class GameView {
             if (kc == KeyCode.ESCAPE || kc == ENTER)
                 exitPrompt.setVisible(!exitPrompt.isVisible());
 
-            if(kc == F11) {
+            if (kc == F11) {
                 window.setFullScreen(!window.isFullScreen());
             }
         });
