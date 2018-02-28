@@ -236,21 +236,21 @@ public class ServerGameModel extends GameModel {
     private Timer t = new Timer();
 
     public void stop() {
+        updateTimerTask.cancel();
+        t.cancel();
         running = false;
         clientToPlayerInfo = null;
         teamData = null;
         teamRoleEntityMap = null;
         clients = null;
-        t.cancel();
 
-        updateTimerTask.cancel();
 
         System.out.println("old server model stop");
     }
 
     public void teamWin(Team winTeam) {
         this.processMessage(new TeamWinCommand(winTeam));
-        stop();
+//        stop();
     }
 
     public void makeEntity(Entity e) {
@@ -339,6 +339,7 @@ public class ServerGameModel extends GameModel {
                     metal.addAll(e.containedIn);
         }
         if (addedBuilding) {
+            addedBuilding = false;
             if (building.get(BUILDINGTYPE) == BuildingSpawnerStrat.BuildingType.COLLECTOR)
                 if (building.getTeam() == Team.ONE)
                     team1collector.addAll(building.containedIn);

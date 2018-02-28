@@ -41,6 +41,8 @@ public class SlayerMeleeRequest extends ActionRequest {
 
     @Override
     public void executeServer(ServerGameModel model) {
+        if(model.getEntity(id) == null)
+            return;
         //TODO: make sure I can simply set it here
         SlayerData curSlayerData =
                 SlayerData.copyOf((SlayerData)model.getEntity(id).get(Entity.EntityProperty.SLAYER_DATA));

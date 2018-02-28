@@ -5,7 +5,6 @@ import game.model.game.grid.GridCell;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -13,29 +12,29 @@ import java.util.*;
 import util.*;
 import java.util.stream.Collectors;
 
-import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_STRAT;
 import static util.Const.TILE_PIXELS;
 
 /**
- * Class used to find paths for entities in the game map.
+ * Class used for AI, specifically for finding paths for entities
+ * in the game map.
  */
 public class Astar {
 
     /**
-     * Current model of the game world. Holds the current
-     * state of the map with which the search is used on.
+     * Current model of the game world. Holds the current state of the map with
+     * which the search is used on. This class is used for AI planning, which is
+     * only computed on the server.
      */
     private ServerGameModel model;
 
     /**
-     * Holds the set of passable cells in the current
-     * state of the map.
+     * Holds the set of passable cells in the current state of the map.
      */
     private Set<GridCell> passable;
 
     /**
-     * Collection of cells that make up the game map. The
-     * contents of each will aid in the path finding.
+     * Collection of cells that make up the game map. The contents of each
+     * will aid in the path finding.
      */
     private Collection<GridCell> cells;
 
@@ -92,8 +91,14 @@ public class Astar {
         // D = 1, D2 = sqrt(2)
     }
 
+    /**
+     * Gets the closest passable tile given a cell.
+     * @param cell cell to find the closest passable tile from
+     * @return closest passable tile to the specified cell
+     */
     public GridCell findClosestPassable(GridCell cell) {
-        return passable.parallelStream().min((c1, c2) -> Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
+        return passable.parallelStream().min((c1, c2) ->
+                Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
                 Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
     }
 
@@ -107,10 +112,6 @@ public class Astar {
      * @return a list of grid cells describing the path from the start to the end
      */
     public List<GridCell> astar(GridCell start, GridCell end) {
-//        if (!passable.contains(end))
-//            throw new RuntimeException("Destination cell is not passable.");
-        // TODO may just pick a cell nearby.
-
         // Set of cells already considered.
         Set<GridCell> closed = new HashSet<>();
 
@@ -135,6 +136,8 @@ public class Astar {
             f.put(cell, Double.POSITIVE_INFINITY);
         }
 
+        // This is here in case the end is not passable. In this case, we just
+        // want the path to end at the destination.
         g.put(end, Double.POSITIVE_INFINITY);
         f.put(end, Double.POSITIVE_INFINITY);
 
@@ -177,11 +180,11 @@ public class Astar {
                     if (!model.getCell(i, current.getTopLeftY()).isPassable() &&
                             !model.getCell(current.getTopLeftX(), j).isPassable())
                         continue;
-                    // TODO may need to check for edge cases.
 
                     GridCell neighbor = model.getCell(i, j);
 
-                    // If the neighbor is not passable, cannot be in the path.
+                    // If the neighbor is not passable, cannot be in the path unless this neighbor
+                    // is the final cell.
                     if (!this.passable.contains(neighbor) && !neighbor.equals(end))
                         continue;
 
@@ -210,8 +213,7 @@ public class Astar {
             }
         }
 
-        // A* couldn't find a path due to obstacles
-     //   Log.error("A* failed to produce a path.");
+        // A* couldn't find a path due to obstacles.
         return new LinkedList<>();
     }
 
@@ -237,10 +239,23 @@ public class Astar {
         return path;
     }
 
+    /**
+     * Moves the entity to the specified cell. This is done by simply
+     * setting the entity's direction to move to that cell.
+     * @param e entity to move
+     * @param cell destination cell
+     */
     public void moveToCell(Entity e, GridCell cell) {
        e.setVelocity(e.getVelocity().withAngle(Math.atan2(cell.getCenterY() - e.getY(), cell.getCenterX() - e.getX())));
     }
 
+    /**
+     * Moves the entity to the specified point. This is done by simply
+     * setting the entity's direction to move to that point.
+     * @param e entity to move
+     * @param x x-coordinate of destination
+     * @param y y-coordinate of destination
+     */
     public void moveToPoint(Entity e, double x, double y) {
         e.setVelocity(e.getVelocity().withAngle(Math.atan2(y - e.getY(), x - e.getX())));
     }
@@ -266,12 +281,23 @@ public class Astar {
         }
     }
 
+    /**
+     * Updates the model that this class uses to find paths. This
+     * should be called whenever an entity is built or destroyed
+     * that may affect path planning.
+     * @param model most up-to-date state of the model
+     */
     public void updateModel(ServerGameModel model) {
         this.model = model;
         cells = model.getAllCells();
         passable = findTraversableCells();
     }
 
+    /**
+     * Gets the closest wood tile given a cell.
+     * @param cell cell to find the closest wood tile from
+     * @return closest wood tile to the specified cell
+     */
     public GridCell getClosestWood(GridCell cell) {
         // TODO make more efficient
         return model.getWood().parallelStream().min((c1, c2) ->
@@ -279,27 +305,48 @@ public class Astar {
                 Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
     }
 
+    /**
+     * Gets the closest stone tile given a cell.
+     * @param cell cell to find the closest stone tile from
+     * @return closest stone tile to the specified cell
+     */
     public GridCell getClosestStone(GridCell cell) {
         return model.getStone().parallelStream().min((c1, c2) ->
                 Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
                         Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
     }
 
+    /**
+     * Gets the closest metal tile given a cell.
+     * @param cell cell to find the closest metal tile from
+     * @return closest metal tile to the specified cell
+     */
     public GridCell getClosestMetal(GridCell cell) {
         return model.getMetal().parallelStream().min((c1, c2) ->
                 Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
                         Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
     }
 
+    /**
+     * Gets the closest collector tile for a certain team, given a cell.
+     * @param cell cell to find the closest collector tile from
+     * @param team closest collector belonging to this team to look for
+     * @return closest collector tile to the specified cell and team
+     */
     public GridCell getClosestCollector(GridCell cell, Team team) {
-        if (team == Team.ONE)
+        if (team == Team.ONE) {
+            if (model.getTeam1collector().isEmpty())
+                return null; // TODO temp
             return model.getTeam1collector().parallelStream().min((c1, c2) ->
                     Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
                             Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
-        else
+        } else {
+            if (model.getTeam2collector().isEmpty())
+                return null; // TODO temp
             return model.getTeam2collector().parallelStream().min((c1, c2) ->
-                Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
-                        Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
-        // TODO support multiple teams
+                    Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
+                            Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
+            // TODO support multiple teams
+        }
     }
 }

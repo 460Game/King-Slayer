@@ -8,6 +8,10 @@ import game.model.game.model.worldObject.entity.Entity;
  */
 public abstract class ProjectileCollisionStrat extends CollisionStrat {
 
+    public enum Projectile {
+        ARROW
+    }
+
     /**
      * Performs the soft collision of entity a with entity b in the game model:
      * b is given to have a soft collision type. The collision strategy used

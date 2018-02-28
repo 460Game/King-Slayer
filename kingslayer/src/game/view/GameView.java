@@ -20,6 +20,7 @@ import lobby.Main;
 import java.util.*;
 
 import static images.Images.GAME_CURSOR_IMAGE;
+import static javafx.scene.input.KeyCode.ENTER;
 import static javafx.scene.input.KeyCode.F11;
 import static javafx.scene.input.KeyCode.TAB;
 import static util.Const.FPSPrint;
@@ -73,9 +74,9 @@ public class GameView {
         actionPanel.layoutXProperty().bind(Bindings.max(minimap.widthProperty(), window.widthProperty().divide(2).subtract(250)));
         actionPanel.layoutYProperty().bind(window.heightProperty().subtract(115));
 
-        resourcePanel.setPrefWidth(300);
-        resourcePanel.setPrefHeight(40);
-        resourcePanel.layoutXProperty().bind(window.widthProperty().subtract(300));
+        // resourcePanel.setPrefWidth(300);
+        //  resourcePanel.setPrefHeight(40);
+        resourcePanel.layoutXProperty().bind(window.widthProperty().subtract(resourcePanel.widthProperty()));
 
         exitPrompt.prefHeightProperty().bind(window.heightProperty().multiply(0.3));
         exitPrompt.prefWidthProperty().bind(window.widthProperty().multiply(0.3));
@@ -126,6 +127,14 @@ public class GameView {
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                if (model.clientLoseControl) {
+                    if (model.respawnCnt == 100) {
+                        System.out.println(model.respawnCnt);
+                        model.respawnSlayerRequest();
+                    }
+                    model.respawnCnt++;
+                }
+
                 gameInteractionLayer.setVisible(true);
                 resourcePanel.setVisible(true);
                 minimap.setVisible(true);
@@ -140,66 +149,11 @@ public class GameView {
                 minimap.draw();
                 actionPanel.draw();
 
-                //TODO dont do this
-                resourcePanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-                minimap.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-               actionPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-
-//                if (model.getWinningTeam() == null) {
-//                    gameInteractionLayer.setVisible(true);
-//                    resourcePanel.setVisible(true);
-//                    minimap.setVisible(true);
-//                    infoPanel.setVisible(true);
-//                    teamLosePrompt.setVisible(false);
-//                    actionPanel.setVisible(true);
-//
-//                    totalFrameCount[0]++;
-//
-//                    model.update();
-//                    gameInteractionLayer.draw();
-//                    resourcePanel.draw();
-//                    minimap.draw();
-//                    infoPanel.draw();
-//                    actionPanel.draw();
-//
-//                    //TODO dont do this
-//                    resourcePanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-//                    minimap.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-//                    infoPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-//                    actionPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-//
-//                } else if (model.getWinningTeam() == model.getLocalPlayer().getTeam()) {
-//                    teamWinPrompt.setVisible(true);
-////                    gameInteractionLayer.setVisible(false);
-////                    resourcePanel.setVisible(false);
-////                    minimap.setVisible(false);
-////                    infoPanel.setVisible(false);
-////                    actionPanel.setVisible(false);
-//                } else {
-////                    gameInteractionLayer.setVisible(false);
-////                    resourcePanel.setVisible(false);
-////                    minimap.setVisible(false);
-////                    infoPanel.setVisible(false);
-//                    teamLosePrompt.setVisible(true);
-////                    actionPanel.setVisible(false);
-//                }
-
-                if (model.getWinningTeam() != null && model.getWinningTeam() == model.getLocalPlayer().getTeam()) {
+                if (model.getWinningTeam() != null && model.getWinningTeam() == model.getTeam()) {
                     teamWinPrompt.setVisible(true);
-//                    gameInteractionLayer.setVisible(false);
-//                    resourcePanel.setVisible(false);
-//                    minimap.setVisible(false);
-//                    infoPanel.setVisible(false);
-//                    actionPanel.setVisible(false);
-                } else if (model.getWinningTeam() != null && model.getWinningTeam() != model.getLocalPlayer().getTeam()) {
-//                    gameInteractionLayer.setVisible(false);
-//                    resourcePanel.setVisible(false);
-//                    minimap.setVisible(false);
-//                    infoPanel.setVisible(false);
+                } else if (model.getWinningTeam() != null && model.getWinningTeam() != model.getTeam()) {
                     teamLosePrompt.setVisible(true);
-//                    actionPanel.setVisible(false);
                 }
-
             }
         };
 
@@ -215,22 +169,10 @@ public class GameView {
         scene.setOnKeyPressed(e -> {
             KeyCode kc = e.getCode();
 
-            if (kc == KeyCode.ESCAPE)
+            if (kc == KeyCode.ESCAPE || kc == ENTER)
                 exitPrompt.setVisible(!exitPrompt.isVisible());
-            if (kc == TAB) {
-                model.processMessage(new StopRequest(model.getLocalPlayer().id));
-                int role = (model.getLocalPlayer().getRole().val + 1) % 2;
-                for (Entity entity : model.getAllEntities()) {
-                    if (entity.has(Entity.EntityProperty.TEAM) &&
-                        entity.has(Entity.EntityProperty.ROLE) &&
-                        entity.getTeam() == model.getLocalPlayer().getTeam() &&
-                        entity.getRole().val == role) {
-                        model.setLocalPlayer(entity.id);
-                        break;
-                    }
-                }
-            }
-            if(kc == F11) {
+
+            if (kc == F11) {
                 window.setFullScreen(!window.isFullScreen());
             }
         });

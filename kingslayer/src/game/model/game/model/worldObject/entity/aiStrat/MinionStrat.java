@@ -2,12 +2,16 @@ package game.model.game.model.worldObject.entity.aiStrat;
 
 import game.ai.Astar;
 import game.message.toClient.SetEntityCommand;
+import game.message.toServer.MakeEntityRequest;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.collideStrat.ProjectileCollisionStrat;
+import game.model.game.model.worldObject.entity.entities.Entities;
 import util.Const;
+import util.Util;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,13 +39,16 @@ public abstract class MinionStrat extends AIStrat {
         }
 
         @Override
-        void handleEnemyDetected() {
+        void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model) {
 
         }
 
         @Override
-        void handleEnemyAttackable() {
-
+        void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model) {
+            entity.setVelocity(entity.getVelocity().withMagnitude(0));
+            Entity enemy = getClosestEnemy(data, entity, model);
+            double dir = Util.angle2Points(entity.getX(), entity.getY(), enemy.getX(), enemy.getY());
+            model.processMessage(new MakeEntityRequest(Entities.makeArrow(entity.getX(), entity.getY(), dir, entity.getTeam())));
         }
 
         @Override
@@ -109,13 +116,13 @@ public abstract class MinionStrat extends AIStrat {
         }
 
         @Override
-        void handleEnemyDetected() {
+        void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model) {
 
         }
 
         @Override
-        void handleEnemyAttackable() {
-
+        void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model) {
+            wander(data, entity, model); // TODO TEMP
         }
 
         @Override
@@ -178,14 +185,14 @@ public abstract class MinionStrat extends AIStrat {
         }
 
         @Override
-        void handleEnemyDetected() {
+        void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model) {
             // Clear current path and run away
-
+            wander(data, entity, model); // TODO TEMP
         }
 
         @Override
-        void handleEnemyAttackable() {
-            handleEnemyDetected();
+        void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model) {
+            handleEnemyDetected(data, entity, model);
         }
 
         @Override
@@ -202,11 +209,17 @@ public abstract class MinionStrat extends AIStrat {
 
             // Check if the minion should go to a resource or back to a collector.
             if (!data.hasResource) {
-                x = astar.getClosestWood(model.getCell((int) entityx, (int) entityy)).getTopLeftX();
-                y = astar.getClosestWood(model.getCell((int) entityx, (int) entityy)).getTopLeftY();
+                GridCell wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy));
+                if (wood == null)
+                    return;
+                x = wood.getTopLeftX();
+                y = wood.getTopLeftY();
             } else {
-                x = astar.getClosestCollector(model.getCell((int) entityx, (int) entityy), entity.getTeam()).getTopLeftX();
-                y = astar.getClosestCollector(model.getCell((int) entityx, (int) entityy), entity.getTeam()).getTopLeftY();
+                GridCell collector = astar.getClosestCollector(model.getCell((int) entityx, (int) entityy), entity.getTeam());
+                if (collector == null)
+                    return;
+                x = collector.getTopLeftX();
+                y = collector.getTopLeftY();
             }
 
 //            // TODO case where collector is destroyed where does minion go?
@@ -288,14 +301,14 @@ public abstract class MinionStrat extends AIStrat {
      * Handles the action to perform when the minion detects
      * an enemy.
      */
-    abstract void handleEnemyDetected();
+    abstract void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model);
     // TODO attacking minions can chase closest enemy and collectors should run away
 
     /**
      * Handles the action to perform when the minion detects
      * an attackable enemy.
      */
-    abstract void handleEnemyAttackable();
+    abstract void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model);
     // TODO attacking minions should attack closest enemy and collectors should run away (shouldnt even get to this position)
 
     /**
@@ -318,6 +331,7 @@ public abstract class MinionStrat extends AIStrat {
             for (int j = (int) (y - range); j <= (int) (y + range); j++) {
                 enemies.addAll(model.getCell(i, j).getContents().stream().filter(e ->
                         util.Util.dist(x, y, e.getX(), e.getY()) <= range
+                                && e.has(Entity.EntityProperty.TEAM)
                                 && e.getTeam() != entity.getTeam()
                                 && checkLineOfSight(entity, e, model)).collect(Collectors.toSet()));
             }
@@ -349,7 +363,9 @@ public abstract class MinionStrat extends AIStrat {
             for (int j = (int) (y - range); j <= (int) (y + range); j++) {
                 enemies.addAll(model.getCell(i, j).getContents().stream().filter(e ->
                         util.Util.dist(x, y, e.getX(), e.getY()) <= range
+                                && e.has(Entity.EntityProperty.TEAM)
                                 && e.getTeam() != entity.getTeam()
+                                && !e.has(Entity.EntityProperty.PROJECTILE)
                                 && checkLineOfSight(entity, e, model)).collect(Collectors.toSet()));
             }
         }
@@ -441,7 +457,7 @@ public abstract class MinionStrat extends AIStrat {
         while (true) {
 
             // Check if cell x, y has a wall.
-            if (!model.getCell(x, y).isPassable())
+            if (!b.containedIn.contains(model.getCell(x, y)) && !model.getCell(x, y).isPassable())
                 return false;
 
             if (--n == 0)
@@ -492,11 +508,11 @@ public abstract class MinionStrat extends AIStrat {
 
         // First, scan for any attackable enemies if the minion can attack.
         // If there are any attackable enemies, perform the appropriate action.
-//        data.attackable = attackableEnemies(entity, model);
-//        if (data.attackable.size() > 0) {
-//            handleEnemyAttackable();
-//            return;
-//        }
+        data.attackable = attackableEnemies(entity, model);
+        if (data.attackable.size() > 0) {
+            handleEnemyAttackable(data, entity, model);
+            return;
+        }
 //
 //        // Next, scan for any enemies in the area. If there are enemies in the range,
 //        // perform the appropriate action.

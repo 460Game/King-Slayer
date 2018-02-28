@@ -40,6 +40,7 @@ public class WorldPanel extends Region {
 
     double mouseX = 0;
     double mouseY = 0;
+    boolean useMinimap = false;
 
     WorldPanel(ClientGameModel model) {
         this.model = model;
@@ -99,8 +100,12 @@ public class WorldPanel extends Region {
     private double gameH;
 
     public void draw() {
-        x = model.getLocalPlayer().getX() + 0.1 * toWorldCoords(mouseX - getWidth()/2);
-        y = model.getLocalPlayer().getY() + 0.15 * toWorldCoords(mouseY - getHeight()/2);
+
+
+        if(!useMinimap && model.getLocalPlayer() != null) {
+            x = model.getLocalPlayer().getX() + 0.1 * toWorldCoords(mouseX - getWidth() / 2);
+            y = model.getLocalPlayer().getY() + 0.15 * toWorldCoords(mouseY - getHeight() / 2);
+        }
         x = Math.min(Math.max(gameW/2, x), model.getMapWidth() - gameW/2);
         y = Math.min(Math.max(gameH/2, y), model.getMapHeight() - gameH/2);
         gameW = toWorldCoords(getWidth() / scaleFactor);
@@ -116,7 +121,7 @@ public class WorldPanel extends Region {
 
         fgGC.clearRect(-1111, -11111, 11111111, 1111111);
         bgGC.drawImage(waterTick > WATER_ANIM_PERIOD / 2 ? BGImage1 : BGImage2, 0, 0);
-        model.drawForeground(fgGC, GRID_X_SIZE / 2, GRID_Y_SIZE / 2, gameW, gameH);
+        model.drawForeground(fgGC, x - gameW / 2, y - gameH / 2, gameW, gameH);
         waterTick = (waterTick + 1) % WATER_ANIM_PERIOD;
 
 
@@ -131,6 +136,8 @@ public class WorldPanel extends Region {
         });
 
         this.setOnKeyPressed(e -> {
+            if (model.clientLoseControl)
+                return;
             if (currentlyPressed.contains(e.getCode()))
                 return;
             currentlyPressed.add(e.getCode());
@@ -141,6 +148,8 @@ public class WorldPanel extends Region {
         });
 
         this.setOnKeyReleased(e -> {
+            if (model.clientLoseControl)
+                return;
             currentlyPressed.remove(e.getCode());
             if(keyReleaseAction.containsKey(e.getCode()))
                 keyReleaseAction.get(e.getCode()).run();
@@ -150,6 +159,8 @@ public class WorldPanel extends Region {
 
 
         this.setOnMouseClicked(e -> {
+            if (model.clientLoseControl)
+                return;
             if(e.getButton() == MouseButton.PRIMARY && leftClick != null)
                 leftClick.accept(screenToGameX(e.getX()), screenToGameY(e.getY()));
             if(e.getButton() == MouseButton.SECONDARY && rightClick != null)
@@ -232,5 +243,18 @@ public class WorldPanel extends Region {
             mouseY = e.getY();
             consumer.accept(screenToGameX(e.getX()), screenToGameY(e.getY()));
         });
+    }
+
+    public void setMiniPos(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void miniDown() {
+        useMinimap = true;
+    }
+
+    public void miniUp() {
+        useMinimap= false;
     }
 }

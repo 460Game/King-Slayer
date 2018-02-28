@@ -2,20 +2,18 @@ package game.model.game.model;
 
 import game.message.Message;
 import game.message.toClient.SetEntityCommand;
-import game.message.toClient.SyncEntityFeildCommand;
+import game.message.toClient.SyncEntityFieldCommand;
 import game.model.game.grid.GridCell;
 import game.model.game.map.MapGenerator;
 import game.model.game.map.Tile;
 import game.model.game.model.worldObject.entity.Entity;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.WritableImage;
+import util.Util;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_STRAT;
 import static util.Const.*;
 
 public abstract class GameModel implements Model {
@@ -31,11 +29,19 @@ public abstract class GameModel implements Model {
 
     private final Map<Long, Entity> entities;
 
+    public boolean clientLoseControl = false;
+
     protected void queueMessage(Message message) {
         messageQueue.add(message);
     }
 
     public abstract void execute(Consumer<ServerGameModel> serverAction, Consumer<ClientGameModel> clientAction);
+
+    //temporary
+    //need to clean up
+    public int respawnCnt = 0;
+    public double respawnX;
+    public double respawnY;
 
     /**
      * Constructor for the game model.
@@ -146,7 +152,7 @@ public abstract class GameModel implements Model {
                     serverGameModel.processMessage(new SetEntityCommand(e));
                 }
                 e.syncRequiredFeilds.forEach(syncFeild -> {
-                    serverGameModel.processMessage(new SyncEntityFeildCommand(e, syncFeild));
+                    serverGameModel.processMessage(new SyncEntityFieldCommand(e, syncFeild));
                 });
                 e.syncRequiredFeilds.clear();
             });
@@ -156,6 +162,18 @@ public abstract class GameModel implements Model {
 
     public Collection<GridCell> getAllCells() {
         return allCells;
+    }
+
+    public Set<GridCell> getNeighbors(GridCell cell) {
+        Set<GridCell> neighbors = new HashSet<>();
+        for (int i = cell.getTopLeftX() - 1; i <= cell.getTopLeftX() + 1; i++) {
+            for (int j = cell.getTopLeftY() - 1; j <= cell.getTopLeftY() + 1; j++) {
+                if (Util.checkBounds(i, j)) {
+                    neighbors.add(getCell(i, j));
+                }
+            }
+        }
+        return neighbors;
     }
 
     /*
@@ -208,5 +226,9 @@ public abstract class GameModel implements Model {
 
     public Stream<GridCell> streamCells() {
         return getAllCells().stream();
+    }
+
+    public void slayerDead() {
+        clientLoseControl = true;
     }
 }

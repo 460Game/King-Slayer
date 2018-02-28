@@ -93,7 +93,7 @@ public class GridCell {
 
     public void updatePeriodicLOS(GameModel gameModel) {
 
-        boolean passable = this.isPassable();
+        boolean passable = this.isSeeThrough();
 
         for (Team team : Team.values()) {
             losRanges[team.team] = 0;
@@ -144,6 +144,15 @@ public class GridCell {
         isPassibleMemo = contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD
                 || e.getCollideType() == CollisionStrat.CollideType.WATER);
         return isPassibleMemo;
+    }
+
+    private boolean isVisableMemo;
+
+    public boolean isSeeThrough() {
+        if(isPassibleMemoized)
+            return isVisableMemo;
+        isVisableMemo = contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD);
+        return isVisableMemo;
     }
 
     /**

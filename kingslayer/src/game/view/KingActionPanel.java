@@ -19,12 +19,9 @@ public class KingActionPanel extends ActionPanel {
   private KingGameInteractionLayer gameInteractionLayer;
 
   public KingActionPanel(ClientGameModel model, KingGameInteractionLayer gameInteractionLayer) {
+    super(model);
     this.model = model;
     this.gameInteractionLayer = gameInteractionLayer;
-
-    this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
-    this.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-    this.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(3), null)));
 
     GridPane grid = new GridPane();
     grid.setLayoutX(15);

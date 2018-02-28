@@ -12,18 +12,19 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 import static images.Images.CURSOR_IMAGE;
+import static util.Const.PANEL_BG;
+import static util.Const.PROMPT_BG;
 
 public class TeamLosePrompt extends Region {
     private ClientGameModel model;
     TeamLosePrompt(ClientGameModel model, GameView view) {
         this.model = model;
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
-        this.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-        this.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(3), null)));
+        this.setBackground(PROMPT_BG);
 
         Text text = new Text("Better Luck Next Time!");
         text.setFont(new Font(20));
-        text.setFill(Color.WHITE);
+        text.setFill(Color.BLACK);
         text.setLayoutX(10);
         text.setTextAlignment(TextAlignment.CENTER);
         text.setLayoutY(50);

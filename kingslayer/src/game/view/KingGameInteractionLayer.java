@@ -41,6 +41,10 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     world = worldPanel;
 
     world.onGameLeftClick((x, y) -> {
+      if (model.clientLoseControl) {
+        return;
+      }
+
       if (spawner != null) {
         model.processMessage(new EntityBuildRequest(spawner,
             model.getLocalPlayer().getTeam(), Math.floor(x) + 0.5, Math.floor(y) + 0.5, placingGhost.getHitbox()));
@@ -65,6 +69,10 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     });
 
     world.onGameRightClick((x, y) -> {
+      if (model.clientLoseControl) {
+        return;
+      }
+
       holding = false;
       if (spawner != null) {
         model.remove(placingGhost);
@@ -100,6 +108,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     });
 
     world.onKeyPress(kc -> {
+      if (model.clientLoseControl) {
+        return;
+      }
 
       if (placingGhost != null && kc != W && kc != A && kc != S && kc != D && kc != SHIFT) {
         model.removeByID(placingGhost.id);

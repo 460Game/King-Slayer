@@ -59,6 +59,15 @@ public abstract class Images {
     public static final Image BLUE_RESOURCE_MIONION_IMAGE_SHEET = getImage("minions_resource_blue.png");
     public static final Image RED_RESOURCE_MINION_IMAGE_SHEET = getImage("minions_resource_red.png");
 
+
+    public static final Image FOG_BLACK_IMAGE = getImage("fog_black.png");
+    public static final Image FOG_GREY_IMAGE = getImage("fog_grey.png");
+    public static final Image FOG_GREY_EXPLORED_IMAGE = getImage("explored_fog.png");
+
+    public static final Image METAL_ICON = getImage("metal_icon.png");
+    public static final Image STONE_ICON = getImage("stone_icon.png");
+    public static final Image WOOD_ICON = getImage("wood_icon.png");
+
     private static Image getImage(String s) {
         return new Image(Images.class.getResourceAsStream(s));
     }

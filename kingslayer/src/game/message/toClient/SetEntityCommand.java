@@ -12,7 +12,7 @@ import java.util.EnumMap;
 public class SetEntityCommand implements ToClientCommand {
 
     /**
-     * EntityProperty corresponding to the entity.
+     * EntityProperty data corresponding to the entity.
      */
     private EnumMap<Entity.EntityProperty, Object> data;
 

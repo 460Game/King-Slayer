@@ -7,6 +7,7 @@ import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.*;
 import game.model.game.model.worldObject.entity.aiStrat.*;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
+import game.model.game.model.worldObject.entity.collideStrat.ProjectileCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import game.model.game.model.worldObject.entity.deathStrat.DeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
@@ -54,6 +55,7 @@ public class Entity {
         Y(Double.class, PropType.PASSIVE_SYNC),
         TEAM(Team.class, PropType.ACTIVE_SYNC),
         ROLE(Role.class, PropType.ACTIVE_SYNC),
+        PROJECTILE(ProjectileCollisionStrat.Projectile.class, PropType.ACTIVE_SYNC), //TODO
         RESOURCETYPE(TeamResourceData.Resource.class, PropType.SERVER_ONLY),
         RESOURCEAMOUNT(Integer.class, PropType.SERVER_ONLY),
         BUILDINGTYPE(BuildingSpawnerStrat.BuildingType.class, PropType.SERVER_ONLY),
@@ -67,9 +69,7 @@ public class Entity {
         DEATH_STRAT(DeathStrat.class, PropType.ON_CHANGE_ONLY),
         PLAYER_NAME(String.class, PropType.ON_CHANGE_ONLY),
         SLAYER_DATA(SlayerData.class, PropType.ACTIVE_SYNC),
-        SIGHT_RADIUS(Integer.class, PropType.ON_CHANGE_ONLY)
-
-        ;
+        SIGHT_RADIUS(Integer.class, PropType.ON_CHANGE_ONLY);
 
         EntityProperty(Class type, PropType sync) {
             this.type = type;
@@ -345,10 +345,6 @@ public class Entity {
 
             updateStrat.update(this, model);
         });
-//
-//        if (has(RESOURCEAMOUNT) && (int) get(RESOURCEAMOUNT) <= 0) {
-//            entityDie(model);
-//        }
     }
 
     public void upgrade() {
@@ -369,7 +365,6 @@ public class Entity {
 
     /**
      * Update the cells that this entity is currently in.
-     *
      * @param model current model of the game
      */
     public void updateCells(GameModel model) {
