@@ -1,13 +1,9 @@
 package game.view;
 
-import game.model.game.model.ClientGameModel;
-import game.model.game.model.team.TeamResourceData;
 import javafx.scene.ImageCursor;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.text.*;
 import util.Const;
 
 import static images.Images.CURSOR_IMAGE;
