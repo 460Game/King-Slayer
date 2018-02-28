@@ -100,6 +100,9 @@ public class WorldPanel extends Region {
     private double gameH;
 
     public void draw() {
+        if (model.clientLoseControl)
+            return;
+
         if(!useMinimap) {
             x = model.getLocalPlayer().getX() + 0.1 * toWorldCoords(mouseX - getWidth() / 2);
             y = model.getLocalPlayer().getY() + 0.15 * toWorldCoords(mouseY - getHeight() / 2);
