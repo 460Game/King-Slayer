@@ -29,6 +29,8 @@ public abstract class GameModel implements Model {
 
     private final Map<Long, Entity> entities;
 
+    public boolean clientLoseControl = false;
+
     protected void queueMessage(Message message) {
         messageQueue.add(message);
     }
@@ -218,5 +220,9 @@ public abstract class GameModel implements Model {
 
     public Stream<GridCell> streamCells() {
         return getAllCells().stream();
+    }
+
+    public void slayerDead() {
+        clientLoseControl = true;
     }
 }

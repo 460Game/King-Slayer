@@ -134,6 +134,8 @@ public class WorldPanel extends Region {
         });
 
         this.setOnKeyPressed(e -> {
+            if (model.clientLoseControl)
+                return;
             if (currentlyPressed.contains(e.getCode()))
                 return;
             currentlyPressed.add(e.getCode());
@@ -144,6 +146,8 @@ public class WorldPanel extends Region {
         });
 
         this.setOnKeyReleased(e -> {
+            if (model.clientLoseControl)
+                return;
             currentlyPressed.remove(e.getCode());
             if(keyReleaseAction.containsKey(e.getCode()))
                 keyReleaseAction.get(e.getCode()).run();
@@ -153,6 +157,8 @@ public class WorldPanel extends Region {
 
 
         this.setOnMouseClicked(e -> {
+            if (model.clientLoseControl)
+                return;
             if(e.getButton() == MouseButton.PRIMARY && leftClick != null)
                 leftClick.accept(screenToGameX(e.getX()), screenToGameY(e.getY()));
             if(e.getButton() == MouseButton.SECONDARY && rightClick != null)

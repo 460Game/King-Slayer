@@ -19,6 +19,7 @@ public class SlayerDeathStrat extends DeathStrat {
 //            server.getClients().forEach(client -> client.processMessage(new SetEntityCommand(b)));
         };
         model.execute(serverConsumer, (client) -> {
+            client.slayerDead();
 //            a.data.updateData.velocity.setMagnitude(0);
 //            client.removeByID(a.id);
         });
