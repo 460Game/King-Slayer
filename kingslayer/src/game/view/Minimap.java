@@ -35,7 +35,6 @@ public class Minimap extends Region {
         minimapCanvas.widthProperty().bind(this.widthProperty().subtract(20));
         minimapCanvas.translateXProperty().setValue(10);
         minimapCanvas.translateYProperty().setValue(10);
-        this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
 
         this.setOnMouseDragged(e -> {
             world.setMiniPos(e.getX()/4, e.getY()/4);
@@ -57,14 +56,14 @@ public class Minimap extends Region {
     private int tick = 0;
 
     public void draw() {
-
         tick++;
         if (tick == 5) {
             tick = 0;
             minimapGC.setTransform(new Affine(Transform.scale(
                     minimapGC.getCanvas().getWidth() / model.getMapWidth(),
                     minimapGC.getCanvas().getHeight() / model.getMapHeight())));
-            minimapGC.fillRect(0, 0, minimapCanvas.getWidth(), minimapCanvas.getHeight());
+            minimapGC.clearRect(0, 0, minimapCanvas.getWidth(), minimapCanvas.getHeight());
+            minimapGC.setGlobalAlpha(0.3);
 
             for (int x = 0; x < model.getMapWidth(); x++) {
                 for (int y = 0; y < model.getMapHeight(); y++) {
@@ -94,11 +93,12 @@ public class Minimap extends Region {
                     }
                 });
             }
+            minimapGC.setStroke(Color.WHITE);
+            minimapGC.strokeRect(world.getCamX() - world.getCamW() / 2, world.getCamY() - world.getCamH() / 2, world.getCamW(), world.getCamH());
+
         }
 
 
-        minimapGC.setStroke(Color.WHITE);
-        minimapGC.strokeRect(world.getCamX() - world.getCamW() / 2, world.getCamY() - world.getCamH() / 2, world.getCamW(), world.getCamH());
     }
 }
 

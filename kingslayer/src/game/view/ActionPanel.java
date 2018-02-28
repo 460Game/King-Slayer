@@ -9,8 +9,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import util.Const;
 
 import static images.Images.CURSOR_IMAGE;
+import static util.Const.PANEL_BG;
 
 /** panel in bottem middle with actions user can take
  */
@@ -22,8 +24,7 @@ public class ActionPanel extends Region {
     public ActionPanel(ClientGameModel model) {
         this.model = model;
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
-        this.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-        this.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(3), null)));
+        this.setBackground(PANEL_BG);
         Text text = new Text("Kings:\nBuild Wall (1)\nBuild Collector(2)\n\nSlayers:\nClick to shoot");
         text.setFont(new Font(20));
         text.setFill(Color.WHITE);

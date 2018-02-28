@@ -141,11 +141,6 @@ public class GameView {
                 minimap.draw();
                 actionPanel.draw();
 
-                //TODO dont do this
-                resourcePanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-                minimap.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-               actionPanel.setBorder(new Border(new BorderStroke(model.getLocalPlayer().getTeam().color, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(10))));
-
                 if (model.getWinningTeam() != null && model.getWinningTeam() == model.getLocalPlayer().getTeam()) {
                     teamWinPrompt.setVisible(true);
                 } else if (model.getWinningTeam() != null && model.getWinningTeam() != model.getLocalPlayer().getTeam()) {

@@ -1,5 +1,11 @@
 package util;
 
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+
 import static java.lang.Math.PI;
 
 /**
@@ -11,6 +17,10 @@ public abstract class Const {
     public static final double SCREEN_DIAG_STD_SIZE = 800;
     public static final double MAX_ZOOM = 2;
     public static final double MIN_ZOOM = 0.8;
+    public static final Paint PANEL_BG_COLOR = Color.color(1,1,1,0.3);
+    public static final Background PANEL_BG = new Background(new BackgroundFill(PANEL_BG_COLOR, new CornerRadii(3), null));
+    public static final Paint PROMPT_BG_COLOR = Color.color(1,1,1,0.8);
+    public static final Background PROMPT_BG = new Background(new BackgroundFill(PROMPT_BG_COLOR, new CornerRadii(30), null));
     public static boolean FPSPrint = true;
 
     /**
