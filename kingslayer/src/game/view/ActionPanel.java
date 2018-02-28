@@ -25,12 +25,6 @@ public class ActionPanel extends Region {
         this.model = model;
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
         this.setBackground(PANEL_BG);
-        Text text = new Text("Kings:\nBuild Wall (1)\nBuild Collector(2)\n\nSlayers:\nClick to shoot");
-        text.setFont(new Font(20));
-        text.setFill(Color.WHITE);
-        text.setLayoutX(10);
-        text.setLayoutY(28);
-        this.getChildren().add(text);
     }
 
     public void draw() {
