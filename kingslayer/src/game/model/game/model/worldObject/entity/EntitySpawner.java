@@ -41,7 +41,7 @@ public enum EntitySpawner {
       return Entities.makeExplorationBarracks(x, y, team);
     }
   },
-  ARROW_TOWER_SPAWNER(TeamResourceData.Resource.WOOD, -20) {
+  ARROW_TOWER_SPAWNER(TeamResourceData.Resource.WOOD, -50) {
     @Override
     public Entity makeEntity(double x, double y, Team team) {
       return Entities.makeArrowTower(x, y, team);

@@ -70,6 +70,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     });
 
     world.onGameRightClick((x, y) -> {
+      holding = false;
       if (spawner != null) {
         model.remove(placingGhost);
         spawner = null;
@@ -105,8 +106,6 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
     world.onKeyPress(kc -> {
 
-      holding = true;
-
       if (placingGhost != null && kc != W && kc != A && kc != S && kc != D && kc != SHIFT) {
         model.removeByID(placingGhost.id);
         placingGhost = null;
@@ -119,51 +118,43 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
       }
 
+      if (kc == ESCAPE) {
+        clearSelection();
+      }
+
       if (kc == DIGIT1 || kc == NUMPAD1) {
+        holding = true;
         if (!selectingBarracks) {
           this.selectWall();
         } else {
-          placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-          spawner = EntitySpawner.MELEE_BARRACKS_SPAWNER;
-          model.processMessage(new NewEntityCommand(placingGhost));
-
-          selectingBarracks = false;
+          this.selectMelee();
         }
       }
 
       if (kc == DIGIT2 || kc == NUMPAD2) {
+        holding = true;
         if (!selectingBarracks) {
           this.selectResourceCollector();
         } else {
-          placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-          spawner = EntitySpawner.RANGED_BARRACKS_SPAWNER;
-          model.processMessage(new NewEntityCommand(placingGhost));
-
-          selectingBarracks = false;
+          this.selectRanged();
         }
       }
 
       if (kc == DIGIT3 || kc == NUMPAD3) {
+        holding = true;
         if (!selectingBarracks) {
           selectingBarracks = true;
         } else {
-          placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-          spawner = EntitySpawner.SIEGE_BARRACKS_SPAWNER;
-          model.processMessage(new NewEntityCommand(placingGhost));
-
-          selectingBarracks = false;
+          this.selectSiege();
         }
       }
 
       if (kc == DIGIT4 || kc == NUMPAD4) {
+        holding = true;
         if (!selectingBarracks) {
           this.selectArrowTower();
         } else {
-          placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-          spawner = EntitySpawner.EXPLORATION_BARRACKS_SPAWNER;
-          model.processMessage(new NewEntityCommand(placingGhost));
-
-          selectingBarracks = false;
+          this.selectExploration();
         }
       }
 
@@ -177,7 +168,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
     });
 
-    world.setOnKeyReleased(e -> {
+    world.onKeyRelease(e -> {
       holding = false;
     });
   }
@@ -222,6 +213,38 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         DELETE_CURSOR_IMAGE.getWidth() / 2,
         DELETE_CURSOR_IMAGE.getHeight() / 2));
     deleting = true;
+  }
+
+  public void selectMelee() {
+    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
+    spawner = EntitySpawner.MELEE_BARRACKS_SPAWNER;
+    model.processMessage(new NewEntityCommand(placingGhost));
+
+    selectingBarracks = false;
+  }
+
+  public void selectRanged() {
+    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
+    spawner = EntitySpawner.RANGED_BARRACKS_SPAWNER;
+    model.processMessage(new NewEntityCommand(placingGhost));
+
+    selectingBarracks = false;
+  }
+
+  public void selectSiege() {
+    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
+    spawner = EntitySpawner.SIEGE_BARRACKS_SPAWNER;
+    model.processMessage(new NewEntityCommand(placingGhost));
+
+    selectingBarracks = false;
+  }
+
+  public void selectExploration() {
+    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
+    spawner = EntitySpawner.EXPLORATION_BARRACKS_SPAWNER;
+    model.processMessage(new NewEntityCommand(placingGhost));
+
+    selectingBarracks = false;
   }
 
   public void draw() {
