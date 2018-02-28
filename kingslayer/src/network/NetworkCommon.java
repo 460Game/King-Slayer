@@ -209,6 +209,7 @@ public class NetworkCommon {
         kryo.register(RespawnSlayerRequest.class);
         kryo.register(RespawnSlayerCommand.class);
         kryo.register(game.message.toClient.SlayerDieCommand.class);
+        kryo.register(ProjectileCollisionStrat.Projectile.class);
 //        kryo.register(GridCell.class);
 
 
