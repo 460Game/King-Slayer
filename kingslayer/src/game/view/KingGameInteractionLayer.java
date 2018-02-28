@@ -80,6 +80,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       if (spawner != null) {
         model.remove(placingGhost);
         spawner = null;
+        placingGhost = null;
       } else if (upgrading) {
         upgrading = false;
         world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
@@ -101,8 +102,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         }
       }
 
-      if (placingGhost != null) {
-        world.uiGC.clearRect(0, 0, world.uiGC.getCanvas().getWidth(), world.uiGC.getCanvas().getHeight());
+      world.uiGC.clearRect(0, 0, world.uiGC.getCanvas().getWidth(), world.uiGC.getCanvas().getHeight());
+      if (spawner != null) {
         world.uiGC.setFill(new Color(1, 1, 1, 0.25));
         world.uiGC.fillOval(world.gameToScreenX(model.getLocalPlayer().getX()) - toDrawCoords(9.75),
             world.gameToScreenY(model.getLocalPlayer().getY()) - toDrawCoords(9.75),
