@@ -334,14 +334,19 @@ public class Astar {
      * @return closest collector tile to the specified cell and team
      */
     public GridCell getClosestCollector(GridCell cell, Team team) {
-        if (team == Team.ONE)
+        if (team == Team.ONE) {
+            if (model.getTeam1collector().isEmpty())
+                return null; // TODO temp
             return model.getTeam1collector().parallelStream().min((c1, c2) ->
                     Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
                             Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
-        else
+        } else {
+            if (model.getTeam2collector().isEmpty())
+                return null; // TODO temp
             return model.getTeam2collector().parallelStream().min((c1, c2) ->
-                Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
-                        Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
-        // TODO support multiple teams
+                    Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
+                            Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
+            // TODO support multiple teams
+        }
     }
 }

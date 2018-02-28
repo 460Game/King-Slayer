@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.AI_DATA;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.HEALTH;
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.PROJECTILE;
 import static java.lang.Math.*;
 
 public abstract class BuildingSpawnerStrat extends AIStrat {
@@ -213,6 +214,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
                         util.Util.dist(x, y, e.getX(), e.getY()) <= range
                                 && e.has(Entity.EntityProperty.TEAM)
                                 && e.getTeam() != entity.getTeam()
+                                && !e.has(PROJECTILE)
                                 && checkLineOfSight(entity, e, model)).collect(Collectors.toSet()));
             }
         }

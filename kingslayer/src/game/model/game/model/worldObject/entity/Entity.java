@@ -7,6 +7,7 @@ import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.*;
 import game.model.game.model.worldObject.entity.aiStrat.*;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
+import game.model.game.model.worldObject.entity.collideStrat.ProjectileCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import game.model.game.model.worldObject.entity.deathStrat.DeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
@@ -54,6 +55,7 @@ public class Entity {
         Y(Double.class, PropType.PASSIVE_SYNC),
         TEAM(Team.class, PropType.ACTIVE_SYNC),
         ROLE(Role.class, PropType.ACTIVE_SYNC),
+        PROJECTILE(ProjectileCollisionStrat.Projectile.class, PropType.ACTIVE_SYNC), //TODO
         RESOURCETYPE(TeamResourceData.Resource.class, PropType.SERVER_ONLY),
         RESOURCEAMOUNT(Integer.class, PropType.SERVER_ONLY),
         BUILDINGTYPE(BuildingSpawnerStrat.BuildingType.class, PropType.SERVER_ONLY),

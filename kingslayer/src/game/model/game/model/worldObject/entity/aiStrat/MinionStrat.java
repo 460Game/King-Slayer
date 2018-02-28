@@ -8,6 +8,7 @@ import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.collideStrat.ProjectileCollisionStrat;
 import game.model.game.model.worldObject.entity.entities.Entities;
 import util.Const;
 import util.Util;
@@ -208,11 +209,17 @@ public abstract class MinionStrat extends AIStrat {
 
             // Check if the minion should go to a resource or back to a collector.
             if (!data.hasResource) {
-                x = astar.getClosestWood(model.getCell((int) entityx, (int) entityy)).getTopLeftX();
-                y = astar.getClosestWood(model.getCell((int) entityx, (int) entityy)).getTopLeftY();
+                GridCell wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy));
+                if (wood == null)
+                    return;
+                x = wood.getTopLeftX();
+                y = wood.getTopLeftY();
             } else {
-                x = astar.getClosestCollector(model.getCell((int) entityx, (int) entityy), entity.getTeam()).getTopLeftX();
-                y = astar.getClosestCollector(model.getCell((int) entityx, (int) entityy), entity.getTeam()).getTopLeftY();
+                GridCell collector = astar.getClosestCollector(model.getCell((int) entityx, (int) entityy), entity.getTeam());
+                if (collector == null)
+                    return;
+                x = collector.getTopLeftX();
+                y = collector.getTopLeftY();
             }
 
 //            // TODO case where collector is destroyed where does minion go?
@@ -358,6 +365,7 @@ public abstract class MinionStrat extends AIStrat {
                         util.Util.dist(x, y, e.getX(), e.getY()) <= range
                                 && e.has(Entity.EntityProperty.TEAM)
                                 && e.getTeam() != entity.getTeam()
+                                && !e.has(Entity.EntityProperty.PROJECTILE)
                                 && checkLineOfSight(entity, e, model)).collect(Collectors.toSet()));
             }
         }

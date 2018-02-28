@@ -211,6 +211,7 @@ public class Entities {
                 ArrowCollisionStrat.SINGLETON,
                 pair(UPDATE_STRAT, MovingStrat.SINGLETON),
                 pair(TEAM, team),
+                pair(PROJECTILE, ProjectileCollisionStrat.Projectile.ARROW),
                 pair(DRAW_STRAT, RotatingImageDrawStrat.ARROW_IMAGE_DRAW_STRAT),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
         arrow.setVelocity(arrow.getVelocity().withMagnitude(7).withAngle(angle));
