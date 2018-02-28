@@ -119,7 +119,7 @@ public class WorldPanel extends Region {
 
         fgGC.clearRect(-1111, -11111, 11111111, 1111111);
         bgGC.drawImage(waterTick > WATER_ANIM_PERIOD / 2 ? BGImage1 : BGImage2, 0, 0);
-        model.drawForeground(fgGC, GRID_X_SIZE / 2, GRID_Y_SIZE / 2, gameW, gameH);
+        model.drawForeground(fgGC, x - gameW / 2, y - gameH / 2, gameW, gameH);
         waterTick = (waterTick + 1) % WATER_ANIM_PERIOD;
 
 
