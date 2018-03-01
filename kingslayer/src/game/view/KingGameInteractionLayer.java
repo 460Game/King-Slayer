@@ -99,14 +99,6 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           placingGhost.setY(placingY);
         }
       }
-
-//      world.uiGC.clearRect(0, 0, world.uiGC.getCanvas().getWidth(), world.uiGC.getCanvas().getHeight());
-//      if (spawner != null) {
-//        world.uiGC.setFill(new Color(1, 1, 1, 0.25));
-//        world.uiGC.fillOval(world.gameToScreenX(model.getLocalPlayer().getX()) - toDrawCoords(9.75),
-//            world.gameToScreenY(model.getLocalPlayer().getY()) - toDrawCoords(9.75),
-//            toDrawCoords(19.5), toDrawCoords(19.5));
-//      }
     });
 
     world.onKeyPress(kc -> {
@@ -165,6 +157,11 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
     world.onKeyRelease(kc -> {
       holding = false;
+      if (kc == SHIFT) {
+        model.remove(placingGhost);
+        spawner = null;
+        placingGhost = null;
+      }
     });
   }
 
