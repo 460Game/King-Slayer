@@ -25,7 +25,7 @@ handles interacting with the game
  */
 public class KingGameInteractionLayer extends GameInteractionLayer {
   private ClientGameModel model;
-  private WorldPanel world;
+  protected WorldPanel world;
 
   //    private Entity placing;
   private EntitySpawner spawner;
