@@ -351,6 +351,7 @@ public class Entity {
         if (this.has(LEVEL) && (int) this.get(LEVEL) < 3) {
             this.set(LEVEL, (int) this.get(LEVEL) + 1);
             this.set(HEALTH, (double) this.get(HEALTH) + 10);
+            this.set(MAX_HEALTH, (double) this.get(MAX_HEALTH) + 10);
         }
     }
 

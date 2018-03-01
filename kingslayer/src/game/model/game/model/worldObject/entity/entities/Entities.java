@@ -1,6 +1,5 @@
 package game.model.game.model.worldObject.entity.entities;
 
-import com.sun.org.apache.regexp.internal.RE;
 import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
@@ -115,7 +114,7 @@ public class Entities {
                 pair(DRAW_STRAT, GhostDrawStrat.GHOST_COLLECTOR));
     }
 
-    public static Entity makeMeleeBarracks(double x, double y, Team team) {
+    public static Entity makeBarracks(double x, double y, Team team) {
         return new Entity(x, y,
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
@@ -123,7 +122,7 @@ public class Entities {
                 pair(HEALTH, 10.0),
                 pair(BUILDINGTYPE, BuildingSpawnerStrat.BuildingType.BARRACKS),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.BARRACKS),
-                pair(AI_STRAT, BuildingSpawnerStrat.MeleeBarracksBuildingSpawnerStrat.SINGLETON),
+                pair(AI_STRAT, BuildingSpawnerStrat.BarracksBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(LEVEL, 0),
                 pair(MAX_HEALTH, 10.0));

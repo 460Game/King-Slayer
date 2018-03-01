@@ -34,8 +34,8 @@ public class UpgradeEntityRequest implements ToServerRequest {
   @Override
   public void executeServer(ServerGameModel model) {
     Entity entity = model.getEntity(entityID);
-    if (entity.has(Entity.EntityProperty.LEVEL) &&
-        model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL)), -10)) {
+    if (entity.has(Entity.EntityProperty.LEVEL) && entity.<Integer>get(Entity.EntityProperty.LEVEL) < 2 &&
+        model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL) + 1), -10)) {
       entity.upgrade();
       model.processMessage(new NewEntityCommand(entity));
     }

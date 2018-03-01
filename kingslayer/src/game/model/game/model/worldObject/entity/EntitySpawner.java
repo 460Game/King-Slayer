@@ -17,10 +17,10 @@ public enum EntitySpawner {
       return Entities.makeResourceCollector(x, y, team);
     }
   },
-  MELEE_BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, -15) {
+  BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, -15) {
     @Override
     public Entity makeEntity(double x, double y, Team team) {
-      return Entities.makeMeleeBarracks(x, y, team);
+      return Entities.makeBarracks(x, y, team);
     }
   },
   RANGED_BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, -15) {

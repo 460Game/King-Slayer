@@ -164,7 +164,7 @@ public class NetworkCommon {
         kryo.register(game.model.game.map.Tile[].class);
         kryo.register(Tile[][].class);
         kryo.register(BuildingSpawnerStrat.SiegeBarracksBuildingSpawnerStrat.class);
-        kryo.register(BuildingSpawnerStrat.MeleeBarracksBuildingSpawnerStrat.class);
+        kryo.register(BuildingSpawnerStrat.BarracksBuildingSpawnerStrat.class);
         kryo.register(BuildingSpawnerStrat.ExplorationBarracksBuildingSpawnerStrat.class);
         kryo.register(BuildingSpawnerStrat.ResourceCollectorBuildingSpawnerStrat.class);
         kryo.register(BuildingSpawnerStrat.TowerBuildingSpawnerStrat.class);
@@ -174,7 +174,7 @@ public class NetworkCommon {
         kryo.register(BuildingSpawnerStrat.SiegeBarracksBuildingSpawnerStrat.class);
         kryo.register(BuildingSpawnerStrat.TowerBuildingSpawnerStrat.class);
         kryo.register(BuildingSpawnerStrat.ExplorationBarracksBuildingSpawnerStrat.class);
-        kryo.register(BuildingSpawnerStrat.MeleeBarracksBuildingSpawnerStrat.class);
+        kryo.register(BuildingSpawnerStrat.BarracksBuildingSpawnerStrat.class);
         kryo.register(BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.class);
         kryo.register(BuildingSpawnerStrat.ResourceCollectorBuildingSpawnerStrat.class);
 

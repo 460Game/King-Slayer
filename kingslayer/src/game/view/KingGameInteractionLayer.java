@@ -6,9 +6,7 @@ import game.model.game.model.ClientGameModel;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntitySpawner;
 import game.model.game.model.worldObject.entity.entities.Entities;
-import javafx.geometry.Point2D;
 import javafx.scene.ImageCursor;
-import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import util.Util;
 
@@ -102,13 +100,13 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         }
       }
 
-      world.uiGC.clearRect(0, 0, world.uiGC.getCanvas().getWidth(), world.uiGC.getCanvas().getHeight());
-      if (spawner != null) {
-        world.uiGC.setFill(new Color(1, 1, 1, 0.25));
-        world.uiGC.fillOval(world.gameToScreenX(model.getLocalPlayer().getX()) - toDrawCoords(9.75),
-            world.gameToScreenY(model.getLocalPlayer().getY()) - toDrawCoords(9.75),
-            toDrawCoords(19.5), toDrawCoords(19.5));
-      }
+//      world.uiGC.clearRect(0, 0, world.uiGC.getCanvas().getWidth(), world.uiGC.getCanvas().getHeight());
+//      if (spawner != null) {
+//        world.uiGC.setFill(new Color(1, 1, 1, 0.25));
+//        world.uiGC.fillOval(world.gameToScreenX(model.getLocalPlayer().getX()) - toDrawCoords(9.75),
+//            world.gameToScreenY(model.getLocalPlayer().getY()) - toDrawCoords(9.75),
+//            toDrawCoords(19.5), toDrawCoords(19.5));
+//      }
     });
 
     world.onKeyPress(kc -> {
@@ -134,38 +132,22 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
       if (kc == DIGIT1 || kc == NUMPAD1) {
         holding = true;
-        if (!selectingBarracks) {
-          this.selectWall();
-        } else {
-          this.selectMelee();
-        }
+        this.selectResourceCollector();
       }
 
       if (kc == DIGIT2 || kc == NUMPAD2) {
         holding = true;
-        if (!selectingBarracks) {
-          this.selectResourceCollector();
-        } else {
-          this.selectRanged();
-        }
+        this.selectWall();
       }
 
       if (kc == DIGIT3 || kc == NUMPAD3) {
         holding = true;
-        if (!selectingBarracks) {
-          selectingBarracks = true;
-        } else {
-          this.selectSiege();
-        }
+        this.selectArrowTower();
       }
 
       if (kc == DIGIT4 || kc == NUMPAD4) {
         holding = true;
-        if (!selectingBarracks) {
-          this.selectArrowTower();
-        } else {
-          this.selectExploration();
-        }
+        this.selectBarracks();
       }
 
       if (kc == E) {
@@ -228,9 +210,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     deleting = true;
   }
 
-  public void selectMelee() {
+  public void selectBarracks() {
     placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-    spawner = EntitySpawner.MELEE_BARRACKS_SPAWNER;
+    spawner = EntitySpawner.BARRACKS_SPAWNER;
     model.processMessage(new NewEntityCommand(placingGhost));
 
     selectingBarracks = false;
@@ -262,6 +244,14 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
   public void draw() {
     world.draw();
+
+    world.uiGC.clearRect(0, 0, world.uiGC.getCanvas().getWidth(), world.uiGC.getCanvas().getHeight());
+    if (spawner != null) {
+      world.uiGC.setFill(new Color(1, 1, 1, 0.25));
+      world.uiGC.fillOval(world.gameToScreenX(model.getLocalPlayer().getX()) - toDrawCoords(9.75),
+          world.gameToScreenY(model.getLocalPlayer().getY()) - toDrawCoords(9.75),
+          toDrawCoords(19.5), toDrawCoords(19.5));
+    }
   }
 }
 

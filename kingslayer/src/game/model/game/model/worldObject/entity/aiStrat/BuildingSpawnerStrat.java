@@ -1,10 +1,8 @@
 package game.model.game.model.worldObject.entity.aiStrat;
 
-import com.esotericsoftware.minlog.Log;
 import game.message.toServer.MakeEntityRequest;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ServerGameModel;
-import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.*;
@@ -15,9 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static game.model.game.model.worldObject.entity.Entity.EntityProperty.AI_DATA;
-import static game.model.game.model.worldObject.entity.Entity.EntityProperty.HEALTH;
-import static game.model.game.model.worldObject.entity.Entity.EntityProperty.PROJECTILE;
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.*;
 import static java.lang.Math.*;
 
 public abstract class BuildingSpawnerStrat extends AIStrat {
@@ -29,9 +25,9 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         BARRACKS
     }
 
-    public static class MeleeBarracksBuildingSpawnerStrat extends BuildingSpawnerStrat {
+    public static class BarracksBuildingSpawnerStrat extends BuildingSpawnerStrat {
 
-        public static final MeleeBarracksBuildingSpawnerStrat SINGLETON = new MeleeBarracksBuildingSpawnerStrat();
+        public static final BarracksBuildingSpawnerStrat SINGLETON = new BarracksBuildingSpawnerStrat();
 
         @Override
         boolean canAttack() { return false; }
@@ -43,14 +39,26 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         int maxActive(Entity entity) {
-            return 10 + 5 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0);
+            switch (entity.<Integer>get(LEVEL)) {
+                case 0:
+                    return 15;
+                case 1:
+                    return 10;
+                default:
+                    return 3;
+            }
         }
 
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
-            Entity minion = Minions.makeMeleeMinion(x, y, team);
-           // minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
-            return minion;
+            switch (entity.<Integer>get(LEVEL)) {
+                case 0:
+                    return Minions.makeMeleeMinion(x, y, team);
+                case 1:
+                    return Minions.makeRangedMinion(x, y, team);
+                default:
+                    return Minions.makeExplorationMinion(x, y, team);
+            }
         }
     }
 
