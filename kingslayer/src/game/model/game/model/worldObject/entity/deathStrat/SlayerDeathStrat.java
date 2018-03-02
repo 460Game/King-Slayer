@@ -17,12 +17,14 @@ public class SlayerDeathStrat extends DeathStrat {
     public void handleDeath(GameModel model, Entity entity) {
 
         System.out.println("slayer dies");
+        Team team = entity.getTeam();
+        String name = entity.get(Entity.EntityProperty.PLAYER_NAME);
         Consumer<ServerGameModel> serverConsumer = (server) -> {
             server.remove(entity);
           //  server.processMessage(new SlayerD);
             server.processMessage(new SlayerDieCommand(entity.id));
             server.processMessage(new RemoveEntityCommand(entity));
-            server.processMessage(new SlayerRespawnStartCountRequest());
+            server.processMessage(new SlayerRespawnStartCountRequest(team, name));
 //            server.getClients().forEach(client -> client.processMessage(new SetEntityCommand(b)));
         };
         model.execute(serverConsumer, (client) -> {
