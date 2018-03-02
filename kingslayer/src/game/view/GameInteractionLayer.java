@@ -99,21 +99,4 @@ public class GameInteractionLayer extends Region {
         world.draw();
     }
 
-//    public void makeVisible() {
-//        if (!this.getChildren().contains(world)) {
-//            this.getChildren().add(world);
-//            world.prefHeightProperty().bind(this.heightProperty());
-//            world.prefWidthProperty().bind(this.widthProperty());
-//        }
-//        world.setVisible(true);
-//    }
-//
-//    public void makeInvisible() {
-//        if (this.getChildren().contains(world)) {
-//            this.getChildren().removeAll(world);
-//            world.prefHeightProperty().unbind();
-//            world.prefWidthProperty().unbind();
-//        }
-//        world.setVisible(false);
-//    }
 }
