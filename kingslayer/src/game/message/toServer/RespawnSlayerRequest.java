@@ -15,7 +15,7 @@ public class RespawnSlayerRequest extends ActionRequest {
     String name;
     public RespawnSlayerRequest() {}
     public RespawnSlayerRequest(Team team, String name) {
-        myTeam = team;
+        this.myTeam = team;
         this.name = name;
     }
     @Override

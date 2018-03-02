@@ -150,6 +150,8 @@ public class WorldPanel extends Region {
         this.setOnKeyReleased(e -> {
             if (model.clientLoseControl)
                 return;
+            if (!currentlyPressed.contains(e.getCode()))
+                return;
             currentlyPressed.remove(e.getCode());
             if(keyReleaseAction.containsKey(e.getCode()))
                 keyReleaseAction.get(e.getCode()).run();
