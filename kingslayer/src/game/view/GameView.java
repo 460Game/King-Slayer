@@ -127,13 +127,13 @@ public class GameView {
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (model.clientLoseControl) {
-                    if (model.respawnCnt == 200) {
-                        System.out.println(model.respawnCnt);
-                        model.respawnSlayerRequest();
-                    }
-                    model.respawnCnt++;
-                }
+//                if (model.clientLoseControl) {
+//                    if (model.respawnCnt == 200) {
+//                        System.out.println(model.respawnCnt);
+//                        model.respawnSlayerRequest();
+//                    }
+//                    model.respawnCnt++;
+//                }
 
                 gameInteractionLayer.setVisible(true);
                 resourcePanel.setVisible(true);
