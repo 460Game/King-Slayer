@@ -22,6 +22,7 @@ import java.util.*;
 import static images.Images.GAME_CURSOR_IMAGE;
 import static javafx.scene.input.KeyCode.ENTER;
 import static javafx.scene.input.KeyCode.F11;
+import static javafx.scene.input.KeyCode.TAB;
 import static util.Const.FPSPrint;
 import static util.Util.toWorldCoords;
 
