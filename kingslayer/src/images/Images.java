@@ -12,21 +12,27 @@ public abstract class Images {
     public static final Image GAME_CURSOR_IMAGE = getImage("gamecursor.png");
     public static final Image UPGRADE_CURSOR_IMAGE = getImage("upgrade_cursor.png");
     public static final Image DELETE_CURSOR_IMAGE = getImage("delete_cursor.png");
+    public static final Image UPGRADE_CURSOR_UI_IMAGE = getImage("upgrade_UI.png");
+    public static final Image DELETE_CURSOR_UI_IMAGE = getImage("delete_UI.png");
 
     public static final Image WALL_BUILDABLE_IMAGE = getImage("wall_buildable.png");
     public static final Image WALLS_BUILDABLE_IMAGE = getImage("walls_buildable.png");
+    public static final Image WALL_BUILDABLE_UI_IMAGE = getImage("wall_buildable_UI.png");
     public static final Image RED_RESOURCE_COLLECTOR_IMAGE = getImage("resource_collector_red.png");
     public static final Image BLUE_RESOURCE_COLLECTOR_IMAGE = getImage("resource_collector_blue.png");
     public static final Image RED_RESOURCE_COLLECTORS_IMAGE = getImage("resource_collectors_red.png");
     public static final Image BLUE_RESOURCE_COLLECTORS_IMAGE = getImage("resource_collectors_blue.png");
+    public static final Image RESOURCE_COLLECTOR_UI_IMAGE = getImage("resource_collector_UI.png");
     public static final Image RED_BARRACKS_IMAGE = getImage("barracks_red.png");
     public static final Image BLUE_BARRACKS_IMAGE = getImage("barracks_blue.png");
     public static final Image RED_WOOD_BARRACKS_IMAGE = getImage("barracks_wood_red.png");
     public static final Image BLUE_WOOD_BARRACKS_IMAGE = getImage("barracks_wood_blue.png");
+    public static final Image BARRACKS_UI_IMAGE = getImage("barracks_UI.png");
     public static final Image RED_ARROW_TOWER_IMAGE = getImage("arrow_towers_red.png");
     public static final Image BLUE_ARROW_TOWER_IMAGE = getImage("arrow_towers_blue.png");
     public static final Image RED_WOOD_ARROW_TOWER_IMAGE = getImage("arrow_tower_wood_red.png");
     public static final Image BLUE_WOOD_ARROW_TOWER_IMAGE = getImage("arrow_tower_wood_blue.png");
+    public static final Image ARROW_TOWER_UI_IMAGE = getImage("arrow_tower_UI.png");
 
     public static final Image TREASURE_IMAGE = getImage("treasure.png");
     public static final Image ARROW_IMAGE = getImage("arrow.png");

@@ -7,6 +7,7 @@ import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntitySpawner;
 import game.model.game.model.worldObject.entity.entities.Entities;
 import javafx.scene.ImageCursor;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import util.Util;
 
@@ -25,7 +26,7 @@ handles interacting with the game
  */
 public class KingGameInteractionLayer extends GameInteractionLayer {
   private ClientGameModel model;
-  protected WorldPanel world;
+  //protected WorldPanel world;
 
   //    private Entity placing;
   private EntitySpawner spawner;
@@ -149,6 +150,12 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
       if (kc == SHIFT)
         holding = true;
+
+      if (kc == KeyCode.TAB) {
+        world.requestFocus();
+        System.out.println("in interaction");
+      }
+
 
     });
 

@@ -29,7 +29,7 @@ handles interacting with the game
  */
 public class GameInteractionLayer extends Region {
     private ClientGameModel model;
-    private WorldPanel world;
+    public WorldPanel world;
 
     public GameInteractionLayer() {}
 
