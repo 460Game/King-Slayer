@@ -49,6 +49,9 @@ public class ServerGameModel extends GameModel {
 
     private Entity building;
 
+    TimerTask updateFPS;
+    Timer t2;
+
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
     private Thread updateThread;
     TimerTask updateTimerTask;
@@ -166,15 +169,17 @@ public class ServerGameModel extends GameModel {
         final int[] totalFrameCount = {0};
         final int[] doAICount = {0};
 
-        TimerTask updateFPS = new TimerTask() {
+        updateFPS = new TimerTask() {
             public void run() {
-                Log.info(String.valueOf("Server FPS: " + totalFrameCount[0]));
-                totalFrameCount[0] = 0;
+                synchronized (updateFPS) {
+                    Log.info(String.valueOf("Server FPS: " + totalFrameCount[0]));
+                    totalFrameCount[0] = 0;
+                }
             }
         };
 
         if (FPSPrint) {
-            Timer t2 = new Timer();
+            t2 = new Timer();
             t2.scheduleAtFixedRate(updateFPS, 1000, 1000);
         }
 
@@ -204,9 +209,10 @@ public class ServerGameModel extends GameModel {
     public void stop() {
         updateTimerTask.cancel();
         t.cancel();
-
+        t2.cancel();
+        updateFPS.cancel();
+        synchronized (updateFPS) {}
         synchronized (updateTimerTask){
-
         }
 
 
