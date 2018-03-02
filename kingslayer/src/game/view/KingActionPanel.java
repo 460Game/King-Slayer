@@ -9,6 +9,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 
 public class KingActionPanel extends ActionPanel {
   private GameModel model;
@@ -30,6 +31,8 @@ public class KingActionPanel extends ActionPanel {
     Button resource = new Button("1", button4resource); //new ImageView((model.getLocalPlayer().getTeam() == Team.ONE) ?
 //        Images.RED_RESOURCE_COLLECTOR_IMAGE : Images.BLUE_RESOURCE_COLLECTOR_IMAGE));
     resource.setTooltip(new Tooltip("Resource collector\nCost: 10 wood"));
+    System.out.println(javafx.scene.text.Font.getFamilies());
+//    resource.setFont(new Font("Candara", 15));
     grid.add(resource, 0, 0);
     resource.setOnAction(e -> {
       gameInteractionLayer.clearSelection();
