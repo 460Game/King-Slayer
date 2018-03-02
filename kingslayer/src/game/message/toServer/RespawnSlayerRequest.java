@@ -1,5 +1,6 @@
 package game.message.toServer;
 
+import com.esotericsoftware.minlog.Log;
 import game.message.toClient.NewEntityCommand;
 import game.message.toClient.RespawnSlayerCommand;
 import game.model.game.model.Model;
@@ -19,6 +20,8 @@ public class RespawnSlayerRequest extends ActionRequest {
     }
     @Override
     public void executeServer(ServerGameModel model) {
+        Log.info("Respawn " + myTeam + " Slayer");
+        Log.info("Check null: " + model.teamRoleEntityMap.getEntity(myTeam, Role.KING));
         Entity king = model.getEntity(model.teamRoleEntityMap.getEntity(myTeam, Role.KING));
         double x = king.get(Entity.EntityProperty.X);
         double y = king.get(Entity.EntityProperty.Y);
