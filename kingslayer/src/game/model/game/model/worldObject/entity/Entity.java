@@ -221,10 +221,17 @@ public class Entity {
 
         if (!this.invincible() && this.getData().get(ROLE) == null) {
             //TEMPORARY!!!!!!!!!
+            double yOffset;
+            if (!this.has(VELOCITY)) { //it is a building
+                yOffset = 30;
+            } else { //it is a minion
+                yOffset = 20;
+            }
+
             gc.setFill(Color.RED);
-            gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - 30, 20, 3);
+            gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - yOffset, 20, 3);
             gc.setFill(Color.GREEN);
-            gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - 30, (getHealth() / getMaxHealth()) * 20, 3);
+            gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - yOffset, (getHealth() / getMaxHealth()) * 20, 3);
         }
 
         if (!this.invincible() && this.getData().get(ROLE) == Role.KING) {
