@@ -96,8 +96,13 @@ public class LobbyClient implements Lobby {//extends Application {
 
 
     public void clientGetMsg(Message msg) {
-        if (msg == null) Log.error("msg null!");
-        if (clientGameModel == null) Log.error("clientGameModel is null!");
+        if (msg == null) {
+            Log.error("msg null!");
+            return;
+        }
+        if (clientGameModel == null) {
+            return;
+        }
         clientGameModel.processMessage(msg);
     }
 

@@ -49,6 +49,9 @@ public class ServerGameModel extends GameModel {
 
     private Entity building;
 
+    TimerTask updateFPS;
+    Timer t2;
+
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
     private Thread updateThread;
     TimerTask updateTimerTask;
@@ -158,78 +161,46 @@ public class ServerGameModel extends GameModel {
         Log.info("Starting Server model");
         if (running) throw new RuntimeException("Cannot start server model when already running");
         running = true;
-//
-//        final int[] totalFrameCount = {0};
-//        final int[] doAICount = {0};
-//
-//        TimerTask updateFPS = new TimerTask() {
-//            public void run() {
-//                Log.info(String.valueOf("Server FPS: " + totalFrameCount[0]));
-//                totalFrameCount[0] = 0;
-//            }
-//        };
-//
-//        if (FPSPrint) {
-//            Timer t = new Timer();
-//            t.scheduleAtFixedRate(updateFPS, 1000, 1000);
-//        }
-//
-//        TimerTask updateTimerTask = new TimerTask() {
-//            public void run() {
-//                doAICount[0]++;
-//                totalFrameCount[0]++;
-//
-//                ServerGameModel.this.update();
-//                if (doAICount[0] % Const.AI_LOOP_UPDATE_PER_FRAMES == 0) {
-//                    updateAI(ServerGameModel.this);
-//                    doAICount[0] = 0;
-//                }
-//
-//                for (Model model : clients)
-//                    model.processMessage(new UpdateResourceCommand(teamData.get(clientToPlayerInfo.get(model).getTeam()))); //TEMPORARY GARBAGE
-//            }
-//        };
-//
-//        t.scheduleAtFixedRate(updateTimerTask, 0, 1000 / 60);
-        running = true;
-//        updateThread = new Thread(this::runWithTimerTask, this.toString() + " Update Thread");
-//        updateThread.start();
         runWithTimerTask();
     }
+
 
     public void runWithTimerTask() {
         final int[] totalFrameCount = {0};
         final int[] doAICount = {0};
 
-        TimerTask updateFPS = new TimerTask() {
+        updateFPS = new TimerTask() {
             public void run() {
-                Log.info(String.valueOf("Server FPS: " + totalFrameCount[0]));
-                totalFrameCount[0] = 0;
+                synchronized (updateFPS) {
+                    Log.info(String.valueOf("Server FPS: " + totalFrameCount[0]));
+                    totalFrameCount[0] = 0;
+                }
             }
         };
 
         if (FPSPrint) {
-            Timer t2 = new Timer();
+            t2 = new Timer();
             t2.scheduleAtFixedRate(updateFPS, 1000, 1000);
         }
 
         updateTimerTask = new TimerTask() {
             public void run() {
-                doAICount[0]++;
-                totalFrameCount[0]++;
+                synchronized (updateTimerTask) {
+                    doAICount[0]++;
+                    totalFrameCount[0]++;
 
-                ServerGameModel.this.update();
-                if (doAICount[0]%Const.AI_LOOP_UPDATE_PER_FRAMES == 0) {
-                    updateAI(ServerGameModel.this);
-                    doAICount[0] = 0;
+                    ServerGameModel.this.update();
+                    if (doAICount[0] % Const.AI_LOOP_UPDATE_PER_FRAMES == 0) {
+                        updateAI(ServerGameModel.this);
+                        doAICount[0] = 0;
+                    }
+
+                    for (Model model : clients)
+                        model.processMessage(new UpdateResourceCommand(teamData.get(clientToPlayerInfo.get(model).getTeam()))); //TEMPORARY GARBAGE
                 }
-
-                for(Model model : clients)
-                    model.processMessage(new UpdateResourceCommand(teamData.get(clientToPlayerInfo.get(model).getTeam()))); //TEMPORARY GARBAGE
             }
         };
 
-        t = new Timer();
         t.scheduleAtFixedRate(updateTimerTask, 10, 1000/60);
     }
 
@@ -238,6 +209,15 @@ public class ServerGameModel extends GameModel {
     public void stop() {
         updateTimerTask.cancel();
         t.cancel();
+        t2.cancel();
+        updateFPS.cancel();
+        synchronized (updateFPS) {}
+        synchronized (updateTimerTask){
+        }
+
+
+
+
         running = false;
         clientToPlayerInfo = null;
         teamData = null;
