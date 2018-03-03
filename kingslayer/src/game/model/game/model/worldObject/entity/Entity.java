@@ -46,32 +46,35 @@ public class Entity {
      * all should be immutable unless local only - chanign data withen them without calls to set or put wont propgate
      */
     public enum EntityProperty {
+        // SORT BY ALPHABETICAL ORDER WHEN ADDING PLEASE.
+
+        AI_DATA(AIData.class, PropType.SERVER_ONLY),
+        AI_STRAT(AIStrat.class, PropType.SERVER_ONLY),
+        BUILDING_TYPE(BuildingSpawnerStrat.BuildingType.class, PropType.ACTIVE_SYNC),
+        COLLISION_STRAT(CollisionStrat.class, PropType.ON_CHANGE_ONLY),
+        DAMAGE_DEALT(Double.class, PropType.ON_CHANGE_ONLY),
+        DEATH_STRAT(DeathStrat.class, PropType.ON_CHANGE_ONLY),
+        DRAW_DATA(DrawData.class, PropType.LOCAL_ONLY),
+        DRAW_STRAT(DrawStrat.class, PropType.ON_CHANGE_ONLY),
+        HEALTH(Double.class, PropType.ACTIVE_SYNC),
+        HITBOX(Hitbox.class, PropType.ACTIVE_SYNC),
         LAST_UPDATE_TIME(Long.class, PropType.PASSIVE_SYNC),
         LEVEL(Integer.class, PropType.ACTIVE_SYNC),
-        HEALTH(Double.class, PropType.ACTIVE_SYNC),
         MAX_HEALTH(Double.class, PropType.ACTIVE_SYNC),
-        HITBOX(Hitbox.class, PropType.ACTIVE_SYNC),
-        X(Double.class, PropType.PASSIVE_SYNC),
-        Y(Double.class, PropType.PASSIVE_SYNC),
-        TEAM(Team.class, PropType.ACTIVE_SYNC),
-        ROLE(Role.class, PropType.ACTIVE_SYNC),
-        PROJECTILE(ProjectileCollisionStrat.Projectile.class, PropType.ACTIVE_SYNC), //TODO
-        DAMAGE_DEALT(Double.class, PropType.ON_CHANGE_ONLY),
-        RESOURCE_TYPE(TeamResourceData.Resource.class, PropType.ACTIVE_SYNC),
-        RESOURCE_AMOUNT(Integer.class, PropType.ACTIVE_SYNC),
-        BUILDING_TYPE(BuildingSpawnerStrat.BuildingType.class, PropType.ACTIVE_SYNC),
-        DRAW_DATA(DrawData.class, PropType.LOCAL_ONLY),
-        VELOCITY(Velocity.class, PropType.ACTIVE_SYNC),
-        AI_STRAT(AIStrat.class, PropType.SERVER_ONLY),
-        AI_DATA(AIData.class, PropType.SERVER_ONLY),
-        DRAW_STRAT(DrawStrat.class, PropType.ON_CHANGE_ONLY),
-        UPDATE_STRAT(UpdateStrat.class, PropType.ON_CHANGE_ONLY),
-        COLLISION_STRAT(CollisionStrat.class, PropType.ON_CHANGE_ONLY),
-        DEATH_STRAT(DeathStrat.class, PropType.ON_CHANGE_ONLY),
+        MAX_SPEED(Double.class, PropType.ON_CHANGE_ONLY),
         PLAYER_NAME(String.class, PropType.ON_CHANGE_ONLY),
-        SLAYER_DATA(SlayerData.class, PropType.ACTIVE_SYNC),
+        PROJECTILE(ProjectileCollisionStrat.Projectile.class, PropType.ACTIVE_SYNC), //TODO
+        RESOURCE_AMOUNT(Integer.class, PropType.ACTIVE_SYNC),
+        RESOURCE_TYPE(TeamResourceData.Resource.class, PropType.ACTIVE_SYNC),
+        ROLE(Role.class, PropType.ACTIVE_SYNC),
         SIGHT_RADIUS(Integer.class, PropType.ON_CHANGE_ONLY),
-        SPAWNEDID(Long.class, PropType.ON_CHANGE_ONLY);
+        SLAYER_DATA(SlayerData.class, PropType.ACTIVE_SYNC),
+        SPAWNED_ID(Long.class, PropType.ON_CHANGE_ONLY),
+        TEAM(Team.class, PropType.ACTIVE_SYNC),
+        UPDATE_STRAT(UpdateStrat.class, PropType.ON_CHANGE_ONLY),
+        VELOCITY(Velocity.class, PropType.ACTIVE_SYNC),
+        X(Double.class, PropType.PASSIVE_SYNC),
+        Y(Double.class, PropType.PASSIVE_SYNC);
 
         EntityProperty(Class type, PropType sync) {
             this.type = type;

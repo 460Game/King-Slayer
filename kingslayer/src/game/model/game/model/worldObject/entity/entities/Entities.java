@@ -213,7 +213,7 @@ public class Entities {
                 pair(LEVEL, 0),
                 pair(DAMAGE_DEALT, damage),
                 pair(TEAM, team),
-                pair(SPAWNEDID, spawner.id),
+                pair(SPAWNED_ID, spawner.id),
                 pair(PROJECTILE, ProjectileCollisionStrat.Projectile.ARROW),
                 pair(DRAW_STRAT, RotatingImageDrawStrat.ARROW_IMAGE_DRAW_STRAT),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));

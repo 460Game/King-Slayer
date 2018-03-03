@@ -5,6 +5,7 @@ import game.model.game.model.Model;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
+import game.model.game.model.team.TeamResourceData;
 import game.view.GameView;
 import javafx.stage.Stage;
 import lobby.Main;
@@ -32,11 +33,16 @@ public class SingleplayerController {
         Map<Model, PlayerInfo> testingMap = new HashMap<>();
         Model clientGameModel2 = new CopyingModelWrapper(clientModel);
         testingMap.put(clientGameModel2, new PlayerInfo(Team.ONE, role, "tester"));
+
         serverModel.init(Collections.singleton(clientGameModel2), testingMap);
         serverModel.start();
 
         GameView gameView = new GameView(clientModel, mainApp);
         gameView.start(primaryStage);
+
+        serverModel.changeResource(Team.ONE, TeamResourceData.Resource.WOOD, 10000000);
+        serverModel.changeResource(Team.ONE, TeamResourceData.Resource.STONE, 10000000);
+        serverModel.changeResource(Team.ONE, TeamResourceData.Resource.METAL, 10000000);
     }
 
 //    public static void main(String args[]) {
