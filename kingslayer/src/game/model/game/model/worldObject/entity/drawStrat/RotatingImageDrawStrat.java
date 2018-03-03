@@ -46,22 +46,22 @@ public abstract class RotatingImageDrawStrat extends ImageDrawStrat {
         }
 
         @Override
-        double getWidth() {
+        public double getWidth() {
             return 0.4;
         }
 
         @Override
-        double getHeight() {
+        public double getHeight() {
             return 0.4;
         }
 
         @Override
-        double getCenterX() {
+        public double getCenterX() {
             return 0.2;
         }
 
         @Override
-        double getCenterY() {
+        public double getCenterY() {
             return 0.2;
         }
 
