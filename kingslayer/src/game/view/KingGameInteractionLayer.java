@@ -102,7 +102,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       } else if (upgrading) {
         // if you clicked the top part of an entity
         model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().ifPresent(entity -> {
-          if (model.getResourceData().getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) + 1)) >=
+          if (entity.has(EntityProperty.LEVEL) &&
+              model.getResourceData().getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) + 1)) >=
               upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE), entity.<Integer>get(EntityProperty.LEVEL)))) {
             model.processMessage(new UpgradeEntityRequest(entity,
                 upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE), entity.<Integer>get(EntityProperty.LEVEL)))));
@@ -345,9 +346,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     world.uiGC.clearRect(0, 0, world.uiGC.getCanvas().getWidth(), world.uiGC.getCanvas().getHeight());
     if (spawner != null) {
       world.uiGC.setFill(new Color(1, 1, 1, 0.25));
-      world.uiGC.fillOval(world.gameToScreenX(model.getLocalPlayer().getX()) - toDrawCoords(9.75),
-          world.gameToScreenY(model.getLocalPlayer().getY()) - toDrawCoords(9.75),
-          toDrawCoords(19.5), toDrawCoords(19.5));
+      world.uiGC.fillOval(world.gameToScreenX(model.getLocalPlayer().getX()) - toDrawCoords(9 * world.getScaleFactor() / 2),
+          world.gameToScreenY(model.getLocalPlayer().getY()) - toDrawCoords(9 * world.getScaleFactor() / 2),
+          toDrawCoords(9 * world.getScaleFactor()), toDrawCoords(9 * world.getScaleFactor()));
     }
   }
 }
