@@ -102,29 +102,15 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       } else if (upgrading) {
         // if you clicked the top part of an entity
         model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().ifPresent(entity -> {
-          if (entity.has(EntityProperty.LEVEL) &&
-              model.getResourceData().getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) + 1)) >=
-              upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE), entity.<Integer>get(EntityProperty.LEVEL)))) {
-            model.processMessage(new UpgradeEntityRequest(entity,
-                upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE), entity.<Integer>get(EntityProperty.LEVEL)))));
-            if (!holding) {
-              upgrading = false;
-              world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
-                  GAME_CURSOR_IMAGE.getWidth() / 2,
-                  GAME_CURSOR_IMAGE.getHeight() / 2));
-            }
-          } else {
-            clearSelection();
-            showError = true;
-          }
-        });
-        // if you clicked on the bottom of an entity with no entity in front of it
-        if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent()) {
-          model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
-            if (model.getResourceData().getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) + 1)) >=
-                upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE), entity.<Integer>get(EntityProperty.LEVEL)))) {
+          if (entity.has(EntityProperty.BUILDING_TYPE)) {
+            if (entity.has(EntityProperty.LEVEL) &&
+                model.getResourceData()
+                    .getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) + 1)) >=
+                    upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE),
+                        entity.<Integer>get(EntityProperty.LEVEL)))) {
               model.processMessage(new UpgradeEntityRequest(entity,
-                  upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE), entity.<Integer>get(EntityProperty.LEVEL)))));
+                  upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE),
+                      entity.<Integer>get(EntityProperty.LEVEL)))));
               if (!holding) {
                 upgrading = false;
                 world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
@@ -134,6 +120,30 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
             } else {
               clearSelection();
               showError = true;
+            }
+          }
+        });
+        // if you clicked on the bottom of an entity with no entity in front of it
+        if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent()) {
+          model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
+            if (entity.has(EntityProperty.BUILDING_TYPE)) {
+              if (model.getResourceData()
+                  .getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) + 1)) >=
+                  upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE),
+                      entity.<Integer>get(EntityProperty.LEVEL)))) {
+                model.processMessage(new UpgradeEntityRequest(entity,
+                    upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE),
+                        entity.<Integer>get(EntityProperty.LEVEL)))));
+                if (!holding) {
+                  upgrading = false;
+                  world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
+                      GAME_CURSOR_IMAGE.getWidth() / 2,
+                      GAME_CURSOR_IMAGE.getHeight() / 2));
+                }
+              } else {
+                clearSelection();
+                showError = true;
+              }
             }
           });
         }
