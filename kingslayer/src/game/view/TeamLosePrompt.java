@@ -37,10 +37,10 @@ public class TeamLosePrompt extends Region {
         rematch.setTranslateY(100);
 
         confirm.setOnAction(l -> {
-            Platform.runLater(() -> view.goBackToMain());
+            view.goBackToMain();
         });
         rematch.setOnAction(l-> {
-            Platform.runLater(() -> view.restart());
+            view.restart();
         });
 
         this.getChildren().addAll(text, confirm, rematch);
