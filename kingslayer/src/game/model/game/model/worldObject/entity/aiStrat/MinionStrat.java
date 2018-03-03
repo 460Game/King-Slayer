@@ -47,7 +47,7 @@ public abstract class MinionStrat extends AIStrat {
             entity.setVelocity(entity.getVelocity().withMagnitude(0));
             Entity enemy = getClosestEnemy(data, entity, model);
             double dir = Util.angle2Points(entity.getX(), entity.getY(), enemy.getX(), enemy.getY());
-            model.processMessage(new MakeEntityRequest(Entities.makeArrow(entity.getX(), entity.getY(), dir, entity.getTeam(), entity, 1)));
+            model.processMessage(new MakeEntityRequest(Entities.makeArrow(entity.getX(), entity.getY(), dir, entity.getTeam(), entity, 1, -1)));
         }
 
         @Override

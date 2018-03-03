@@ -190,7 +190,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
             double dir = Util.angle2Points(entity.getX(), entity.getY(), x, y);
-            return Entities.makeArrow(entity.getX(), entity.getY(), dir, team, entity, 2.5);
+            return Entities.makeArrow(entity.getX(), entity.getY(), dir, team, entity, 2.5, -1);
         }
     }
 
