@@ -138,16 +138,33 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           });
         }
       } else if (deleting) {
-        model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
-          model.processMessage(new SellEntityRequest(entity,
-              sellPrice.get(entity.<BuildingSpawnerStrat.BuildingType>get(Entity.EntityProperty.BUILDING_TYPE))));
-          if (!holding) {
-            deleting = false;
-            world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
-                GAME_CURSOR_IMAGE.getWidth() / 2,
-                GAME_CURSOR_IMAGE.getHeight() / 2));
+        model.getEntitiesAt(x.intValue(), (int) (y + 20.0 / 32.0)).stream().findFirst().ifPresent(entity -> {
+          if (entity.has(EntityProperty.BUILDING_TYPE)) {
+            model.processMessage(new SellEntityRequest(entity,
+                sellPrice.get(entity.<BuildingSpawnerStrat.BuildingType>get(Entity.EntityProperty.BUILDING_TYPE))));
+            if (!holding) {
+              deleting = false;
+              world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
+                  GAME_CURSOR_IMAGE.getWidth() / 2,
+                  GAME_CURSOR_IMAGE.getHeight() / 2));
+            }
           }
         });
+        // if you clicked on the bottom of an entity with no entity in front of it
+        if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent()) {
+          model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
+            if (entity.has(EntityProperty.BUILDING_TYPE)) {
+              model.processMessage(new SellEntityRequest(entity,
+                  sellPrice.get(entity.<BuildingSpawnerStrat.BuildingType>get(Entity.EntityProperty.BUILDING_TYPE))));
+              if (!holding) {
+                deleting = false;
+                world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
+                    GAME_CURSOR_IMAGE.getWidth() / 2,
+                    GAME_CURSOR_IMAGE.getHeight() / 2));
+              }
+            }
+          });
+        }
       }
     });
 
@@ -273,7 +290,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
   public void selectWall() {
     if (model.getResourceData().getResource(EntitySpawner.WALL_SPAWNER.resource) >= EntitySpawner.WALL_SPAWNER.finalCost(model)) {
-      placingGhost = Entities.makeGhostWall(world.screenToGameX(world.mouseX), world.screenToGameY(world.mouseY));
+      placingGhost = Entities.makeGhostWall((int) world.screenToGameX(world.mouseX) + 0.5, (int) world.screenToGameY(world.mouseY) + 0.5);
       spawner = EntitySpawner.WALL_SPAWNER;
       model.processMessage(new NewEntityCommand(placingGhost));
     } else {
@@ -284,7 +301,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   public void selectResourceCollector() {
     if (model.getResourceData().getResource(EntitySpawner.RESOURCE_COLLETOR_SPAWNER.resource) >= EntitySpawner.RESOURCE_COLLETOR_SPAWNER.finalCost(model)) {
       placingGhost =
-          Entities.makeResourceCollectorGhost(world.screenToGameX(world.mouseX), world.screenToGameY(world.mouseY),
+          Entities.makeResourceCollectorGhost((int) world.screenToGameX(world.mouseX) + 0.5, (int) world.screenToGameY(world.mouseY) + 0.5,
               model.getLocalPlayer().getTeam());
       spawner = EntitySpawner.RESOURCE_COLLETOR_SPAWNER;
       model.processMessage(new NewEntityCommand(placingGhost));
@@ -295,7 +312,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
   public void selectArrowTower() {
     if (model.getResourceData().getResource(EntitySpawner.ARROW_TOWER_SPAWNER.resource) >= EntitySpawner.ARROW_TOWER_SPAWNER.finalCost(model)) {
-      placingGhost = Entities.makeArrowTowerGhost(world.screenToGameX(world.mouseX), world.screenToGameY(world.mouseY),
+      placingGhost = Entities.makeArrowTowerGhost((int) world.screenToGameX(world.mouseX) + 0.5, (int) world.screenToGameY(world.mouseY) + 0.5,
           model.getLocalPlayer().getTeam());
       spawner = EntitySpawner.ARROW_TOWER_SPAWNER;
       model.processMessage(new NewEntityCommand(placingGhost));
@@ -320,7 +337,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
   public void selectBarracks() {
     if (model.getResourceData().getResource(EntitySpawner.BARRACKS_SPAWNER.resource) >= EntitySpawner.BARRACKS_SPAWNER.finalCost(model)) {
-      placingGhost = Entities.makeBarracksGhost(world.screenToGameX(world.mouseX), world.screenToGameY(world.mouseY),
+      placingGhost = Entities.makeBarracksGhost((int) world.screenToGameX(world.mouseX) + 0.5, (int) world.screenToGameY(world.mouseY) + 0.5,
           model.getLocalPlayer().getTeam());
       spawner = EntitySpawner.BARRACKS_SPAWNER;
       model.processMessage(new NewEntityCommand(placingGhost));
