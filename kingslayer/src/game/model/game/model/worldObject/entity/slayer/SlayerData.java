@@ -2,10 +2,10 @@ package game.model.game.model.worldObject.entity.slayer;
 
 public class SlayerData {
     public final static int meleeSpeed = 8;
-    public final static int meleeDamage = 50;
-    public final static int arrowCost = 10;
+    public final static int meleeDamage = 20;
+    public final static int arrowCost = 5;
     public final static double arrowDamage = 5;
-    public final static int meleeCost = 5;
+    public final static int meleeCost = 10;
 
     public static SlayerData copyOf(SlayerData a) {
         SlayerData ret = new SlayerData();
