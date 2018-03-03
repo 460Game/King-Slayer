@@ -30,7 +30,10 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
             model.execute((server) -> {
                 a.setVelocity(a.getVelocity().withMagnitude(0));
                 a.entityDie(server);
-                b.decreaseHealthBy(model, a.get(DAMAGE_DEALT));
+                if ((int) a.get(Entity.EntityProperty.LEVEL) == -1)
+                    b.decreaseHealthBy(model, a.get(DAMAGE_DEALT));
+                else
+                    b.decreaseHealthBy(model, a.get(DAMAGE_DEALT)); // TODO change this later
                 server.processMessage(new SetEntityCommand(b));
             }, (client) -> {
                 a.setVelocity(a.getVelocity().withMagnitude(0));
@@ -55,8 +58,10 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
         if (!((long) a.get(SPAWNEDID) == b.id)) {
             // Both the client and server stops the arrow and removes it from the game.
             if (a.has(TEAM) && b.has(TEAM) && a.get(TEAM) != b.get(TEAM)) {
-                if (b.getHealth() != Double.POSITIVE_INFINITY)
-                    b.decreaseHealthBy(model, a.get(DAMAGE_DEALT)); // TODO CHANGE THIS
+                if ((int) a.get(Entity.EntityProperty.LEVEL) == -1)
+                    b.decreaseHealthBy(model, a.get(DAMAGE_DEALT));
+                else
+                    b.decreaseHealthBy(model, a.get(DAMAGE_DEALT)); // TODO change this later
             }
             a.setVelocity(a.getVelocity().withMagnitude(0));
             a.entityDie(model);

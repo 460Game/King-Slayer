@@ -1,2 +1,2 @@
 Things that need balancing:
-Initial start resources (TeamResourceData)
+Initial start resources (TeamResourceData
