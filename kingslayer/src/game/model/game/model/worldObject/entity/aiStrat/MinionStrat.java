@@ -76,21 +76,27 @@ public abstract class MinionStrat extends AIStrat {
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
-            if (!data.path.isEmpty() && !data.path.get(0).isPassable() && data.path.get(0).getTopLeftX() != x &&
-                    data.path.get(0).getTopLeftY() != y)
+            if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != x &&
+                    data.path.get(0).getTopLeftY() != y) {
+                data.path.clear();
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
+            }
 
             // Check if reached destination.
             if (entity.containedIn.contains(model.getCell(x, y))) {
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
                 data.path.clear();
+                data.nextDestination = null;
             }
-            else if (data.path.size() > 0) {
-                if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY())
+            else if (!data.path.isEmpty()) {
+                if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY()) {
                     data.path.remove(0);
+                    data.nextDestination = null;
+                }
                 else {
                     // Keep moving if cells are in path.
-                    astar.moveToCell(entity, data.path.get(0));
+                    data.nextDestination = data.path.get(0);
+                    astar.moveToCell(entity, data.nextDestination);
                     if (entity.getVelocity().getMagnitude() == 0)
                         entity.setVelocity(entity.getVelocity().withMagnitude(1));
                 }
@@ -149,20 +155,17 @@ public abstract class MinionStrat extends AIStrat {
             if (data.path.size() > 0 && !king.containedIn.contains(data.path.get(data.path.size() - 1))) {
                 data.path.clear();
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
-                data.nextDestination = data.path.get(0);
             }
 
             // If nothing in path and not at destination, generate a path. TODO might need better check
             if (data.path.size() == 0 && !entity.checkCollision(king.getHitbox(), king.getX(), king.getY())) {//entityx != x && entityy != y) {
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
-                data.nextDestination = data.path.get(0);
             }
 
             if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != x &&
                     data.path.get(0).getTopLeftY() != y) {
                 data.path.clear();
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
-                data.nextDestination = data.path.get(0);
             }
 
             // Check if reached destination.
@@ -170,13 +173,11 @@ public abstract class MinionStrat extends AIStrat {
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
                 data.path.clear();
                 data.nextDestination = null;
-            }
-            else if (data.path.size() > 0) {
+            } else if (!data.path.isEmpty()) {
                 if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY()) {
                     data.path.remove(0);
                     data.nextDestination = null;
-                }
-                else {
+                } else {
                     // Keep moving if cells are in path.
                     data.nextDestination = data.path.get(0);
                     astar.moveToCell(entity, data.nextDestination);
@@ -283,9 +284,11 @@ public abstract class MinionStrat extends AIStrat {
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
-            if (!data.path.isEmpty() && !data.path.get(0).isPassable() && data.path.get(0).getTopLeftX() != x &&
-                    data.path.get(0).getTopLeftY() != y)
+            if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != x &&
+                    data.path.get(0).getTopLeftY() != y) {
+                data.path.clear();
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
+            }
 
             // Check if reached destination.
             if (entity.containedIn.contains(model.getCell(x, y))) {
@@ -293,6 +296,7 @@ public abstract class MinionStrat extends AIStrat {
                 // Stop movement and clear path.
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
                 data.path.clear();
+                data.nextDestination = null;
 
                 // Update resource counts if applicable, and change path destination.
                 data.hasResource = !data.hasResource;
@@ -316,11 +320,14 @@ public abstract class MinionStrat extends AIStrat {
                     data.resourceHeld = 0;
                 }
             } else if (data.path.size() > 0) {
-                if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY())
+                if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY()) {
                     data.path.remove(0);
+                    data.nextDestination = null;
+                }
                 else {
                     // Keep moving if cells are in path.
-                    astar.moveToCell(entity, data.path.get(0));
+                    data.nextDestination = data.path.get(0);
+                    astar.moveToCell(entity, data.nextDestination);
                     if (entity.getVelocity().getMagnitude() == 0)
                         entity.setVelocity(entity.getVelocity().withMagnitude(1));
                 }
