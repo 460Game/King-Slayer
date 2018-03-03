@@ -103,13 +103,23 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         }
       } else if (upgrading) {
         model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
-          model.processMessage(new UpgradeEntityRequest(entity, upgradeCost.get(new Pair(entity.get(Entity.EntityProperty.BUILDING_TYPE),
-              entity.<Integer>get(Entity.EntityProperty.LEVEL)))));
-          if (!holding) {
-            upgrading = false;
-            world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
-                GAME_CURSOR_IMAGE.getWidth() / 2,
-                GAME_CURSOR_IMAGE.getHeight() / 2));
+//          System.out.println("rawr: " + model.getResourceData().getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL) + 1)) + " " +
+//              upgradeCost.get(new Pair(entity.get(Entity.EntityProperty.BUILDING_TYPE), entity.<Integer>get(Entity.EntityProperty.LEVEL))));
+          if (model.getResourceData().getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL) + 1)) >=
+              -upgradeCost.get(new Pair(entity.get(Entity.EntityProperty.BUILDING_TYPE), entity.<Integer>get(Entity.EntityProperty.LEVEL)))) {
+            model.processMessage(new UpgradeEntityRequest(entity,
+                upgradeCost.get(new Pair(entity.get(Entity.EntityProperty.BUILDING_TYPE),
+                    entity.<Integer>get(Entity.EntityProperty.LEVEL)))));
+            if (!holding) {
+              upgrading = false;
+              world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
+                  GAME_CURSOR_IMAGE.getWidth() / 2,
+                  GAME_CURSOR_IMAGE.getHeight() / 2));
+            }
+          } else {
+//            System.out.println("Can't upgrade :(");
+            clearSelection();
+            showError = true;
           }
         });
       } else if (deleting) {
