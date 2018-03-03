@@ -70,18 +70,31 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           model.remove(placingGhost);
           spawner = null;
           placingGhost = null;
+        } else {
+          if (model.getResourceData().getResource(spawner.resource) < -spawner.cost) {
+            clearSelection();
+            showError = true;
+          }
         }
       } else if (upgrading) {
         model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
           model.processMessage(new UpgradeEntityRequest(entity));
-          upgrading = false;
-          world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
+          if (!holding) {
+            upgrading = false;
+            world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
+                GAME_CURSOR_IMAGE.getWidth() / 2,
+                GAME_CURSOR_IMAGE.getHeight() / 2));
+          }
         });
       } else if (deleting) {
         model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
           model.processMessage(new SellEntityRequest(entity));
-          deleting = false;
-          world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
+          if (!holding) {
+            deleting = false;
+            world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
+                GAME_CURSOR_IMAGE.getWidth() / 2,
+                GAME_CURSOR_IMAGE.getHeight() / 2));
+          }
         });
       }
     });
@@ -163,10 +176,12 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       }
 
       if (kc == E) {
+        holding = true;
         this.selectUpgrade();
       }
 
       if (kc == Q) {
+        holding = true;
         this.selectDelete();
       }
 
@@ -182,6 +197,14 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     });
 
     world.onKeyRelease(kc -> {
+      if (holding && (kc == Q || kc == E)) {
+        upgrading = false;
+        deleting = false;
+        world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
+            GAME_CURSOR_IMAGE.getWidth() / 2,
+            GAME_CURSOR_IMAGE.getHeight() / 2));
+      }
+
       holding = false;
       if (kc == SHIFT && placingGhost != null) {
         model.remove(placingGhost);
