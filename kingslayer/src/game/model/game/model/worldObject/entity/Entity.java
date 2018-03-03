@@ -57,7 +57,7 @@ public class Entity {
         ROLE(Role.class, PropType.ACTIVE_SYNC),
         PROJECTILE(ProjectileCollisionStrat.Projectile.class, PropType.ACTIVE_SYNC), //TODO
         RESOURCETYPE(TeamResourceData.Resource.class, PropType.SERVER_ONLY),
-        RESOURCEAMOUNT(Integer.class, PropType.SERVER_ONLY),
+        RESOURCEAMOUNT(Integer.class, PropType.ACTIVE_SYNC),
         BUILDINGTYPE(BuildingSpawnerStrat.BuildingType.class, PropType.SERVER_ONLY),
         DRAW_DATA(DrawData.class, PropType.LOCAL_ONLY),
         VELOCITY(Velocity.class, PropType.ACTIVE_SYNC),
@@ -223,7 +223,7 @@ public class Entity {
             //TEMPORARY!!!!!!!!!
             double yOffset;
             if (!this.has(VELOCITY)) { //it is a building
-                yOffset = 30;
+                yOffset = 40;
             } else { //it is a minion
                 yOffset = 20;
             }

@@ -19,10 +19,6 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
 
   public UpgradableImageDrawStrat() {}
 
-  public Image getImage(Entity entity) {
-    return null;
-  }
-
   @Override
   public void draw(Entity entity, ClientGameModel gameModel, GraphicsContext gc) {
     double w = this.getWidth();
@@ -42,7 +38,7 @@ public class UpgradableImageDrawStrat extends ImageDrawStrat {
   }
 
   @Override
-  Image getImage() {
+  Image getImage(Entity entity) {
     return null;
   }
 

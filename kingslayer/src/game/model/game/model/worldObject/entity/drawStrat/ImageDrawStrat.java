@@ -27,7 +27,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
         return null;
     }
 
-    abstract Image getImage();
+    abstract Image getImage(Entity entity);
 
     abstract double getWidth();
     abstract double getHeight();
@@ -41,7 +41,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
         double x = w - this.getCenterX();
         double y = h - this.getCenterY();
 
-        gc.drawImage(getImage(),
+        gc.drawImage(getImage(entity),
             toDrawCoords(entity.getX() - x),
             toDrawCoords(entity.getY() - y),
             toDrawCoords(w),
@@ -57,7 +57,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
     public static class TreasureImageDrawStrat extends ImageDrawStrat {
         @Override
-        Image getImage() {
+        Image getImage(Entity entity) {
             return Images.TREASURE_IMAGE;
         }
 
@@ -88,8 +88,14 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
     public static class TreeImageDrawStrat extends ImageDrawStrat {
         @Override
-        Image getImage() {
-            return Images.TREE_IMAGES[0];
+        Image getImage(Entity entity) {
+            int amount = entity.<Integer>get(Entity.EntityProperty.RESOURCEAMOUNT);
+            if (amount >= 15)
+                return Images.TREE_IMAGES[0];
+            else if (amount >= 10)
+                return Images.TREE_IMAGES[1];
+            else
+                return Images.TREE_IMAGES[2];
         }
 
         @Override
@@ -118,8 +124,16 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
     public static class StoneImageDrawStrat extends ImageDrawStrat {
         @Override
-        Image getImage() {
-            return Images.STONE_IMAGES[0];
+        Image getImage(Entity entity) {
+            int amount = entity.<Integer>get(Entity.EntityProperty.RESOURCEAMOUNT);
+            if (amount >= 20)
+                return Images.STONE_IMAGES[0];
+            else if (amount >= 15)
+                return Images.STONE_IMAGES[1];
+            else if (amount >= 10)
+                return Images.STONE_IMAGES[2];
+            else
+                return Images.STONE_IMAGES[3];
         }
 
         @Override
@@ -148,7 +162,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
     public static class MetalImageDrawStrat extends ImageDrawStrat {
         @Override
-        Image getImage() {
+        Image getImage(Entity entity) {
             return Images.METAL_IMAGES[0];
         }
 
@@ -178,7 +192,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
     public static class WallImageDrawStrat extends ImageDrawStrat {
         @Override
-        Image getImage() {
+        Image getImage(Entity entity) {
             return Images.WALL_IMAGE;
         }
 
@@ -208,7 +222,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
     public static class BoxImageDrawStrat extends ImageDrawStrat {
         @Override
-        Image getImage() {
+        Image getImage(Entity entity) {
             return Images.BOX_IMAGE;
         }
 
@@ -238,7 +252,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
     public static class WallBuildableImageDrawStrat extends ImageDrawStrat {
         @Override
-        Image getImage() {
+        Image getImage(Entity entity) {
             return Images.WALL_BUILDABLE_IMAGE;
         }
 
@@ -268,7 +282,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
     public static class RedArrowTowerImageDrawStrat extends ImageDrawStrat {
         @Override
-        Image getImage() {
+        Image getImage(Entity entity) {
             return Images.RED_ARROW_TOWER_IMAGE;
         }
 
@@ -298,7 +312,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
     public static class BlueArrowTowerImageDrawStrat extends ImageDrawStrat {
         @Override
-        Image getImage() {
+        Image getImage(Entity entity) {
             return Images.BLUE_ARROW_TOWER_IMAGE;
         }
 

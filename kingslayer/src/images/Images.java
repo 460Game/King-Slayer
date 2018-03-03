@@ -46,8 +46,7 @@ public abstract class Images {
     public static final Image[] METAL_IMAGES = getImages("iron_ingots_new.png",
         "iron_ingots_1.png","iron_ingots_3.png","iron_ingots_4.png","iron_ingots_5.png", "iron_ingots_6.png",
         "iron_ingots_7.png", "iron_ingots_8.png", "iron_ingots_9.png");
-    public static final Image[] STONE_IMAGES = getImages("boulder_tall.png","boulder_1.png","boulder_2.png","boulder_3.png",
-        "boulder_4.png","boulder_5.png","boulder_6.png","boulder_7.png");
+    public static final Image[] STONE_IMAGES = getImages("boulder_tall.png","boulder_1.png","boulder_2.png","boulder_3.png");
     public static final Image[] TREE_IMAGES = getImages("tree.png", "tree_1.png", "tree_2.png", "tree_3.png", "tree_4.png");
 
     public static final Image RED_KING_IMAGE_SHEET = getImage("king_red_sheet_new.png");

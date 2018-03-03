@@ -22,10 +22,6 @@ public class GhostDrawStrat extends ImageDrawStrat {
   }
 
   @Override
-  public Image getImage() {
-    return null;
-  }
-
   public Image getImage(Entity entity) {
     return null;
   }
