@@ -49,12 +49,14 @@ public class ServerGameModel extends GameModel {
 
     private Entity building;
 
+    private final Object lock = new Object();
+
     TimerTask updateFPS;
     Timer t2;
 
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
     private Thread updateThread;
-    TimerTask updateTimerTask;
+   private TimerTask updateTimerTask;
 
     public TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
 
@@ -171,7 +173,7 @@ public class ServerGameModel extends GameModel {
 
         updateFPS = new TimerTask() {
             public void run() {
-                synchronized (updateFPS) {
+                synchronized (lock) {
                     Log.info(String.valueOf("Server FPS: " + totalFrameCount[0]));
                     totalFrameCount[0] = 0;
                 }
@@ -185,7 +187,7 @@ public class ServerGameModel extends GameModel {
 
         updateTimerTask = new TimerTask() {
             public void run() {
-                synchronized (updateTimerTask) {
+                synchronized (lock) {
                     doAICount[0]++;
                     totalFrameCount[0]++;
 
@@ -211,18 +213,18 @@ public class ServerGameModel extends GameModel {
         t.cancel();
         t2.cancel();
         updateFPS.cancel();
-        synchronized (updateFPS) {}
-        synchronized (updateTimerTask){
+
+        synchronized (lock){
+            running = false;
+            clientToPlayerInfo = null;
+            teamData = null;
+            teamRoleEntityMap = null;
+            clients = null;
         }
 
 
 
 
-        running = false;
-        clientToPlayerInfo = null;
-        teamData = null;
-        teamRoleEntityMap = null;
-        clients = null;
 
 
         System.out.println("old server model stop");
