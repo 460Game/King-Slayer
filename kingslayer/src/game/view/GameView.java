@@ -143,7 +143,7 @@ public class GameView {
 
                 totalFrameCount[0]++;
 
-                if (model.getWinningTeam() != null) {
+                if (model.getWinningTeam() == null) {
                     model.update();
                 }
 
