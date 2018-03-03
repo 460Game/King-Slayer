@@ -159,7 +159,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
 
-            Entity minion = Minions.makeResourceMinion(x, y, team);
+            Entity minion = Minions.makeResourceMinion(x, y, team, entity.get(Entity.EntityProperty.LEVEL));
          //   minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
@@ -341,10 +341,12 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
     public static class BuildingSpawnerStratAIData extends AIData {
         double elapsedTime;
         int spawnCounter;
+        HashSet<Entity> spawned;
 
         BuildingSpawnerStratAIData() {
             this.elapsedTime = 0;
             this.spawnCounter = 0;
+            spawned = new HashSet<>();
         }
     }
 
@@ -374,14 +376,22 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
                     if (passable.contains(model.getCell((int) (double) entity.getX(), (int) (double) entity.getY() + 1))) {
                         Entity newEntity = makeEntity(entity.getX(), entity.getY() + 1, entity.getTeam(), entity, model);
                         model.processMessage(new MakeEntityRequest(newEntity));
-                        newEntity.onDeath((e, serverGameModel) -> data.spawnCounter--);
+                        newEntity.onDeath((e, serverGameModel) -> {
+                            data.spawnCounter--;
+                            data.spawned.remove(e);
+                        });
                         data.spawnCounter++;
+                        data.spawned.add(newEntity);
                     } else if (!passable.isEmpty()) {
                         Entity newEntity = makeEntity(passable.iterator().next().getCenterX(),
                                 passable.iterator().next().getCenterY(), entity.getTeam(), entity, model);
                         model.processMessage(new MakeEntityRequest(newEntity));
-                        newEntity.onDeath((e, serverGameModel) -> data.spawnCounter--);
+                        newEntity.onDeath((e, serverGameModel) -> {
+                            data.spawnCounter--;
+                            data.spawned.remove(e);
+                        });
                         data.spawnCounter++;
+                        data.spawned.add(newEntity);
                     }
                 } else {
                     Collection<Entity> attackable = attackableEnemies(entity, model);
@@ -389,9 +399,19 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
                         Entity closest = getClosestEnemy(attackable, entity, model);
                         Entity newEntity = makeEntity(closest.getX(), closest.getY(), entity.getTeam(), entity, model);
                         model.processMessage(new MakeEntityRequest(newEntity));
-                        newEntity.onDeath((e, serverGameModel) -> data.spawnCounter--);
+                        newEntity.onDeath((e, serverGameModel) -> {
+                            data.spawnCounter--;
+                            data.spawned.remove(e);
+                        });
                         data.spawnCounter++;
+                        data.spawned.add(newEntity);
                     }
+                }
+            }
+            if (entity.getUpgraded()) {
+                for (Entity e : data.spawned) {
+                    e.set(LEVEL, entity.get(LEVEL));
+                    // TODO UP grade other stuff
                 }
             }
         }

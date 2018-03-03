@@ -209,11 +209,25 @@ public abstract class MinionStrat extends AIStrat {
 
             // Check if the minion should go to a resource or back to a collector.
             if (!data.hasResource) {
-                GridCell wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy));
-                if (wood == null)
-                    return;
-                x = wood.getTopLeftX();
-                y = wood.getTopLeftY();
+                if ((int) entity.get(Entity.EntityProperty.LEVEL) == 0) {
+                    GridCell wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy));
+                    if (wood == null)
+                        return;
+                    x = wood.getTopLeftX();
+                    y = wood.getTopLeftY();
+                } else if ((int) entity.get(Entity.EntityProperty.LEVEL) == 1) {
+                    GridCell stone = astar.getClosestStone(model.getCell((int) entityx, (int) entityy));
+                    if (stone == null)
+                        return;
+                    x = stone.getTopLeftX();
+                    y = stone.getTopLeftY();
+                } else {
+                    GridCell metal = astar.getClosestMetal(model.getCell((int) entityx, (int) entityy));
+                    if (metal == null)
+                        return;
+                    x = metal.getTopLeftX();
+                    y = metal.getTopLeftY();
+                }
             } else {
                 GridCell collector = astar.getClosestCollector(model.getCell((int) entityx, (int) entityy), entity.getTeam());
                 if (collector == null)

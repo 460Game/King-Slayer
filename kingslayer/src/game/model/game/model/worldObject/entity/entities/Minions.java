@@ -80,10 +80,11 @@ public class Minions {
                 pair(MAX_HEALTH, 10.0));
     }
 
-    public static Entity makeResourceMinion(double x, double y, Team team) {
+    public static Entity makeResourceMinion(double x, double y, Team team, int level) {
         return new Entity(x, y,
                 hitbox,
                 UnitCollisionStrat.SINGLETON,
+                pair(LEVEL, level),
                 pair(TEAM, team),
                 pair(UPDATE_STRAT, MovingStrat.SINGLETON),
                 pair(DRAW_STRAT, DirectionAnimationDrawStrat.RESOURCE_MINION_ANIMATION),

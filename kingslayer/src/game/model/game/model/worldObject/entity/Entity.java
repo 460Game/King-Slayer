@@ -84,6 +84,7 @@ public class Entity {
     private EnumMap<Entity.EntityProperty, Object> localMap = new EnumMap<>(EntityProperty.class);
     private EnumMap<Entity.EntityProperty, Object> dataMap = new EnumMap<>(EntityProperty.class);
 
+    private boolean upgraded;
 
     public void setData(EnumMap<Entity.EntityProperty, Object> data) {
         this.dataMap = data;
@@ -360,7 +361,12 @@ public class Entity {
             this.set(HEALTH, (double) this.get(HEALTH) + 10);
             this.set(MAX_HEALTH, (double) this.get(MAX_HEALTH) + 10);
         }
+        upgraded = true;
     }
+
+    public boolean getUpgraded() {return upgraded;}
+
+    public void setUpgraded(boolean upgrade) {this.upgraded = upgrade;}
 
     /**
      * Gets the collision type of this entity.
