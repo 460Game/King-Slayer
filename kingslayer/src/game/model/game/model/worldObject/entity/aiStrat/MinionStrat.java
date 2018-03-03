@@ -98,7 +98,7 @@ public abstract class MinionStrat extends AIStrat {
                     data.nextDestination = data.path.get(0);
                     astar.moveToCell(entity, data.nextDestination);
                     if (entity.getVelocity().getMagnitude() == 0)
-                        entity.setVelocity(entity.getVelocity().withMagnitude(1));
+                        entity.setVelocity(entity.getVelocity().withMagnitude(entity.get(Entity.EntityProperty.MAX_SPEED)));
                 }
             }
 
@@ -182,7 +182,7 @@ public abstract class MinionStrat extends AIStrat {
                     data.nextDestination = data.path.get(0);
                     astar.moveToCell(entity, data.nextDestination);
                     if (entity.getVelocity().getMagnitude() == 0)
-                        entity.setVelocity(entity.getVelocity().withMagnitude(1));
+                        entity.setVelocity(entity.getVelocity().withMagnitude(entity.get(Entity.EntityProperty.MAX_SPEED)));
                 }
             }
 
@@ -238,6 +238,7 @@ public abstract class MinionStrat extends AIStrat {
 
             // Check if the minion should go to a resource or back to a collector.
             if (!data.hasResource) {
+                entity.set(Entity.EntityProperty.MAX_SPEED, 1.0);
                 if ((int) entity.get(Entity.EntityProperty.LEVEL) == 0) {
                     GridCell wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy));
                     if (wood == null)
@@ -261,6 +262,7 @@ public abstract class MinionStrat extends AIStrat {
                     data.resourceType = 2;
                 }
             } else {
+                entity.set(Entity.EntityProperty.MAX_SPEED, 0.5);
                 GridCell collector = astar.getClosestCollector(model.getCell((int) entityx, (int) entityy), entity.getTeam());
                 if (collector == null) {
                     entity.setVelocity(entity.getVelocity().withMagnitude(0));
@@ -330,7 +332,7 @@ public abstract class MinionStrat extends AIStrat {
                     data.nextDestination = data.path.get(0);
                     astar.moveToCell(entity, data.nextDestination);
                     if (entity.getVelocity().getMagnitude() == 0)
-                        entity.setVelocity(entity.getVelocity().withMagnitude(1));
+                        entity.setVelocity(entity.getVelocity().withMagnitude(entity.get(Entity.EntityProperty.MAX_SPEED)));
                 }
             }
 

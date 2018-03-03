@@ -1,2 +1,9 @@
 Things that need balancing:
-Initial start resources (TeamResourceData
+Initial start resources (TeamResourceData)
+Slayer respawn time (SlayerRespawnStartCountRequest)
+Building health (Entities)
+Minion attack speed (Minion strat, may move this to an entity property)
+Building vision radius
+Minion movement speed
+    - Resource gatherer when holding
+Resource gatherer minion time up

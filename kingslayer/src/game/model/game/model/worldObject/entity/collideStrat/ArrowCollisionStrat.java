@@ -5,7 +5,7 @@ import game.model.game.model.*;
 import game.model.game.model.worldObject.entity.Entity;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DAMAGE_DEALT;
-import static game.model.game.model.worldObject.entity.Entity.EntityProperty.SPAWNEDID;
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.SPAWNED_ID;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.TEAM;
 import static util.Util.checkBoundsForArrows;
 import static util.Const.*;
@@ -55,7 +55,7 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
 
     @Override
     public void collisionHard(GameModel model, Entity a, Entity b) {
-        if (!((long) a.get(SPAWNEDID) == b.id)) {
+        if (!((long) a.get(SPAWNED_ID) == b.id)) {
             // Both the client and server stops the arrow and removes it from the game.
             if (a.has(TEAM) && b.has(TEAM) && a.get(TEAM) != b.get(TEAM)) {
                 if ((int) a.get(Entity.EntityProperty.LEVEL) == -1)
