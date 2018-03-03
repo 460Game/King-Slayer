@@ -4,6 +4,7 @@ import game.message.toClient.SetEntityCommand;
 import game.model.game.model.*;
 import game.model.game.model.worldObject.entity.Entity;
 
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DAMAGE_DEALT;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.SPAWNEDID;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.TEAM;
 import static util.Util.checkBoundsForArrows;
@@ -29,7 +30,7 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
             model.execute((server) -> {
                 a.setVelocity(a.getVelocity().withMagnitude(0));
                 a.entityDie(server);
-                b.decreaseHealthBy(model, 5);
+                b.decreaseHealthBy(model, a.get(DAMAGE_DEALT));
                 server.processMessage(new SetEntityCommand(b));
             }, (client) -> {
                 a.setVelocity(a.getVelocity().withMagnitude(0));
@@ -55,7 +56,7 @@ public class ArrowCollisionStrat extends ProjectileCollisionStrat {
             // Both the client and server stops the arrow and removes it from the game.
             if (a.has(TEAM) && b.has(TEAM) && a.get(TEAM) != b.get(TEAM)) {
                 if (b.getHealth() != Double.POSITIVE_INFINITY)
-                    b.decreaseHealthBy(model, 5); // TODO CHANGE THIS
+                    b.decreaseHealthBy(model, a.get(DAMAGE_DEALT)); // TODO CHANGE THIS
             }
             a.setVelocity(a.getVelocity().withMagnitude(0));
             a.entityDie(model);

@@ -205,11 +205,12 @@ public class Entities {
 
     private static final Hitbox ARROW_HITBOX = new CircleHitbox(0.2);
 
-    public static Entity makeArrow(double x, double y, double angle, Team team, Entity spawner) {
+    public static Entity makeArrow(double x, double y, double angle, Team team, Entity spawner, double damage) {
         Entity arrow = new Entity(x, y,
                 ARROW_HITBOX,
                 ArrowCollisionStrat.SINGLETON,
                 pair(UPDATE_STRAT, MovingStrat.SINGLETON),
+                pair(DAMAGE_DEALT, damage),
                 pair(TEAM, team),
                 pair(SPAWNEDID, spawner.id),
                 pair(PROJECTILE, ProjectileCollisionStrat.Projectile.ARROW),

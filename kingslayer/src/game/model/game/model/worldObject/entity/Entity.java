@@ -56,6 +56,7 @@ public class Entity {
         TEAM(Team.class, PropType.ACTIVE_SYNC),
         ROLE(Role.class, PropType.ACTIVE_SYNC),
         PROJECTILE(ProjectileCollisionStrat.Projectile.class, PropType.ACTIVE_SYNC), //TODO
+        DAMAGE_DEALT(Double.class, PropType.ON_CHANGE_ONLY),
         RESOURCE_TYPE(TeamResourceData.Resource.class, PropType.ACTIVE_SYNC),
         RESOURCE_AMOUNT(Integer.class, PropType.ACTIVE_SYNC),
         BUILDING_TYPE(BuildingSpawnerStrat.BuildingType.class, PropType.ACTIVE_SYNC),

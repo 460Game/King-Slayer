@@ -40,7 +40,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         int maxActive(Entity entity) {
-            return 1;
+            return 10;
            /* switch (entity.<Integer>get(LEVEL)) {
                 case 0:
                     return 15;
@@ -190,7 +190,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
             double dir = Util.angle2Points(entity.getX(), entity.getY(), x, y);
-            return Entities.makeArrow(entity.getX(), entity.getY(), dir, team, entity);
+            return Entities.makeArrow(entity.getX(), entity.getY(), dir, team, entity, 2.5);
         }
     }
 

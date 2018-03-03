@@ -31,38 +31,14 @@ public class TeamResourceData {
 
     private Map<Resource, Integer> resources = new HashMap<>();
 
-//    /**
-//     * Amount of wood resources on the team.
-//     */
-//    private int woodAmount;
-//
-//    /**
-//     * Amount of stone resources on the team.
-//     */
-//    private int stoneAmount;
-//
-//    /**
-//     * Amount of metal resources on the team.
-//     */
-//    private int metalAmount;
-
-    //Get the IDs of a player
-    // so the first king would be playerIds[King.val][0]
-    // the first slayer would be playerIds[Slayer.val][Val]
-    //private long[][] playerIds[];
-
     /**
      * Constructor for a team's resources. Initially, a team
      * has 0 of all resources.
      */
     public TeamResourceData() {
-        resources.put(Resource.WOOD, 20);//0);
+        resources.put(Resource.WOOD, 10);
         resources.put(Resource.STONE, 0);
         resources.put(Resource.METAL, 0);
-
-//        woodAmount = 0;
-//        stoneAmount = 0;
-//        metalAmount = 0;
     }
 
     public int getResource(Resource r) {

@@ -4,6 +4,7 @@ public class SlayerData {
     public final static int meleeSpeed = 8;
     public final static int meleeDamage = 50;
     public final static int arrowCost = 10;
+    public final static double arrowDamage = 5;
     public final static int meleeCost = 5;
 
     public static SlayerData copyOf(SlayerData a) {
