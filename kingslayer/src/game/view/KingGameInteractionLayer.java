@@ -53,14 +53,14 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   private static Map<BuildingSpawnerStrat.BuildingType, Integer> sellPrice = new HashMap<>();
 
   static {
-    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.WALL, 0), -5);
-    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.WALL, 1), -5);
-    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.COLLECTOR, 0), -10);
-    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.COLLECTOR, 1), -10);
-    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.BARRACKS, 0), -15);
-    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.BARRACKS, 1), -20);
-    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.TOWER, 0), -20);
-    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.TOWER, 1), -20);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.WALL, 0), 5);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.WALL, 1), 5);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.COLLECTOR, 0), 10);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.COLLECTOR, 1), 10);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.BARRACKS, 0), 15);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.BARRACKS, 1), 20);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.TOWER, 0), 20);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.TOWER, 1), 20);
 
     sellPrice.put(BuildingSpawnerStrat.BuildingType.WALL, 5);
     sellPrice.put(BuildingSpawnerStrat.BuildingType.COLLECTOR, 5);
