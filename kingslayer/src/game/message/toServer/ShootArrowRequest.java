@@ -74,7 +74,7 @@ public class ShootArrowRequest extends ActionRequest {
         curSlayerData.magic -= SlayerData.arrowCost;
         model.getEntity(id).set(Entity.EntityProperty.SLAYER_DATA, curSlayerData);
 
-        Entity arrow = Entities.makeArrow(x, y, angle, team);
+        Entity arrow = Entities.makeArrow(x, y, angle, team, model.getEntity(id));
         model.makeEntity(arrow);
     }
 }
