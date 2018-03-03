@@ -96,7 +96,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           spawner = null;
           placingGhost = null;
         } else {
-          if (model.getResourceData().getResource(spawner.resource) < -spawner.cost) {
+          if (model.getResourceData().getResource(spawner.resource) < spawner.finalCost(model)) {
             clearSelection();
             showError = true;
           }
@@ -104,7 +104,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       } else if (upgrading) {
         model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
           if (model.getResourceData().getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) + 1)) >=
-              -upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE), entity.<Integer>get(EntityProperty.LEVEL)))) {
+              upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE), entity.<Integer>get(EntityProperty.LEVEL)))) {
             model.processMessage(new UpgradeEntityRequest(entity,
                 upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE),
                     entity.<Integer>get(EntityProperty.LEVEL)))));
@@ -254,7 +254,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   }
 
   public void selectWall() {
-    if (model.getResourceData().getResource(EntitySpawner.WALL_SPAWNER.resource) >= -EntitySpawner.WALL_SPAWNER.cost) {
+    if (model.getResourceData().getResource(EntitySpawner.WALL_SPAWNER.resource) >= EntitySpawner.WALL_SPAWNER.finalCost(model)) {
       placingGhost = Entities.makeGhostWall(world.screenToGameX(world.mouseX), world.screenToGameY(world.mouseY));
       spawner = EntitySpawner.WALL_SPAWNER;
       model.processMessage(new NewEntityCommand(placingGhost));
@@ -264,7 +264,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   }
 
   public void selectResourceCollector() {
-    if (model.getResourceData().getResource(EntitySpawner.RESOURCE_COLLETOR_SPAWNER.resource) >= -EntitySpawner.RESOURCE_COLLETOR_SPAWNER.cost) {
+    if (model.getResourceData().getResource(EntitySpawner.RESOURCE_COLLETOR_SPAWNER.resource) >= EntitySpawner.RESOURCE_COLLETOR_SPAWNER.finalCost(model)) {
       placingGhost =
           Entities.makeResourceCollectorGhost(world.screenToGameX(world.mouseX), world.screenToGameY(world.mouseY),
               model.getLocalPlayer().getTeam());
@@ -276,7 +276,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   }
 
   public void selectArrowTower() {
-    if (model.getResourceData().getResource(EntitySpawner.ARROW_TOWER_SPAWNER.resource) >= -EntitySpawner.ARROW_TOWER_SPAWNER.cost) {
+    if (model.getResourceData().getResource(EntitySpawner.ARROW_TOWER_SPAWNER.resource) >= EntitySpawner.ARROW_TOWER_SPAWNER.finalCost(model)) {
       placingGhost = Entities.makeArrowTowerGhost(world.screenToGameX(world.mouseX), world.screenToGameY(world.mouseY),
           model.getLocalPlayer().getTeam());
       spawner = EntitySpawner.ARROW_TOWER_SPAWNER;
@@ -301,7 +301,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   }
 
   public void selectBarracks() {
-    if (model.getResourceData().getResource(EntitySpawner.BARRACKS_SPAWNER.resource) >= -EntitySpawner.BARRACKS_SPAWNER.cost) {
+    if (model.getResourceData().getResource(EntitySpawner.BARRACKS_SPAWNER.resource) >= EntitySpawner.BARRACKS_SPAWNER.finalCost(model)) {
       placingGhost = Entities.makeBarracksGhost(world.screenToGameX(world.mouseX), world.screenToGameY(world.mouseY),
           model.getLocalPlayer().getTeam());
       spawner = EntitySpawner.BARRACKS_SPAWNER;

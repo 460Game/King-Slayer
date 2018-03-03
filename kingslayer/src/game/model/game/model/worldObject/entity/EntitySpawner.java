@@ -1,55 +1,84 @@
 package game.model.game.model.worldObject.entity;
 
+import game.model.game.model.ClientGameModel;
+import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
+import game.model.game.model.worldObject.entity.aiStrat.BuildingSpawnerStrat;
 import game.model.game.model.worldObject.entity.entities.Entities;
 
 public enum EntitySpawner {
-  WALL_SPAWNER(TeamResourceData.Resource.WOOD, -5) {
+  WALL_SPAWNER(TeamResourceData.Resource.WOOD, 5) {
     @Override
     public Entity makeEntity(double x, double y, Team team) {
       return Entities.makeBuiltWall(x, y, team);
     }
+
+    @Override
+    public int finalCost(ClientGameModel model) {
+      return cost;
+    }
+
+    @Override
+    public int finalCost(ServerGameModel model, Team team) {
+      return cost;
+    }
   },
-  RESOURCE_COLLETOR_SPAWNER(TeamResourceData.Resource.WOOD, -10) {
+  RESOURCE_COLLETOR_SPAWNER(TeamResourceData.Resource.WOOD, 10) {
     @Override
     public Entity makeEntity(double x, double y, Team team) {
       return Entities.makeResourceCollector(x, y, team);
     }
+
+    @Override
+    public int finalCost(ClientGameModel model) {
+      return cost + 2 * (int) model.getEntitiesOfType(BuildingSpawnerStrat.BuildingType.COLLECTOR)
+            .filter(entity -> entity.getTeam() == model.getLocalPlayer().getTeam()).count();
+    }
+
+    @Override
+    public int finalCost(ServerGameModel model, Team team) {
+      return cost + 2 * (int) model.getEntitiesOfType(BuildingSpawnerStrat.BuildingType.COLLECTOR)
+          .filter(entity -> entity.getTeam() == team).count();
+    }
   },
-  BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, -15) {
+  BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, 15) {
     @Override
     public Entity makeEntity(double x, double y, Team team) {
       return Entities.makeBarracks(x, y, team);
     }
-  },
-  RANGED_BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, -15) {
+
     @Override
-    public Entity makeEntity(double x, double y, Team team) {
-      return Entities.makeRangedBarracks(x, y, team);
+    public int finalCost(ClientGameModel model) {
+      return cost + (int) model.getEntitiesOfType(BuildingSpawnerStrat.BuildingType.BARRACKS)
+            .filter(entity -> entity.getTeam() == model.getLocalPlayer().getTeam()).count();
+    }
+
+    @Override
+    public int finalCost(ServerGameModel model, Team team) {
+      return cost + (int) model.getEntitiesOfType(BuildingSpawnerStrat.BuildingType.BARRACKS)
+          .filter(entity -> entity.getTeam() == team).count();
     }
   },
-  SIEGE_BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, -15) {
-    @Override
-    public Entity makeEntity(double x, double y, Team team) {
-      return Entities.makeSiegeBarracks(x, y, team);
-    }
-  },
-  EXPLORATION_BARRACKS_SPAWNER(TeamResourceData.Resource.WOOD, -15) {
-    @Override
-    public Entity makeEntity(double x, double y, Team team) {
-      return Entities.makeExplorationBarracks(x, y, team);
-    }
-  },
-  ARROW_TOWER_SPAWNER(TeamResourceData.Resource.WOOD, -50) {
+  ARROW_TOWER_SPAWNER(TeamResourceData.Resource.WOOD, 50) {
     @Override
     public Entity makeEntity(double x, double y, Team team) {
       return Entities.makeArrowTower(x, y, team);
     }
+
+    @Override
+    public int finalCost(ClientGameModel model) {
+      return cost;
+    }
+
+    @Override
+    public int finalCost(ServerGameModel model, Team team) {
+      return cost;
+    }
   };
 
   public TeamResourceData.Resource resource;
-  public int cost;
+  int cost;
 
   EntitySpawner(TeamResourceData.Resource resource, int cost) {
     this.resource = resource;
@@ -57,5 +86,9 @@ public enum EntitySpawner {
   }
 
   public abstract Entity makeEntity(double x, double y, Team team);
+
+  public abstract int finalCost(ClientGameModel model);
+
+  public abstract int finalCost(ServerGameModel model, Team team);
 
 }

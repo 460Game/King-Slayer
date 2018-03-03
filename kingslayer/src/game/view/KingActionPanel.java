@@ -43,14 +43,14 @@ public class KingActionPanel extends ActionPanel {
     grid.setHgap(5);
     grid.setVgap(5);
 
-    DescriptionPanel descriptionPanel = new DescriptionPanel(model,
-        new Text("Resource collector\nCost: 10 wood\nUpgrade to stone: 10 stone\nUpgrade to metal: 10 metal\n*Hold 1 or Shift to place multiple"));
+    DescriptionPanel descriptionPanel = new DescriptionPanel(model, new Text(""));
     descriptionPanel.setPrefSize(335, 150);
     descriptionPanel.layoutXProperty().bind(this.widthProperty().divide(2).subtract(168));
     descriptionPanel.layoutYProperty().bind(this.heightProperty().subtract(300));
-    this.getChildren().add(descriptionPanel);
     descriptionPanel.setVisible(false);
+    this.getChildren().add(descriptionPanel);
 
+    /* Resource collector button */
     resource = new ImageView(Images.RESOURCE_COLLECTOR_UI_IMAGE);
     resource.setFitWidth(32 * 1.5);
     resource.setFitHeight(52 * 1.5);
@@ -60,8 +60,8 @@ public class KingActionPanel extends ActionPanel {
       gameInteractionLayer.world.requestFocus();
     });
     resource.setOnMouseEntered(e -> {
-      descriptionPanel.setText(new Text("Resource collector\nCost: 10 wood\nUpgrade to stone: 10 stone\n" +
-          "Upgrade to metal: 10 metal\n*Hold 1 or Shift to place multiple"));
+      descriptionPanel.setText(new Text("Resource collector\nCost: " + EntitySpawner.RESOURCE_COLLETOR_SPAWNER.finalCost(model) +
+          " wood\nUpgrade to stone: 10 stone\nUpgrade to metal: 10 metal\n*Hold 1 or Shift to place multiple"));
       descriptionPanel.setVisible(true);
     });
     resource.setOnMouseExited(e -> {
@@ -69,6 +69,7 @@ public class KingActionPanel extends ActionPanel {
     });
     grid.add(resource, 0, 0);
 
+    /* Wall button */
     wall = new ImageView(Images.WALL_BUILDABLE_UI_IMAGE);
     wall.setFitWidth(32 * 1.5);
     wall.setFitHeight(52 * 1.5);
@@ -78,7 +79,7 @@ public class KingActionPanel extends ActionPanel {
       gameInteractionLayer.world.requestFocus();
     });
     wall.setOnMouseEntered(e -> {
-      descriptionPanel.setText(new Text("Wall\nCost: 5 wood\nUpgrade to stone: 5 stone\n" +
+      descriptionPanel.setText(new Text("Wall\nCost: " + EntitySpawner.WALL_SPAWNER.finalCost(model) + " wood\nUpgrade to stone: 5 stone\n" +
           "Upgrade to metal: 5 metal\n*Hold 2 or Shift to place multiple"));
       descriptionPanel.setVisible(true);
     });
@@ -87,6 +88,7 @@ public class KingActionPanel extends ActionPanel {
     });
     grid.add(wall, 1, 0);
 
+    /* Arrow tower button */
     arrowTower = new ImageView(Images.ARROW_TOWER_UI_IMAGE);
     arrowTower.setFitWidth(32 * 1.5);
     arrowTower.setFitHeight(52 * 1.5);
@@ -96,7 +98,7 @@ public class KingActionPanel extends ActionPanel {
       gameInteractionLayer.world.requestFocus();
     });
     arrowTower.setOnMouseEntered(e -> {
-      descriptionPanel.setText(new Text("Arrow Tower\nCost: 50 wood\nUpgrade to stone: 20 stone\n" +
+      descriptionPanel.setText(new Text("Arrow Tower\nCost: " + EntitySpawner.ARROW_TOWER_SPAWNER.finalCost(model) + " wood\nUpgrade to stone: 20 stone\n" +
           "Upgrade to metal: 20 metal\n*Hold 3 or Shift to place multiple"));
       descriptionPanel.setVisible(true);
     });
@@ -105,6 +107,7 @@ public class KingActionPanel extends ActionPanel {
     });
     grid.add(arrowTower, 2, 0);
 
+    /* Barracks button */
     barracks = new ImageView(Images.BARRACKS_UI_IMAGE);
     barracks.setFitWidth(32 * 1.5);
     barracks.setFitHeight(52 * 1.5);
@@ -114,7 +117,7 @@ public class KingActionPanel extends ActionPanel {
       gameInteractionLayer.world.requestFocus();
     });
     barracks.setOnMouseEntered(e -> {
-      descriptionPanel.setText(new Text("Barracks\nCost: 15 wood\nUpgrade to stone: 15 stone\n" +
+      descriptionPanel.setText(new Text("Barracks\nCost: " + EntitySpawner.BARRACKS_SPAWNER.finalCost(model) + " wood\nUpgrade to stone: 15 stone\n" +
           "Upgrade to metal: 20 metal\n*Hold 4 or Shift to place multiple"));
       descriptionPanel.setVisible(true);
     });
@@ -123,6 +126,7 @@ public class KingActionPanel extends ActionPanel {
     });
     grid.add(barracks, 3, 0);
 
+    /* Upgrade button */
     ImageView upgrade = new ImageView(Images.UPGRADE_CURSOR_UI_IMAGE);
     upgrade.setFitWidth(32 * 1.5);
     upgrade.setFitHeight(52 * 1.5);
@@ -140,6 +144,7 @@ public class KingActionPanel extends ActionPanel {
     });
     grid.add(upgrade, 5, 0);
 
+    /* Sell button */
     ImageView delete = new ImageView(Images.DELETE_CURSOR_UI_IMAGE);
     delete.setFitWidth(32 * 1.5);
     delete.setFitHeight(52 * 1.5);
@@ -157,6 +162,7 @@ public class KingActionPanel extends ActionPanel {
     });
     grid.add(delete, 4, 0);
 
+    // Add all buttons
     this.getChildren().addAll(grid);
   }
 
@@ -169,25 +175,25 @@ public class KingActionPanel extends ActionPanel {
     saturate.setSaturation(0);
     saturate.setBrightness(0);
 
-    if (model.getResourceData().getResource(EntitySpawner.RESOURCE_COLLETOR_SPAWNER.resource) < -EntitySpawner.RESOURCE_COLLETOR_SPAWNER.cost) {
+    if (model.getResourceData().getResource(EntitySpawner.RESOURCE_COLLETOR_SPAWNER.resource) < EntitySpawner.RESOURCE_COLLETOR_SPAWNER.finalCost(model)) {
       resource.setEffect(desaturate);
     } else {
       resource.setEffect(saturate);
     }
 
-    if (model.getResourceData().getResource(EntitySpawner.WALL_SPAWNER.resource) < -EntitySpawner.WALL_SPAWNER.cost) {
+    if (model.getResourceData().getResource(EntitySpawner.WALL_SPAWNER.resource) < EntitySpawner.WALL_SPAWNER.finalCost(model)) {
       wall.setEffect(desaturate);
     } else {
       wall.setEffect(saturate);
     }
 
-    if (model.getResourceData().getResource(EntitySpawner.ARROW_TOWER_SPAWNER.resource) < -EntitySpawner.ARROW_TOWER_SPAWNER.cost) {
+    if (model.getResourceData().getResource(EntitySpawner.ARROW_TOWER_SPAWNER.resource) < EntitySpawner.ARROW_TOWER_SPAWNER.finalCost(model)) {
       arrowTower.setEffect(desaturate);
     } else {
       arrowTower.setEffect(saturate);
     }
 
-    if (model.getResourceData().getResource(EntitySpawner.BARRACKS_SPAWNER.resource) < -EntitySpawner.BARRACKS_SPAWNER.cost) {
+    if (model.getResourceData().getResource(EntitySpawner.BARRACKS_SPAWNER.resource) < EntitySpawner.BARRACKS_SPAWNER.finalCost(model)) {
       barracks.setEffect(desaturate);
     } else {
       barracks.setEffect(saturate);
