@@ -6,11 +6,11 @@ import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.slayer.SlayerData;
 
 public class SlayerMeleeRequest extends ActionRequest {
+
     /**
      * ID of the entity requesting to melee.
      */
     private long id;
-
 
     /**
      * X-coordinate of the arrow.

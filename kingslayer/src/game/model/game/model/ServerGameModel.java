@@ -246,8 +246,10 @@ public class ServerGameModel extends GameModel {
 
     public void makeEntity(Entity e) {
         this.setEntity(e);
-        if (e.getCollideType() == CollisionStrat.CollideType.HARD)
+        if (e.getCollideType() == CollisionStrat.CollideType.HARD) {
             astar.updateModel(this);
+            System.out.println("Added building and updated model");
+        }
         if (e.has(BUILDINGTYPE)) {
             addedBuilding = true;
             building = e;
@@ -287,8 +289,10 @@ public class ServerGameModel extends GameModel {
         clients.forEach(client -> client.processMessage(new RemoveEntityCommand(entityID)));
 
         // Update model used in astar if a hard object is removed.
-        if (isHard)
+        if (isHard) {
+            System.out.println("removed hard object and updated model");
             astar.updateModel(this);
+        }
     }
 
     public Astar getAstar() {
