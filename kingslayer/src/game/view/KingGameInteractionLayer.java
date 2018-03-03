@@ -9,9 +9,12 @@ import game.model.game.model.worldObject.entity.drawStrat.DrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.GhostDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
 import game.model.game.model.worldObject.entity.entities.Entities;
+import javafx.beans.binding.Bindings;
 import javafx.scene.ImageCursor;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import util.Util;
 
 //import static images.Images.DELETE_CURSOR_IMAGE;
@@ -38,11 +41,22 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   public boolean deleting = false;
   private boolean holding = false;
 
+  private Text error = new Text("Not enough resources!");
+  private boolean showError = false;
+  private int errorTime = 0;
+
   public KingGameInteractionLayer(ClientGameModel clientGameModel, WorldPanel worldPanel) {
     super(clientGameModel, worldPanel);
 
     this.model = clientGameModel;
     world = worldPanel;
+
+    error.setFill(Color.WHITE);
+    error.setFont(new Font("Malgun Gothic Bold", 50));
+    error.setStyle("-fx-stroke: black; -fx-stroke-width: 2px;");
+    error.layoutXProperty().bind(this.widthProperty().divide(2).subtract(250));
+    error.layoutYProperty().bind(this.heightProperty().subtract(300));
+    this.getChildren().add(error);
 
     world.onGameLeftClick((x, y) -> {
       if (model.clientLoseControl) {
@@ -95,9 +109,10 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       if (model.getLocalPlayer() != null && spawner != null) {
         double placingX = Math.floor(x) + 0.5;
         double placingY = Math.floor(y) + 0.5;
-        if (Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), placingX, placingY) < 4) {
+        if (Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), placingX, placingY) <= 4) {
           placingGhost.setX(placingX);
           placingGhost.setY(placingY);
+          placingGhost.<GhostDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).invalidLocation = false;
         } else {
           placingGhost.setX(placingX);
           placingGhost.setY(placingY);
@@ -191,6 +206,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       placingGhost = Entities.makeGhostWall(world.screenToGameX(world.mouseX), world.screenToGameY(world.mouseY));
       spawner = EntitySpawner.WALL_SPAWNER;
       model.processMessage(new NewEntityCommand(placingGhost));
+    } else {
+      showError = true;
     }
   }
 
@@ -201,6 +218,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
               model.getLocalPlayer().getTeam());
       spawner = EntitySpawner.RESOURCE_COLLETOR_SPAWNER;
       model.processMessage(new NewEntityCommand(placingGhost));
+    } else {
+      showError = true;
     }
   }
 
@@ -210,6 +229,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           model.getLocalPlayer().getTeam());
       spawner = EntitySpawner.ARROW_TOWER_SPAWNER;
       model.processMessage(new NewEntityCommand(placingGhost));
+    } else {
+      showError = true;
     }
   }
 
@@ -233,23 +254,26 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           model.getLocalPlayer().getTeam());
       spawner = EntitySpawner.BARRACKS_SPAWNER;
       model.processMessage(new NewEntityCommand(placingGhost));
+    } else {
+      showError = true;
     }
   }
 
   public void draw() {
     world.draw();
 
-    world.uiGC.clearRect(0, 0, world.uiGC.getCanvas().getWidth(), world.uiGC.getCanvas().getHeight());
-//    if (placingGhost != null &&
-//        Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), placingGhost.getX(), placingGhost.getY()) >= 4) {
-//      world.uiGC.setFill(new Color(1.0, 0.0, 0.0, 1));
-//      double w = placingGhost.<ImageDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).getWidth();
-//      double x = w - placingGhost.<ImageDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).getCenterX();
-//      double h = placingGhost.<ImageDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).getHeight();
-//      double y = h - placingGhost.<ImageDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).getCenterY();
-//      world.uiGC.fillRect(toDrawCoords(placingGhost.getX() - x), toDrawCoords(placingGhost.getY() - y), w, h);
-//    }
+    if (showError) {
+      error.setVisible(true);
+      errorTime++;
+      if (errorTime > 10) {
+        errorTime = 0;
+        showError = false;
+      }
+    } else {
+      error.setVisible(false);
+    }
 
+    world.uiGC.clearRect(0, 0, world.uiGC.getCanvas().getWidth(), world.uiGC.getCanvas().getHeight());
     if (spawner != null) {
       world.uiGC.setFill(new Color(1, 1, 1, 0.25));
       world.uiGC.fillOval(world.gameToScreenX(model.getLocalPlayer().getX()) - toDrawCoords(9.75),
