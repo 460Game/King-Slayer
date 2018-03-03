@@ -9,8 +9,9 @@ public class SellEntityRequest implements ToServerRequest {
    * Entity to be deleted.
    */
   private Entity entity;
+  int amount;
 
-  public SellEntityRequest() {
+  private SellEntityRequest() {
 
   }
 
@@ -18,8 +19,9 @@ public class SellEntityRequest implements ToServerRequest {
    * Constructor of the request, given an entity to be made.
    * @param entity entity to be made
    */
-  public SellEntityRequest(Entity entity) {
+  public SellEntityRequest(Entity entity, int amount) {
     this.entity = entity;
+    this.amount = amount;
   }
 
   /**
@@ -28,8 +30,8 @@ public class SellEntityRequest implements ToServerRequest {
    */
   @Override
   public void executeServer(ServerGameModel model) {
-    if (entity.has(Entity.EntityProperty.LEVEL)) {
-      model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL)), 5);
+    if (entity.has(Entity.EntityProperty.LEVEL) && model.getEntity(entity.id) != null) {
+      model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL)), amount);
       model.removeByID(entity.id);
     }
   }

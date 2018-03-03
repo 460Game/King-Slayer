@@ -7,6 +7,7 @@ import game.model.game.grid.GridCell;
 import game.model.game.map.MapGenerator;
 import game.model.game.map.Tile;
 import game.model.game.model.worldObject.entity.Entity;
+import game.model.game.model.worldObject.entity.aiStrat.BuildingSpawnerStrat;
 import util.Util;
 
 import java.util.*;
@@ -206,6 +207,11 @@ public abstract class GameModel implements Model {
         if (!entities.containsKey(entity))
             return null;
         return entities.get(entity);
+    }
+
+    public Stream<Entity> getEntitiesOfType(BuildingSpawnerStrat.BuildingType type) {
+        return getAllEntities().stream().filter(entity -> entity.has(Entity.EntityProperty.BUILDING_TYPE) &&
+            entity.get(Entity.EntityProperty.BUILDING_TYPE) == type);
     }
 
     private long AINanoTime = -1;

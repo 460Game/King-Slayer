@@ -66,15 +66,14 @@ public class ShootArrowRequest extends ActionRequest {
     public void executeServer(ServerGameModel model) {
         if(model.getEntity(id) == null)
             return;
-        SlayerData curSlayerData =
-                SlayerData.copyOf(model.getEntity(id).get(Entity.EntityProperty.SLAYER_DATA));
+        SlayerData curSlayerData = SlayerData.copyOf(model.getEntity(id).get(Entity.EntityProperty.SLAYER_DATA));
         if (curSlayerData.magic < SlayerData.arrowCost) {
             return;
         }
         curSlayerData.magic -= SlayerData.arrowCost;
         model.getEntity(id).set(Entity.EntityProperty.SLAYER_DATA, curSlayerData);
 
-        Entity arrow = Entities.makeArrow(x, y, angle, team);
+        Entity arrow = Entities.makeArrow(x, y, angle, team, model.getEntity(id));
         model.makeEntity(arrow);
     }
 }

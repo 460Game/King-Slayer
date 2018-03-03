@@ -201,6 +201,10 @@ public class WorldPanel extends Region {
         return y * scaleFactor * TILE_PIXELS + yt;
     }
 
+    public double getScaleFactor() {
+        return scaleFactor;
+    }
+
     private Set<KeyCode> currentlyPressed = new TreeSet<>();
 
     private BiConsumer<Double, Double> leftClick = null;

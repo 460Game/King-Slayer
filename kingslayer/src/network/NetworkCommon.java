@@ -212,6 +212,7 @@ public class NetworkCommon {
         kryo.register(ProjectileCollisionStrat.Projectile.class);
         kryo.register(SlayerRespawnStartCountRequest.class);
 
+        kryo.register(BuildingSpawnerStrat.BuildingType.class);
 
 
 

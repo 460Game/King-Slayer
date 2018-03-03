@@ -8,7 +8,6 @@ import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.collideStrat.ProjectileCollisionStrat;
 import game.model.game.model.worldObject.entity.entities.Entities;
 import util.Const;
 import util.Util;
@@ -48,13 +47,14 @@ public abstract class MinionStrat extends AIStrat {
             entity.setVelocity(entity.getVelocity().withMagnitude(0));
             Entity enemy = getClosestEnemy(data, entity, model);
             double dir = Util.angle2Points(entity.getX(), entity.getY(), enemy.getX(), enemy.getY());
-            model.processMessage(new MakeEntityRequest(Entities.makeArrow(entity.getX(), entity.getY(), dir, entity.getTeam())));
+            model.processMessage(new MakeEntityRequest(Entities.makeArrow(entity.getX(), entity.getY(), dir, entity.getTeam(), entity)));
         }
 
         @Override
         void wander(MinionStratAIData data, Entity entity, ServerGameModel model) {
 
-            Astar astar = model.getAstar();
+            Astar astar = new Astar(model);
+//            Astar astar = model.getAstar();
 
             // Get current position.
             double entityx = entity.getX();
@@ -76,17 +76,27 @@ public abstract class MinionStrat extends AIStrat {
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
+            if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != x &&
+                    data.path.get(0).getTopLeftY() != y) {
+                data.path.clear();
+                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
+            }
+
             // Check if reached destination.
             if (entity.containedIn.contains(model.getCell(x, y))) {
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
                 data.path.clear();
+                data.nextDestination = null;
             }
-            else if (data.path.size() > 0) {
-                if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY())
+            else if (!data.path.isEmpty()) {
+                if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY()) {
                     data.path.remove(0);
+                    data.nextDestination = null;
+                }
                 else {
                     // Keep moving if cells are in path.
-                    astar.moveToCell(entity, data.path.get(0));
+                    data.nextDestination = data.path.get(0);
+                    astar.moveToCell(entity, data.nextDestination);
                     if (entity.getVelocity().getMagnitude() == 0)
                         entity.setVelocity(entity.getVelocity().withMagnitude(1));
                 }
@@ -128,7 +138,9 @@ public abstract class MinionStrat extends AIStrat {
         @Override
         void wander(MinionStratAIData data, Entity entity, ServerGameModel model) {
 
-            Astar astar = model.getAstar();
+            // TODO figure out why model.getAstar doesnt work
+//            Astar astar = model.getAstar();
+            Astar astar = new Astar(model);
 
             // Get current position.
             double entityx = entity.getX();
@@ -150,17 +162,25 @@ public abstract class MinionStrat extends AIStrat {
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
+            if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != x &&
+                    data.path.get(0).getTopLeftY() != y) {
+                data.path.clear();
+                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
+            }
+
             // Check if reached destination.
             if (entity.containedIn.contains(model.getCell(x, y))) {
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
                 data.path.clear();
-            }
-            else if (data.path.size() > 0) {
-                if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY())
+                data.nextDestination = null;
+            } else if (!data.path.isEmpty()) {
+                if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY()) {
                     data.path.remove(0);
-                else {
+                    data.nextDestination = null;
+                } else {
                     // Keep moving if cells are in path.
-                    astar.moveToCell(entity, data.path.get(0));
+                    data.nextDestination = data.path.get(0);
+                    astar.moveToCell(entity, data.nextDestination);
                     if (entity.getVelocity().getMagnitude() == 0)
                         entity.setVelocity(entity.getVelocity().withMagnitude(1));
                 }
@@ -195,10 +215,19 @@ public abstract class MinionStrat extends AIStrat {
             handleEnemyDetected(data, entity, model);
         }
 
+        private int waitCounter = 0; // TODO think of better way to do the waiting
+
         @Override
         void wander(MinionStratAIData data, Entity entity, ServerGameModel model) {
 
-            Astar astar = model.getAstar();
+            if (waitCounter >= 10)
+                waitCounter = 0;
+            if (waitCounter >= 1) {
+                waitCounter++;
+                return;
+            }
+//            Astar astar = model.getAstar();
+            Astar astar = new Astar(model);
 
             // Get current position.
             double entityx = entity.getX();
@@ -215,28 +244,33 @@ public abstract class MinionStrat extends AIStrat {
                         return;
                     x = wood.getTopLeftX();
                     y = wood.getTopLeftY();
+                    data.resourceType = 0;
                 } else if ((int) entity.get(Entity.EntityProperty.LEVEL) == 1) {
                     GridCell stone = astar.getClosestStone(model.getCell((int) entityx, (int) entityy));
                     if (stone == null)
                         return;
                     x = stone.getTopLeftX();
                     y = stone.getTopLeftY();
+                    data.resourceType = 1;
                 } else {
                     GridCell metal = astar.getClosestMetal(model.getCell((int) entityx, (int) entityy));
                     if (metal == null)
                         return;
                     x = metal.getTopLeftX();
                     y = metal.getTopLeftY();
+                    data.resourceType = 2;
                 }
             } else {
                 GridCell collector = astar.getClosestCollector(model.getCell((int) entityx, (int) entityy), entity.getTeam());
-                if (collector == null)
+                if (collector == null) {
+                    entity.setVelocity(entity.getVelocity().withMagnitude(0));
+                    data.path.clear();
+                    model.processMessage(new SetEntityCommand(entity));
                     return;
+                }
                 x = collector.getTopLeftX();
                 y = collector.getTopLeftY();
             }
-
-//            // TODO case where collector is destroyed where does minion go?
 
             // Check if path exists and resource disappeared, then generate a new path.
             if (data.path.size() > 0 && (data.path.get(data.path.size() - 1).getTopLeftX() != x ||
@@ -250,40 +284,50 @@ public abstract class MinionStrat extends AIStrat {
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
+            if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != x &&
+                    data.path.get(0).getTopLeftY() != y) {
+                data.path.clear();
+                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
+            }
+
             // Check if reached destination.
             if (entity.containedIn.contains(model.getCell(x, y))) {
+                waitCounter = 1;
                 // Stop movement and clear path.
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
                 data.path.clear();
+                data.nextDestination = null;
 
                 // Update resource counts if applicable, and change path destination.
                 data.hasResource = !data.hasResource;
                 if (data.hasResource) {
-                    // TODO holding wood and upgradeds updates wood resources
                     Entity res = model.getEntitiesAt(x, y).stream().filter(e ->
-                            e.has(Entity.EntityProperty.RESOURCEAMOUNT)).findFirst().get();
+                            e.has(Entity.EntityProperty.RESOURCE_AMOUNT)).findFirst().get();
                     if ((int) entity.get(Entity.EntityProperty.LEVEL) == 0)
-                        data.resourceHeld += Math.min(Const.FIRST_LEVEL_WOOD_COLLECTED, res.get(Entity.EntityProperty.RESOURCEAMOUNT));
+                        data.resourceHeld += Math.min(Const.FIRST_LEVEL_WOOD_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
                     else if ((int) entity.get(Entity.EntityProperty.LEVEL) == 1)
-                        data.resourceHeld += Math.min(Const.SECOND_LEVEL_STONE_COLLECTED, res.get(Entity.EntityProperty.RESOURCEAMOUNT));
+                        data.resourceHeld += Math.min(Const.SECOND_LEVEL_STONE_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
                     else
-                        data.resourceHeld += Math.min(Const.THIRD_LEVEL_METAL_COLLECTED, res.get(Entity.EntityProperty.RESOURCEAMOUNT));
+                        data.resourceHeld += Math.min(Const.THIRD_LEVEL_METAL_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
                     res.decreaseResourceAmount(model, data.resourceHeld);
                 } else {
-                    if ((int) entity.get(Entity.EntityProperty.LEVEL) == 0)
-                        model.changeResource(entity.getTeam(), TeamResourceData.Resource.WOOD, data.resourceHeld); // TODO change this to match lvl.
-                    else if ((int) entity.get(Entity.EntityProperty.LEVEL) == 1)
+                    if (data.resourceType == 0)
+                        model.changeResource(entity.getTeam(), TeamResourceData.Resource.WOOD, data.resourceHeld);
+                    else if (data.resourceType == 1)
                         model.changeResource(entity.getTeam(), TeamResourceData.Resource.STONE, data.resourceHeld);
                     else
                         model.changeResource(entity.getTeam(), TeamResourceData.Resource.METAL, data.resourceHeld);
                     data.resourceHeld = 0;
                 }
             } else if (data.path.size() > 0) {
-                if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY())
+                if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY()) {
                     data.path.remove(0);
+                    data.nextDestination = null;
+                }
                 else {
                     // Keep moving if cells are in path.
-                    astar.moveToCell(entity, data.path.get(0));
+                    data.nextDestination = data.path.get(0);
+                    astar.moveToCell(entity, data.nextDestination);
                     if (entity.getVelocity().getMagnitude() == 0)
                         entity.setVelocity(entity.getVelocity().withMagnitude(1));
                 }
@@ -298,14 +342,18 @@ public abstract class MinionStrat extends AIStrat {
         private Collection<Entity> detected;
         private Collection<Entity> attackable;
         private boolean hasResource;
+        private int resourceType;
         private int resourceHeld;
+        private GridCell nextDestination;
 
         MinionStratAIData() {
             path = new ArrayList<>();
             detected = new HashSet<>();
             attackable = new HashSet<>();
             hasResource = false;
+            resourceType = 0;
             resourceHeld = 0;
+            nextDestination = null;
         }
     }
 

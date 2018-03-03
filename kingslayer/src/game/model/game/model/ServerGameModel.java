@@ -200,9 +200,6 @@ public class ServerGameModel extends GameModel {
                         }
 
                         for (Model model : clients) {
-                            Log.info("model null? " + model);
-                            Log.info("teamData null? " + teamData);
-                            Log.info("clientToPlayerInfo null? " + clientToPlayerInfo);
                             model.processMessage(new UpdateResourceCommand(teamData.get(clientToPlayerInfo.get(model).getTeam()))); //TEMPORARY GARBAGE
                         }
                     }
@@ -251,7 +248,7 @@ public class ServerGameModel extends GameModel {
         this.setEntity(e);
         if (e.getCollideType() == CollisionStrat.CollideType.HARD)
             astar.updateModel(this);
-        if (e.has(BUILDINGTYPE)) {
+        if (e.has(BUILDING_TYPE)) {
             addedBuilding = true;
             building = e;
         }
@@ -270,15 +267,15 @@ public class ServerGameModel extends GameModel {
             isHard = true;
 
         // Check if the entity removed is a tree. If so, remove that cell from the corresponding resource set.
-        if (getEntity(entityID).has(RESOURCETYPE)) {
-            if (getEntity(entityID).get(RESOURCETYPE) == TeamResourceData.Resource.WOOD)
+        if (getEntity(entityID).has(RESOURCE_TYPE)) {
+            if (getEntity(entityID).get(RESOURCE_TYPE) == TeamResourceData.Resource.WOOD)
                 wood.remove(getCell((int) (double) getEntity(entityID).getX(), (int) (double) getEntity(entityID).getY()));
-            else if (getEntity(entityID).get(RESOURCETYPE) == TeamResourceData.Resource.STONE)
+            else if (getEntity(entityID).get(RESOURCE_TYPE) == TeamResourceData.Resource.STONE)
                 stone.remove(getCell((int) (double) getEntity(entityID).getX(), (int) (double) getEntity(entityID).getY()));
-            else if (getEntity(entityID).get(RESOURCETYPE) == TeamResourceData.Resource.METAL)
+            else if (getEntity(entityID).get(RESOURCE_TYPE) == TeamResourceData.Resource.METAL)
                 metal.remove(getCell((int) (double) getEntity(entityID).getX(), (int) (double) getEntity(entityID).getY()));
-        } else if (getEntity(entityID).has(BUILDINGTYPE)) {
-            if (getEntity(entityID).get(BUILDINGTYPE) == BuildingSpawnerStrat.BuildingType.COLLECTOR) {
+        } else if (getEntity(entityID).has(BUILDING_TYPE)) {
+            if (getEntity(entityID).get(BUILDING_TYPE) == BuildingSpawnerStrat.BuildingType.COLLECTOR) {
                 if (getEntity(entityID).getTeam() == Team.ONE)
                     team1collector.removeAll(getEntity(entityID).containedIn);
                 else
@@ -312,29 +309,29 @@ public class ServerGameModel extends GameModel {
     public void update() {
         super.update();
         if (wood.isEmpty()) {
-            Set<Entity> woods = getAllEntities().stream().filter(e -> e.has(RESOURCETYPE)
-                    && e.get(RESOURCETYPE) == TeamResourceData.Resource.WOOD).collect(Collectors.toSet());
+            Set<Entity> woods = getAllEntities().stream().filter(e -> e.has(RESOURCE_TYPE)
+                    && e.get(RESOURCE_TYPE) == TeamResourceData.Resource.WOOD).collect(Collectors.toSet());
             if (woods != null)
                 for (Entity e : woods)
                     wood.addAll(e.containedIn);
         }
         if (stone.isEmpty()) {
-            Set<Entity> stones = getAllEntities().stream().filter(e -> e.has(RESOURCETYPE)
-                    && e.get(RESOURCETYPE) == TeamResourceData.Resource.STONE).collect(Collectors.toSet());
+            Set<Entity> stones = getAllEntities().stream().filter(e -> e.has(RESOURCE_TYPE)
+                    && e.get(RESOURCE_TYPE) == TeamResourceData.Resource.STONE).collect(Collectors.toSet());
             if (stones != null)
                 for (Entity e : stones)
                     stone.addAll(e.containedIn);
         }
         if (metal.isEmpty()) {
-            Set<Entity> metals = getAllEntities().stream().filter(e -> e.has(RESOURCETYPE)
-                    && e.get(RESOURCETYPE) == TeamResourceData.Resource.METAL).collect(Collectors.toSet());
+            Set<Entity> metals = getAllEntities().stream().filter(e -> e.has(RESOURCE_TYPE)
+                    && e.get(RESOURCE_TYPE) == TeamResourceData.Resource.METAL).collect(Collectors.toSet());
             if (metals != null)
                 for (Entity e : metals)
                     metal.addAll(e.containedIn);
         }
         if (addedBuilding) {
             addedBuilding = false;
-            if (building.get(BUILDINGTYPE) == BuildingSpawnerStrat.BuildingType.COLLECTOR)
+            if (building.get(BUILDING_TYPE) == BuildingSpawnerStrat.BuildingType.COLLECTOR)
                 if (building.getTeam() == Team.ONE)
                     team1collector.addAll(building.containedIn);
                 else
