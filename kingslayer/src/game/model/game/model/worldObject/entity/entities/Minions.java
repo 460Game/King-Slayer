@@ -49,7 +49,7 @@ public class Minions {
                 pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
-                pair(SIGHT_RADIUS, 4),
+                pair(SIGHT_RADIUS, 3),
                 pair(HEALTH, 5.0),
                 pair(MAX_HEALTH, 5.0),
                 pair(MAX_SPEED, 1.0));
@@ -85,7 +85,7 @@ public class Minions {
                 pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON), // TODO
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
-                pair(SIGHT_RADIUS, 6),
+                pair(SIGHT_RADIUS, 3),
                 pair(HEALTH, 10.0),
                 pair(MAX_HEALTH, 10.0),
                 pair(MAX_SPEED, 3.0));

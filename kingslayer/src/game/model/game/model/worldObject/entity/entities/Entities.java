@@ -77,34 +77,37 @@ public class Entities {
         return new Entity(x, y,
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
-                pair(HEALTH, 10.0),
+                pair(HEALTH, 25.0),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.BUILDABLE_WOOD_WALL),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(TEAM, team),
                 pair(LEVEL, 0),
-                pair(MAX_HEALTH, 10.0),
-                pair(BUILDING_TYPE, BuildingSpawnerStrat.BuildingType.WALL));
+                pair(MAX_HEALTH, 25.0),
+                pair(BUILDING_TYPE, BuildingSpawnerStrat.BuildingType.WALL),
+                pair(Entity.EntityProperty.SIGHT_RADIUS, 2));
     }
 
     public static Entity makeGhostWall(double x, double y) {
         return new Entity(x, y,
                 CellHitbox.SINGLETON,
                 GhostCollisionStrat.SINGLETON,
-                pair(DRAW_STRAT, GhostDrawStrat.GHOSTWALL));//ImageDrawStrat.WALL_BUILDABLE_IMAGE_DRAW_STRAT,//GhostDrawStrat.GHOSTWALL);
+                pair(DRAW_STRAT, GhostDrawStrat.GHOSTWALL),
+                pair(SIGHT_RADIUS, 2));//ImageDrawStrat.WALL_BUILDABLE_IMAGE_DRAW_STRAT,//GhostDrawStrat.GHOSTWALL);
     }
 
     public static Entity makeResourceCollector(double x, double y, Team team) {
         return new Entity(x, y,
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
-                pair(HEALTH, 10.0),
+                pair(HEALTH, 15.0),
                 pair(TEAM, team),
                 pair(BUILDING_TYPE, BuildingSpawnerStrat.BuildingType.COLLECTOR),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.RESOURCE_COLLECTOR),
                 pair(AI_STRAT, BuildingSpawnerStrat.ResourceCollectorBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(LEVEL, 0),
-                pair(MAX_HEALTH, 10.0));
+                pair(MAX_HEALTH, 15.0),
+                pair(SIGHT_RADIUS, 2));
     }
 
     public static Entity makeResourceCollectorGhost(double x, double y, Team team) {
@@ -120,13 +123,14 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
-                pair(HEALTH, 10.0),
+                pair(HEALTH, 15.0),
                 pair(BUILDING_TYPE, BuildingSpawnerStrat.BuildingType.BARRACKS),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.BarracksBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(LEVEL, 0),
-                pair(MAX_HEALTH, 10.0));
+                pair(MAX_HEALTH, 15.0),
+                pair(SIGHT_RADIUS, 2));
     }
 
     public static Entity makeRangedBarracks(double x, double y, Team team) {
@@ -134,13 +138,14 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
-                pair(HEALTH, 10.0),
+                pair(HEALTH, 15.0),
                 pair(BUILDING_TYPE, BuildingSpawnerStrat.BuildingType.BARRACKS),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(LEVEL, 0),
-                pair(MAX_HEALTH, 10.0));
+                pair(MAX_HEALTH, 15.0),
+                pair(SIGHT_RADIUS, 2));
     }
 
     public static Entity makeSiegeBarracks(double x, double y, Team team) {
@@ -148,13 +153,14 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
-                pair(HEALTH, 10.0),
+                pair(HEALTH, 15.0),
                 pair(BUILDING_TYPE, BuildingSpawnerStrat.BuildingType.BARRACKS),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.SiegeBarracksBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(LEVEL, 0),
-                pair(MAX_HEALTH, 10.0));
+                pair(MAX_HEALTH, 15.0),
+                pair(SIGHT_RADIUS, 2));
     }
 
     public static Entity makeExplorationBarracks(double x, double y, Team team) {
@@ -162,13 +168,14 @@ public class Entities {
             CellHitbox.SINGLETON,
             HardCollisionStrat.SINGLETON,
             pair(TEAM, team),
-            pair(HEALTH, 10.0),
+            pair(HEALTH, 15.0),
             pair(BUILDING_TYPE, BuildingSpawnerStrat.BuildingType.EXPLORER),
             pair(DRAW_STRAT, UpgradableImageDrawStrat.BARRACKS),
             pair(AI_STRAT, BuildingSpawnerStrat.ExplorationBarracksBuildingSpawnerStrat.SINGLETON),
             pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
             pair(LEVEL, 0),
-                pair(MAX_HEALTH, 10.0));
+                pair(MAX_HEALTH, 15.0),
+                pair(SIGHT_RADIUS, 2));
     }
 
     public static Entity makeBarracksGhost(double x, double y, Team team) {
@@ -185,13 +192,14 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
-                pair(HEALTH, 10.0),
+                pair(HEALTH, 15.0),
                 pair(BUILDING_TYPE, BuildingSpawnerStrat.BuildingType.TOWER),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.ARROW_TOWER),
                 pair(AI_STRAT, BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(LEVEL, 0),
-                pair(MAX_HEALTH, 10.0));
+                pair(MAX_HEALTH, 15.0),
+                pair(SIGHT_RADIUS, 4));
     }
 
     public static Entity makeArrowTowerGhost(double x, double y, Team team) {
