@@ -102,7 +102,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       } else if (upgrading) {
         // if you clicked the top part of an entity
         model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().ifPresent(entity -> {
-          if (entity.has(EntityProperty.BUILDING_TYPE)) {
+          if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getLocalPlayer().getTeam()) {
             if (entity.has(EntityProperty.LEVEL) &&
                 model.getResourceData()
                     .getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) + 1)) >=
@@ -126,7 +126,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         // if you clicked on the bottom of an entity with no entity in front of it
         if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent()) {
           model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
-            if (entity.has(EntityProperty.BUILDING_TYPE)) {
+            if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getLocalPlayer().getTeam()) {
               if (model.getResourceData()
                   .getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) + 1)) >=
                   upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE),
@@ -149,7 +149,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         }
       } else if (deleting) {
         model.getEntitiesAt(x.intValue(), (int) (y + 20.0 / 32.0)).stream().findFirst().ifPresent(entity -> {
-          if (entity.has(EntityProperty.BUILDING_TYPE)) {
+          if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getLocalPlayer().getTeam()) {
             model.processMessage(new SellEntityRequest(entity,
                 sellPrice.get(entity.<BuildingSpawnerStrat.BuildingType>get(Entity.EntityProperty.BUILDING_TYPE))));
             if (!holding) {
@@ -163,7 +163,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         // if you clicked on the bottom of an entity with no entity in front of it
         if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent()) {
           model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
-            if (entity.has(EntityProperty.BUILDING_TYPE)) {
+            if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getLocalPlayer().getTeam()) {
               model.processMessage(new SellEntityRequest(entity,
                   sellPrice.get(entity.<BuildingSpawnerStrat.BuildingType>get(Entity.EntityProperty.BUILDING_TYPE))));
               if (!holding) {
