@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity.aiStrat;
 
+import com.esotericsoftware.minlog.Log;
 import game.ai.Astar;
 import game.message.toClient.SetEntityCommand;
 import game.message.toServer.MakeEntityRequest;
@@ -44,6 +45,8 @@ public abstract class MinionStrat extends AIStrat {
 
         @Override
         void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
+            data.path.clear();
+            data.nextDestination = null;
             entity.setVelocity(entity.getVelocity().withMagnitude(0));
             Entity enemy = getClosestEnemy(data, entity, model);
             double dir = Util.angle2Points(entity.getX(), entity.getY(), enemy.getX(), enemy.getY());
@@ -82,13 +85,14 @@ public abstract class MinionStrat extends AIStrat {
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
+            Log.info("PATH SIZE : " + data.path.size());
+
             // Check if reached destination.
             if (entity.containedIn.contains(model.getCell(x, y))) {
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
                 data.path.clear();
                 data.nextDestination = null;
-            }
-            else if (!data.path.isEmpty()) {
+            } else if (!data.path.isEmpty()) {
                 if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY()) {
                     data.path.remove(0);
                     data.nextDestination = null;
@@ -585,6 +589,7 @@ public abstract class MinionStrat extends AIStrat {
         // First, scan for any attackable enemies if the minion can attack.
         // If there are any attackable enemies, perform the appropriate action.
         data.attackable = attackableEnemies(entity, model);
+        Log.info("Attackable size: " + data.attackable.size());
         if (data.attackable.size() > 0) {
             handleEnemyAttackable(data, entity, model, seconds);
             return;
