@@ -143,7 +143,10 @@ public class GameView {
 
                 totalFrameCount[0]++;
 
-                model.update();
+                if (model.getWinningTeam() == null) {
+                    model.update();
+                }
+
                 gameInteractionLayer.draw();
                 resourcePanel.draw();
                 minimap.draw();
