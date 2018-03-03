@@ -209,12 +209,16 @@ public class ServerGameModel extends GameModel {
     private Timer t = new Timer();
 
     public void stop() {
-        updateTimerTask.cancel();
-        t.cancel();
-        t2.cancel();
-        updateFPS.cancel();
+
 
         synchronized (lock){
+
+            updateTimerTask.cancel();
+            t.cancel();
+            t2.cancel();
+            updateFPS.cancel();
+
+
             running = false;
             clientToPlayerInfo = null;
             teamData = null;
