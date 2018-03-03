@@ -130,7 +130,7 @@ public class KingActionPanel extends ActionPanel {
       gameInteractionLayer.selectUpgrade();
       gameInteractionLayer.world.requestFocus();
     });
-    grid.add(button4upgrade, 4, 0);
+    grid.add(button4upgrade, 5, 0);
 
 //    Button upgrade = new Button("", button4upgrade); //new ImageView(Images.UPGRADE_CURSOR_IMAGE));
 ////    upgrade.setPrefSize(32 * 1.5, 52 * 1.5);
@@ -150,7 +150,7 @@ public class KingActionPanel extends ActionPanel {
       gameInteractionLayer.selectDelete();
       gameInteractionLayer.world.requestFocus();
     });
-    grid.add(button4delete, 5, 0);
+    grid.add(button4delete, 4, 0);
 
 //    Button delete = new Button("", button4delete); //new ImageView(Images.DELETE_CURSOR_IMAGE));
 ////    delete.setPrefSize(32 * 1.5, 52 * 1.5);
