@@ -57,7 +57,6 @@ public class KingActionPanel extends ActionPanel {
     resource.setOnMouseClicked(e -> {
       gameInteractionLayer.clearSelection();
       gameInteractionLayer.selectResourceCollector();
-      gameInteractionLayer.world.requestFocus();
     });
     resource.setOnMouseEntered(e -> {
       descriptionPanel.setText(new Text("Resource collector\nCost: " + EntitySpawner.RESOURCE_COLLETOR_SPAWNER.finalCost(model) +
