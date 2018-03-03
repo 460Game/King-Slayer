@@ -19,6 +19,7 @@ import static java.lang.Math.*;
 public abstract class BuildingSpawnerStrat extends AIStrat {
 
     public enum BuildingType {
+        WALL,
         COLLECTOR,
         TOWER,
         EXPLORER,

@@ -15,6 +15,7 @@ public class UpgradeEntityRequest implements ToServerRequest {
    * Entity to be upgraded.
    */
   private long entityID;
+  private int cost;
 
   public UpgradeEntityRequest() {
   }
@@ -23,8 +24,9 @@ public class UpgradeEntityRequest implements ToServerRequest {
    * Constructor of the request, given an entity to be upgraded.
    * @param entity entity to be made
    */
-  public UpgradeEntityRequest(Entity entity) {
+  public UpgradeEntityRequest(Entity entity, int cost) {
     this.entityID = entity.id;
+    this.cost = cost;
   }
 
   /**
@@ -35,7 +37,7 @@ public class UpgradeEntityRequest implements ToServerRequest {
   public void executeServer(ServerGameModel model) {
     Entity entity = model.getEntity(entityID);
     if (entity.has(Entity.EntityProperty.LEVEL) && entity.<Integer>get(Entity.EntityProperty.LEVEL) < 2 &&
-        model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL) + 1), -10)) {
+        model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL) + 1), cost)) {
       entity.upgrade();
       model.processMessage(new NewEntityCommand(entity));
     }

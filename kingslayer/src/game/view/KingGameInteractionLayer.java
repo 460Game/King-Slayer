@@ -3,8 +3,10 @@ package game.view;
 import game.message.toClient.NewEntityCommand;
 import game.message.toServer.*;
 import game.model.game.model.ClientGameModel;
+import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntitySpawner;
+import game.model.game.model.worldObject.entity.aiStrat.BuildingSpawnerStrat;
 import game.model.game.model.worldObject.entity.drawStrat.DrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.GhostDrawStrat;
 import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
@@ -15,10 +17,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import util.Pair;
 import util.Util;
 
 //import static images.Images.DELETE_CURSOR_IMAGE;
 //import static images.Images.UPGRADE_CURSOR_IMAGE;
+import java.util.HashMap;
+import java.util.Map;
+
 import static images.Images.*;
 import static javafx.scene.input.KeyCode.*;
 import static javafx.scene.input.KeyCode.DIGIT3;
@@ -44,6 +50,25 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   private Text error = new Text("Not enough resources!");
   private boolean showError = false;
   private int errorTime = 0;
+
+  private static Map<Pair, Integer> upgradeCost = new HashMap<>();
+  private static Map<BuildingSpawnerStrat.BuildingType, Integer> sellPrice = new HashMap<>();
+
+  static {
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.WALL, 0), -5);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.WALL, 1), -5);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.COLLECTOR, 0), -10);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.COLLECTOR, 1), -10);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.BARRACKS, 0), -15);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.BARRACKS, 1), -20);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.TOWER, 0), -15);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.TOWER, 1), -15);
+
+    sellPrice.put(BuildingSpawnerStrat.BuildingType.WALL, 5);
+    sellPrice.put(BuildingSpawnerStrat.BuildingType.COLLECTOR, 5);
+    sellPrice.put(BuildingSpawnerStrat.BuildingType.BARRACKS, 8);
+    sellPrice.put(BuildingSpawnerStrat.BuildingType.TOWER, 20);
+  }
 
   public KingGameInteractionLayer(ClientGameModel clientGameModel, WorldPanel worldPanel) {
     super(clientGameModel, worldPanel);
@@ -78,7 +103,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         }
       } else if (upgrading) {
         model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
-          model.processMessage(new UpgradeEntityRequest(entity));
+          model.processMessage(new UpgradeEntityRequest(entity, upgradeCost.get(new Pair(entity.get(Entity.EntityProperty.BUILDING_TYPE),
+              entity.<Integer>get(Entity.EntityProperty.LEVEL)))));
           if (!holding) {
             upgrading = false;
             world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
@@ -88,7 +114,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         });
       } else if (deleting) {
         model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
-          model.processMessage(new SellEntityRequest(entity));
+          model.processMessage(new SellEntityRequest(entity,
+              sellPrice.get(entity.<BuildingSpawnerStrat.BuildingType>get(Entity.EntityProperty.BUILDING_TYPE))));
           if (!holding) {
             deleting = false;
             world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
@@ -197,13 +224,13 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     });
 
     world.onKeyRelease(kc -> {
-      if (holding && (kc == Q || kc == E)) {
-        upgrading = false;
-        deleting = false;
-        world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
-            GAME_CURSOR_IMAGE.getWidth() / 2,
-            GAME_CURSOR_IMAGE.getHeight() / 2));
-      }
+//      if (holding && (kc == Q || kc == E)) {
+//        upgrading = false;
+//        deleting = false;
+//        world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
+//            GAME_CURSOR_IMAGE.getWidth() / 2,
+//            GAME_CURSOR_IMAGE.getHeight() / 2));
+//      }
 
       holding = false;
       if (kc == SHIFT && placingGhost != null) {

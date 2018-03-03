@@ -8,7 +8,6 @@ import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.collideStrat.ProjectileCollisionStrat;
 import game.model.game.model.worldObject.entity.entities.Entities;
 import util.Const;
 import util.Util;
@@ -261,13 +260,13 @@ public abstract class MinionStrat extends AIStrat {
                 if (data.hasResource) {
                     // TODO holding wood and upgradeds updates wood resources
                     Entity res = model.getEntitiesAt(x, y).stream().filter(e ->
-                            e.has(Entity.EntityProperty.RESOURCEAMOUNT)).findFirst().get();
+                            e.has(Entity.EntityProperty.RESOURCE_AMOUNT)).findFirst().get();
                     if ((int) entity.get(Entity.EntityProperty.LEVEL) == 0)
-                        data.resourceHeld += Math.min(Const.FIRST_LEVEL_WOOD_COLLECTED, res.get(Entity.EntityProperty.RESOURCEAMOUNT));
+                        data.resourceHeld += Math.min(Const.FIRST_LEVEL_WOOD_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
                     else if ((int) entity.get(Entity.EntityProperty.LEVEL) == 1)
-                        data.resourceHeld += Math.min(Const.SECOND_LEVEL_STONE_COLLECTED, res.get(Entity.EntityProperty.RESOURCEAMOUNT));
+                        data.resourceHeld += Math.min(Const.SECOND_LEVEL_STONE_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
                     else
-                        data.resourceHeld += Math.min(Const.THIRD_LEVEL_METAL_COLLECTED, res.get(Entity.EntityProperty.RESOURCEAMOUNT));
+                        data.resourceHeld += Math.min(Const.THIRD_LEVEL_METAL_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
                     res.decreaseResourceAmount(model, data.resourceHeld);
                 } else {
                     if ((int) entity.get(Entity.EntityProperty.LEVEL) == 0)

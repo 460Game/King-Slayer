@@ -89,7 +89,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
     public static class TreeImageDrawStrat extends ImageDrawStrat {
         @Override
         Image getImage(Entity entity) {
-            int amount = entity.<Integer>get(Entity.EntityProperty.RESOURCEAMOUNT);
+            int amount = entity.<Integer>get(Entity.EntityProperty.RESOURCE_AMOUNT);
             if (amount >= 15)
                 return Images.TREE_IMAGES[0];
             else if (amount >= 10)
@@ -125,7 +125,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
     public static class StoneImageDrawStrat extends ImageDrawStrat {
         @Override
         Image getImage(Entity entity) {
-            int amount = entity.<Integer>get(Entity.EntityProperty.RESOURCEAMOUNT);
+            int amount = entity.<Integer>get(Entity.EntityProperty.RESOURCE_AMOUNT);
             if (amount >= 20)
                 return Images.STONE_IMAGES[0];
             else if (amount >= 15)
