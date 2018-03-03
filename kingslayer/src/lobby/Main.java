@@ -82,6 +82,7 @@ public class Main extends Application {
         new MenuItem("Solo Game Slayer"),
         new MenuItem("Options"),
         new MenuItem("Exit")};
+    private boolean playerNumAlreadySet = false;
 
     public void closeServer() {
         if (lobbyServer != null) {
@@ -481,6 +482,8 @@ public class Main extends Application {
         set.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                if (playerNumAlreadySet) return;
+                playerNumAlreadySet = true;
                 lobbyServer.setNumOfPlayers(Integer.parseInt(numOfPlayer.getText()));
                 startGame();
                 //the following would be done in the network part
