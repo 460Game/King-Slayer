@@ -11,7 +11,7 @@ public class SellEntityRequest implements ToServerRequest {
   private Entity entity;
   int amount;
 
-  public SellEntityRequest() {
+  private SellEntityRequest() {
 
   }
 
@@ -30,7 +30,7 @@ public class SellEntityRequest implements ToServerRequest {
    */
   @Override
   public void executeServer(ServerGameModel model) {
-    if (entity.has(Entity.EntityProperty.LEVEL)) {
+    if (entity.has(Entity.EntityProperty.LEVEL) && model.getEntity(entity.id) != null) {
       model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL)), amount);
       model.removeByID(entity.id);
     }
