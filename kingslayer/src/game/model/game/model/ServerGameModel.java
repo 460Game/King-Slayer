@@ -200,9 +200,6 @@ public class ServerGameModel extends GameModel {
                         }
 
                         for (Model model : clients) {
-                            Log.info("model null? " + model);
-                            Log.info("teamData null? " + teamData);
-                            Log.info("clientToPlayerInfo null? " + clientToPlayerInfo);
                             model.processMessage(new UpdateResourceCommand(teamData.get(clientToPlayerInfo.get(model).getTeam()))); //TEMPORARY GARBAGE
                         }
                     }
