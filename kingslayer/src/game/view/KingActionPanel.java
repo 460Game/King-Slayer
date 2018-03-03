@@ -1,20 +1,23 @@
 package game.view;
 
 import game.model.game.model.ClientGameModel;
-import game.model.game.model.GameModel;
-import game.model.game.model.team.Team;
+import game.model.game.model.worldObject.entity.EntitySpawner;
 import images.Images;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tooltip;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
 
 public class KingActionPanel extends ActionPanel {
-  private GameModel model;
+  private ClientGameModel model;
   private KingGameInteractionLayer gameInteractionLayer;
+
+  private ImageView resource;
+  private ImageView wall;
+  private ImageView arrowTower;
+  private ImageView barracks;
+
 
   public KingActionPanel(ClientGameModel model, KingGameInteractionLayer gameInteractionLayer) {
     super(model);
@@ -34,84 +37,45 @@ public class KingActionPanel extends ActionPanel {
     grid.setHgap(5);
     grid.setVgap(5);
 
-    ImageView button4resource = new ImageView(Images.RESOURCE_COLLECTOR_UI_IMAGE);
-    button4resource.setFitWidth(32 * 1.5);
-    button4resource.setFitHeight(52 * 1.5);
-    button4resource.setOnMouseClicked(e -> {
+    resource = new ImageView(Images.RESOURCE_COLLECTOR_UI_IMAGE);
+    resource.setFitWidth(32 * 1.5);
+    resource.setFitHeight(52 * 1.5);
+    resource.setOnMouseClicked(e -> {
       gameInteractionLayer.clearSelection();
       gameInteractionLayer.selectResourceCollector();
       gameInteractionLayer.world.requestFocus();
     });
-    grid.add(button4resource, 0, 0);
-//    Button resource = new Button("", button4resource); //new ImageView((model.getLocalPlayer().getTeam() == Team.ONE) ?
-////        Images.RED_RESOURCE_COLLECTOR_IMAGE : Images.BLUE_RESOURCE_COLLECTOR_IMAGE));
-//    resource.setTooltip(new Tooltip("Resource collector\nCost: 10 wood"));
-//    System.out.println(javafx.scene.text.Font.getFamilies());
-////    resource.setFont(new Font("Candara", 15));
-//    grid.add(resource, 0, 0);
-//    resource.setOnAction(e -> {
-//      gameInteractionLayer.clearSelection();
-//      gameInteractionLayer.selectResourceCollector();
-//      gameInteractionLayer.world.requestFocus();
-//    });
+    grid.add(resource, 0, 0);
 
-    ImageView button4wall = new ImageView(Images.WALL_BUILDABLE_UI_IMAGE);
-    button4wall.setFitWidth(32 * 1.5);
-    button4wall.setFitHeight(52 * 1.5);
-    button4wall.setOnMouseClicked(e -> {
+    wall = new ImageView(Images.WALL_BUILDABLE_UI_IMAGE);
+    wall.setFitWidth(32 * 1.5);
+    wall.setFitHeight(52 * 1.5);
+    wall.setOnMouseClicked(e -> {
       gameInteractionLayer.clearSelection();
       gameInteractionLayer.selectWall();
       gameInteractionLayer.world.requestFocus();
     });
-    grid.add(button4wall, 1, 0);
-//    Button wall = new Button("", button4wall); //new ImageView(Images.WALL_BUILDABLE_IMAGE));
-//    wall.setTooltip(new Tooltip("Wall\nCost: 5 wood"));
-//    grid.add(wall, 1, 0);
-//    wall.setOnAction(e -> {
-//      gameInteractionLayer.clearSelection();
-//      gameInteractionLayer.selectWall();
-//      gameInteractionLayer.world.requestFocus();
-//    });
+    grid.add(wall, 1, 0);
 
-    ImageView button4arrowTower = new ImageView(Images.ARROW_TOWER_UI_IMAGE);
-    button4arrowTower.setFitWidth(32 * 1.5);
-    button4arrowTower.setFitHeight(52 * 1.5);
-    button4arrowTower.setOnMouseClicked(e -> {
+    arrowTower = new ImageView(Images.ARROW_TOWER_UI_IMAGE);
+    arrowTower.setFitWidth(32 * 1.5);
+    arrowTower.setFitHeight(52 * 1.5);
+    arrowTower.setOnMouseClicked(e -> {
       gameInteractionLayer.clearSelection();
       gameInteractionLayer.selectArrowTower();
       gameInteractionLayer.world.requestFocus();
     });
-    grid.add(button4arrowTower, 2, 0);
+    grid.add(arrowTower, 2, 0);
 
-//    Button arrowTower = new Button("", button4arrowTower);//new ImageView((model.getLocalPlayer().getTeam() == Team.ONE) ?
-////        Images.RED_WOOD_ARROW_TOWER_IMAGE : Images.BLUE_WOOD_ARROW_TOWER_IMAGE));
-//    arrowTower.setTooltip(new Tooltip("Arrow tower\nCost: 50 wood"));
-//    grid.add(arrowTower, 2, 0);
-//    arrowTower.setOnAction(e -> {
-//      gameInteractionLayer.clearSelection();
-//      gameInteractionLayer.selectArrowTower();
-//      gameInteractionLayer.world.requestFocus();
-//    });
-
-    ImageView button4barracks = new ImageView(Images.BARRACKS_UI_IMAGE);
-    button4barracks.setFitWidth(32 * 1.5);
-    button4barracks.setFitHeight(52 * 1.5);
-    button4barracks.setOnMouseClicked(e -> {
+    barracks = new ImageView(Images.BARRACKS_UI_IMAGE);
+    barracks.setFitWidth(32 * 1.5);
+    barracks.setFitHeight(52 * 1.5);
+    barracks.setOnMouseClicked(e -> {
       gameInteractionLayer.clearSelection();
       gameInteractionLayer.selectBarracks();
       gameInteractionLayer.world.requestFocus();
     });
-    grid.add(button4barracks, 3, 0);
-
-//    Button selectBarracks = new Button("", button4barracks); //new ImageView((model.getLocalPlayer().getTeam() == Team.ONE) ?
-////        Images.RED_WOOD_BARRACKS_IMAGE : Images.BLUE_WOOD_BARRACKS_IMAGE));
-//    selectBarracks.setTooltip(new Tooltip("Barracks\nMultiple options"));
-//    grid.add(selectBarracks, 3, 0);
-//    selectBarracks.setOnAction(e -> {
-//      gameInteractionLayer.clearSelection();
-//      gameInteractionLayer.selectBarracks();
-//      gameInteractionLayer.world.requestFocus();
-//    });
+    grid.add(barracks, 3, 0);
 
 //    Button trap = new Button("TODO 5");//, new ImageView((model.getLocalPlayer().getTeam() == Team.ONE) ?
 ////        Images.RED_WOOD_ARROW_TOWER_IMAGE : Images.BLUE_WOOD_ARROW_TOWER_IMAGE));
@@ -166,5 +130,36 @@ public class KingActionPanel extends ActionPanel {
   }
 
   public void draw() {
+    ColorAdjust desaturate = new ColorAdjust();
+    desaturate.setSaturation(-1);
+    desaturate.setBrightness(-0.5);
+
+    ColorAdjust saturate = new ColorAdjust();
+    saturate.setSaturation(0);
+    saturate.setBrightness(0);
+
+    if (model.getResourceData().getResource(EntitySpawner.RESOURCE_COLLETOR_SPAWNER.resource) < -EntitySpawner.RESOURCE_COLLETOR_SPAWNER.cost) {
+      resource.setEffect(desaturate);
+    } else {
+      resource.setEffect(saturate);
+    }
+
+    if (model.getResourceData().getResource(EntitySpawner.WALL_SPAWNER.resource) < -EntitySpawner.WALL_SPAWNER.cost) {
+      wall.setEffect(desaturate);
+    } else {
+      wall.setEffect(saturate);
+    }
+
+    if (model.getResourceData().getResource(EntitySpawner.ARROW_TOWER_SPAWNER.resource) < -EntitySpawner.ARROW_TOWER_SPAWNER.cost) {
+      arrowTower.setEffect(desaturate);
+    } else {
+      arrowTower.setEffect(saturate);
+    }
+
+    if (model.getResourceData().getResource(EntitySpawner.BARRACKS_SPAWNER.resource) < -EntitySpawner.BARRACKS_SPAWNER.cost) {
+      barracks.setEffect(desaturate);
+    } else {
+      barracks.setEffect(saturate);
+    }
   }
 }
