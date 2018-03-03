@@ -154,6 +154,9 @@ public class LobbyServer implements Lobby { //extends Application {
 
     public void closeServer() {
         server.server.stop();
+        if (serverModel != null) {
+            serverModel.stop();
+        }
 //        server.server.close();
     }
 
