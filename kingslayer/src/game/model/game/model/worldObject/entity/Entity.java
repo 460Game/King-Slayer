@@ -231,10 +231,12 @@ public class Entity {
                 yOffset = 20;
             }
 
-            gc.setFill(Color.RED);
-            gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - yOffset, 20, 3);
-            gc.setFill(Color.GREEN);
-            gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - yOffset, (getHealth() / getMaxHealth()) * 20, 3);
+            if (this.getHealth() != this.getMaxHealth()) {
+                gc.setFill(Color.RED);
+                gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - yOffset, 20, 3);
+                gc.setFill(Color.GREEN);
+                gc.fillRect(toDrawCoords(getX()) - 10, toDrawCoords(getY()) - yOffset, (getHealth() / getMaxHealth()) * 20, 3);
+            }
         }
 
         if (!this.invincible() && this.getData().get(ROLE) == Role.KING) {
@@ -261,7 +263,7 @@ public class Entity {
             gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 24, 40, 6);
             gc.setFill(Color.BLUE);
             gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 24,
-                    (((SlayerData)this.getData().get(SLAYER_DATA)).magic / 100.00) * 40, 6);
+                    (((SlayerData) this.getData().get(SLAYER_DATA)).magic / 100.00) * 40, 6);
 
             gc.setStroke(Color.WHITE);
 //            System.out.println((String)get(PLAYER_NAME));
@@ -366,9 +368,13 @@ public class Entity {
         upgraded = true;
     }
 
-    public boolean getUpgraded() {return upgraded;}
+    public boolean getUpgraded() {
+        return upgraded;
+    }
 
-    public void setUpgraded(boolean upgrade) {this.upgraded = upgrade;}
+    public void setUpgraded(boolean upgrade) {
+        this.upgraded = upgrade;
+    }
 
     /**
      * Gets the collision type of this entity.
@@ -381,6 +387,7 @@ public class Entity {
 
     /**
      * Update the cells that this entity is currently in.
+     *
      * @param model current model of the game
      */
     public void updateCells(GameModel model) {
