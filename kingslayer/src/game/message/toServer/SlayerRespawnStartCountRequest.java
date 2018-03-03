@@ -26,6 +26,6 @@ public class SlayerRespawnStartCountRequest extends ActionRequest {
         };
 
         Timer t = new Timer();
-        t.schedule(respawn, 1000);
+        t.schedule(respawn, 100000);
     }
 }
