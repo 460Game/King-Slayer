@@ -38,12 +38,12 @@ public abstract class MinionStrat extends AIStrat {
         }
 
         @Override
-        void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model) {
+        void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
 
         }
 
         @Override
-        void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model) {
+        void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
             entity.setVelocity(entity.getVelocity().withMagnitude(0));
             Entity enemy = getClosestEnemy(data, entity, model);
             double dir = Util.angle2Points(entity.getX(), entity.getY(), enemy.getX(), enemy.getY());
@@ -51,7 +51,7 @@ public abstract class MinionStrat extends AIStrat {
         }
 
         @Override
-        void wander(MinionStratAIData data, Entity entity, ServerGameModel model) {
+        void wander(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
 
             Astar astar = new Astar(model);
 //            Astar astar = model.getAstar();
@@ -126,17 +126,17 @@ public abstract class MinionStrat extends AIStrat {
         }
 
         @Override
-        void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model) {
+        void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
 
         }
 
         @Override
-        void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model) {
-            wander(data, entity, model); // TODO TEMP
+        void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
+            wander(data, entity, model, seconds); // TODO TEMP
         }
 
         @Override
-        void wander(MinionStratAIData data, Entity entity, ServerGameModel model) {
+        void wander(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
 
             // TODO figure out why model.getAstar doesnt work
 //            Astar astar = model.getAstar();
@@ -205,25 +205,25 @@ public abstract class MinionStrat extends AIStrat {
         }
 
         @Override
-        void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model) {
+        void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
             // Clear current path and run away
-            wander(data, entity, model); // TODO TEMP
+            wander(data, entity, model, seconds); // TODO TEMP
         }
 
         @Override
-        void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model) {
-            handleEnemyDetected(data, entity, model);
+        void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
+            handleEnemyDetected(data, entity, model, seconds);
         }
 
-        private int waitCounter = 0; // TODO think of better way to do the waiting
+        private double waitCounter = -1; // TODO think of better way to do the waiting
 
         @Override
-        void wander(MinionStratAIData data, Entity entity, ServerGameModel model) {
+        void wander(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
 
-            if (waitCounter >= 10)
-                waitCounter = 0;
-            if (waitCounter >= 1) {
-                waitCounter++;
+            if (waitCounter >= 3)
+                waitCounter = -1;
+            if (waitCounter >= 0) {
+                waitCounter += seconds;
                 return;
             }
 //            Astar astar = model.getAstar();
@@ -292,7 +292,7 @@ public abstract class MinionStrat extends AIStrat {
 
             // Check if reached destination.
             if (entity.containedIn.contains(model.getCell(x, y))) {
-                waitCounter = 1;
+                waitCounter = 2;
                 // Stop movement and clear path.
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
                 data.path.clear();
@@ -301,6 +301,7 @@ public abstract class MinionStrat extends AIStrat {
                 // Update resource counts if applicable, and change path destination.
                 data.hasResource = !data.hasResource;
                 if (data.hasResource) {
+                    waitCounter = 0;
                     Entity res = model.getEntitiesAt(x, y).stream().filter(e ->
                             e.has(Entity.EntityProperty.RESOURCE_AMOUNT)).findFirst().get();
                     if ((int) entity.get(Entity.EntityProperty.LEVEL) == 0)
@@ -374,14 +375,14 @@ public abstract class MinionStrat extends AIStrat {
      * Handles the action to perform when the minion detects
      * an enemy.
      */
-    abstract void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model);
+    abstract void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds);
     // TODO attacking minions can chase closest enemy and collectors should run away
 
     /**
      * Handles the action to perform when the minion detects
      * an attackable enemy.
      */
-    abstract void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model);
+    abstract void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds);
     // TODO attacking minions should attack closest enemy and collectors should run away (shouldnt even get to this position)
 
     /**
@@ -567,7 +568,7 @@ public abstract class MinionStrat extends AIStrat {
      * @param entity this minion
      * @param model current model of the game
      */
-    abstract void wander(MinionStratAIData data, Entity entity, ServerGameModel model);
+    abstract void wander(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds);
 
     @Override
     public void init(Entity entity) {
@@ -583,7 +584,7 @@ public abstract class MinionStrat extends AIStrat {
         // If there are any attackable enemies, perform the appropriate action.
         data.attackable = attackableEnemies(entity, model);
         if (data.attackable.size() > 0) {
-            handleEnemyAttackable(data, entity, model);
+            handleEnemyAttackable(data, entity, model, seconds);
             return;
         }
 //
@@ -598,6 +599,6 @@ public abstract class MinionStrat extends AIStrat {
         // If the minion has no other tasks to do, attack or handle detected enemies, it
         // should "wander." This is either moving on a set path to perform a task or
         // actually wandering so it can perform a task.
-        wander(data, entity, model);
+        wander(data, entity, model, seconds);
     }
 }
