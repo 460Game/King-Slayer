@@ -180,7 +180,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   }
 
   public void selectWall() {
-    placingGhost = Entities.makeGhostWall(world.mouseX, world.mouseY);
+    placingGhost = Entities.makeGhostWall(world.screenToGameX(world.mouseX), world.screenToGameY(world.mouseY));
     spawner = EntitySpawner.WALL_SPAWNER;
     model.processMessage(new NewEntityCommand(placingGhost));
   }

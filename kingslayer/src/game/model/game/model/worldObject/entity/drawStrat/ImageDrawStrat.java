@@ -173,7 +173,7 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
         @Override
         double getHeight() {
-            return 1;
+            return 1.5;
         }
 
         @Override
