@@ -16,6 +16,8 @@ public class GhostDrawStrat extends ImageDrawStrat {
   public static final GhostDrawStrat GHOST_BARRACKS = new BarracksGhostDrawStrat();
   public static final GhostDrawStrat GHOST_ARROW_TOWER = new ArrowTowerGhostDrawStrat();
 
+  public boolean invalidLocation = false;
+
   @Override
   public DrawData initDrawData() {
     return null;
@@ -27,22 +29,22 @@ public class GhostDrawStrat extends ImageDrawStrat {
   }
 
   @Override
-  double getWidth() {
+  public double getWidth() {
     return 1.0;
   }
 
   @Override
-  double getHeight() {
+  public double getHeight() {
     return 1.625;
   }
 
   @Override
-  double getCenterX() {
+  public double getCenterX() {
     return 0.5;
   }
 
   @Override
-  double getCenterY() {
+  public double getCenterY() {
     return 0.5;
   }
 
@@ -61,7 +63,7 @@ public class GhostDrawStrat extends ImageDrawStrat {
         toDrawCoords(h));
     gc.setGlobalAlpha(1.0);
 
-    if (entity.inCollision) {
+    if (entity.inCollision || invalidLocation) {
       gc.setFill(new Color(1.0, 0.0, 0.0, 0.35));
       gc.fillRect(toDrawCoords(entity.getX() - x),
           toDrawCoords(entity.getY() - y),

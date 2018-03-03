@@ -5,6 +5,9 @@ import game.message.toServer.*;
 import game.model.game.model.ClientGameModel;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntitySpawner;
+import game.model.game.model.worldObject.entity.drawStrat.DrawStrat;
+import game.model.game.model.worldObject.entity.drawStrat.GhostDrawStrat;
+import game.model.game.model.worldObject.entity.drawStrat.ImageDrawStrat;
 import game.model.game.model.worldObject.entity.entities.Entities;
 import javafx.scene.ImageCursor;
 import javafx.scene.input.KeyCode;
@@ -95,6 +98,10 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         if (Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), placingX, placingY) < 4) {
           placingGhost.setX(placingX);
           placingGhost.setY(placingY);
+        } else {
+          placingGhost.setX(placingX);
+          placingGhost.setY(placingY);
+          placingGhost.<GhostDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).invalidLocation = true;
         }
       }
     });
@@ -224,6 +231,16 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     world.draw();
 
     world.uiGC.clearRect(0, 0, world.uiGC.getCanvas().getWidth(), world.uiGC.getCanvas().getHeight());
+//    if (placingGhost != null &&
+//        Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), placingGhost.getX(), placingGhost.getY()) >= 4) {
+//      world.uiGC.setFill(new Color(1.0, 0.0, 0.0, 1));
+//      double w = placingGhost.<ImageDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).getWidth();
+//      double x = w - placingGhost.<ImageDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).getCenterX();
+//      double h = placingGhost.<ImageDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).getHeight();
+//      double y = h - placingGhost.<ImageDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).getCenterY();
+//      world.uiGC.fillRect(toDrawCoords(placingGhost.getX() - x), toDrawCoords(placingGhost.getY() - y), w, h);
+//    }
+
     if (spawner != null) {
       world.uiGC.setFill(new Color(1, 1, 1, 0.25));
       world.uiGC.fillOval(world.gameToScreenX(model.getLocalPlayer().getX()) - toDrawCoords(9.75),

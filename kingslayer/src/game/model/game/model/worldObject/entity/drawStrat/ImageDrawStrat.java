@@ -29,10 +29,10 @@ public abstract class ImageDrawStrat extends DrawStrat {
 
     abstract Image getImage(Entity entity);
 
-    abstract double getWidth();
-    abstract double getHeight();
-    abstract double getCenterX();
-    abstract double getCenterY();
+    public abstract double getWidth();
+    public abstract double getHeight();
+    public abstract double getCenterX();
+    public abstract double getCenterY();
 
 @Override
     public void draw(Entity entity, ClientGameModel model, GraphicsContext gc) {
@@ -62,22 +62,22 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
 
         @Override
-        double getWidth() {
+        public double getWidth() {
             return 0.6;
         }
 
         @Override
-        double getHeight() {
+        public double getHeight() {
             return 0.6;
         }
 
         @Override
-        double getCenterX() {
+        public double getCenterX() {
             return 0.3;
         }
 
         @Override
-        double getCenterY() {
+        public double getCenterY() {
             return 0.3;
         }
 
@@ -99,22 +99,22 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
 
         @Override
-        double getWidth() {
+        public double getWidth() {
             return 1;
         }
 
         @Override
-        double getHeight() {
+        public double getHeight() {
             return 1.5;
         }
 
         @Override
-        double getCenterX() {
+        public double getCenterX() {
             return 0.5;
         }
 
         @Override
-        double getCenterY() {
+        public double getCenterY() {
             return 0.5;
         }
 
@@ -137,22 +137,22 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
 
         @Override
-        double getWidth() {
+        public double getWidth() {
             return 1;
         }
 
         @Override
-        double getHeight() {
+        public double getHeight() {
             return 1.5;
         }
 
         @Override
-        double getCenterX() {
+        public double getCenterX() {
             return 0.5;
         }
 
         @Override
-        double getCenterY() {
+        public double getCenterY() {
             return 0.5;
         }
 
@@ -167,22 +167,22 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
 
         @Override
-        double getWidth() {
+        public double getWidth() {
             return 1;
         }
 
         @Override
-        double getHeight() {
+        public double getHeight() {
             return 1.5;
         }
 
         @Override
-        double getCenterX() {
+        public double getCenterX() {
             return 0.5;
         }
 
         @Override
-        double getCenterY() {
+        public double getCenterY() {
             return 0.5;
         }
 
@@ -197,22 +197,22 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
 
         @Override
-        double getWidth() {
+        public double getWidth() {
             return 1;
         }
 
         @Override
-        double getHeight() {
+        public double getHeight() {
             return 1.75;
         }
 
         @Override
-        double getCenterX() {
+        public double getCenterX() {
             return 0.5;
         }
 
         @Override
-        double getCenterY() {
+        public double getCenterY() {
             return 0.5;
         }
 
@@ -227,22 +227,22 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
 
         @Override
-        double getWidth() {
+        public double getWidth() {
             return 1;
         }
 
         @Override
-        double getHeight() {
+        public double getHeight() {
             return 1.5;
         }
 
         @Override
-        double getCenterX() {
+        public double getCenterX() {
             return 0.5;
         }
 
         @Override
-        double getCenterY() {
+        public double getCenterY() {
             return 0.5;
         }
 
@@ -257,22 +257,22 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
 
         @Override
-        double getWidth() {
+        public double getWidth() {
             return 1;
         }
 
         @Override
-        double getHeight() {
+        public double getHeight() {
             return 1.75;
         }
 
         @Override
-        double getCenterX() {
+        public double getCenterX() {
             return 0.5;
         }
 
         @Override
-        double getCenterY() {
+        public double getCenterY() {
             return 0.5;
         }
 
@@ -287,22 +287,22 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
 
         @Override
-        double getWidth() {
+        public double getWidth() {
             return 1;
         }
 
         @Override
-        double getHeight() {
+        public double getHeight() {
             return 1.75;
         }
 
         @Override
-        double getCenterX() {
+        public double getCenterX() {
             return 0.5;
         }
 
         @Override
-        double getCenterY() {
+        public double getCenterY() {
             return 0.5;
         }
 
@@ -317,22 +317,22 @@ public abstract class ImageDrawStrat extends DrawStrat {
         }
 
         @Override
-        double getWidth() {
+        public double getWidth() {
             return 1;
         }
 
         @Override
-        double getHeight() {
+        public double getHeight() {
             return 1.75;
         }
 
         @Override
-        double getCenterX() {
+        public double getCenterX() {
             return 0.5;
         }
 
         @Override
-        double getCenterY() {
+        public double getCenterY() {
             return 0.5;
         }
 
