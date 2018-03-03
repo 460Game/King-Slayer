@@ -76,7 +76,7 @@ public abstract class MinionStrat extends AIStrat {
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
-            if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != x &&
+            if (data.nextDestination != null && !data.nextDestination.isPassable() && !data.path.isEmpty() && data.path.get(0).getTopLeftX() != x &&
                     data.path.get(0).getTopLeftY() != y) {
                 data.path.clear();
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));

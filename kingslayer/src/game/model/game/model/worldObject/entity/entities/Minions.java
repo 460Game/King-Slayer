@@ -28,7 +28,7 @@ public class Minions {
                 pair(SPAWNED_ID, spawner.id),
                 pair(UPDATE_STRAT, MovingStrat.SINGLETON),
                 pair(DRAW_STRAT, DirectionAnimationDrawStrat.MELEE_ANIMATION),
-                pair(AI_STRAT, MinionStrat.MeleeMinionStrat.SINGLETON), // TODO what is this?
+                pair(AI_STRAT, MinionStrat.MeleeMinionStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
                 pair(SIGHT_RADIUS, 3),
