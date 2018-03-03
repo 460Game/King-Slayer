@@ -63,7 +63,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         return;
       }
 
-      if (spawner != null) {
+      if (spawner != null && placingGhost != null) {
         model.processMessage(new EntityBuildRequest(spawner,
             model.getLocalPlayer(), Math.floor(x) + 0.5, Math.floor(y) + 0.5, placingGhost.getHitbox()));
         if (!holding) {
