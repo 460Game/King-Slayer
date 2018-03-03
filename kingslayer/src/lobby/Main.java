@@ -43,6 +43,7 @@ import network.LobbyClient2LobbyAdaptor;
 import network.LobbyServer;
 
 import java.io.IOException;
+import java.lang.management.PlatformManagedObject;
 
 import static images.Images.*;
 import static util.Util.sleep;
@@ -501,7 +502,7 @@ public class Main extends Application {
             @Override
             public void showChoiceTeamAndRoleScene() {
                 System.err.println("Set team and role scene again");
-//                Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
+                Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
                 Task show = new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
@@ -547,6 +548,7 @@ public class Main extends Application {
         lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
             @Override
             public void showChoiceTeamAndRoleScene() {
+                Platform.setImplicitExit(false);
                 Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
 //                window.setScene(new Scene(choiceTeamAndRoleScene()));
             }
