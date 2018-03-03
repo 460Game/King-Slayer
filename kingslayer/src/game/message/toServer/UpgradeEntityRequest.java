@@ -7,18 +7,22 @@ import game.model.game.model.worldObject.entity.Entity;
 
 /**
  * Request sent by a client to the server that says the client
- * wants to create an entity.
+ * wants to upgrade an entity.
  */
 public class UpgradeEntityRequest implements ToServerRequest {
 
-  /**
-   * Entity to be upgraded.
-   */
-  private long entityID;
+    /**
+     * Entity to be upgraded.
+     */
+    private long entityID;
+
   private int cost;
 
-  public UpgradeEntityRequest() {
-  }
+    /**
+     * Default constructor needed for serialization.
+     */
+    public UpgradeEntityRequest() {
+    }
 
   /**
    * Constructor of the request, given an entity to be upgraded.
@@ -36,6 +40,8 @@ public class UpgradeEntityRequest implements ToServerRequest {
   @Override
   public void executeServer(ServerGameModel model) {
     Entity entity = model.getEntity(entityID);
+
+      // Check if upgradable, not at max level, and if team has enough resources to upgrade.
     if (entity.has(Entity.EntityProperty.LEVEL) && entity.<Integer>get(Entity.EntityProperty.LEVEL) < 2 &&
         model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL) + 1), -cost)) {
       entity.upgrade();

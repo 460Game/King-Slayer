@@ -66,8 +66,7 @@ public class ShootArrowRequest extends ActionRequest {
     public void executeServer(ServerGameModel model) {
         if(model.getEntity(id) == null)
             return;
-        SlayerData curSlayerData =
-                SlayerData.copyOf(model.getEntity(id).get(Entity.EntityProperty.SLAYER_DATA));
+        SlayerData curSlayerData = SlayerData.copyOf(model.getEntity(id).get(Entity.EntityProperty.SLAYER_DATA));
         if (curSlayerData.magic < SlayerData.arrowCost) {
             return;
         }

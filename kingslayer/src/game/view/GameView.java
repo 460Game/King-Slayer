@@ -127,35 +127,33 @@ public class GameView {
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-//                if (model.clientLoseControl) {
-//                    if (model.respawnCnt == 200) {
-//                        System.out.println(model.respawnCnt);
-//                        model.respawnSlayerRequest();
-//                    }
-//                    model.respawnCnt++;
-//                }
 
-                gameInteractionLayer.setVisible(true);
-                resourcePanel.setVisible(true);
-                minimap.setVisible(true);
-                teamLosePrompt.setVisible(false);
-                actionPanel.setVisible(true);
+                try {
 
-                totalFrameCount[0]++;
+                    gameInteractionLayer.setVisible(true);
+                    resourcePanel.setVisible(true);
+                    minimap.setVisible(true);
+                    teamLosePrompt.setVisible(false);
+                    actionPanel.setVisible(true);
 
-                if (model.getWinningTeam() == null) {
-                    model.update();
-                }
+                    totalFrameCount[0]++;
 
-                gameInteractionLayer.draw();
-                resourcePanel.draw();
-                minimap.draw();
-                actionPanel.draw();
+                    if (model.getWinningTeam() == null) {
+                        model.update();
+                    }
 
-                if (model.getWinningTeam() != null && model.getWinningTeam() == model.getTeam()) {
-                    teamWinPrompt.setVisible(true);
-                } else if (model.getWinningTeam() != null && model.getWinningTeam() != model.getTeam()) {
-                    teamLosePrompt.setVisible(true);
+                    gameInteractionLayer.draw();
+                    resourcePanel.draw();
+                    minimap.draw();
+                    actionPanel.draw();
+
+                    if (model.getWinningTeam() != null && model.getWinningTeam() == model.getTeam()) {
+                        teamWinPrompt.setVisible(true);
+                    } else if (model.getWinningTeam() != null && model.getWinningTeam() != model.getTeam()) {
+                        teamLosePrompt.setVisible(true);
+                    }
+                } catch(Exception e) {
+                    Log.error("Game Loop Exception", e);
                 }
             }
         };

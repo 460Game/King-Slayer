@@ -1,14 +1,15 @@
 package game.message.toServer;
 
-import game.message.toClient.NewEntityCommand;
 import game.message.toClient.RemoveEntityCommand;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.worldObject.entity.Entity;
 
 /**
- * Created by ryanhan on 2/25/18.
+ * Request sent by a client to the server to remove an entity
+ * from the game world.
  */
 public class RemoveEntityRequest extends ActionRequest {
+
     /**
      * ID of the entity.
      */
@@ -44,6 +45,7 @@ public class RemoveEntityRequest extends ActionRequest {
         Entity entity = model.getEntity(id);
         if (entity != null) {
             model.removeByID(id);
+            // TODO duplicate remove entity in here and remove by id
             model.getClients().forEach(client -> client.processMessage(new RemoveEntityCommand(entity)));
         }
     }
