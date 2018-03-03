@@ -246,7 +246,7 @@ public class ServerGameModel extends GameModel {
 
     public void makeEntity(Entity e) {
         this.setEntity(e);
-        if (e.getCollideType() == CollisionStrat.CollideType.HARD) {
+        if (e.getCollideType() == CollisionStrat.CollideType.HARD)
             astar.updateModel(this);
         if (e.has(BUILDING_TYPE)) {
             addedBuilding = true;
