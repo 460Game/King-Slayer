@@ -54,11 +54,11 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
             switch (entity.<Integer>get(LEVEL)) {
                 case 0:
-                    return Minions.makeMeleeMinion(x, y, team, entity);
+                    return Minions.makeMeleeMinion(x, y, team, entity.get(LEVEL), entity);
                 case 1:
-                    return Minions.makeRangedMinion(x, y, team, entity);
+                    return Minions.makeRangedMinion(x, y, team, entity.get(LEVEL), entity);
                 default:
-                    return Minions.makeExplorationMinion(x, y, team, entity);
+                    return Minions.makeExplorationMinion(x, y, team, entity.get(LEVEL), entity);
             }
         }
     }
@@ -82,7 +82,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
-            Entity minion = Minions.makeRangedMinion(x, y, team, entity);
+            Entity minion = Minions.makeRangedMinion(x, y, team, entity.get(LEVEL), entity);
          //   minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
@@ -107,7 +107,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
-            Entity minion = Minions.makeSiegeMinion(x, y, team, entity);
+            Entity minion = Minions.makeSiegeMinion(x, y, team, entity.get(LEVEL), entity);
           //  minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
@@ -132,7 +132,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
-            Entity minion = Minions.makeExplorationMinion(x, y, team, entity);
+            Entity minion = Minions.makeExplorationMinion(x, y, team, entity.get(LEVEL), entity);
            // minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }

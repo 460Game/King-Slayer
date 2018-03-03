@@ -20,11 +20,12 @@ public class Minions {
 
     static private CircleHitbox hitbox = new CircleHitbox(MINION_RADIUS);
 
-    public static Entity makeMeleeMinion(double x, double y, Team team, Entity spawner) {
+    public static Entity makeMeleeMinion(double x, double y, Team team, int level, Entity spawner) {
         return new Entity(x, y,
                 hitbox,
                 UnitCollisionStrat.SINGLETON,
                 pair(TEAM, team),
+                pair(LEVEL, level),
                 pair(SPAWNEDID, spawner.id),
                 pair(UPDATE_STRAT, MovingStrat.SINGLETON),
                 pair(DRAW_STRAT, DirectionAnimationDrawStrat.MELEE_ANIMATION),
@@ -36,11 +37,12 @@ public class Minions {
                 pair(MAX_HEALTH, 5.0));
     }
 
-    public static Entity makeRangedMinion(double x, double y, Team team, Entity spawner) {
+    public static Entity makeRangedMinion(double x, double y, Team team, int level, Entity spawner) {
         return new Entity(x, y,
                 hitbox,
                 UnitCollisionStrat.SINGLETON,
                 pair(TEAM, team),
+                pair(LEVEL, level),
                 pair(SPAWNEDID, spawner.id),
                 pair(UPDATE_STRAT, MovingStrat.SINGLETON),
                 pair(DRAW_STRAT, DirectionAnimationDrawStrat.RANGED_ANIMATION),
@@ -52,11 +54,12 @@ public class Minions {
                 pair(MAX_HEALTH, 5.0));
     }
 
-    public static Entity makeSiegeMinion(double x, double y, Team team, Entity spawner) {
+    public static Entity makeSiegeMinion(double x, double y, Team team, int level, Entity spawner) {
         return new Entity(x, y,
                 hitbox,
                 UnitCollisionStrat.SINGLETON,
                 pair(TEAM, team),
+                pair(LEVEL, level),
                 pair(SPAWNEDID, spawner.id),
                 pair(UPDATE_STRAT, MovingStrat.SINGLETON),
                 pair(DRAW_STRAT, DirectionAnimationDrawStrat.SIEGE_ANIMATION),
@@ -68,11 +71,12 @@ public class Minions {
                 pair(MAX_HEALTH, 5.0));
     }
 
-    public static Entity makeExplorationMinion(double x, double y, Team team, Entity spawner) {
+    public static Entity makeExplorationMinion(double x, double y, Team team, int level, Entity spawner) {
         return new Entity(x, y,
                 hitbox,
                 UnitCollisionStrat.SINGLETON,
                 pair(TEAM, team),
+                pair(LEVEL, level),
                 pair(SPAWNEDID, spawner.id),
                 pair(UPDATE_STRAT, MovingStrat.SINGLETON),
                 pair(DRAW_STRAT, DirectionAnimationDrawStrat.EXPLORATION_ANIMATION),
