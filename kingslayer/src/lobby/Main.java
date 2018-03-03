@@ -43,6 +43,7 @@ import network.LobbyClient2LobbyAdaptor;
 import network.LobbyServer;
 
 import java.io.IOException;
+import java.lang.management.PlatformManagedObject;
 
 import static images.Images.*;
 import static util.Util.sleep;
@@ -81,6 +82,7 @@ public class Main extends Application {
         new MenuItem("Solo Game Slayer"),
         new MenuItem("Options"),
         new MenuItem("Exit")};
+    private boolean playerNumAlreadySet = false;
 
     public void closeServer() {
         if (lobbyServer != null) {
@@ -254,7 +256,9 @@ public class Main extends Application {
         animator.start();
         resize.invalidated(null);
         sleep(100);
-        window.setScene(mainMenuScene);
+        Platform.runLater(()-> {
+            window.setScene(mainMenuScene);
+        });
         window.show();
     }
 
@@ -478,6 +482,8 @@ public class Main extends Application {
         set.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                if (playerNumAlreadySet) return;
+                playerNumAlreadySet = true;
                 lobbyServer.setNumOfPlayers(Integer.parseInt(numOfPlayer.getText()));
                 startGame();
                 //the following would be done in the network part
@@ -501,7 +507,6 @@ public class Main extends Application {
             @Override
             public void showChoiceTeamAndRoleScene() {
                 System.err.println("Set team and role scene again");
-//                Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
                 Task show = new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
@@ -547,6 +552,7 @@ public class Main extends Application {
         lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
             @Override
             public void showChoiceTeamAndRoleScene() {
+                Platform.setImplicitExit(false);
                 Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
 //                window.setScene(new Scene(choiceTeamAndRoleScene()));
             }
