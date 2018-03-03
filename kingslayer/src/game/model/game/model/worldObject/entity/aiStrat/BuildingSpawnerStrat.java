@@ -54,11 +54,11 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
             switch (entity.<Integer>get(LEVEL)) {
                 case 0:
-                    return Minions.makeMeleeMinion(x, y, team);
+                    return Minions.makeMeleeMinion(x, y, team, entity);
                 case 1:
-                    return Minions.makeRangedMinion(x, y, team);
+                    return Minions.makeRangedMinion(x, y, team, entity);
                 default:
-                    return Minions.makeExplorationMinion(x, y, team);
+                    return Minions.makeExplorationMinion(x, y, team, entity);
             }
         }
     }
@@ -82,7 +82,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
-            Entity minion = Minions.makeRangedMinion(x, y, team);
+            Entity minion = Minions.makeRangedMinion(x, y, team, entity);
          //   minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
@@ -107,7 +107,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
-            Entity minion = Minions.makeSiegeMinion(x, y, team);
+            Entity minion = Minions.makeSiegeMinion(x, y, team, entity);
           //  minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
@@ -132,7 +132,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
-            Entity minion = Minions.makeExplorationMinion(x, y, team);
+            Entity minion = Minions.makeExplorationMinion(x, y, team, entity);
            // minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
@@ -160,7 +160,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
 
-            Entity minion = Minions.makeResourceMinion(x, y, team, entity.get(Entity.EntityProperty.LEVEL));
+            Entity minion = Minions.makeResourceMinion(x, y, team, entity.get(Entity.EntityProperty.LEVEL), entity);
          //   minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
@@ -189,7 +189,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
             double dir = Util.angle2Points(entity.getX(), entity.getY(), x, y);
-            return Entities.makeArrow(entity.getX() + cos(dir), entity.getY() + sin(dir), dir, team);
+            return Entities.makeArrow(entity.getX(), entity.getY(), dir, team, entity);
         }
     }
 
@@ -411,6 +411,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
             }
             if (entity.getUpgraded()) {
                 for (Entity e : data.spawned) {
+                    e.setUpgraded(false);
                     e.set(LEVEL, entity.get(LEVEL));
                     // TODO UP grade other stuff
                 }

@@ -20,11 +20,12 @@ public class Minions {
 
     static private CircleHitbox hitbox = new CircleHitbox(MINION_RADIUS);
 
-    public static Entity makeMeleeMinion(double x, double y, Team team) {
+    public static Entity makeMeleeMinion(double x, double y, Team team, Entity spawner) {
         return new Entity(x, y,
                 hitbox,
                 UnitCollisionStrat.SINGLETON,
                 pair(TEAM, team),
+                pair(SPAWNEDID, spawner.id),
                 pair(UPDATE_STRAT, MovingStrat.SINGLETON),
                 pair(DRAW_STRAT, DirectionAnimationDrawStrat.MELEE_ANIMATION),
                 pair(AI_STRAT, MinionStrat.MeleeMinionStrat.SINGLETON), // TODO what is this?
@@ -35,11 +36,12 @@ public class Minions {
                 pair(MAX_HEALTH, 5.0));
     }
 
-    public static Entity makeRangedMinion(double x, double y, Team team) {
+    public static Entity makeRangedMinion(double x, double y, Team team, Entity spawner) {
         return new Entity(x, y,
                 hitbox,
                 UnitCollisionStrat.SINGLETON,
                 pair(TEAM, team),
+                pair(SPAWNEDID, spawner.id),
                 pair(UPDATE_STRAT, MovingStrat.SINGLETON),
                 pair(DRAW_STRAT, DirectionAnimationDrawStrat.RANGED_ANIMATION),
                 pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON),
@@ -50,11 +52,12 @@ public class Minions {
                 pair(MAX_HEALTH, 5.0));
     }
 
-    public static Entity makeSiegeMinion(double x, double y, Team team) {
+    public static Entity makeSiegeMinion(double x, double y, Team team, Entity spawner) {
         return new Entity(x, y,
                 hitbox,
                 UnitCollisionStrat.SINGLETON,
                 pair(TEAM, team),
+                pair(SPAWNEDID, spawner.id),
                 pair(UPDATE_STRAT, MovingStrat.SINGLETON),
                 pair(DRAW_STRAT, DirectionAnimationDrawStrat.SIEGE_ANIMATION),
                 pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON), // TODO
@@ -65,11 +68,12 @@ public class Minions {
                 pair(MAX_HEALTH, 5.0));
     }
 
-    public static Entity makeExplorationMinion(double x, double y, Team team) {
+    public static Entity makeExplorationMinion(double x, double y, Team team, Entity spawner) {
         return new Entity(x, y,
                 hitbox,
                 UnitCollisionStrat.SINGLETON,
                 pair(TEAM, team),
+                pair(SPAWNEDID, spawner.id),
                 pair(UPDATE_STRAT, MovingStrat.SINGLETON),
                 pair(DRAW_STRAT, DirectionAnimationDrawStrat.EXPLORATION_ANIMATION),
                 pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON), // TODO
@@ -80,12 +84,13 @@ public class Minions {
                 pair(MAX_HEALTH, 10.0));
     }
 
-    public static Entity makeResourceMinion(double x, double y, Team team, int level) {
+    public static Entity makeResourceMinion(double x, double y, Team team, int level, Entity spawner) {
         return new Entity(x, y,
                 hitbox,
                 UnitCollisionStrat.SINGLETON,
                 pair(LEVEL, level),
                 pair(TEAM, team),
+                pair(SPAWNEDID, spawner.id),
                 pair(UPDATE_STRAT, MovingStrat.SINGLETON),
                 pair(DRAW_STRAT, DirectionAnimationDrawStrat.RESOURCE_MINION_ANIMATION),
                 pair(AI_STRAT, MinionStrat.ResourceMinionStrat.SINGLETON),
