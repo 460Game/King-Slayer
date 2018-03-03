@@ -247,12 +247,6 @@ public class WorldPanel extends Region {
         keyReleaseConsumer = consumer;
     }
 
-    void onGameKeyUp(Consumer<KeyCode> consumer) {
-        this.setOnKeyPressed(e -> {
-            consumer.accept(e.getCode());
-        });
-    }
-
     public void onGameMouseMove(BiConsumer<Double, Double> consumer) {
         mouseMoveAction = consumer;
     }

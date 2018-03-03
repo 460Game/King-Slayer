@@ -175,6 +175,11 @@ public class GameView {
             if (kc == F11) {
                 window.setFullScreen(!window.isFullScreen());
             }
+
+            if (kc == TAB) {
+                gameInteractionLayer.world.requestFocus();
+                System.out.println("in GameView");
+            }
         });
 
 

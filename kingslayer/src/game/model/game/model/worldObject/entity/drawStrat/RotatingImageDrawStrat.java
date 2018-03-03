@@ -27,7 +27,7 @@ public abstract class RotatingImageDrawStrat extends ImageDrawStrat {
         double y = h - this.getCenterY();
 
         Util.drawRotatedImage(gc,
-            getImage(),
+            getImage(entity),
             entity.<Velocity>get(VELOCITY).getAngle(),
             toDrawCoords(entity.getX() - x),
             toDrawCoords(entity.getY() - y),
@@ -41,7 +41,7 @@ public abstract class RotatingImageDrawStrat extends ImageDrawStrat {
 //        public static final DrawStrat SINGLETON = new ArrowImageDrawStrat();
 
         @Override
-        Image getImage() {
+        Image getImage(Entity entity) {
             return Images.ARROW_IMAGE;
         }
 

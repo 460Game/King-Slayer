@@ -57,7 +57,7 @@ public class Entity {
         ROLE(Role.class, PropType.ACTIVE_SYNC),
         PROJECTILE(ProjectileCollisionStrat.Projectile.class, PropType.ACTIVE_SYNC), //TODO
         RESOURCETYPE(TeamResourceData.Resource.class, PropType.SERVER_ONLY),
-        RESOURCEAMOUNT(Integer.class, PropType.SERVER_ONLY),
+        RESOURCEAMOUNT(Integer.class, PropType.ACTIVE_SYNC),
         BUILDINGTYPE(BuildingSpawnerStrat.BuildingType.class, PropType.SERVER_ONLY),
         DRAW_DATA(DrawData.class, PropType.LOCAL_ONLY),
         VELOCITY(Velocity.class, PropType.ACTIVE_SYNC),
@@ -84,6 +84,7 @@ public class Entity {
     private EnumMap<Entity.EntityProperty, Object> localMap = new EnumMap<>(EntityProperty.class);
     private EnumMap<Entity.EntityProperty, Object> dataMap = new EnumMap<>(EntityProperty.class);
 
+    private boolean upgraded;
 
     public void setData(EnumMap<Entity.EntityProperty, Object> data) {
         this.dataMap = data;
@@ -223,7 +224,7 @@ public class Entity {
             //TEMPORARY!!!!!!!!!
             double yOffset;
             if (!this.has(VELOCITY)) { //it is a building
-                yOffset = 30;
+                yOffset = 40;
             } else { //it is a minion
                 yOffset = 20;
             }
@@ -360,7 +361,12 @@ public class Entity {
             this.set(HEALTH, (double) this.get(HEALTH) + 10);
             this.set(MAX_HEALTH, (double) this.get(MAX_HEALTH) + 10);
         }
+        upgraded = true;
     }
+
+    public boolean getUpgraded() {return upgraded;}
+
+    public void setUpgraded(boolean upgrade) {this.upgraded = upgrade;}
 
     /**
      * Gets the collision type of this entity.

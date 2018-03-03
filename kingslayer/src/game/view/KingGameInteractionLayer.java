@@ -7,6 +7,7 @@ import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntitySpawner;
 import game.model.game.model.worldObject.entity.entities.Entities;
 import javafx.scene.ImageCursor;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import util.Util;
 
@@ -25,14 +26,13 @@ handles interacting with the game
  */
 public class KingGameInteractionLayer extends GameInteractionLayer {
   private ClientGameModel model;
-  protected WorldPanel world;
+  //protected WorldPanel world;
 
   //    private Entity placing;
   private EntitySpawner spawner;
   private Entity placingGhost;
   public boolean upgrading = false;
   public boolean deleting = false;
-  public boolean selectingBarracks = false;
   private boolean holding = false;
 
   public KingGameInteractionLayer(ClientGameModel clientGameModel, WorldPanel worldPanel) {
@@ -48,7 +48,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
       if (spawner != null) {
         model.processMessage(new EntityBuildRequest(spawner,
-            model.getLocalPlayer().getTeam(), Math.floor(x) + 0.5, Math.floor(y) + 0.5, placingGhost.getHitbox()));
+            model.getLocalPlayer(), Math.floor(x) + 0.5, Math.floor(y) + 0.5, placingGhost.getHitbox()));
         if (!holding) {
           model.remove(placingGhost);
           spawner = null;
@@ -85,8 +85,6 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       } else if (deleting) {
         deleting = false;
         world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
-      } else if (selectingBarracks) {
-        selectingBarracks = false;
       }
     });
 
@@ -153,6 +151,12 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       if (kc == SHIFT)
         holding = true;
 
+      if (kc == KeyCode.TAB) {
+        world.requestFocus();
+        System.out.println("in interaction");
+      }
+
+
     });
 
     world.onKeyRelease(kc -> {
@@ -176,19 +180,21 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   }
 
   public void selectWall() {
-    placingGhost = Entities.makeGhostWall(model.getLocalPlayer().getX(), model.getLocalPlayer().getY());
+    placingGhost = Entities.makeGhostWall(world.screenToGameX(world.mouseX), world.screenToGameY(world.mouseY));
     spawner = EntitySpawner.WALL_SPAWNER;
     model.processMessage(new NewEntityCommand(placingGhost));
   }
 
   public void selectResourceCollector() {
-    placingGhost = Entities.makeResourceCollectorGhost(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), model.getLocalPlayer().getTeam());
+    placingGhost = Entities.makeResourceCollectorGhost(world.screenToGameX(world.mouseX), world.screenToGameY(world.mouseY),
+        model.getLocalPlayer().getTeam());
     spawner = EntitySpawner.RESOURCE_COLLETOR_SPAWNER;
     model.processMessage(new NewEntityCommand(placingGhost));
   }
 
   public void selectArrowTower() {
-    placingGhost = Entities.makeArrowTowerGhost(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), model.getLocalPlayer().getTeam());
+    placingGhost = Entities.makeArrowTowerGhost(world.screenToGameX(world.mouseX), world.screenToGameY(world.mouseY),
+        model.getLocalPlayer().getTeam());
     spawner = EntitySpawner.ARROW_TOWER_SPAWNER;
     model.processMessage(new NewEntityCommand(placingGhost));
   }
@@ -208,35 +214,10 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   }
 
   public void selectBarracks() {
-    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
+    placingGhost = Entities.makeBarracksGhost(world.screenToGameX(world.mouseX), world.screenToGameY(world.mouseY),
+        model.getLocalPlayer().getTeam());
     spawner = EntitySpawner.BARRACKS_SPAWNER;
     model.processMessage(new NewEntityCommand(placingGhost));
-
-    selectingBarracks = false;
-  }
-
-  public void selectRanged() {
-    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-    spawner = EntitySpawner.RANGED_BARRACKS_SPAWNER;
-    model.processMessage(new NewEntityCommand(placingGhost));
-
-    selectingBarracks = false;
-  }
-
-  public void selectSiege() {
-    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-    spawner = EntitySpawner.SIEGE_BARRACKS_SPAWNER;
-    model.processMessage(new NewEntityCommand(placingGhost));
-
-    selectingBarracks = false;
-  }
-
-  public void selectExploration() {
-    placingGhost = Entities.makeBarracksGhost(0, 0, model.getLocalPlayer().getTeam());
-    spawner = EntitySpawner.EXPLORATION_BARRACKS_SPAWNER;
-    model.processMessage(new NewEntityCommand(placingGhost));
-
-    selectingBarracks = false;
   }
 
   public void draw() {
