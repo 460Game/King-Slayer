@@ -112,4 +112,9 @@ public abstract class Const {
     public static final int FIRST_LEVEL_WOOD_COLLECTED = 5;
     public static final int SECOND_LEVEL_WOOD_COLLECTED = 10;
     public static final int THIRD_LEVEL_WOOD_COLLECTED = 15;
+
+    public static final int SECOND_LEVEL_STONE_COLLECTED = 5;
+    public static final int THIRD_LEVEL_STONE_COLLECTED = 10;
+
+    public static final int THIRD_LEVEL_METAL_COLLECTED = 5;
 }

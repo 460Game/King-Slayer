@@ -259,12 +259,23 @@ public abstract class MinionStrat extends AIStrat {
                 // Update resource counts if applicable, and change path destination.
                 data.hasResource = !data.hasResource;
                 if (data.hasResource) {
+                    // TODO holding wood and upgradeds updates wood resources
                     Entity res = model.getEntitiesAt(x, y).stream().filter(e ->
                             e.has(Entity.EntityProperty.RESOURCEAMOUNT)).findFirst().get();
-                    data.resourceHeld += Math.min(Const.FIRST_LEVEL_WOOD_COLLECTED, res.get(Entity.EntityProperty.RESOURCEAMOUNT));
+                    if ((int) entity.get(Entity.EntityProperty.LEVEL) == 0)
+                        data.resourceHeld += Math.min(Const.FIRST_LEVEL_WOOD_COLLECTED, res.get(Entity.EntityProperty.RESOURCEAMOUNT));
+                    else if ((int) entity.get(Entity.EntityProperty.LEVEL) == 1)
+                        data.resourceHeld += Math.min(Const.SECOND_LEVEL_STONE_COLLECTED, res.get(Entity.EntityProperty.RESOURCEAMOUNT));
+                    else
+                        data.resourceHeld += Math.min(Const.THIRD_LEVEL_METAL_COLLECTED, res.get(Entity.EntityProperty.RESOURCEAMOUNT));
                     res.decreaseResourceAmount(model, data.resourceHeld);
                 } else {
-                    model.changeResource(entity.getTeam(), TeamResourceData.Resource.WOOD, data.resourceHeld); // TODO change this to match lvl.
+                    if ((int) entity.get(Entity.EntityProperty.LEVEL) == 0)
+                        model.changeResource(entity.getTeam(), TeamResourceData.Resource.WOOD, data.resourceHeld); // TODO change this to match lvl.
+                    else if ((int) entity.get(Entity.EntityProperty.LEVEL) == 1)
+                        model.changeResource(entity.getTeam(), TeamResourceData.Resource.STONE, data.resourceHeld);
+                    else
+                        model.changeResource(entity.getTeam(), TeamResourceData.Resource.METAL, data.resourceHeld);
                     data.resourceHeld = 0;
                 }
             } else if (data.path.size() > 0) {
