@@ -116,8 +116,8 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
 
 
             gc.drawImage(this.getImage(entity),
-                    toDrawCoords(p.x),
-                    toDrawCoords(p.y),
+                    toDrawCoords(getWidth()) * p.x,
+                    toDrawCoords(getHeight()) * p.y,
                     toDrawCoords(getWidth()),
                     toDrawCoords(getHeight()),
                     toDrawCoords(entity.getX() - entity.getHitbox().getWidth() / 2),
@@ -155,8 +155,8 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
 
             Point p = imageMap.get(drawData.imageNum + "" + drawData.direction);
             gc.drawImage(this.getImage(entity),
-                toDrawCoords(p.x),
-                toDrawCoords(p.y),
+                toDrawCoords(getWidth()) * p.x, //toDrawCoords(p.x) + 2 * p.x,
+                toDrawCoords(getHeight()) * p.y,//toDrawCoords(p.y) + 2 * p.y,
                 toDrawCoords(getWidth()),
                 toDrawCoords(getHeight()),
                 toDrawCoords(entity.getX() - entity.getHitbox().getWidth() / 2),
@@ -171,7 +171,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
     }
 
     double getHeight() {
-        return 1;
+        return 1.0625;
     }
 
     public double getDrawZ(Entity entity) {
@@ -326,6 +326,16 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
                     return null;
             }
 
+        }
+
+        @Override
+        public double getWidth() {
+            return 0.78125;
+        }
+
+        @Override
+        public double getHeight() {
+            return 0.84375;
         }
     }
 
