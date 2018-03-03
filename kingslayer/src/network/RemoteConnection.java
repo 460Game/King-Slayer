@@ -221,6 +221,10 @@ public class RemoteConnection {
 
                         //TODO: change it to be defensive here
                         //TODO: important line added here!!!!!!!!!!!!!!!!
+                        if (readyClients.containsKey(connection.getID())) {
+                            return;
+                        }
+
                         System.out.println("checccccc: " + readyMsg.getTeam() + readyMsg.getRole() + readyMsg.getPlayerName());
                         adaptor.serverLobbyComfirmTeamAndRole(connection.getID(),
                                 readyMsg.getTeam(), readyMsg.getRole(), readyMsg.getPlayerName());

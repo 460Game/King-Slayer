@@ -588,6 +588,10 @@ public class Main extends Application {
     }
 
     private void exit() {
+        if (lobbyClient != null)
+            lobbyClient.stop();
+        if (lobbyServer != null)
+            lobbyServer.closeServer();
         Log.info("EXIT SELECTED");
         Platform.exit();
     }

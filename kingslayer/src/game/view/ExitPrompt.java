@@ -16,8 +16,10 @@ import static util.Const.PROMPT_BG;
 
 public class ExitPrompt extends Region {
     private ClientGameModel model;
-    ExitPrompt(ClientGameModel model) {
+    private GameView view;
+    ExitPrompt(ClientGameModel model, GameView view) {
         this.model = model;
+        this.view = view;
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
         this.setBackground(PROMPT_BG);
         Text text = new Text("EXIT?");
@@ -27,14 +29,15 @@ public class ExitPrompt extends Region {
         text.setTextAlignment(TextAlignment.CENTER);
         text.setLayoutY(50);
 
-        Button confirm = new Button("YES");
-        Button cancle = new Button("NOPE");
+        Button confirm = new Button("Back To Lobby");
+        Button cancle = new Button("Cancel");
         confirm.setTranslateX(100);
         confirm.setTranslateY(100);
         cancle.setTranslateX(400);
         cancle.setTranslateY(100);
         confirm.setOnAction(l -> {
-            Platform.exit();
+//            Platform.exit();
+            Platform.runLater(() -> view.goBackToMain());
         });
         cancle.setOnAction(l-> {
             ExitPrompt.this.setVisible(false);

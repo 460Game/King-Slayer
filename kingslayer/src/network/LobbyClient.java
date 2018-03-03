@@ -141,6 +141,11 @@ public class LobbyClient implements Lobby {//extends Application {
         return status;
     }
 
+    public void stop() {
+        clientGameModel = null;
+        client.client.stop();
+    }
+
     @Override
     public void processMessage(LobbyMessage msg) {
         msg.execuate(this);

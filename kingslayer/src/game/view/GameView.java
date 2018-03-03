@@ -8,6 +8,7 @@ import game.model.game.model.gameState.Loading;
 import game.model.game.model.team.Role;
 import game.model.game.model.worldObject.entity.Entity;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
@@ -59,7 +60,7 @@ public class GameView {
         }
         Minimap minimap = new Minimap(model, worldPanel);
         ResourcePanel resourcePanel = new ResourcePanel(model);
-        ExitPrompt exitPrompt = new ExitPrompt(model);
+        ExitPrompt exitPrompt = new ExitPrompt(model, this);
         TeamWinPrompt teamWinPrompt = new TeamWinPrompt(model, this);
         TeamLosePrompt teamLosePrompt = new TeamLosePrompt(model, this);
 
@@ -190,6 +191,7 @@ public class GameView {
     }
 
     public void goBackToMain() {
+        Platform.setImplicitExit(false);
         mainApp.closeServer();
         window.setScene(mainApp.mainMenuScene);
         mainApp.start(window);
