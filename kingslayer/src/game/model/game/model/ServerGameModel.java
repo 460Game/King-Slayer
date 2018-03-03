@@ -188,11 +188,12 @@ public class ServerGameModel extends GameModel {
         updateTimerTask = new TimerTask() {
             public void run() {
                 synchronized (lock) {
-                    if (clients != null) {
-                        doAICount[0]++;
-                        totalFrameCount[0]++;
 
-                        ServerGameModel.this.update();
+                    doAICount[0]++;
+                    totalFrameCount[0]++;
+
+                    ServerGameModel.this.update();
+                    if (clients != null) {
                         if (doAICount[0] % Const.AI_LOOP_UPDATE_PER_FRAMES == 0) {
                             updateAI(ServerGameModel.this);
                             doAICount[0] = 0;
