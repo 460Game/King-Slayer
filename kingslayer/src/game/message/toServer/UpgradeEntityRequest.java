@@ -16,35 +16,36 @@ public class UpgradeEntityRequest implements ToServerRequest {
      */
     private long entityID;
 
+  private int cost;
+
     /**
      * Default constructor needed for serialization.
      */
     public UpgradeEntityRequest() {
     }
 
-    /**
-     * Constructor of the request, given an entity to be upgraded.
-     *
-     * @param entity entity to be made
-     */
-    public UpgradeEntityRequest(Entity entity) {
-        this.entityID = entity.id;
-    }
+  /**
+   * Constructor of the request, given an entity to be upgraded.
+   * @param entity entity to be made
+   */
+  public UpgradeEntityRequest(Entity entity, int cost) {
+    this.entityID = entity.id;
+    this.cost = cost;
+  }
 
-    /**
-     * Updates the entity in the server.
-     * @param model the game model on the game server
-     */
-    @Override
-    public void executeServer(ServerGameModel model) {
-        Entity entity = model.getEntity(entityID);
+  /**
+   * Updates the entity in the server.
+   * @param model the game model on the game server
+   */
+  @Override
+  public void executeServer(ServerGameModel model) {
+    Entity entity = model.getEntity(entityID);
 
-        // Check if upgradable, not at max level, and if team has enough resources to upgrade.
-        if (entity.has(Entity.EntityProperty.LEVEL) && entity.<Integer>get(Entity.EntityProperty.LEVEL) < 2 &&
-                model.changeResource(entity.getTeam(),
-                        TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL) + 1), -10)) {
-            entity.upgrade();
-            model.processMessage(new NewEntityCommand(entity));
-        }
+      // Check if upgradable, not at max level, and if team has enough resources to upgrade.
+    if (entity.has(Entity.EntityProperty.LEVEL) && entity.<Integer>get(Entity.EntityProperty.LEVEL) < 2 &&
+        model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL) + 1), -cost)) {
+      entity.upgrade();
+      model.processMessage(new NewEntityCommand(entity));
     }
+  }
 }

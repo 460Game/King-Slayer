@@ -8,7 +8,6 @@ import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.collideStrat.ProjectileCollisionStrat;
 import game.model.game.model.worldObject.entity.entities.Entities;
 import util.Const;
 import util.Util;
@@ -215,9 +214,17 @@ public abstract class MinionStrat extends AIStrat {
             handleEnemyDetected(data, entity, model);
         }
 
+        private int waitCounter = 0; // TODO think of better way to do the waiting
+
         @Override
         void wander(MinionStratAIData data, Entity entity, ServerGameModel model) {
 
+            if (waitCounter >= 10)
+                waitCounter = 0;
+            if (waitCounter >= 1) {
+                waitCounter++;
+                return;
+            }
 //            Astar astar = model.getAstar();
             Astar astar = new Astar(model);
 
@@ -282,6 +289,7 @@ public abstract class MinionStrat extends AIStrat {
 
             // Check if reached destination.
             if (entity.containedIn.contains(model.getCell(x, y))) {
+                waitCounter = 1;
                 // Stop movement and clear path.
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
                 data.path.clear();
@@ -290,13 +298,13 @@ public abstract class MinionStrat extends AIStrat {
                 data.hasResource = !data.hasResource;
                 if (data.hasResource) {
                     Entity res = model.getEntitiesAt(x, y).stream().filter(e ->
-                            e.has(Entity.EntityProperty.RESOURCEAMOUNT)).findFirst().get();
+                            e.has(Entity.EntityProperty.RESOURCE_AMOUNT)).findFirst().get();
                     if ((int) entity.get(Entity.EntityProperty.LEVEL) == 0)
-                        data.resourceHeld += Math.min(Const.FIRST_LEVEL_WOOD_COLLECTED, res.get(Entity.EntityProperty.RESOURCEAMOUNT));
+                        data.resourceHeld += Math.min(Const.FIRST_LEVEL_WOOD_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
                     else if ((int) entity.get(Entity.EntityProperty.LEVEL) == 1)
-                        data.resourceHeld += Math.min(Const.SECOND_LEVEL_STONE_COLLECTED, res.get(Entity.EntityProperty.RESOURCEAMOUNT));
+                        data.resourceHeld += Math.min(Const.SECOND_LEVEL_STONE_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
                     else
-                        data.resourceHeld += Math.min(Const.THIRD_LEVEL_METAL_COLLECTED, res.get(Entity.EntityProperty.RESOURCEAMOUNT));
+                        data.resourceHeld += Math.min(Const.THIRD_LEVEL_METAL_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
                     res.decreaseResourceAmount(model, data.resourceHeld);
                 } else {
                     if (data.resourceType == 0)

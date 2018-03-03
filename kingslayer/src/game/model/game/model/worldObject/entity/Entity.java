@@ -56,9 +56,9 @@ public class Entity {
         TEAM(Team.class, PropType.ACTIVE_SYNC),
         ROLE(Role.class, PropType.ACTIVE_SYNC),
         PROJECTILE(ProjectileCollisionStrat.Projectile.class, PropType.ACTIVE_SYNC), //TODO
-        RESOURCETYPE(TeamResourceData.Resource.class, PropType.SERVER_ONLY),
-        RESOURCEAMOUNT(Integer.class, PropType.ACTIVE_SYNC),
-        BUILDINGTYPE(BuildingSpawnerStrat.BuildingType.class, PropType.SERVER_ONLY),
+        RESOURCE_TYPE(TeamResourceData.Resource.class, PropType.ACTIVE_SYNC),
+        RESOURCE_AMOUNT(Integer.class, PropType.ACTIVE_SYNC),
+        BUILDING_TYPE(BuildingSpawnerStrat.BuildingType.class, PropType.ACTIVE_SYNC),
         DRAW_DATA(DrawData.class, PropType.LOCAL_ONLY),
         VELOCITY(Velocity.class, PropType.ACTIVE_SYNC),
         AI_STRAT(AIStrat.class, PropType.SERVER_ONLY),
@@ -417,8 +417,8 @@ public class Entity {
     }
 
     public void decreaseResourceAmount(GameModel model, int decrement) {
-        this.set(RESOURCEAMOUNT, (int) get(RESOURCEAMOUNT) - decrement);
-        if ((int) this.get(RESOURCEAMOUNT) <= 0)
+        this.set(RESOURCE_AMOUNT, (int) get(RESOURCE_AMOUNT) - decrement);
+        if ((int) this.get(RESOURCE_AMOUNT) <= 0)
             model.processMessage(new RemoveEntityRequest(this));
     }
 
