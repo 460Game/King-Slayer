@@ -194,8 +194,17 @@ public abstract class MinionStrat extends AIStrat {
             handleEnemyDetected(data, entity, model);
         }
 
+        private int waitCounter = 0; // TODO think of better way to do the waiting
+
         @Override
         void wander(MinionStratAIData data, Entity entity, ServerGameModel model) {
+
+            if (waitCounter >= 10)
+                waitCounter = 0;
+            if (waitCounter >= 1) {
+                waitCounter++;
+                return;
+            }
 
             Astar astar = model.getAstar();
 
@@ -251,6 +260,7 @@ public abstract class MinionStrat extends AIStrat {
 
             // Check if reached destination.
             if (entity.containedIn.contains(model.getCell(x, y))) {
+                waitCounter = 1;
                 // Stop movement and clear path.
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
                 data.path.clear();

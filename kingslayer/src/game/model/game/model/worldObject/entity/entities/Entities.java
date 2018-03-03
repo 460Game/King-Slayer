@@ -54,7 +54,7 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(RESOURCE_TYPE, TeamResourceData.Resource.METAL),
-                pair(RESOURCE_AMOUNT, 25), // TODO
+                pair(RESOURCE_AMOUNT, 30), // TODO
                 pair(DRAW_STRAT, ImageDrawStrat.METAL_IMAGE_DRAW_STRAT),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON)); // TODO death
     }
