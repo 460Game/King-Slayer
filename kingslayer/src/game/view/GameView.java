@@ -71,7 +71,7 @@ public class GameView {
 
         actionPanel.setPrefWidth(335);
         actionPanel.setPrefHeight(130);
-        actionPanel.layoutXProperty().bind(Bindings.max(minimap.widthProperty(), window.widthProperty().divide(2).subtract(250)));
+        actionPanel.layoutXProperty().bind(Bindings.max(minimap.widthProperty(), window.widthProperty().divide(2).subtract(150)));
         actionPanel.layoutYProperty().bind(window.heightProperty().subtract(135));
 
         // resourcePanel.setPrefWidth(300);

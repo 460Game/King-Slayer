@@ -31,7 +31,7 @@ import static javafx.scene.input.KeyCode.DIGIT3;
 import static javafx.scene.input.KeyCode.DIGIT4;
 import static javafx.scene.input.KeyCode.NUMPAD4;
 import static util.Util.toDrawCoords;
-import static util.Util.toWorldCoords;
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty;
 
 /*
 handles interacting with the game
@@ -61,8 +61,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.COLLECTOR, 1), -10);
     upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.BARRACKS, 0), -15);
     upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.BARRACKS, 1), -20);
-    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.TOWER, 0), -15);
-    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.TOWER, 1), -15);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.TOWER, 0), -20);
+    upgradeCost.put(new Pair(BuildingSpawnerStrat.BuildingType.TOWER, 1), -20);
 
     sellPrice.put(BuildingSpawnerStrat.BuildingType.WALL, 5);
     sellPrice.put(BuildingSpawnerStrat.BuildingType.COLLECTOR, 5);
@@ -88,7 +88,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         return;
       }
 
-      if (spawner != null && placingGhost != null && !placingGhost.<GhostDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).invalidLocation) {
+      if (spawner != null && placingGhost != null && !placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation) {
         model.processMessage(new EntityBuildRequest(spawner,
             model.getLocalPlayer(), Math.floor(x) + 0.5, Math.floor(y) + 0.5, placingGhost.getHitbox()));
         if (!holding) {
@@ -103,13 +103,11 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         }
       } else if (upgrading) {
         model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
-//          System.out.println("rawr: " + model.getResourceData().getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL) + 1)) + " " +
-//              upgradeCost.get(new Pair(entity.get(Entity.EntityProperty.BUILDING_TYPE), entity.<Integer>get(Entity.EntityProperty.LEVEL))));
-          if (model.getResourceData().getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL) + 1)) >=
-              -upgradeCost.get(new Pair(entity.get(Entity.EntityProperty.BUILDING_TYPE), entity.<Integer>get(Entity.EntityProperty.LEVEL)))) {
+          if (model.getResourceData().getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) + 1)) >=
+              -upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE), entity.<Integer>get(EntityProperty.LEVEL)))) {
             model.processMessage(new UpgradeEntityRequest(entity,
-                upgradeCost.get(new Pair(entity.get(Entity.EntityProperty.BUILDING_TYPE),
-                    entity.<Integer>get(Entity.EntityProperty.LEVEL)))));
+                upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE),
+                    entity.<Integer>get(EntityProperty.LEVEL)))));
             if (!holding) {
               upgrading = false;
               world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
@@ -117,7 +115,6 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
                   GAME_CURSOR_IMAGE.getHeight() / 2));
             }
           } else {
-//            System.out.println("Can't upgrade :(");
             clearSelection();
             showError = true;
           }
@@ -182,7 +179,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         spawner = null;
       }
 
-      if ((upgrading || deleting) && kc != W && kc != A && kc != S && kc != D) {
+      if ((upgrading || deleting) && kc != W && kc != A && kc != S && kc != D && kc != SHIFT) {
         upgrading = false;
         deleting = false;
         world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
@@ -224,11 +221,6 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
       if (kc == SHIFT)
         holding = true;
-
-      if (kc == KeyCode.TAB) {
-        world.requestFocus();
-        System.out.println("in interaction");
-      }
 
 
     });
