@@ -63,7 +63,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         return;
       }
 
-      if (spawner != null) {
+      if (spawner != null && placingGhost != null && !placingGhost.<GhostDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).invalidLocation) {
         model.processMessage(new EntityBuildRequest(spawner,
             model.getLocalPlayer(), Math.floor(x) + 0.5, Math.floor(y) + 0.5, placingGhost.getHitbox()));
         if (!holding) {
@@ -183,7 +183,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
     world.onKeyRelease(kc -> {
       holding = false;
-      if (kc == SHIFT) {
+      if (kc == SHIFT && placingGhost != null) {
         model.remove(placingGhost);
         spawner = null;
         placingGhost = null;
