@@ -516,6 +516,7 @@ public class Main extends Application {
                 Task show = new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
+                        Log.info("set chooseTeamAndRoleScene now!!!!!");
                         Platform.runLater(()->window.setScene(chooseTeamAndRoleScene()));
                         return null;
                     }
@@ -559,6 +560,7 @@ public class Main extends Application {
             @Override
             public void showChoiceTeamAndRoleScene() {
                 Platform.setImplicitExit(false);
+                Log.info("set chooseTeamAndRoleScene scene");
                 Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
 //                window.setScene(new Scene(choiceTeamAndRoleScene()));
             }
