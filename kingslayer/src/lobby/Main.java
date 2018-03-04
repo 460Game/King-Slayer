@@ -256,9 +256,13 @@ public class Main extends Application {
         animator.start();
         resize.invalidated(null);
         sleep(100);
-        Platform.runLater(()-> {
-            window.setScene(mainMenuScene);
-        });
+
+        window.setScene(mainMenuScene);
+
+//        Platform.setImplicitExit(false);
+//        Platform.runLater(()-> {
+//
+//        });
         window.show();
     }
 
@@ -507,6 +511,7 @@ public class Main extends Application {
             @Override
             public void showChoiceTeamAndRoleScene() {
                 System.err.println("Set team and role scene again");
+                Platform.setImplicitExit(false);
                 Task show = new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
