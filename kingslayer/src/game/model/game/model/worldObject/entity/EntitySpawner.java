@@ -50,8 +50,8 @@ public enum EntitySpawner {
 
     @Override
     public int finalCost(ClientGameModel model) {
-      return cost + (int) model.getEntitiesOfType(BuildingSpawnerStrat.BuildingType.BARRACKS)
-            .filter(entity -> entity.getTeam() == model.getLocalPlayer().getTeam()).count();
+      return cost * (int) Math.pow(2, (int) model.getEntitiesOfType(BuildingSpawnerStrat.BuildingType.BARRACKS)
+            .filter(entity -> entity.getTeam() == model.getLocalPlayer().getTeam()).count());
     }
 
     @Override
