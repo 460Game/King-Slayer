@@ -145,6 +145,7 @@ public class Main extends Application {
     private Stage window;
 
     public int restart(Stage window) {
+        Platform.setImplicitExit(false);
 //        window.setScene(chooseTeamAndRoleScene());
         if (lobbyClient != null) {
             System.out.println("client lobby restartFromReadyPage");

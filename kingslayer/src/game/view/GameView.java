@@ -207,7 +207,10 @@ public class GameView {
 
         timer = null;
 
+        Platform.setImplicitExit(false);
+
         int status = mainApp.restart(window);
+        Log.info("Main restarts using window!");
 
         model = null;
         mainApp = null;
