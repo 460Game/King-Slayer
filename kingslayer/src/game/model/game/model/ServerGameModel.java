@@ -219,7 +219,9 @@ public class ServerGameModel extends GameModel {
 
             updateTimerTask.cancel();
             t.cancel();
-            t2.cancel();
+            if (FPSPrint) {
+                t2.cancel();
+            }
             updateFPS.cancel();
 
 
