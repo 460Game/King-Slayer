@@ -441,7 +441,8 @@ public abstract class MinionStrat extends AIStrat {
         // Add enemies within the range of this entity and in the line of sight of this enemy.
         for (int i = (int) (x - range); i <= (int) (x + range); i++) {
             for (int j = (int) (y - range); j <= (int) (y + range); j++) {
-                enemies.addAll(model.getCell(i, j).getContents().stream().filter(e ->
+                if (Util.checkBounds(i, j))
+                    enemies.addAll(model.getCell(i, j).getContents().stream().filter(e ->
                         util.Util.dist(x, y, e.getX(), e.getY()) <= range
                                 && e.has(Entity.EntityProperty.TEAM)
                                 && e.getTeam() != entity.getTeam()
