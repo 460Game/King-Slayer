@@ -120,8 +120,10 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
                       GAME_CURSOR_IMAGE.getHeight() / 2));
                 }
               } else {
-                clearSelection();
-                showError = true;
+                if (entity.has(EntityProperty.LEVEL) && entity.<Integer>get(EntityProperty.LEVEL) < 2) {
+                  clearSelection();
+                  showError = true;
+                }
               }
             }
           });
