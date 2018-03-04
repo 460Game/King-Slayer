@@ -45,13 +45,19 @@ public abstract class MinionStrat extends AIStrat {
 
         @Override
         void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
+            waitCounter += seconds;
             data.path.clear();
             data.nextDestination = null;
             entity.setVelocity(entity.getVelocity().withMagnitude(0));
-            Entity enemy = getClosestEnemy(data, entity, model);
-            double dir = Util.angle2Points(entity.getX(), entity.getY(), enemy.getX(), enemy.getY());
-            model.processMessage(new MakeEntityRequest(Entities.makeArrow(entity.getX(), entity.getY(), dir, entity.getTeam(), entity, 1, -1)));
+            if (waitCounter >= 1) {
+                Entity enemy = getClosestEnemy(data, entity, model);
+                double dir = Util.angle2Points(entity.getX(), entity.getY(), enemy.getX(), enemy.getY());
+                model.processMessage(new MakeEntityRequest(Entities.makeArrow(entity.getX(), entity.getY(), dir, entity.getTeam(), entity, 1, -1)));
+                waitCounter = 0;
+            }
         }
+
+        private double waitCounter = 2;
 
         @Override
         void wander(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {

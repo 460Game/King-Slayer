@@ -35,7 +35,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns(Entity entity) {
-            return 1;
+            return 5;
         } // TODO CHANGE BACK
 
         @Override
@@ -73,7 +73,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns(Entity entity) {
-            return 2.5;
+            return 5;
         }
 
         @Override
@@ -98,7 +98,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns(Entity entity) {
-            return 2.5;
+            return 5;
         }
 
         @Override
@@ -123,7 +123,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns(Entity entity) {
-            return 2.5;
+            return 5;
         }
 
         @Override
@@ -148,7 +148,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns(Entity entity) {
-            return 2.5;
+            return 5;
         }
 
         @Override
