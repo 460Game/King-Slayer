@@ -85,8 +85,6 @@ public abstract class MinionStrat extends AIStrat {
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
-            Log.info("PATH SIZE : " + data.path.size());
-
             // Check if reached destination.
             if (entity.containedIn.contains(model.getCell(x, y))) {
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
@@ -590,7 +588,6 @@ public abstract class MinionStrat extends AIStrat {
         // First, scan for any attackable enemies if the minion can attack.
         // If there are any attackable enemies, perform the appropriate action.
         data.attackable = attackableEnemies(entity, model);
-        Log.info("Attackable size: " + data.attackable.size());
         if (data.attackable.size() > 0) {
             handleEnemyAttackable(data, entity, model, seconds);
             return;
