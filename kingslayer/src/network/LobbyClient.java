@@ -120,7 +120,10 @@ public class LobbyClient implements Lobby {//extends Application {
         clientGameModel = new ClientGameModel(new Model() {
             @Override
             public void processMessage(Message m) {
-                serverModel.processMessage(m);
+                if (serverModel != null)
+                    serverModel.processMessage(m);
+                else
+                    Log.info("serverModel null, might happen after game ends");
             }
 
             @Override
