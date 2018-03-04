@@ -17,7 +17,7 @@ import java.util.*;
 public class LobbyServer implements Lobby { //extends Application {
 
     static {
-        Log.set(Log.LEVEL_INFO);
+        Log.set(Log.LEVEL_ERROR);
     }
 
 
