@@ -291,6 +291,10 @@ public class Entity {
     }
 
     public void setX(double x) {
+        if(x < 1.0)
+            x = 1.0;
+        if(x > Const.GRID_X_SIZE - 1)
+            x =  Const.GRID_X_SIZE - 1;
         this.set(X, x);
     }
 
@@ -300,6 +304,10 @@ public class Entity {
     }
 
     public void setY(double y) {
+        if(y < 1.0)
+            y = 1.0;
+        if(y > Const.GRID_Y_SIZE - 1)
+            y =  Const.GRID_Y_SIZE - 1;
         this.set(Y, y);
     }
 
