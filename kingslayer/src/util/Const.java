@@ -21,7 +21,7 @@ public abstract class Const {
     public static final Background PANEL_BG = new Background(new BackgroundFill(PANEL_BG_COLOR, new CornerRadii(10), null));
     public static final Paint PROMPT_BG_COLOR = Color.color(0.6,0.4,0.7,0.8);
     public static final Background PROMPT_BG = new Background(new BackgroundFill(PROMPT_BG_COLOR, new CornerRadii(30), null));
-    public static boolean FPSPrint = true;
+    public static boolean FPSPrint = false;
 
     /**
      * Flag that signals whether to update in debugging mdode.

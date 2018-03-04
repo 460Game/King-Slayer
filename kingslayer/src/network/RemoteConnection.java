@@ -180,7 +180,7 @@ public class RemoteConnection {
 
             server.addListener(new Listener() {
                 public void received (Connection c, Object obj) {
-                    Log.info("Server received from " + c.getID() + " " + obj.toString());
+               //     Log.info("Server received from " + c.getID() + " " + obj.toString());
                     GameConnection connection = (GameConnection)c;
 
                     //init a queue when have a new client
