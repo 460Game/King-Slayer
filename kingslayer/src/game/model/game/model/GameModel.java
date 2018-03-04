@@ -1,5 +1,6 @@
 package game.model.game.model;
 
+import com.esotericsoftware.minlog.Log;
 import game.message.Message;
 import game.message.toClient.SetEntityCommand;
 import game.message.toClient.SyncEntityFieldCommand;
@@ -97,6 +98,10 @@ public abstract class GameModel implements Model {
      * @return the cell with the given upper left coordinates
      */
     public GridCell getCell(int x, int y) {
+        if(x < 0 || x >= getMapWidth() || y < 0 || y >= getMapWidth()){
+            Log.error("Requested Invalid Cell");
+            return null;
+        }
         return grid[x][y];
     }
 
