@@ -75,7 +75,7 @@ public class Main extends Application {
 
     TextField playerName = new TextField();
 
-    MenuItem[] items = new MenuItem[]{
+    MenuItem[] items = new MenuItem[] {
         new MenuItem("Join LAN"),
         new MenuItem("Host LAN"),
         new MenuItem("Solo Game King"),
@@ -149,12 +149,12 @@ public class Main extends Application {
 //        window.setScene(chooseTeamAndRoleScene());
         if (lobbyClient != null) {
             System.out.println("client lobby restartFromReadyPage");
-            int status = lobbyClient.restartFromReadyPage();
+            lobbyClient.restartFromReadyPage();
         }
 
         if (lobbyServer != null) {
             System.out.println("server lobby restartFromReadyPage");
-            int status = lobbyServer.restartFromReadyPage();
+            lobbyServer.restartFromReadyPage();
         }
         return 0;
     }
@@ -438,28 +438,28 @@ public class Main extends Application {
 //        window.widthProperty().addListener(resize);
 //        window.maximizedProperty().addListener(resize);
 
-        double[] bgOpac = new double[]{2.0};
-        animator.stop();
-        animator = new AnimationTimer() {
-
-        @Override
-        public void handle(long now) {
-                midGC.clearRect(0, 0, window.getWidth(), window.getHeight());
-                midGC.setFill(Color.color(0.6, 0.6, 0.7, 0.4 + (Math.abs(bgOpac[0] % 2 - 1)) * 0.3));
-                bgOpac[0] += 0.002;
-
-                midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
-                midGC.drawImage(LOGO_TEXT_IMAGE, window.getWidth()/4, 50, window.getWidth()/2,
-                        (153/645.0)*window.getWidth()/2);
-
-                bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, window.getWidth(), window.getHeight());
-
-                addedPane.setTranslateX(window.getWidth() / 2 - addedPane.getWidth() / 2);
-                addedPane.setTranslateY(window.getHeight() - addedPane.getHeight() + 200);
-            }
-        };
-
-        animator.start();
+//        double[] bgOpac = new double[]{2.0};
+//        animator.stop();
+//        animator = new AnimationTimer() {
+//
+//        @Override
+//        public void handle(long now) {
+//                midGC.clearRect(0, 0, window.getWidth(), window.getHeight());
+//                midGC.setFill(Color.color(0.6, 0.6, 0.7, 0.4 + (Math.abs(bgOpac[0] % 2 - 1)) * 0.3));
+//                bgOpac[0] += 0.002;
+//
+//                midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
+//                midGC.drawImage(LOGO_TEXT_IMAGE, window.getWidth()/4, 50, window.getWidth()/2,
+//                        (153/645.0)*window.getWidth()/2);
+//
+//                bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, window.getWidth(), window.getHeight());
+//
+//                addedPane.setTranslateX(window.getWidth() / 2 - addedPane.getWidth() / 2);
+//                addedPane.setTranslateY(window.getHeight() - addedPane.getHeight() + 200);
+//            }
+//        };
+//
+//        animator.start();
     }
 
     private GridPane inputNumOfPlayers() {
