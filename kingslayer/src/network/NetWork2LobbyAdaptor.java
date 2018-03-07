@@ -12,4 +12,5 @@ public interface NetWork2LobbyAdaptor {
 
     public void showLobbyTeamChoice();
     public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role, String playerName);
+    public void serverStartRematch();
 }

@@ -38,7 +38,8 @@ public class TeamWinPrompt extends Region {
             Platform.runLater(() -> view.goBackToMain());
         });
         rematch.setOnAction(l-> {
-            Platform.runLater(() -> view.restart());
+//            Platform.runLater(() -> view.restart());
+            Platform.runLater(() -> view.rematch());
         });
 
         this.getChildren().addAll(text, back_to_lobby, rematch);

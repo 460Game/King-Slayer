@@ -44,38 +44,41 @@ public class LobbyServer implements Lobby { //extends Application {
         server.setNumOfPlayer(numOfPlayers);
     }
 
+    public void initServer() {
+        //init the client to team role map
+        for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
+            System.out.println("check serverInit: " + conn2PlayerInfo.get(remoteModel.getConnectId()));
+            clientGameModelToTeamAndRole.put(remoteModel,
+                    conn2TeamAndRole.get(remoteModel.getConnectId()));
+
+            clientGameModelToPlayerInfo.put(remoteModel, conn2PlayerInfo.get(remoteModel.getConnectId()));
+        }
+
+
+        //TODO: change it to pingback later
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        //TODO: put the enum parameters in
+//                serverModel.init(remoteModels, clientGameModelToTeamAndRole);
+        serverModel.init(remoteModels, clientGameModelToPlayerInfo);
+        serverModel.start();
+
+        for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
+            Log.info("server start client: " + remoteModel.connectId + "!!!!!!!!!!");
+            remoteModel.startModel();
+        }
+    }
+
     public void start() throws Exception {
         server = new RemoteConnection(true, new NetWork2LobbyAdaptor() {
             @Override
             public void serverInit() {//should send the map
-
-                //init the client to team role map
-                for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
-                    System.out.println("check serverInit: " + conn2PlayerInfo.get(remoteModel.getConnectId()));
-                    clientGameModelToTeamAndRole.put(remoteModel,
-                            conn2TeamAndRole.get(remoteModel.getConnectId()));
-
-                    clientGameModelToPlayerInfo.put(remoteModel, conn2PlayerInfo.get(remoteModel.getConnectId()));
-                }
-
-
-                //TODO: change it to pingback later
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-
-                //TODO: put the enum parameters in
-//                serverModel.init(remoteModels, clientGameModelToTeamAndRole);
-                serverModel.init(remoteModels, clientGameModelToPlayerInfo);
-                serverModel.start();
-
-                for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
-                    Log.info("server start client: " + remoteModel.connectId + "!!!!!!!!!!");
-                    remoteModel.startModel();
-                }
+                initServer();
             }
 
             @Override
@@ -105,6 +108,12 @@ public class LobbyServer implements Lobby { //extends Application {
                 conn2PlayerName.put(connId, playerName);
                 conn2PlayerInfo.put(connId, new PlayerInfo(team, role, playerName));
                 System.out.println("Did put team and role in the map: " + conn2PlayerInfo.get(connId).getTeam());
+            }
+
+            @Override
+            public void serverStartRematch() {
+//                server.rematch();
+                lobbyServerRematch();
             }
 
         });
@@ -144,7 +153,9 @@ public class LobbyServer implements Lobby { //extends Application {
         conn2ClientGameModel = new HashMap<>();
         clientGameModelToTeamAndRole = new HashMap<>();
         conn2PlayerInfo = new HashMap<>();
-        serverModel.stop();
+
+        //already stopped serverModel
+//        serverModel.stop();
 
         remoteModels = null;
         serverModel = null;
@@ -167,6 +178,20 @@ public class LobbyServer implements Lobby { //extends Application {
     @Override
     public void processMessage(LobbyMessage msg) {
         msg.execuate(this);
+    }
+
+    public void lobbyServerRematch() {
+        serverModel.stop();
+        serverModel = new ServerGameModel();
+        //pretty sure clients have made models at this point.
+
+        serverModel.init(remoteModels, clientGameModelToPlayerInfo);
+        serverModel.start();
+
+        for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
+            Log.info("server start client: " + remoteModel.connectId + "!!!!!!!!!!");
+            remoteModel.startModel();
+        }
     }
 
 //    public void validateTeamRolePlayer(PlayerInfo playerInfo) {

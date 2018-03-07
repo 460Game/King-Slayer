@@ -36,6 +36,22 @@ public class LobbyClient implements Lobby {//extends Application {
         this.mainApp = mainApp;
     }
 
+    public void lobbyRematch() {
+        clientGameModel = new ClientGameModel(new Model() {
+            @Override
+            public void processMessage(Message m) {
+                if (serverModel != null)
+                    serverModel.processMessage(m);
+                else
+                    Log.info("serverModel null, might happen after game ends");
+            }
+
+            @Override
+            public long nanoTime() {
+                return serverModel.nanoTime();
+            }
+        });
+    }
 
     public void start() throws Exception {
 
@@ -81,6 +97,11 @@ public class LobbyClient implements Lobby {//extends Application {
 
             @Override
             public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role, String playerName) {
+                //client should not call
+            }
+
+            @Override
+            public void serverStartRematch() {
                 //client should not call
             }
 
@@ -136,11 +157,9 @@ public class LobbyClient implements Lobby {//extends Application {
     public int restartFromReadyPage() {
         //nop for now
         gameView = null;
-
         clientGameModel = null;
         serverModel = null;
         int status = client.restartFromReadyPage();
-        System.out.println("want it to be null: " + gameView + " status: " + status);
         return status;
     }
 
@@ -164,6 +183,26 @@ public class LobbyClient implements Lobby {//extends Application {
 //            clientGameModel.stop();
 //        }
         return 0;
+    }
+
+    public void lobbyClientRematch() {
+
+        clientGameModel = new ClientGameModel(new Model() {
+            @Override
+            public void processMessage(Message m) {
+                if (serverModel != null)
+                    serverModel.processMessage(m);
+                else
+                    Log.info("serverModel null, might happen after game ends");
+            }
+
+            @Override
+            public long nanoTime() {
+                return serverModel.nanoTime();
+            }
+        });
+
+        client.rematch();
     }
 }
 

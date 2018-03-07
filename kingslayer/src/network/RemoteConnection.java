@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.LinkedTransferQueue;
 
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
@@ -25,12 +24,59 @@ public class RemoteConnection {
     }
 
     private boolean running = false;
+    private ConcurrentHashMap rematchClients = new ConcurrentHashMap();
 
     public void notifyMadeModel() {
         if (isServer) return;//server should not use this
         client.sendTCP(new NetworkCommon.ClientFinishMakingModelMsg());
     }
 
+    public int rematch() {
+        if (isServer) {
+            running = false;
+
+            toBeConsumeMsgQueue = new LinkedBlockingQueue<>();
+            sendQueueMsgThread = new Thread(this::sendQueueMsg, sendQMark + " Send Batched Message Thread");
+            consumeQueueMsgThread = new Thread(this::consumeReceivedMsg, consumeQMark + " Consume Msg Thread");
+
+            for (Integer clientId : messageQueues.keySet()) {
+                messageQueues.put(Integer.valueOf(clientId), new LinkedBlockingQueue<>());
+            }
+
+            running = true;
+            sendQueueMsgThread.start();
+            consumeQueueMsgThread.start();
+
+            server.sendToAllTCP(new NetworkCommon.ClientStartModelMsg());
+            return 0;
+        }
+        else {
+
+            running = false;
+
+            while (!sendQueueMsgThread.isInterrupted()) sendQueueMsgThread.interrupt();
+            while (!consumeQueueMsgThread.isInterrupted()) consumeQueueMsgThread.interrupt();
+
+            sendQueueMsgThread = new Thread(this::sendQueueMsg, sendQMark + " Send Batched Message Thread");
+            consumeQueueMsgThread = new Thread(this::consumeReceivedMsg, consumeQMark + " Consume Msg Thread");
+
+
+            for (Integer id : messageQueues.keySet()) {
+                messageQueues.remove(Integer.valueOf(id));
+                messageQueues.put(Integer.valueOf(id), new LinkedBlockingQueue<>());
+            }
+
+            toBeConsumeMsgQueue = new LinkedBlockingQueue<>();
+
+            running = true;
+            sendQueueMsgThread.start();
+            consumeQueueMsgThread.start();
+
+            client.sendTCP(new NetworkCommon.ClientRematchMsg());
+            Log.info("client sent rematch message");
+            return 0;
+        }
+    }
 
 
     // This holds per connection state.
@@ -78,6 +124,8 @@ public class RemoteConnection {
             System.out.println("clear and send all client connect");
             readyClients = new ConcurrentHashMap<>();
             cntClientModelsMade = 0;
+
+            rematchClients = new ConcurrentHashMap();
 
             running = false;
 
@@ -192,6 +240,17 @@ public class RemoteConnection {
                         if (clientList.size() == numOfPlayer) {//all clients connected
                             server.sendToAllTCP(new NetworkCommon.AllClientConnectMsg());
 //                            adaptor.makeModel();
+                        }
+                    }
+
+                    if (obj instanceof NetworkCommon.ClientRematchMsg) {
+                        rematchClients.put(connection.getID(), connection);
+                        System.out.println("rematch size: " + rematchClients.size());
+                        System.out.println("while clientList size is " + clientList.size());
+                        if (rematchClients.size() == clientList.size()) {
+                            RemoteConnection.this.rematch();
+                            adaptor.serverStartRematch();
+                            rematchClients = new ConcurrentHashMap();
                         }
                     }
 

@@ -214,6 +214,9 @@ public class ServerGameModel extends GameModel {
 
     public void stop() {
 
+        if (!running) {
+            return;
+        }
 
         synchronized (lock){
 

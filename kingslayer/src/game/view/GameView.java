@@ -201,20 +201,35 @@ public class GameView {
         window = null;
     }
 
+    public void rematch() {
+        timer.stop();
+
+
+
+        Platform.setImplicitExit(false);
+
+        int status = mainApp.rematch(window);
+        Log.info("Main restarts using window!");
+        timer = null;
+        model = null;
+        mainApp = null;
+        window = null;
+    }
+
     public void restart() {
 
         timer.stop();
 
-        timer = null;
+
 
         Platform.setImplicitExit(false);
 
         int status = mainApp.restart(window);
         Log.info("Main restarts using window!");
-
-//        model = null;
-//        mainApp = null;
-//        window = null;
+        timer = null;
+        model = null;
+        mainApp = null;
+        window = null;
 
     }
 }

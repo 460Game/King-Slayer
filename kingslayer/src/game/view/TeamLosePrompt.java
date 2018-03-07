@@ -40,7 +40,8 @@ public class TeamLosePrompt extends Region {
             view.goBackToMain();
         });
         rematch.setOnAction(l-> {
-            view.restart();
+//            view.restart();
+            view.rematch();
         });
 
         this.getChildren().addAll(text, confirm, rematch);

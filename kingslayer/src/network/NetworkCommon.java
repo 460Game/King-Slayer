@@ -213,6 +213,7 @@ public class NetworkCommon {
         kryo.register(SlayerRespawnStartCountRequest.class);
 
         kryo.register(BuildingSpawnerStrat.BuildingType.class);
+        kryo.register(ClientRematchMsg.class);
 
 
 
@@ -284,6 +285,9 @@ public class NetworkCommon {
         public ClientRestartMsg() {}
     }
 
+    public static class ClientRematchMsg {
+        public ClientRematchMsg() {}
+    }
 
 
 //    public static class BatchMsg {
