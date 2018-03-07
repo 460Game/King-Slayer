@@ -471,6 +471,7 @@ public class Main extends Application {
         //Defining the Name text field
         final TextField numOfPlayer = new TextField();
         numOfPlayer.setPromptText("Enter Number Of Players.");
+        numOfPlayer.setText("4");
         numOfPlayer.setPrefColumnCount(100);
         numOfPlayer.setPrefSize(800, 60);
         numOfPlayer.setFont(Font.font ("Verdana", 30));
