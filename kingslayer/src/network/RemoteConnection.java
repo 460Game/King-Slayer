@@ -425,9 +425,25 @@ public class RemoteConnection {
         return 0;
     }
 
-    public void stop() {
-        if (isServer) server.stop();
-        else client.stop();
+    public int stop() {
+        readyClients = null;
+        cntClientModelsMade = 0;
+
+        running = false;
+
+        sendQueueMsgThread = null;
+        consumeQueueMsgThread = null;
+//        toBeConsumeMsgQueue = null;
+
+        if (isServer) {
+            server.stop();
+        }
+
+        else {
+            client.stop();
+        }
+
+        return 0;
     }
 
     public void notifyReady(Team team, Role role, String playerName) {

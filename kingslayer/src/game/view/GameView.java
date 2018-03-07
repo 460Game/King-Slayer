@@ -189,11 +189,11 @@ public class GameView {
     }
 
     public void goBackToMain() {
-        Platform.setImplicitExit(false);
-        mainApp.closeServer();
-        window.setScene(mainApp.mainMenuScene);
-        mainApp.start(window);
+//        Platform.setImplicitExit(false);
+
         timer.stop();
+        int closeStatus = mainApp.closeServer();
+        mainApp.restartFromMainMenu(window);
 
         timer = null;
         model = null;
@@ -212,9 +212,9 @@ public class GameView {
         int status = mainApp.restart(window);
         Log.info("Main restarts using window!");
 
-        model = null;
-        mainApp = null;
-        window = null;
+//        model = null;
+//        mainApp = null;
+//        window = null;
 
     }
 }

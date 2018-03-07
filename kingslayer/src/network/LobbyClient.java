@@ -153,5 +153,17 @@ public class LobbyClient implements Lobby {//extends Application {
     public void processMessage(LobbyMessage msg) {
         msg.execuate(this);
     }
+
+    public int closeClientLobby() {
+        if (client != null) {
+            client.stop();
+            client = null;
+        }
+        //clientGameModel does not have a close method
+//        if (clientGameModel != null) {
+//            clientGameModel.stop();
+//        }
+        return 0;
+    }
 }
 

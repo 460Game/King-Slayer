@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="javafx" name="King Slayer">
+  <artifact type="javafx" build-on-make="true" name="King Slayer">
     <output-path>$PROJECT_DIR$/bin/artifacts/King_Slayer</output-path>
     <properties id="javafx-properties">
       <options>

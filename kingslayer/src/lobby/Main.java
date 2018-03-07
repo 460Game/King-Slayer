@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.lang.management.PlatformManagedObject;
 
 import static images.Images.*;
+import static util.Util.random;
 import static util.Util.sleep;
 
 public class Main extends Application {
@@ -72,7 +73,7 @@ public class Main extends Application {
     GraphicsContext bgGC = bgCanvas.getGraphicsContext2D();
     Canvas midCanvas = new Canvas();
     GraphicsContext midGC = midCanvas.getGraphicsContext2D();
-
+    private boolean playerNumAlreadySet = false;
     TextField playerName = new TextField();
 
     MenuItem[] items = new MenuItem[] {
@@ -82,12 +83,16 @@ public class Main extends Application {
         new MenuItem("Solo Game Slayer"),
         new MenuItem("Options"),
         new MenuItem("Exit")};
-    private boolean playerNumAlreadySet = false;
 
-    public void closeServer() {
+
+    public int closeServer() {
         if (lobbyServer != null) {
-            lobbyServer.closeServer();
+            return lobbyServer.closeServer();
         }
+        if (lobbyClient != null) {
+            return lobbyClient.closeClientLobby();
+        }
+        return 0;
     }
 
     private class MenuItem extends HBox {
@@ -144,6 +149,24 @@ public class Main extends Application {
 
     private Stage window;
 
+    public int restartFromMainMenu(Stage window) {
+        cleanup();
+        startMain(window);
+        return 0;
+    }
+
+    private void cleanup() {
+        //seems like everything would be reset later, so nothing to do here
+        lobbyClient = null;
+        lobbyServer = null;
+        bgCanvas = new Canvas();
+        bgGC = bgCanvas.getGraphicsContext2D();
+        midCanvas = new Canvas();
+        midGC = midCanvas.getGraphicsContext2D();
+        playerNumAlreadySet = false;
+        playerName = new TextField();
+    }
+
     public int restart(Stage window) {
         Platform.setImplicitExit(false);
 //        window.setScene(chooseTeamAndRoleScene());
@@ -159,272 +182,19 @@ public class Main extends Application {
         return 0;
     }
 
+    public int singleplayerRestart() {
+        return 0;
+    }
+
     @Override
     public void start(Stage window) {
-        this.window = window;
-        Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
-        window.setFullScreenExitHint("");
-        window.setFullScreenExitKeyCombination(new KeyCodeCombination(KeyCode.ENTER, KeyCombination.ALT_DOWN));
-        window.getIcons().add(LOGO_IMAGE);
-        window.setResizable(true);
-        window.setMinHeight(400);
-        window.setMinWidth(600);
-        window.setWidth(bounds.getWidth() - 4);
-        window.setHeight(bounds.getHeight() - 4);
-        window.setX(2);
-        window.setY(2);
-        window.setTitle("King Slayer");
-      //  window.setFullScreen(true);
-
-        items[0].setOnActivate(this::connectForm);
-        items[0].setActive(true);
-        items[1].setOnActivate(this::guiSetNumOfPlayer);
-        items[2].setOnActivate(this::testGameKing);
-        items[3].setOnActivate(this::testGameSlayer);
-        items[4].setOnActivate(this::options);
-        items[5].setOnActivate(this::exit);
-        menuBox = new VBox(10, items);
-
-        InvalidationListener resize = l -> {
-            font = Font.font("", FontWeight.BOLD, window.getHeight()/400 * 18);
-            for(MenuItem item : items)
-                item.updateSize();
-        };
-
-        bgCanvas.widthProperty().bind(window.widthProperty());
-        bgCanvas.heightProperty().bind(window.heightProperty());
-        midCanvas.widthProperty().bind(window.widthProperty());
-        midCanvas.heightProperty().bind(window.heightProperty());
-
-        window.heightProperty().addListener(resize);
-        window.widthProperty().addListener(resize);
-//
-        Group root = new Group();
-        root.getChildren().addAll(bgCanvas, midCanvas, menuBox);
-        mainMenuScene = new Scene(root);
-
-        mainMenuScene.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
-
-        mainMenuScene.setOnKeyPressed(e -> {
-            switch (e.getCode()) {
-                case F11:
-                    window.setFullScreen(!window.isFullScreen());
-                    break;
-                case UP:
-                case W:
-                    if (currentItem > 0) {
-                        items[currentItem].setActive(false);
-                        items[--currentItem].setActive(true);
-                    }
-                    break;
-                case DOWN:
-                case S:
-                    if (currentItem < menuBox.getChildren().size() - 1) {
-                        items[currentItem].setActive(false);
-                        items[++currentItem].setActive(true);
-                    }
-                    break;
-                case ENTER:
-                case SPACE:
-                    items[currentItem].activate();
-                    break;
-            }
-        });
-
-
-        double[] bgOpac = new double[]{2.0};
-
-        animator = new AnimationTimer() {
-
-            @Override
-            public void handle(long now) {
-                midGC.clearRect(0, 0, window.getWidth(), window.getHeight());
-                midGC.setFill(Color.color(0.6, 0.6, 0.7, 0.4 + (Math.abs(bgOpac[0] % 2 - 1)) * 0.3));
-                bgOpac[0] += 0.002;
-
-                midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
-                midGC.drawImage(LOGO_TEXT_IMAGE, window.getWidth()/4, 50, window.getWidth()/2, (153/645.0)*window.getWidth()/2);
-                bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, window.getWidth(), window.getHeight());
-
-                menuBox.setTranslateX(window.getWidth() / 2 - menuBox.getWidth() / 2);
-                menuBox.setTranslateY(window.getHeight() - menuBox.getHeight() - 100);
-            }
-        };
-
-
-
-        animator.start();
-        resize.invalidated(null);
-        sleep(100);
-
-        window.setScene(mainMenuScene);
-
-//        Platform.setImplicitExit(false);
-//        Platform.runLater(()-> {
-//
-//        });
-        window.show();
+        startMain(window);
     }
 
     private void connectForm() {
         Platform.runLater(() -> window.setScene(ipFormScene()));
     }
 
-    private Scene ipFormScene() {
-        Group newRoot = new Group();
-        newRoot.getChildren().add(bgCanvas);
-        newRoot.getChildren().add(midCanvas);
-        Pane newPane = ipForm();
-        newRoot.getChildren().add(newPane);
-
-        Scene ret = new Scene(newRoot);
-        ret.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
-
-        setAnimator(newPane);
-
-        return ret;
-    }
-
-    public GridPane choiceTeamAndRolePane() {
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(window.getHeight()/2, 100, window.getHeight()/2 + 100, 100));
-        grid.setVgap(5);
-        grid.setHgap(5);
-
-        teamChoice = new ChoiceBox<>();
-        teamChoice.getItems().add(Team.ONE);
-        teamChoice.getItems().add(Team.TWO);
-        teamChoice.setPrefSize(200, 60);
-        teamChoice.setStyle("-fx-font: 30px \"Serif\";");
-        GridPane.setConstraints(teamChoice, 0, 0);
-        grid.getChildren().add(teamChoice);
-
-        roleChoice = new ChoiceBox<>();
-        roleChoice.getItems().add(Role.KING);
-        roleChoice.getItems().add(Role.SLAYER);
-        roleChoice.setPrefSize(200, 60);
-        roleChoice.setStyle("-fx-font: 30px \"Serif\";");
-        GridPane.setConstraints(roleChoice, 1, 0);
-        grid.getChildren().add(roleChoice);
-
-        playerName = new TextField();
-        playerName.setPromptText("Enter player name.");
-        playerName.setPrefSize(200, 60);
-        playerName.setFont(Font.font(30));
-        GridPane.setConstraints(playerName, 2, 0);
-        grid.getChildren().add(playerName);
-
-        Button ready = new Button("Ready");
-        ready.setPrefSize(200, 60);
-        ready.setFont(Font.font(20));
-        GridPane.setConstraints(ready, 3, 0);
-        grid.getChildren().add(ready);
-
-        ready.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Log.info("client click ready");
-                ready();
-                //the following would be done in the network part
-
-//                window.setScene(new Scene(choiceTeamAndRoleScene()));
-            }
-
-        });
-
-        return grid;
-    }
-
-    private GridPane ipForm() {
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(window.getHeight()/2, 200, window.getHeight()/2 + 100, 200));
-        grid.setVgap(50);
-        grid.setHgap(5);
-
-        //Defining the Name text field
-        final TextField ip = new TextField();
-        ip.setPrefSize(600, 80);
-        ip.setPromptText("Enter ip.");
-        ip.setPrefColumnCount(100);
-
-        ip.setFont(Font.font("Verdana",30));
-//        ip.fontProperty().set(Font.font(20));
-
-//        ip.setScaleX(10);
-//        ip.setScaleY(5);
-
-//        ip.getText();
-        GridPane.setConstraints(ip, 0, 0);
-        grid.getChildren().add(ip);
-
-        Button connect = new Button("Connect");
-        connect.fontProperty().set(Font.font(20));
-
-        connect.setPrefSize(200, 80);
-        GridPane.setConstraints(connect, 1, 0);
-        grid.getChildren().add(connect);
-
-        connect.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (connected) {
-                    return;
-                }
-                String ipStr = ip.getText();
-                try {
-                    joinGame(ipStr);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                //TODO: Change here to ping back later
-                connected = true;
-                //the following would be done in the network part
-
-//                window.setScene(new Scene(choiceTeamAndRoleScene()));
-            }
-
-        });
-
-        return grid;
-    }
-
-    public Scene inputNumOfPlayersScene() {
-
-//        Canvas bgCanvas = new Canvas();
-//        GraphicsContext bgGC = bgCanvas.getGraphicsContext2D();
-//        Canvas midCanvas = new Canvas();
-//        GraphicsContext midGC = midCanvas.getGraphicsContext2D();
-
-        Group newRoot = new Group();
-        newRoot.getChildren().add(bgCanvas);
-        newRoot.getChildren().add(midCanvas);
-        Pane inputPane = inputNumOfPlayers();
-        newRoot.getChildren().add(inputPane);
-
-        Scene ret = new Scene(newRoot);
-        ret.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
-
-        setAnimator(inputPane);
-
-        return ret;
-    }
-
-    public Scene chooseTeamAndRoleScene() {
-
-        Group newRoot = new Group();
-        newRoot.getChildren().add(bgCanvas);
-        newRoot.getChildren().add(midCanvas);
-        Pane inputPane = choiceTeamAndRolePane();
-        newRoot.getChildren().add(inputPane);
-
-        Scene ret = new Scene(newRoot);
-        ret.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
-
-        setAnimator(inputPane);
-
-        return ret;
-    }
 
     private void setAnimator(Pane addedPane) {
 
@@ -529,7 +299,6 @@ public class Main extends Application {
 //        window.getScene().getRoot().getChildrenUnmodifiable().remove(0, 1);
 
         Platform.runLater(() -> window.setScene(inputNumOfPlayersScene()));
-//        Platform.runLater(() -> window.setScene(new Scene(inputNumOfPlayers())));
     }
 
     private void startGame() {
@@ -613,5 +382,273 @@ public class Main extends Application {
 
     private void options() {
         Log.info("OPTIONS SELECTED");
+    }
+
+    public void startMain(Stage window_arg) {
+        this.window = window_arg;
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+        window.setFullScreenExitHint("");
+        window.setFullScreenExitKeyCombination(new KeyCodeCombination(KeyCode.ENTER, KeyCombination.ALT_DOWN));
+        window.getIcons().add(LOGO_IMAGE);
+        window.setResizable(true);
+        window.setMinHeight(400);
+        window.setMinWidth(600);
+        window.setWidth(bounds.getWidth() - 4);
+        window.setHeight(bounds.getHeight() - 4);
+        window.setX(2);
+        window.setY(2);
+        window.setTitle("King Slayer" + random.nextInt());
+        //  window.setFullScreen(true);
+
+        items[0].setOnActivate(this::connectForm);
+        items[0].setActive(true);
+        items[1].setOnActivate(this::guiSetNumOfPlayer);
+        items[2].setOnActivate(this::testGameKing);
+        items[3].setOnActivate(this::testGameSlayer);
+        items[4].setOnActivate(this::options);
+        items[5].setOnActivate(this::exit);
+        menuBox = new VBox(10, items);
+
+        InvalidationListener resize = l -> {
+            font = Font.font("", FontWeight.BOLD, window.getHeight()/400 * 18);
+            for(MenuItem item : items)
+                item.updateSize();
+        };
+
+        bgCanvas.widthProperty().bind(window.widthProperty());
+        bgCanvas.heightProperty().bind(window.heightProperty());
+        midCanvas.widthProperty().bind(window.widthProperty());
+        midCanvas.heightProperty().bind(window.heightProperty());
+
+        window.heightProperty().addListener(resize);
+        window.widthProperty().addListener(resize);
+
+        Group root = new Group();
+        root.getChildren().addAll(bgCanvas, midCanvas, menuBox);
+        mainMenuScene = new Scene(root);
+
+        mainMenuScene.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
+
+        mainMenuScene.setOnKeyPressed(e -> {
+            switch (e.getCode()) {
+                case F11:
+                    window.setFullScreen(!window.isFullScreen());
+                    break;
+                case UP:
+                case W:
+                    if (currentItem > 0) {
+                        items[currentItem].setActive(false);
+                        items[--currentItem].setActive(true);
+                    }
+                    break;
+                case DOWN:
+                case S:
+                    if (currentItem < menuBox.getChildren().size() - 1) {
+                        items[currentItem].setActive(false);
+                        items[++currentItem].setActive(true);
+                    }
+                    break;
+                case ENTER:
+                case SPACE:
+                    items[currentItem].activate();
+                    break;
+            }
+        });
+
+
+        double[] bgOpac = new double[]{2.0};
+
+        animator = new AnimationTimer() {
+
+            @Override
+            public void handle(long now) {
+                midGC.clearRect(0, 0, window.getWidth(), window.getHeight());
+                midGC.setFill(Color.color(0.6, 0.6, 0.7, 0.4 + (Math.abs(bgOpac[0] % 2 - 1)) * 0.3));
+                bgOpac[0] += 0.002;
+
+                midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
+                midGC.drawImage(LOGO_TEXT_IMAGE, window.getWidth()/4, 50, window.getWidth()/2, (153/645.0)*window.getWidth()/2);
+                bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, window.getWidth(), window.getHeight());
+
+                menuBox.setTranslateX(window.getWidth() / 2 - menuBox.getWidth() / 2);
+                menuBox.setTranslateY(window.getHeight() - menuBox.getHeight() - 100);
+            }
+        };
+
+
+
+        animator.start();
+        resize.invalidated(null);
+        sleep(100);
+
+        window.setScene(mainMenuScene);
+
+//        Platform.setImplicitExit(false);
+//        Platform.runLater(()-> {
+//
+//        });
+        window.show();
+    }
+
+
+
+
+    //Panes code
+    public GridPane choiceTeamAndRolePane() {
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(window.getHeight()/2, 100, window.getHeight()/2 + 100, 100));
+        grid.setVgap(5);
+        grid.setHgap(5);
+
+        teamChoice = new ChoiceBox<>();
+        teamChoice.getItems().add(Team.ONE);
+        teamChoice.getItems().add(Team.TWO);
+        teamChoice.setPrefSize(200, 60);
+        teamChoice.setStyle("-fx-font: 30px \"Serif\";");
+        GridPane.setConstraints(teamChoice, 0, 0);
+        grid.getChildren().add(teamChoice);
+
+        roleChoice = new ChoiceBox<>();
+        roleChoice.getItems().add(Role.KING);
+        roleChoice.getItems().add(Role.SLAYER);
+        roleChoice.setPrefSize(200, 60);
+        roleChoice.setStyle("-fx-font: 30px \"Serif\";");
+        GridPane.setConstraints(roleChoice, 1, 0);
+        grid.getChildren().add(roleChoice);
+
+        playerName = new TextField();
+        playerName.setPromptText("Enter player name.");
+        playerName.setPrefSize(200, 60);
+        playerName.setFont(Font.font(30));
+        GridPane.setConstraints(playerName, 2, 0);
+        grid.getChildren().add(playerName);
+
+        Button ready = new Button("Ready");
+        ready.setPrefSize(200, 60);
+        ready.setFont(Font.font(20));
+        GridPane.setConstraints(ready, 3, 0);
+        grid.getChildren().add(ready);
+
+        ready.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Log.info("client click ready");
+                ready();
+                //the following would be done in the network part
+
+//                window.setScene(new Scene(choiceTeamAndRoleScene()));
+            }
+
+        });
+
+        return grid;
+    }
+
+    private Scene ipFormScene() {
+        Group newRoot = new Group();
+        newRoot.getChildren().add(bgCanvas);
+        newRoot.getChildren().add(midCanvas);
+        Pane newPane = ipForm();
+        newRoot.getChildren().add(newPane);
+
+        Scene ret = new Scene(newRoot);
+        ret.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
+
+        setAnimator(newPane);
+
+        return ret;
+    }
+
+
+
+    private GridPane ipForm() {
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(window.getHeight()/2, 200, window.getHeight()/2 + 100, 200));
+        grid.setVgap(50);
+        grid.setHgap(5);
+
+        //Defining the Name text field
+        final TextField ip = new TextField();
+        ip.setPrefSize(600, 80);
+        ip.setPromptText("Enter ip.");
+        ip.setPrefColumnCount(100);
+
+        ip.setFont(Font.font("Verdana",30));
+//        ip.fontProperty().set(Font.font(20));
+
+//        ip.setScaleX(10);
+//        ip.setScaleY(5);
+
+//        ip.getText();
+        GridPane.setConstraints(ip, 0, 0);
+        grid.getChildren().add(ip);
+
+        Button connect = new Button("Connect");
+        connect.fontProperty().set(Font.font(20));
+
+        connect.setPrefSize(200, 80);
+        GridPane.setConstraints(connect, 1, 0);
+        grid.getChildren().add(connect);
+
+        connect.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (connected) {
+                    return;
+                }
+                String ipStr = ip.getText();
+                try {
+                    joinGame(ipStr);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                //TODO: Change here to ping back later
+                connected = true;
+                //the following would be done in the network part
+
+//                window.setScene(new Scene(choiceTeamAndRoleScene()));
+            }
+
+        });
+
+        return grid;
+    }
+
+    public Scene inputNumOfPlayersScene() {
+
+//        Canvas bgCanvas = new Canvas();
+//        GraphicsContext bgGC = bgCanvas.getGraphicsContext2D();
+//        Canvas midCanvas = new Canvas();
+//        GraphicsContext midGC = midCanvas.getGraphicsContext2D();
+
+        Group newRoot = new Group();
+        newRoot.getChildren().add(bgCanvas);
+        newRoot.getChildren().add(midCanvas);
+        Pane inputPane = inputNumOfPlayers();
+        newRoot.getChildren().add(inputPane);
+
+        Scene ret = new Scene(newRoot);
+        ret.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
+
+        setAnimator(inputPane);
+
+        return ret;
+    }
+
+    public Scene chooseTeamAndRoleScene() {
+
+        Group newRoot = new Group();
+        newRoot.getChildren().add(bgCanvas);
+        newRoot.getChildren().add(midCanvas);
+        Pane inputPane = choiceTeamAndRolePane();
+        newRoot.getChildren().add(inputPane);
+
+        Scene ret = new Scene(newRoot);
+        ret.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
+
+        setAnimator(inputPane);
+
+        return ret;
     }
 }
