@@ -37,20 +37,20 @@ public class LobbyClient implements Lobby {//extends Application {
     }
 
     public void lobbyRematch() {
-        clientGameModel = new ClientGameModel(new Model() {
-            @Override
-            public void processMessage(Message m) {
-                if (serverModel != null)
-                    serverModel.processMessage(m);
-                else
-                    Log.info("serverModel null, might happen after game ends");
-            }
-
-            @Override
-            public long nanoTime() {
-                return serverModel.nanoTime();
-            }
-        });
+//        clientGameModel = new ClientGameModel(new Model() {
+//            @Override
+//            public void processMessage(Message m) {
+//                if (serverModel != null)
+//                    serverModel.processMessage(m);
+//                else
+//                    Log.info("serverModel null, might happen after game ends");
+//            }
+//
+//            @Override
+//            public long nanoTime() {
+//                return serverModel.nanoTime();
+//            }
+//        });
     }
 
     public void start() throws Exception {
@@ -156,14 +156,22 @@ public class LobbyClient implements Lobby {//extends Application {
 
     public int restartFromReadyPage() {
         //nop for now
+        clientGameModel.stop();
+        gameView.stop();
         gameView = null;
         clientGameModel = null;
+
         serverModel = null;
         int status = client.restartFromReadyPage();
         return status;
     }
 
     public void stop() {
+        if (gameView != null)
+            gameView.stop();
+        gameView = null;
+        if (clientGameModel != null)
+            clientGameModel.stop();
         clientGameModel = null;
         client.client.stop();
     }
@@ -186,7 +194,10 @@ public class LobbyClient implements Lobby {//extends Application {
     }
 
     public void lobbyClientRematch() {
-
+        gameView.stop();
+        gameView = null;
+        clientGameModel.stop();
+        clientGameModel = null;
         clientGameModel = new ClientGameModel(new Model() {
             @Override
             public void processMessage(Message m) {

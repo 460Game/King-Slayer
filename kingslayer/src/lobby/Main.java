@@ -168,22 +168,22 @@ public class Main extends Application {
     }
 
     public int restart(Stage window) {
-        Platform.setImplicitExit(false);
-//        window.setScene(chooseTeamAndRoleScene());
-        if (lobbyServer != null) {
-            int status = lobbyServer.restartFromReadyPage();
-            System.out.println("server lobby restartFromReadyPage " + status);
-        }
-
-        if (lobbyClient != null) {
-            int status = lobbyClient.restartFromReadyPage();
-            System.out.println("client lobby restartFromReadyPage " + status);
-        }
-
+//        Platform.setImplicitExit(false);
+////        window.setScene(chooseTeamAndRoleScene());
+//        if (lobbyServer != null) {
+//            int status = lobbyServer.restartFromReadyPage();
+//            System.out.println("server lobby restartFromReadyPage " + status);
+//        }
+//
+//        if (lobbyClient != null) {
+//            int status = lobbyClient.restartFromReadyPage();
+//            System.out.println("client lobby restartFromReadyPage " + status);
+//        }
+//
         return 0;
     }
 
-    public int rematch(Stage window) {
+    public int rematch() {
 //        if (lobbyServer != null) {
 //            lobbyServer.lobbyServerRematch() {
 //

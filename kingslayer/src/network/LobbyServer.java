@@ -65,7 +65,10 @@ public class LobbyServer implements Lobby { //extends Application {
 
         //TODO: put the enum parameters in
 //                serverModel.init(remoteModels, clientGameModelToTeamAndRole);
-        serverModel.init(remoteModels, clientGameModelToPlayerInfo);
+        Map<RemoteConnection.RemoteModel, PlayerInfo> clientGameModelToPlayerInfoCopy = new HashMap<>();
+        clientGameModelToPlayerInfoCopy.putAll(clientGameModelToPlayerInfo);
+
+        serverModel.init(remoteModels, clientGameModelToPlayerInfoCopy);
         serverModel.start();
 
         for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
@@ -170,6 +173,7 @@ public class LobbyServer implements Lobby { //extends Application {
         }
         if (serverModel != null) {
             serverModel.stop();
+            serverModel = null;
         }
         return 0;
 //        server.server.close();
@@ -182,6 +186,7 @@ public class LobbyServer implements Lobby { //extends Application {
 
     public void lobbyServerRematch() {
         serverModel.stop();
+        serverModel = null;
         serverModel = new ServerGameModel();
         //pretty sure clients have made models at this point.
 

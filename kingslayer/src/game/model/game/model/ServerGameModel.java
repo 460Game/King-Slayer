@@ -7,6 +7,7 @@ import game.message.toClient.*;
 import game.model.game.grid.GridCell;
 import game.model.game.map.ServerMapGenerator;
 import game.model.game.map.Tile;
+import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.team.TeamRoleEntityMap;
@@ -56,9 +57,9 @@ public class ServerGameModel extends GameModel {
 
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
     private Thread updateThread;
-   private TimerTask updateTimerTask;
+    private TimerTask updateTimerTask;
 
-    public TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
+    private TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
 
     public Collection<? extends Model> getClients() {
         return clients;
@@ -70,6 +71,10 @@ public class ServerGameModel extends GameModel {
             return true;
         }
         return false;
+    }
+
+    public long getEntityIdThroughTeamRoleEntityMap(Team team, Role role) {
+        return teamRoleEntityMap.getEntity(team, role);
     }
 
     @Override
@@ -92,6 +97,13 @@ public class ServerGameModel extends GameModel {
     public void init(Collection<? extends Model> clients, Map<? extends Model, PlayerInfo> clientToPlayerInfoMap) {
 
         this.clients = clients;
+//        this.clientToPlayerInfo = new HashMap<? extends GameModel, PlayerInfo>();
+
+//        this.clientToPlayerInfo.putAll((Map<? extends GameModel, ? extends PlayerInfo>) clientToPlayerInfoMap);
+//        for (Map.Entry<? extends Model, PlayerInfo> entry : clientToPlayerInfoMap.entrySet()) {
+//            this.clientToPlayerInfo.put(entry.getKey(), PlayerInfo.copyOf(entry.getValue()));
+//        }
+
         this.clientToPlayerInfo = clientToPlayerInfoMap;
 
         ArrayList<Entity> players = new ArrayList<>();
@@ -234,12 +246,7 @@ public class ServerGameModel extends GameModel {
             teamRoleEntityMap = null;
             clients = null;
         }
-
-
-
-
-
-
+        this.clientToPlayerInfo.clear();
         System.out.println("old server model stop");
     }
 

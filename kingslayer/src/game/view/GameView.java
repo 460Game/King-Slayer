@@ -34,6 +34,15 @@ public class GameView {
     private Main mainApp;
     private AnimationTimer timer;
 
+    public void stop() {
+        model = null;
+        window = null;
+        mainApp = null;
+        if (timer != null)
+            timer.stop();
+        timer = null;
+    }
+
     public GameView(ClientGameModel model, Main mainApp) {
         this.model = model;
         this.mainApp = mainApp;
@@ -191,45 +200,46 @@ public class GameView {
     public void goBackToMain() {
 //        Platform.setImplicitExit(false);
 
-        timer.stop();
+        this.timer.stop();
         int closeStatus = mainApp.closeServer();
         mainApp.restartFromMainMenu(window);
 
-        timer = null;
-        model = null;
-        mainApp = null;
-        window = null;
+        this.timer = null;
+        this.model = null;
+        this.mainApp = null;
+        this.window = null;
     }
 
     public void rematch() {
-        timer.stop();
+        this.timer.stop();
 
 
 
         Platform.setImplicitExit(false);
 
-        int status = mainApp.rematch(window);
+        int status = mainApp.rematch();
         Log.info("Main restarts using window!");
-        timer = null;
-        model = null;
-        mainApp = null;
-        window = null;
+        this.timer = null;
+        this.model = null;
+        this.mainApp = null;
+        this.window = null;
     }
 
+    //not used anymore
     public void restart() {
 
-        timer.stop();
-
-
-
-        Platform.setImplicitExit(false);
-
-        int status = mainApp.restart(window);
-        Log.info("Main restarts using window!");
-        timer = null;
-        model = null;
-        mainApp = null;
-        window = null;
+//        timer.stop();
+//
+//
+//
+//        Platform.setImplicitExit(false);
+//
+//        int status = mainApp.restart(window);
+//        Log.info("Main restarts using window!");
+//        timer = null;
+//        model = null;
+//        mainApp = null;
+//        window = null;
 
     }
 }

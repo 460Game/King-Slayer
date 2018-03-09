@@ -560,7 +560,6 @@ public class RemoteConnection {
             myRole = role;
         }
 
-
         public RemoteModel(int conid) {
             connectId = conid;
         }

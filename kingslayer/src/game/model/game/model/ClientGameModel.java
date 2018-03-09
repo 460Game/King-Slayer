@@ -42,10 +42,10 @@ public class ClientGameModel extends GameModel {
 
     private TeamResourceData resourceData = new TeamResourceData();
 
-    Team winningTeam = null;
-    Team losingTeam = null;
-    Team thisTeam;
-String name;
+    private Team winningTeam = null;
+    private Team losingTeam = null;
+    private Team thisTeam;
+    private String name;
 
     public ClientGameModel(Model server) {
         super(new ClientMapGenerator());
@@ -70,7 +70,7 @@ String name;
         Log.info("Set local player");
         this.localPlayer = localPlayer;
         thisTeam = getEntity(localPlayer).getTeam();
-        name= getLocalPlayer().get(PLAYER_NAME);
+        name = getLocalPlayer().get(PLAYER_NAME);
     }
 
     public Team getTeam() {
@@ -194,5 +194,12 @@ String name;
 
     public String getName() {
         return name;
+    }
+    public void stop() {
+        server = null;
+        winningTeam = null;
+        losingTeam = null;
+        thisTeam = null;
+        resourceData = null;
     }
 }

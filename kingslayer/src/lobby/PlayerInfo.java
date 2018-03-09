@@ -15,6 +15,11 @@ public class PlayerInfo {
         this.playerName = playerName;
     }
 
+    public static PlayerInfo copyOf(PlayerInfo p) {
+        PlayerInfo ret = new PlayerInfo(p.getTeam(), p.getRole(), p.getPlayerName());
+        return ret;
+    }
+
     public Role getRole() {
         return role;
     }
