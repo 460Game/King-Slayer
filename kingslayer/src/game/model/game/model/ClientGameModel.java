@@ -201,5 +201,10 @@ public class ClientGameModel extends GameModel {
         losingTeam = null;
         thisTeam = null;
         resourceData = null;
+        try {
+            finalize();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 }

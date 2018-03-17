@@ -68,11 +68,13 @@ public class LobbyServer implements Lobby { //extends Application {
         Map<RemoteConnection.RemoteModel, PlayerInfo> clientGameModelToPlayerInfoCopy = new HashMap<>();
         clientGameModelToPlayerInfoCopy.putAll(clientGameModelToPlayerInfo);
 
+        HashSet<RemoteConnection.RemoteModel> remoteModelsCopy = new HashSet<>(remoteModels);
+
         for (RemoteConnection.RemoteModel model : clientGameModelToPlayerInfo.keySet()) {
             clientGameModelToPlayerInfoCopy.put(model, PlayerInfo.copyOf(clientGameModelToPlayerInfoCopy.get(model)));
         }
 
-        serverModel.init(remoteModels, clientGameModelToPlayerInfoCopy);
+        serverModel.init(remoteModelsCopy, clientGameModelToPlayerInfoCopy);
         serverModel.start();
 
         for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
@@ -180,7 +182,6 @@ public class LobbyServer implements Lobby { //extends Application {
             serverModel = null;
         }
         return 0;
-//        server.server.close();
     }
 
     @Override
@@ -197,11 +198,13 @@ public class LobbyServer implements Lobby { //extends Application {
         Map<RemoteConnection.RemoteModel, PlayerInfo> clientGameModelToPlayerInfoCopy = new HashMap<>();
         clientGameModelToPlayerInfoCopy.putAll(clientGameModelToPlayerInfo);
 
+        HashSet<RemoteConnection.RemoteModel> remoteModelsCopy = new HashSet<>(remoteModels);
+
         for (RemoteConnection.RemoteModel model : clientGameModelToPlayerInfo.keySet()) {
             clientGameModelToPlayerInfoCopy.put(model, PlayerInfo.copyOf(clientGameModelToPlayerInfoCopy.get(model)));
         }
 
-        serverModel.init(remoteModels, clientGameModelToPlayerInfoCopy);
+        serverModel.init(remoteModelsCopy, clientGameModelToPlayerInfoCopy);
         serverModel.start();
 
         for (RemoteConnection.RemoteModel remoteModel : remoteModels) {

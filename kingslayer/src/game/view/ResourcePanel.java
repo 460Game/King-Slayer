@@ -58,4 +58,8 @@ public class ResourcePanel extends FlowPane {
         this.stoneTxt.setText(model.getResourceData().getResource(TeamResourceData.Resource.STONE) + "");
         this.metalTxt.setText(model.getResourceData().getResource(TeamResourceData.Resource.METAL) + "");
     }
+
+    public void stop() {
+        model = null;
+    }
 }

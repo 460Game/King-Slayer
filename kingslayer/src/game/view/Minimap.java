@@ -99,5 +99,10 @@ public class Minimap extends Region {
 
 
     }
+    public void stop() {
+        model = null;
+        world.stop();
+        world = null;
+    }
 }
 

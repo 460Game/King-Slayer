@@ -29,4 +29,7 @@ public class ActionPanel extends Region {
 
     public void draw() {
     }
+    public void stop() {
+        this.model = null;
+    }
 }

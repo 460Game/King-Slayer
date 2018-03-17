@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import lobby.GameView2MainAdaptor;
 import lobby.Main;
 
 import java.util.*;
@@ -31,8 +32,18 @@ public class GameView {
 
     private ClientGameModel model;
     private Stage window;
-    private Main mainApp;
+    private GameView2MainAdaptor mainApp;
     private AnimationTimer timer;
+
+    Group root;
+    WorldPanel worldPanel;
+    GameInteractionLayer gameInteractionLayer;
+    ActionPanel actionPanel;
+    Minimap minimap;
+    ResourcePanel resourcePanel;
+    ExitPrompt exitPrompt;
+    TeamWinPrompt teamWinPrompt;
+    TeamLosePrompt teamLosePrompt;
 
     public void stop() {
         model = null;
@@ -43,23 +54,22 @@ public class GameView {
         timer = null;
     }
 
-    public GameView(ClientGameModel model, Main mainApp) {
+    public GameView(ClientGameModel model, GameView2MainAdaptor mainApp) {
         this.model = model;
         this.mainApp = mainApp;
     }
 
     public void start(Stage window) {
         this.window = window;
-        Group root = new Group();
+        root = new Group();
 
         //TODO loading screen
         while (model.getState() == Loading.SINGLETON) {
             model.update();
         }
 
-        WorldPanel worldPanel = new WorldPanel(model);
-        GameInteractionLayer gameInteractionLayer;
-        ActionPanel actionPanel;
+        worldPanel = new WorldPanel(model);
+
         if (model.getLocalPlayer().getRole() == Role.KING) {
             gameInteractionLayer = new KingGameInteractionLayer(model, worldPanel);
             actionPanel = new KingActionPanel(model, (KingGameInteractionLayer) gameInteractionLayer);
@@ -67,11 +77,11 @@ public class GameView {
             gameInteractionLayer = new SlayerGameInteractionLayer(model, worldPanel);
             actionPanel = new SlayerActionPanel(model, (SlayerGameInteractionLayer) gameInteractionLayer);
         }
-        Minimap minimap = new Minimap(model, worldPanel);
-        ResourcePanel resourcePanel = new ResourcePanel(model);
-        ExitPrompt exitPrompt = new ExitPrompt(model, this);
-        TeamWinPrompt teamWinPrompt = new TeamWinPrompt(model, this);
-        TeamLosePrompt teamLosePrompt = new TeamLosePrompt(model, this);
+        minimap = new Minimap(model, worldPanel);
+        resourcePanel = new ResourcePanel(model);
+        exitPrompt = new ExitPrompt(model, this);
+        teamWinPrompt = new TeamWinPrompt(model, this);
+        teamLosePrompt = new TeamLosePrompt(model, this);
 
         gameInteractionLayer.prefWidthProperty().bind(window.widthProperty());
         gameInteractionLayer.prefHeightProperty().bind(window.heightProperty());
@@ -201,8 +211,14 @@ public class GameView {
 //        Platform.setImplicitExit(false);
 
         this.timer.stop();
+
         int closeStatus = mainApp.closeServer();
-        mainApp.restartFromMainMenu(window);
+
+
+
+//        figure out this
+//        mainApp.restartFromMainMenu(window);
+        //figure out this
 
         this.timer = null;
         this.model = null;
@@ -213,14 +229,50 @@ public class GameView {
     public void rematch() {
         this.timer.stop();
 
-        Platform.setImplicitExit(false);
+//        Platform.setImplicitExit(false);
 
-        int status = mainApp.rematch();
-        Log.info("Main restarts using window!");
+        Log.info("Rmatch, set everything to null");
         this.timer = null;
+        if (this.model != null)
+            this.model.stop();
+
         this.model = null;
-        this.mainApp = null;
         this.window = null;
+
+        root = null;
+
+        worldPanel.stop();
+        worldPanel = null;
+
+        gameInteractionLayer.stop();
+        gameInteractionLayer = null;
+
+        actionPanel.stop();
+        actionPanel = null;
+
+        minimap.stop();
+        minimap = null;
+
+        resourcePanel.stop();
+        resourcePanel = null;
+
+        exitPrompt.stop();
+        exitPrompt = null;
+
+        teamWinPrompt.stop();
+        teamWinPrompt = null;
+
+        teamLosePrompt.stop();
+        teamLosePrompt = null;
+
+        System.out.println("window is null " + window + " " + model);
+        int status = mainApp.rematch();
+        mainApp = null;
+        try {
+            finalize();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 
     //not used anymore

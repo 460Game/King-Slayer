@@ -8,6 +8,7 @@ import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.view.GameView;
 import javafx.stage.Stage;
+import lobby.GameView2MainAdaptor;
 import lobby.Main;
 import lobby.PlayerInfo;
 
@@ -37,7 +38,17 @@ public class SingleplayerController {
         serverModel.init(Collections.singleton(clientGameModel2), testingMap);
         serverModel.start();
 
-        GameView gameView = new GameView(clientModel, mainApp);
+        GameView gameView = new GameView(clientModel, new GameView2MainAdaptor() {
+            @Override
+            public int closeServer() {
+                return mainApp.closeServer();
+            }
+
+            @Override
+            public int rematch() {
+                return mainApp.rematch();
+            }
+        });
         gameView.start(primaryStage);
 
         serverModel.changeResource(Team.ONE, TeamResourceData.Resource.WOOD, 10000000);

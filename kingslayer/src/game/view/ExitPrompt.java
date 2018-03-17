@@ -45,4 +45,8 @@ public class ExitPrompt extends Region {
 
         this.getChildren().addAll(text, confirm, cancle);
     }
+    public void stop() {
+        view = null;
+        model = null;
+    }
 }

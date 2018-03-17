@@ -99,4 +99,10 @@ public class GameInteractionLayer extends Region {
         world.draw();
     }
 
+    public void stop() {
+        model = null;
+        world.stop();
+        world = null;
+    }
+
 }

@@ -267,4 +267,7 @@ public class WorldPanel extends Region {
     public void miniUp() {
         useMinimap= false;
     }
+    public void stop() {
+        model = null;
+    }
 }

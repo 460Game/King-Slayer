@@ -17,8 +17,11 @@ import static util.Const.PROMPT_BG;
 
 public class TeamLosePrompt extends Region {
     private ClientGameModel model;
-    TeamLosePrompt(ClientGameModel model, GameView view) {
-        this.model = model;
+    private GameView view;
+    TeamLosePrompt(ClientGameModel gameModel, GameView gameView) {
+        this.model = gameModel;
+        this.view = gameView;
+
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
         this.setBackground(PROMPT_BG);
 
@@ -45,5 +48,10 @@ public class TeamLosePrompt extends Region {
         });
 
         this.getChildren().addAll(text, confirm, rematch);
+    }
+
+    public void stop() {
+        view = null;
+        model = null;
     }
 }

@@ -16,8 +16,11 @@ import static util.Const.PROMPT_BG;
 
 public class TeamWinPrompt extends Region {
     private ClientGameModel model;
-    TeamWinPrompt(ClientGameModel model, GameView view) {
-        this.model = model;
+    private GameView view;
+    TeamWinPrompt(ClientGameModel gameModel, GameView gameView) {
+        this.model = gameModel;
+        this.view = gameView;
+
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
         this.setBackground(PROMPT_BG);
         Text text = new Text("Chicken Dinner Winner Winner!");
@@ -43,5 +46,10 @@ public class TeamWinPrompt extends Region {
         });
 
         this.getChildren().addAll(text, back_to_lobby, rematch);
+    }
+
+    public void stop() {
+        model = null;
+        view = null;
     }
 }

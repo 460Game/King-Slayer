@@ -232,7 +232,7 @@ public class ServerGameModel extends GameModel {
             return;
         }
 
-        synchronized (lock){
+        synchronized (lock) {
 
             updateTimerTask.cancel();
             t.cancel();
@@ -247,7 +247,22 @@ public class ServerGameModel extends GameModel {
             clientToPlayerInfo = null;
             teamData = null;
             teamRoleEntityMap = null;
+            clients.clear();
             clients = null;
+            astar = null;
+            stone.clear();
+            stone = null;
+            wood.clear();
+            wood = null;
+            team1collector.clear();
+            team1collector = null;
+            team2collector.clear();
+            team2collector = null;
+            try {
+                finalize();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
         }
 
         System.out.println("old server model stop");

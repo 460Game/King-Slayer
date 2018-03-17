@@ -9,6 +9,7 @@ import game.model.game.model.team.Team;
 import game.view.GameView;
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import lobby.GameView2MainAdaptor;
 import lobby.Lobby;
 import lobby.lobbyMessage.LobbyMessage;
 import lobby.Main;
@@ -65,7 +66,18 @@ public class LobbyClient implements Lobby {//extends Application {
             public void clientInit() {
                 Log.debug("client init");
 
-                gameView = new GameView(clientGameModel, mainApp);
+                gameView = new GameView(clientGameModel, new GameView2MainAdaptor() {
+                    @Override
+                    public int closeServer() {
+                        return mainApp.closeServer();
+                    }
+
+                    @Override
+                    public int rematch() {
+                        return mainApp.rematch();
+                    }
+                });
+
                 Platform.runLater(()-> {
                     gameView.start(window);
                 });
@@ -173,6 +185,7 @@ public class LobbyClient implements Lobby {//extends Application {
         if (clientGameModel != null)
             clientGameModel.stop();
         clientGameModel = null;
+
         client.client.stop();
     }
 
@@ -197,6 +210,7 @@ public class LobbyClient implements Lobby {//extends Application {
         gameView.stop();
         gameView = null;
         clientGameModel.stop();
+
         clientGameModel = null;
         clientGameModel = new ClientGameModel(new Model() {
             @Override
