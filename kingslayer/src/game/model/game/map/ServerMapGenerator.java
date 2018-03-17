@@ -106,12 +106,12 @@ public class ServerMapGenerator implements MapGenerator {
     }
 
     public void makeMap() {
-        makeMap((new Random()).nextLong());
+//        makeMap((new Random()).nextLong());
   //      makeMap(Long.parseLong("680063342784308026")); // Good for path testing.
 //        makeMap(Long.parseLong("-5713126425086333025"));
 //        makeMap(Long.parseLong("-1609539064927447349"));
 //        makeMap(Long.parseLong("6736756290173747940"));
-       // makeMap(Long.parseLong("-4733834012032569948"));
+        makeMap(Long.parseLong("-4733834012032569948"));
     }
 
     public void makeMap(long seed) {

@@ -105,6 +105,7 @@ public class ServerGameModel extends GameModel {
 //        }
 
         this.clientToPlayerInfo = clientToPlayerInfoMap;
+        System.out.println("check playerInfo! " + clientToPlayerInfoMap);
 
         ArrayList<Entity> players = new ArrayList<>();
         for (Entity entity : this.getAllEntities()) {
@@ -119,6 +120,7 @@ public class ServerGameModel extends GameModel {
         }
 
         clients.forEach(client -> {
+            System.out.println("check client null " + clientToPlayerInfo.get(client));
             getEntity(teamRoleEntityMap.getEntity(clientToPlayerInfo.get(client).getTeam(),
                     clientToPlayerInfo.get(client).getRole())).setOrAdd(PLAYER_NAME,
                     clientToPlayerInfoMap.get(client).getPlayerName());
@@ -241,12 +243,13 @@ public class ServerGameModel extends GameModel {
 
 
             running = false;
+            this.clientToPlayerInfo.clear();
             clientToPlayerInfo = null;
             teamData = null;
             teamRoleEntityMap = null;
             clients = null;
         }
-        this.clientToPlayerInfo.clear();
+
         System.out.println("old server model stop");
     }
 

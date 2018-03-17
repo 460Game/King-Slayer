@@ -213,8 +213,6 @@ public class GameView {
     public void rematch() {
         this.timer.stop();
 
-
-
         Platform.setImplicitExit(false);
 
         int status = mainApp.rematch();

@@ -35,12 +35,12 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns(Entity entity) {
-            return 5;
+            return 0.1;
         } // TODO CHANGE BACK
 
         @Override
         int maxActive(Entity entity) {
-            return 10;
+            return 25;
            /* switch (entity.<Integer>get(LEVEL)) {
                 case 0:
                     return 15;

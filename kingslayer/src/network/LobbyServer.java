@@ -68,6 +68,10 @@ public class LobbyServer implements Lobby { //extends Application {
         Map<RemoteConnection.RemoteModel, PlayerInfo> clientGameModelToPlayerInfoCopy = new HashMap<>();
         clientGameModelToPlayerInfoCopy.putAll(clientGameModelToPlayerInfo);
 
+        for (RemoteConnection.RemoteModel model : clientGameModelToPlayerInfo.keySet()) {
+            clientGameModelToPlayerInfoCopy.put(model, PlayerInfo.copyOf(clientGameModelToPlayerInfoCopy.get(model)));
+        }
+
         serverModel.init(remoteModels, clientGameModelToPlayerInfoCopy);
         serverModel.start();
 
@@ -190,7 +194,14 @@ public class LobbyServer implements Lobby { //extends Application {
         serverModel = new ServerGameModel();
         //pretty sure clients have made models at this point.
 
-        serverModel.init(remoteModels, clientGameModelToPlayerInfo);
+        Map<RemoteConnection.RemoteModel, PlayerInfo> clientGameModelToPlayerInfoCopy = new HashMap<>();
+        clientGameModelToPlayerInfoCopy.putAll(clientGameModelToPlayerInfo);
+
+        for (RemoteConnection.RemoteModel model : clientGameModelToPlayerInfo.keySet()) {
+            clientGameModelToPlayerInfoCopy.put(model, PlayerInfo.copyOf(clientGameModelToPlayerInfoCopy.get(model)));
+        }
+
+        serverModel.init(remoteModels, clientGameModelToPlayerInfoCopy);
         serverModel.start();
 
         for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
