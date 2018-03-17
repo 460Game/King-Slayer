@@ -57,6 +57,7 @@ public class GameView {
     public GameView(ClientGameModel model, GameView2MainAdaptor mainApp) {
         this.model = model;
         this.mainApp = mainApp;
+        System.out.println("make game view " + this);
     }
 
     public void start(Stage window) {
@@ -143,11 +144,11 @@ public class GameView {
             t.scheduleAtFixedRate(updateFPS, 1000, 1000);
         }
 
-
         timer = new AnimationTimer() {
+
             @Override
             public void handle(long now) {
-
+//                System.out.println(GameView.this + " timer running ");
                 try {
 
                     gameInteractionLayer.setVisible(true);

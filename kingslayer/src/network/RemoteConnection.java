@@ -245,10 +245,10 @@ public class RemoteConnection {
 
                     if (obj instanceof NetworkCommon.ClientRematchMsg) {
                         rematchClients.put(connection.getID(), connection);
-                        System.out.println("rematch size: " + rematchClients.size());
-                        System.out.println("while clientList size is " + clientList.size());
+                        System.out.print("rematch size: " + rematchClients.size());
+                        System.out.println(" while clientList size is " + clientList.size());
                         if (rematchClients.size() == clientList.size()) {
-                            RemoteConnection.this.rematch();
+//                            RemoteConnection.this.rematch();
                             adaptor.serverStartRematch();
                             rematchClients = new ConcurrentHashMap();
                         }
