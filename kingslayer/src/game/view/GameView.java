@@ -218,7 +218,7 @@ public class GameView {
 
 
 //        figure out this
-//        mainApp.restartFromMainMenu(window);
+        mainApp.restartFromMainMenu();
         //figure out this
 
         this.timer = null;

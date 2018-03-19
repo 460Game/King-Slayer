@@ -149,9 +149,9 @@ public class Main extends Application {
 
     private Stage window;
 
-    public int restartFromMainMenu(Stage window) {
+    public int restartFromMainMenu() {
         cleanup();
-        startMain(window);
+        startMain(this.window);
         return 0;
     }
 

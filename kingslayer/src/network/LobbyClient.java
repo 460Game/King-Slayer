@@ -76,6 +76,12 @@ public class LobbyClient implements Lobby {//extends Application {
                     public int rematch() {
                         return mainApp.rematch();
                     }
+
+                    @Override
+                    public int restartFromMainMenu() {
+                        mainApp.restartFromMainMenu();
+                        return 0;
+                    }
                 });
 
                 Platform.runLater(()-> {

@@ -48,6 +48,11 @@ public class SingleplayerController {
             public int rematch() {
                 return mainApp.rematch();
             }
+
+            @Override
+            public int restartFromMainMenu() {
+                return 0;
+            }
         });
         gameView.start(primaryStage);
 
