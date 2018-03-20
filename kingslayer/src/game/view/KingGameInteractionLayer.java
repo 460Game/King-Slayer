@@ -157,7 +157,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           });
         }
       } else if (deleting) {
-        if (model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().isPresent()) {
+        if (model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().isPresent() &&
+            model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
+            model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().get().getTeam() == model.getLocalPlayer().getTeam()) {
           model.getEntitiesAt(x.intValue(), (int) (y + 20.0 / 32.0)).stream().findFirst().ifPresent(entity -> {
             if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getLocalPlayer().getTeam()) {
               model.processMessage(new SellEntityRequest(entity,
@@ -171,8 +173,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
             }
           });
           // if you clicked on the bottom of an entity with no entity in front of it
-        } else if (!(model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent() &&
-            model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE))) {
+        } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent() &&
+            model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
+            model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().getTeam() == model.getLocalPlayer().getTeam()) {
           model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
             if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getLocalPlayer().getTeam()) {
               model.processMessage(new SellEntityRequest(entity,
