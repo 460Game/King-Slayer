@@ -103,7 +103,7 @@ public abstract class Const {
      */
     public static final int WATER_ANIM_PERIOD = UPDATES_PER_SECOND * 4;
 
-    public final static int AI_LOOP_UPDATE_PER_FRAMES = 1000;
+    public final static int AI_LOOP_UPDATE_PER_FRAMES = 20;
 
     public static final int LEVEL_WOOD = 0;
     public static final int LEVEL_STONE = 1;
