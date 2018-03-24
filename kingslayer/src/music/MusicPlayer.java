@@ -1,27 +1,23 @@
 package music;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import java.io.File;
 
 public class MusicPlayer {
 
   private static Thread music = new Thread();
+  private static MediaPlayer intro = new MediaPlayer(new Media(new File("kingslayer/resources/music/Quest.mp3").toURI().toString()));
 
   public static synchronized void playIntroMusic() {
-    try {
-      music.join();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
     music = new Thread(){
       public void run() {
         try {
-          Clip clip = AudioSystem.getClip();
-          AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-              MusicPlayer.class.getResourceAsStream("Quest.wav"));
-          clip.open(inputStream);
-          clip.start();
+          intro.play();
         } catch (Exception e) {
           System.err.println(e.getMessage());
         }
@@ -31,11 +27,7 @@ public class MusicPlayer {
   }
 
   public static synchronized void playGameMusic() {
-    try {
-      music.join();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
+    intro.stop();
     music = new Thread(){
       public void run() {
         try {
@@ -43,7 +35,7 @@ public class MusicPlayer {
           AudioInputStream inputStream = AudioSystem.getAudioInputStream(
               MusicPlayer.class.getResourceAsStream("PirateCrew.wav"));
           clip.open(inputStream);
-          clip.start();
+          clip.loop(1000);
         } catch (Exception e) {
           System.err.println(e.getMessage());
         }
