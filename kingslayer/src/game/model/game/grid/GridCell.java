@@ -97,7 +97,7 @@ public class GridCell {
 
         for (Team team : Team.values()) {
             losRanges[team.team] = 0;
-    }
+        }
 
         this.streamContents().filter(entity -> entity.has(TEAM) && entity.has(SIGHT_RADIUS)).forEach(entity -> {
             int sr = entity.get(SIGHT_RADIUS);

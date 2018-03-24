@@ -38,6 +38,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import music.MusicPlayer;
 import network.LobbyClient;
 import network.LobbyClient2LobbyAdaptor;
 import network.LobbyServer;
@@ -152,6 +153,7 @@ public class Main extends Application {
     public int restartFromMainMenu() {
         cleanup();
         startMain(this.window);
+        MusicPlayer.playIntroMusic();
         return 0;
     }
 
@@ -398,6 +400,8 @@ public class Main extends Application {
     }
 
     public void startMain(Stage window_arg) {
+        MusicPlayer.playIntroMusic();
+
         this.window = window_arg;
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();

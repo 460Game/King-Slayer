@@ -2,7 +2,6 @@ package game.model.game.model;
 
 import com.esotericsoftware.minlog.Log;
 import game.message.Message;
-import game.message.toServer.MakeEntityRequest;
 import game.message.toServer.RequestEntityRequest;
 import game.message.toServer.RespawnSlayerRequest;
 import game.model.game.grid.GridCell;
@@ -16,16 +15,10 @@ import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.team.TeamRoleEntityMap;
 import game.model.game.model.worldObject.entity.Entity;
-import game.model.game.model.worldObject.entity.entities.Players;
 import images.Images;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Cell;
-import javafx.scene.effect.Bloom;
-import javafx.scene.effect.BoxBlur;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.WritableImage;
-import javafx.scene.paint.Color;
-import util.Util;
+import music.MusicPlayer;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -95,6 +88,8 @@ public class ClientGameModel extends GameModel {
             for (int y = 0; y < getMapHeight(); y++)
                 this.getCell(x, y).setTile(gameMap[x][y], this);
         state = Running.SINGLETON;
+
+        MusicPlayer.playGameMusic();
     }
 
     @Override
