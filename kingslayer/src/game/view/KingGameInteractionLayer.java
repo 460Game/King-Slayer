@@ -22,6 +22,7 @@ import util.Util;
 
 //import static images.Images.DELETE_CURSOR_IMAGE;
 //import static images.Images.UPGRADE_CURSOR_IMAGE;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -100,8 +101,10 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           }
         }
       } else if (upgrading) {
-        // if you clicked the top part of an entity
-        if (model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().isPresent()) {
+        // if you clicked the top part of an entity that is upgradable and is associated with your team
+        if (model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().isPresent() &&
+            model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
+            model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().get().getTeam() == model.getLocalPlayer().getTeam()) {
           model.getEntitiesAt(x.intValue(), (int) (y + 20.0 / 32.0)).stream().findFirst().ifPresent(entity -> {
             if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getLocalPlayer().getTeam()) {
               if (entity.has(EntityProperty.LEVEL) && entity.<Integer>get(EntityProperty.LEVEL) < 2 &&
@@ -127,8 +130,10 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
               }
             }
           });
-          // if you clicked on the bottom of an entity with no entity in front of it
-        } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent()) {
+          // if you clicked on the bottom of an entity (that is upgradable and is associated with your team) with no entity in front of it
+        } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent() &&
+            model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
+            model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().getTeam() == model.getLocalPlayer().getTeam()) {
           model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
             if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getLocalPlayer().getTeam()) {
               if (model.getResourceData()
@@ -152,7 +157,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           });
         }
       } else if (deleting) {
-        if (model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().isPresent()) {
+        if (model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().isPresent() &&
+            model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
+            model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().get().getTeam() == model.getLocalPlayer().getTeam()) {
           model.getEntitiesAt(x.intValue(), (int) (y + 20.0 / 32.0)).stream().findFirst().ifPresent(entity -> {
             if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getLocalPlayer().getTeam()) {
               model.processMessage(new SellEntityRequest(entity,
@@ -166,7 +173,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
             }
           });
           // if you clicked on the bottom of an entity with no entity in front of it
-        } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent()) {
+        } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent() &&
+            model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
+            model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().getTeam() == model.getLocalPlayer().getTeam()) {
           model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
             if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getLocalPlayer().getTeam()) {
               model.processMessage(new SellEntityRequest(entity,

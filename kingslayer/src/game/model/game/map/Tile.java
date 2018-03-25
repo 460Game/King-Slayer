@@ -23,7 +23,7 @@ public enum Tile {
     /**
      * Deep water tile.
      */
-    DEEP_WATER('W', Color.AQUA),
+    DEEP_WATER('W', Color.BLUE),
 
     /**
      * Grass tile.

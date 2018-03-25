@@ -18,6 +18,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lobby.GameView2MainAdaptor;
 import lobby.Main;
+import music.MusicPlayer;
 
 import java.util.*;
 
@@ -209,6 +210,7 @@ public class GameView {
     }
 
     public void goBackToMain() {
+        MusicPlayer.playIntroMusic();
 //        Platform.setImplicitExit(false);
 
         this.timer.stop();

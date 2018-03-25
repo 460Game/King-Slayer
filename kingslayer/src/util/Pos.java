@@ -39,3 +39,4 @@ public class Pos {
         int yh = Double.hashCode(y);
         return (int) ((0.5 * (xh + yh) * (xh + yh + 1)) + yh); }
 }
+

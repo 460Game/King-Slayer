@@ -97,7 +97,7 @@ public class GridCell {
 
         for (Team team : Team.values()) {
             losRanges[team.team] = 0;
-    }
+        }
 
         this.streamContents().filter(entity -> entity.has(TEAM) && entity.has(SIGHT_RADIUS)).forEach(entity -> {
             int sr = entity.get(SIGHT_RADIUS);
@@ -141,6 +141,7 @@ public class GridCell {
     public boolean isPassable() {
         if(isPassibleMemoized)
             return isPassibleMemo;
+        isPassibleMemoized = true;
         isPassibleMemo = contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD
                 || e.getCollideType() == CollisionStrat.CollideType.WATER);
         return isPassibleMemo;
@@ -151,6 +152,7 @@ public class GridCell {
     public boolean isSeeThrough() {
         if(isPassibleMemoized)
             return isVisableMemo;
+        isPassibleMemoized = true;
         isVisableMemo = contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD);
         return isVisableMemo;
     }
