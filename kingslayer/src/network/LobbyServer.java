@@ -34,10 +34,16 @@ public class LobbyServer implements Lobby { //extends Application {
     public Map<Integer, ClientGameModel> conn2ClientGameModel = new HashMap<>();
     public Map<RemoteConnection.RemoteModel, Pair<Team, Role>> clientGameModelToTeamAndRole;
 
+    int numOnTeam;
+
+    public boolean[][] teamRoleMap; //TODO: cleanup this
+    //usage: teamRoleMap[team][role]
+
     public LobbyServer() {
         conn2TeamAndRole = new HashMap<>();
         conn2ClientGameModel = new HashMap<>();
         clientGameModelToTeamAndRole = new HashMap<>();
+        teamRoleMap = new boolean[2][2];
     }
 
     public void setNumOfPlayers(int numOfPlayers) {
@@ -47,9 +53,9 @@ public class LobbyServer implements Lobby { //extends Application {
     public void initServer() {
         //init the client to team role map
         for (RemoteConnection.RemoteModel remoteModel : remoteModels) {
-            System.out.println("check serverInit: " + conn2PlayerInfo.get(remoteModel.getConnectId()));
-            clientGameModelToTeamAndRole.put(remoteModel,
-                    conn2TeamAndRole.get(remoteModel.getConnectId()));
+//            System.out.println("check serverInit: " + conn2PlayerInfo.get(remoteModel.getConnectId()));
+//            clientGameModelToTeamAndRole.put(remoteModel,
+//                    conn2TeamAndRole.get(remoteModel.getConnectId()));
 
             clientGameModelToPlayerInfo.put(remoteModel, conn2PlayerInfo.get(remoteModel.getConnectId()));
         }
@@ -107,22 +113,72 @@ public class LobbyServer implements Lobby { //extends Application {
 
             @Override
             public void showLobbyTeamChoice() {
-
+                //not used by server
             }
 
             @Override
-            public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role, String playerName) {
+            public void showLobbyTeamChoice(int numOnTeam) {
+                //not used by server
+            }
 
-                conn2TeamAndRole.put(connId, new Pair<>(team, role));
-                conn2PlayerName.put(connId, playerName);
-                conn2PlayerInfo.put(connId, new PlayerInfo(team, role, playerName));
-                System.out.println("Did put team and role in the map: " + conn2PlayerInfo.get(connId).getTeam());
+            @Override
+            public void serverLobbyTrySetTeamAndRole(Integer connId, Team team, Role role, String playerName) {
+                int teamIdx = (team == null) ? -1 : team.team;
+                int roleIdx = (role == null) ? -1 : role.val;
+                if (teamIdx < 0 || roleIdx < 0 || teamRoleMap[teamIdx][roleIdx]) {
+//                    (conn2PlayerInfo.get(connId).getTeam().team != teamIdx
+//                            || conn2PlayerInfo.get(connId).getRole().val != roleIdx)
+
+                    Map<String, PlayerInfo> selectResult = new HashMap<>();
+                    for (Map.Entry<Integer, PlayerInfo> entry : conn2PlayerInfo.entrySet()) {
+                        selectResult.put(entry.getValue().getPlayerName(), entry.getValue());
+                    }
+                    server.confirmSelect(false, selectResult);
+                    return;
+                }
+                //role not taken
+                if (!teamRoleMap[teamIdx][roleIdx]) {
+                    teamRoleMap[teamIdx][roleIdx] = true;
+                    if (conn2PlayerInfo.containsKey(connId)) {
+                        teamRoleMap[conn2PlayerInfo.get(connId).getTeam().team][conn2PlayerInfo.get(connId).getRole().val] = false;
+                        conn2PlayerInfo.remove(connId);
+                    }
+
+                    conn2PlayerInfo.put(connId, new PlayerInfo(team, role, playerName));
+
+                    Map<String, PlayerInfo> selectResult = new HashMap<>();
+                    for (Map.Entry<Integer, PlayerInfo> entry : conn2PlayerInfo.entrySet()) {
+                        selectResult.put(entry.getValue().getPlayerName(), entry.getValue());
+                    }
+                    server.confirmSelect(true, selectResult);
+                    return;
+                }
+
+//                if (conn2PlayerInfo.get(connId).getTeam().team == teamIdx
+//                        && conn2PlayerInfo.get(connId).getRole().val == roleIdx) {
+//
+//                }
+
+//                conn2TeamAndRole.put(connId, new Pair<>(team, role));
+//                conn2PlayerName.put(connId, playerName);
+//                conn2PlayerInfo.put(connId, new PlayerInfo(team, role, playerName));
+//                System.out.println("Did put team and role in the map: " + conn2PlayerInfo.get(connId).getTeam());
+//                if (conn)
             }
 
             @Override
             public void serverStartRematch() {
-//                server.rematch();
                 lobbyServerRematch();
+            }
+
+            @Override
+            public void clientTakeSelectFb(boolean s, Map<String, PlayerInfo> map) {
+                //server don't use this
+            }
+
+            @Override
+            public int getNumOnTeam() {
+                return numOnTeam;
             }
 
         });
@@ -155,7 +211,6 @@ public class LobbyServer implements Lobby { //extends Application {
 
         Log.info("finish make model");
     }
-    public void makeServerModel() {}
 
     public int restartFromReadyPage() {
         conn2TeamAndRole = new HashMap<>();
@@ -211,6 +266,11 @@ public class LobbyServer implements Lobby { //extends Application {
             Log.info("server start client: " + remoteModel.connectId + "!!!!!!!!!!");
             remoteModel.startModel();
         }
+    }
+
+    public void setNumOfPlayersAndHostName(String text, int value) {
+        numOnTeam = value;
+        server.setNumOfPlayer(value);
     }
 
 //    public void validateTeamRolePlayer(PlayerInfo playerInfo) {

@@ -6,6 +6,7 @@ import game.message.Message;
 import game.model.game.model.*;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
+import lobby.PlayerInfo;
 
 import java.io.IOException;
 import java.util.*;
@@ -76,6 +77,15 @@ public class RemoteConnection {
             Log.info("client sent rematch message");
             return 0;
         }
+    }
+
+    public void trySelectRole(Team team, Role role, String playerName) {
+        if (isServer) return;
+        client.sendTCP(new NetworkCommon.SelectRoleMsg(team, role, playerName));
+    }
+
+    public void confirmSelect(boolean success, Map<String, PlayerInfo> selectResult) {
+        server.sendToAllTCP(new NetworkCommon.SelectFeedBackMsg(success, selectResult));
     }
 
 
@@ -285,8 +295,8 @@ public class RemoteConnection {
                         }
 
                         System.out.println("checccccc: " + readyMsg.getTeam() + readyMsg.getRole() + readyMsg.getPlayerName());
-                        adaptor.serverLobbyComfirmTeamAndRole(connection.getID(),
-                                readyMsg.getTeam(), readyMsg.getRole(), readyMsg.getPlayerName());
+//                        adaptor.serverLobbyTrySetTeamAndRole(connection.getID(),
+//                                readyMsg.getTeam(), readyMsg.getRole(), readyMsg.getPlayerName());
 
 
 
@@ -310,6 +320,11 @@ public class RemoteConnection {
                         adaptor.getMsg((Message) obj);
                     }
 
+                    if (obj instanceof NetworkCommon.RequestSessionPlayerInfo) {
+                        NetworkCommon.RequestSessionPlayerInfo msg = (NetworkCommon.RequestSessionPlayerInfo) obj;
+                        server.sendToTCP(c.getID(), new NetworkCommon.SessionPlayerInfoCmd(adaptor.getNumOnTeam()));
+                    }
+
                     if (obj instanceof NetworkCommon.SyncClockMsg) {
 //                        long guessServerTime = ((NetworkCommon.SyncClockMsg) obj).getServerTime();
 //                        long curTime = System.nanoTime();
@@ -318,6 +333,11 @@ public class RemoteConnection {
 //                        }
                         server.sendToTCP(c.getID(), new NetworkCommon.SyncClockMsg(System.nanoTime()));
 //                        Log.info(curTime + " " + guessServerTime);
+                    }
+
+                    if (obj instanceof NetworkCommon.SelectRoleMsg) {
+                        NetworkCommon.SelectRoleMsg msg = (NetworkCommon.SelectRoleMsg) obj;
+                        adaptor.serverLobbyTrySetTeamAndRole(c.getID(), msg.tryTeam, msg.tryRole, msg.name);
                     }
 
                 }
@@ -340,12 +360,25 @@ public class RemoteConnection {
                     client.sendTCP("Client " + connection.getID() + " connected");
                     //use client ID for the queue for client use
                     messageQueues.put(client.getID(), new LinkedBlockingQueue<>());
+
+                    client.sendTCP(new NetworkCommon.RequestSessionPlayerInfo());
                 }
 
                 public void received (Connection connection, Object obj) {
 
 
                     Log.debug("Client " + client.getID() + "received " + obj.toString());
+
+                    if (obj instanceof NetworkCommon.SessionPlayerInfoCmd) {
+                        NetworkCommon.SessionPlayerInfoCmd msg = (NetworkCommon.SessionPlayerInfoCmd) obj;
+                        adaptor.showLobbyTeamChoice(msg.num);
+                        client.sendTCP(new NetworkCommon.SelectRoleMsg(null, null, null));
+                    }
+
+                    if (obj instanceof NetworkCommon.SelectFeedBackMsg) {
+                        NetworkCommon.SelectFeedBackMsg msg = (NetworkCommon.SelectFeedBackMsg) obj;
+                        adaptor.clientTakeSelectFb(msg.s, msg.map);
+                    }
                     if (obj instanceof NetworkCommon.ClientMakeModelMsg) {
                         adaptor.makeModel(); //make clientModel
 //                        client.sendTCP(new NetworkCommon.ClientReadyMsg()); //trigger by sth else now
@@ -357,7 +390,7 @@ public class RemoteConnection {
 
                     if (obj instanceof NetworkCommon.AllClientConnectMsg) {
                         Log.info(connection.getID() + "get all client connectMsg");
-                        adaptor.showLobbyTeamChoice();
+//                        adaptor.showLobbyTeamChoice();
                     }
 
                     if (obj instanceof ArrayList) {
@@ -508,6 +541,11 @@ public class RemoteConnection {
     public void notifyReady(Team team, Role role, String playerName) {
         if (isServer) System.err.println("Server should not do this");
         else client.sendTCP(new NetworkCommon.ClientReadyMsg(team, role, playerName));
+    }
+
+    public void notifyReady(String playerName) {
+        if (isServer) System.err.println("Server should not do this");
+        else client.sendTCP(new NetworkCommon.ClientReadyMsg(null, null, playerName));
     }
 
     //if isServer, make client remoteModel

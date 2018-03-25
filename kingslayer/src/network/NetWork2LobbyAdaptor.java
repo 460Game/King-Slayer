@@ -3,6 +3,9 @@ package network;
 import game.message.Message;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
+import lobby.PlayerInfo;
+
+import java.util.Map;
 
 public interface NetWork2LobbyAdaptor {
     public void serverInit();
@@ -11,6 +14,11 @@ public interface NetWork2LobbyAdaptor {
     public void getMsg(Message obj);
 
     public void showLobbyTeamChoice();
-    public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role, String playerName);
+    public void showLobbyTeamChoice(int numOnTeam);
+    public void serverLobbyTrySetTeamAndRole(Integer connId, Team team, Role role, String playerName);
     public void serverStartRematch();
+
+    void clientTakeSelectFb(boolean s, Map<String, PlayerInfo> map);
+
+    int getNumOnTeam();
 }
