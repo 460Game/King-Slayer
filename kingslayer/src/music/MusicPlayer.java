@@ -2,12 +2,16 @@ package music;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class MusicPlayer {
 
