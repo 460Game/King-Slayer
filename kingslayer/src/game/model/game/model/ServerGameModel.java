@@ -400,19 +400,15 @@ public class ServerGameModel extends GameModel {
     }
 
     public GridCell getNextCell(int team) {
-        double value = random.nextDouble() * totalProbability[team];
+        double value = random.nextDouble();
         double total = 0;
         GridCell returnCell = getCell(0, 0);
-
-        System.out.println("VALUE: " + value);
 
         for (int i = 0; i < getMapWidth(); i++) {
             for (int j = 0; j < getMapHeight(); j++) {
                 total += cellsToGoTo[team][i][j];
-                if (total >= value) {
-                    System.out.println("Value: " + value + ", Total: " + total);
+                if (total >= value)
                     return getCell(i, j);
-                }
             }
         }
 

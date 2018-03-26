@@ -201,25 +201,18 @@ public abstract class MinionStrat extends AIStrat {
             } else {
                 if (data.reachedDestination) {
                     GridCell dest = model.getNextCell(entity.getTeam().team);
-//                    GridCell dest = model.getCell((int) entityx + 1, (int) entityy + 1);
-                    int counter = 0;
-                    while (!dest.isPassable() || !astar.isReachable(model.getCell((int) entityx, (int) entityy), dest)) {
-                        counter++;
-                        System.out.println("SEARCHIGN: " + counter);
+                    while (!dest.isPassable() || !astar.isReachable(model.getCell((int) entityx, (int) entityy), dest))
                         dest = model.getNextCell(entity.getTeam().team);
-                    }
+
 
                     destx = dest.getTopLeftX();
                     desty = dest.getTopLeftY();
                     data.finalDestination = dest;
                     data.reachedDestination = false;
-                    System.out.println("found new destination at " + destx + ", " + desty);
                 }
 
                 if (data.path.size() == 0 && !data.reachedDestination) {//entityx != destx && entityy != desty) {
                     data.path = astar.astar(model.getCell((int) entityx, (int) entityy), data.finalDestination);
-                    System.out.println("found path for new destination");
-                    System.out.println("PATH SIZE: " + data.path.size());
                 }
 
                 if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
@@ -234,14 +227,12 @@ public abstract class MinionStrat extends AIStrat {
 
                 // Check if reached destination.
                 if (data.reachedDestination) {
-                    System.out.println("reached destination");
                     entity.setVelocity(entity.getVelocity().withMagnitude(0));
                     data.path.clear();
                     data.nextDestination = null;
                     data.finalDestination = null;
                 } else if (!data.path.isEmpty()) {
                     if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY()) {
-                        System.out.println("moving to new cell");
                         data.path.remove(0);
                         data.nextDestination = null;
                     } else {
