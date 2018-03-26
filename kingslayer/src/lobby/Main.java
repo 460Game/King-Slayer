@@ -18,15 +18,14 @@ import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -45,6 +44,7 @@ import network.LobbyServer;
 
 import java.io.IOException;
 import java.lang.management.PlatformManagedObject;
+import java.util.Map;
 
 import static images.Images.*;
 import static util.Util.random;
@@ -55,7 +55,7 @@ public class Main extends Application {
     LobbyServer lobbyServer = null;
 
     public Scene mainMenuScene;
-
+    TextField nameOfPlayer;
 
     private Font font = Font.font("", FontWeight.BOLD, 36);
     private static Color textColor = Color.web("b5de0f");
@@ -68,6 +68,8 @@ public class Main extends Application {
     ChoiceBox<Team> teamChoice;
     ChoiceBox<Role> roleChoice;
 
+    int numOnTeam;
+
     boolean connected = false;
 
     Canvas bgCanvas = new Canvas();
@@ -76,6 +78,16 @@ public class Main extends Application {
     GraphicsContext midGC = midCanvas.getGraphicsContext2D();
     private boolean playerNumAlreadySet = false;
     TextField playerName = new TextField();
+    ChoiceBox numChoice;
+
+    Label redKingLabel;
+    Label blueKingLabel;
+    Label redSlLabel;
+    Label blueSlLabel;
+    Button selectRedKing;
+    Button selectBlueKing;
+    Button selectRedSl;
+    Button selectBlueSl;
 
     MenuItem[] items = new MenuItem[] {
         new MenuItem("Join LAN"),
@@ -169,22 +181,6 @@ public class Main extends Application {
         playerName = new TextField();
     }
 
-    public int restart(Stage window) {
-//        Platform.setImplicitExit(false);
-////        window.setScene(chooseTeamAndRoleScene());
-//        if (lobbyServer != null) {
-//            int status = lobbyServer.restartFromReadyPage();
-//            System.out.println("server lobby restartFromReadyPage " + status);
-//        }
-//
-//        if (lobbyClient != null) {
-//            int status = lobbyClient.restartFromReadyPage();
-//            System.out.println("client lobby restartFromReadyPage " + status);
-//        }
-//
-        return 0;
-    }
-
     public int rematch() {
 //        if (lobbyServer != null) {
 //            lobbyServer.lobbyServerRematch() {
@@ -254,20 +250,34 @@ public class Main extends Application {
         grid.setHgap(5);
 
         //Defining the Name text field
-        final TextField numOfPlayer = new TextField();
-        numOfPlayer.setPromptText("Enter Number Of Players.");
-        numOfPlayer.setText("4");
-        numOfPlayer.setPrefColumnCount(100);
-        numOfPlayer.setPrefSize(800, 60);
-        numOfPlayer.setFont(Font.font ("Verdana", 30));
+        nameOfPlayer = new TextField();
+        nameOfPlayer.setPromptText("Enter your name.");
+//        numOfPlayer.setText("Default Player");
+        nameOfPlayer.setPrefColumnCount(100);
+        nameOfPlayer.setPrefSize(500, 60);
+        nameOfPlayer.setFont(Font.font ("Verdana", 30));
 
-        GridPane.setConstraints(numOfPlayer, 0, 0);
-        grid.getChildren().add(numOfPlayer);
+        numChoice = new ChoiceBox<>();
+        numChoice.getItems().add("1v1");
+        numChoice.getItems().add("2v2");
+        numChoice.setPrefSize(200, 60);
+        numChoice.setStyle("-fx-font: 30px \"Serif\";");
 
-        Button set = new Button("set");
+        //
+//        grid.getChildren().add(numChoice);
+
+        GridPane.setConstraints(nameOfPlayer, 0, 0);
+
+        grid.getChildren().add(nameOfPlayer);
+
+        GridPane.setConstraints(numChoice, 1, 0);
+
+        grid.getChildren().add(numChoice);
+
+        Button set = new Button("Set");
         set.setPrefSize(100, 60);
         set.setFont(Font.font ("Verdana", 20));
-        GridPane.setConstraints(set, 1, 0);
+        GridPane.setConstraints(set, 2, 0);
         grid.getChildren().add(set);
 
         set.setOnAction(new EventHandler<ActionEvent>() {
@@ -275,7 +285,13 @@ public class Main extends Application {
             public void handle(ActionEvent event) {
                 if (playerNumAlreadySet) return;
                 playerNumAlreadySet = true;
-                lobbyServer.setNumOfPlayers(Integer.parseInt(numOfPlayer.getText()));
+                lobbyServer.setNumOfPlayersAndHostName(nameOfPlayer.getText(), ((String)numChoice.getValue()).charAt(0) - '0');
+                if (((String)numChoice.getValue()).startsWith("1")) {
+                    numOnTeam = 1;
+                } else {
+                    System.out.println("it is greater than 2");
+                    numOnTeam = 2;
+                }
                 startGame();
                 //the following would be done in the network part
 
@@ -288,12 +304,14 @@ public class Main extends Application {
     }
 
     private void guiSetNumOfPlayer() {
+
         lobbyServer = new LobbyServer();
         try {
             lobbyServer.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
             @Override
             public void showChoiceTeamAndRoleScene() {
@@ -309,17 +327,75 @@ public class Main extends Application {
                 };
                 new Thread(show).start();
             }
+
+            @Override
+            public void takeSelectFb(boolean s, Map<String, PlayerInfo> map) {
+                takeFb(s, map);
+            }
+
+            @Override
+            public void setNumOnTeam(int numOnTeam) {
+                Main.this.numOnTeam = numOnTeam;
+            }
         }, this);
 
 //        window.getScene().getRoot().getChildrenUnmodifiable().remove(0, 1);
 
         Platform.runLater(() -> window.setScene(inputNumOfPlayersScene()));
     }
+    private void takeFb(boolean s, Map<String, PlayerInfo> map) {
+        if (!s) {
+            System.out.println("Fail to select role");
+        }
+
+        {
+            Platform.runLater(()-> {
+                redKingLabel.setText("RED KING: ");
+                blueKingLabel.setText("BLUE KING: ");
+                if (redSlLabel != null) {//TODO: tempory, remove later
+                    redSlLabel.setText("RED SLAYER: ");
+                    blueSlLabel.setText("BLUE SLAYER: ");
+                }
+            });
+
+
+            for (Map.Entry<String, PlayerInfo> entry : map.entrySet()) {
+                Team team = entry.getValue().getTeam();
+                Role role = entry.getValue().getRole();
+                String name = entry.getValue().getPlayerName();
+                if (team == Team.ONE && role == Role.KING) {
+                    System.out.println("RED KING IS " + name);
+                    Platform.runLater(() -> {
+                        redKingLabel.setText("RED KING: " + name);
+                    });
+                }
+                else if (team == Team.ONE && role == Role.SLAYER) {
+                    Platform.runLater(() -> {
+                        redSlLabel.setText("RED SLAYER: " + name);
+                    });
+
+                }
+                else if (team == Team.TWO && role == Role.KING) {
+                    System.out.println("BLUE KING IS " + name);
+                    Platform.runLater(() -> {
+                        blueKingLabel.setText("BLUE KING: " + name);
+                    });
+
+                }
+                else if (team == Team.TWO && role == Role.SLAYER) {
+                    Platform.runLater(() -> {
+                        blueSlLabel.setText("BLUE SLAYER: " + name);
+                    });
+
+                }
+            }
+        }
+    }
 
     private void startGame() {
 
         try {
-
+            lobbyClient.setName(nameOfPlayer.getText());
             lobbyClient.start();
             lobbyClient.connectTo("localhost");
             //TODO: change this to Ping back later
@@ -328,15 +404,17 @@ public class Main extends Application {
             e.printStackTrace();
             return;
         }
+
     }
 
     public void ready() {
         //TODO: get from the view later!!!!!!!!!!!
-        Team team = teamChoice.getValue();
-        Role role = roleChoice.getValue();
+//        Team team = teamChoice.getValue();
+//        Role role = roleChoice.getValue();
         String playerNameStr = playerName.getText();
-        System.out.println("player name is " + playerNameStr + " " + team + role);
-        lobbyClient.lobbyClientReady(team, role, playerNameStr);
+//        System.out.println("player name is " + playerNameStr + " " + team + role);
+//        lobbyClient.lobbyClientReady(team, role, playerNameStr);
+        lobbyClient.lobbyClientReady(playerNameStr);
     }
 
     private void joinGame(String host) throws Exception {
@@ -349,7 +427,19 @@ public class Main extends Application {
                 Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
 //                window.setScene(new Scene(choiceTeamAndRoleScene()));
             }
+
+            @Override
+            public void takeSelectFb(boolean s, Map<String, PlayerInfo> map) {
+                takeFb(s, map);
+            }
+
+            @Override
+            public void setNumOnTeam(int numOnTeam) {
+                Main.this.numOnTeam = numOnTeam;
+            }
         }, this);
+
+        lobbyClient.setName(playerName.getText());
         lobbyClient.start();
         lobbyClient.connectTo(host);
         //TODO: change this to ping back later
@@ -514,38 +604,147 @@ public class Main extends Application {
     //Panes code
     public GridPane choiceTeamAndRolePane() {
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(window.getHeight()/2, 100, window.getHeight()/2 + 100, 100));
-        grid.setVgap(5);
+        grid.setPadding(new Insets(window.getHeight()/2 - 150, 100, window.getHeight()/2 + 100, 250));
+        grid.setVgap(50);
         grid.setHgap(5);
 
-        teamChoice = new ChoiceBox<>();
-        teamChoice.getItems().add(Team.ONE);
-        teamChoice.getItems().add(Team.TWO);
-        teamChoice.setPrefSize(200, 60);
-        teamChoice.setStyle("-fx-font: 30px \"Serif\";");
-        GridPane.setConstraints(teamChoice, 0, 0);
-        grid.getChildren().add(teamChoice);
 
-        roleChoice = new ChoiceBox<>();
-        roleChoice.getItems().add(Role.KING);
-        roleChoice.getItems().add(Role.SLAYER);
-        roleChoice.setPrefSize(200, 60);
-        roleChoice.setStyle("-fx-font: 30px \"Serif\";");
-        GridPane.setConstraints(roleChoice, 1, 0);
-        grid.getChildren().add(roleChoice);
 
-        playerName = new TextField();
-        playerName.setPromptText("Enter player name.");
-        playerName.setPrefSize(200, 60);
-        playerName.setFont(Font.font(30));
-        GridPane.setConstraints(playerName, 2, 0);
-        grid.getChildren().add(playerName);
+        Rectangle rec = new Rectangle();
+        rec.setWidth(150);
+        rec.setHeight(150);
+        rec.setFill(Color.RED);
+        grid.add(rec, 0, 0, 1, 2);
+
+//        roleChoice = new ChoiceBox<>();
+//        roleChoice.getItems().add(Role.KING);
+//        roleChoice.getItems().add(Role.SLAYER);
+//        roleChoice.setPrefSize(200, 60);
+//        roleChoice.setStyle("-fx-font: 30px \"Serif\";");
+
+        redKingLabel = new Label("RED KING: ");
+        redKingLabel.setPrefSize(300, 60);
+        redKingLabel.setStyle("-fx-font: 25px \"Serif\";");
+//        GridPane.setConstraints(roleChoice, 2, 0);
+        grid.add(redKingLabel, 1, 0, 1, 1);
+
+
+//        teamChoice = new ChoiceBox<>();
+//        teamChoice.getItems().add(Team.ONE);
+//        teamChoice.getItems().add(Team.TWO);
+//        teamChoice.setPrefSize(200, 60);
+//        teamChoice.setStyle("-fx-font: 30px \"Serif\";");
+
+        selectRedKing = new Button("SELECT");
+        selectRedKing.setPrefSize(150, 30);
+        selectRedKing.setStyle("-fx-font: 25px \"Serif\";");
+        selectRedKing.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                lobbyClient.selectRole(Team.ONE, Role.KING);
+            }
+        });
+        grid.add(selectRedKing, 1, 1, 1, 1);
+
+
+
+        Rectangle recBlue = new Rectangle();
+        recBlue.setWidth(150);
+        recBlue.setHeight(150);
+        recBlue.setFill(Color.BLUE);
+        grid.add(recBlue, 3, 0, 1, 2);
+
+        blueKingLabel = new Label("BLUE KING: ");
+        blueKingLabel.setPrefSize(300, 30);
+        blueKingLabel.setStyle("-fx-font: 25px \"Serif\";");
+//        GridPane.setConstraints(roleChoice, 2, 0);
+        grid.add(blueKingLabel, 4, 0, 1, 1);
+
+
+        selectBlueKing = new Button("SELECT");
+        selectBlueKing.setPrefSize(150, 30);
+        selectBlueKing.setStyle("-fx-font: 25px \"Serif\";");
+        selectBlueKing.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                lobbyClient.selectRole(Team.TWO, Role.KING);
+            }
+        });
+        grid.add(selectBlueKing, 4, 1, 1, 1);
+
+        System.out.println("check num in team " + numOnTeam);
+        if (numOnTeam >= 2) {
+
+            Rectangle rec2 = new Rectangle();
+            rec2.setWidth(150);
+            rec2.setHeight(150);
+            rec2.setFill(Color.RED);
+            grid.add(rec2, 0, 2, 1, 2);
+
+            redSlLabel = new Label("RED SLAYER: ");
+            redSlLabel.setPrefSize(300, 60);
+            redSlLabel.setStyle("-fx-font: 25px \"Serif\";");
+            grid.add(redSlLabel, 1, 2, 1, 1);
+
+
+//        teamChoice = new ChoiceBox<>();
+//        teamChoice.getItems().add(Team.ONE);
+//        teamChoice.getItems().add(Team.TWO);
+//        teamChoice.setPrefSize(200, 60);
+//        teamChoice.setStyle("-fx-font: 30px \"Serif\";");
+
+            selectRedSl = new Button("SELECT");
+            selectRedSl.setPrefSize(150, 30);
+            selectRedSl.setStyle("-fx-font: 25px \"Serif\";");
+            selectRedSl.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    lobbyClient.selectRole(Team.ONE, Role.SLAYER);
+                }
+            });
+            grid.add(selectRedSl, 1, 3, 1, 1);
+
+            Rectangle recBlue2 = new Rectangle();
+            recBlue2.setWidth(150);
+            recBlue2.setHeight(150);
+            recBlue2.setFill(Color.BLUE);
+            grid.add(recBlue2, 3, 2, 1, 2);
+
+
+            blueSlLabel = new Label("BLUE SLAYER: ");
+            blueSlLabel.setPrefSize(300, 30);
+            blueSlLabel.setStyle("-fx-font: 25px \"Serif\";");
+//        GridPane.setConstraints(roleChoice, 2, 0);
+            grid.add(blueSlLabel, 4, 2, 1, 1);
+
+
+            selectBlueSl = new Button("SELECT");
+            selectBlueSl.setPrefSize(150, 30);
+            selectBlueSl.setStyle("-fx-font: 25px \"Serif\";");
+            selectBlueSl.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    lobbyClient.selectRole(Team.TWO, Role.SLAYER);
+                }
+            });
+            grid.add(selectBlueSl, 4, 3, 1, 1);
+        }
+
+
+
+
+//        playerName = new TextField();
+//        playerName.setPromptText("Enter player name.");
+//        playerName.setPrefSize(200, 60);
+//        playerName.setFont(Font.font(30));
+//        GridPane.setConstraints(playerName, 2, 0);
+//        grid.getChildren().add(playerName);
 
         Button ready = new Button("Ready");
-        ready.setPrefSize(200, 60);
+        ready.setPrefSize(200, 30);
         ready.setFont(Font.font(20));
-        GridPane.setConstraints(ready, 3, 0);
-        grid.getChildren().add(ready);
+//        GridPane.setConstraints(ready, 3, 0);
+        grid.add(ready, 2, 5, 1, 1);
 
         ready.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -585,6 +784,14 @@ public class Main extends Application {
         grid.setVgap(50);
         grid.setHgap(5);
 
+        playerName = new TextField();
+        playerName.setPrefSize(600, 80);
+        playerName.setPromptText("Enter your name.");
+        playerName.setPrefColumnCount(50);
+
+        playerName.setFont(Font.font("Verdana",30));
+        grid.getChildren().add(playerName);
+
         //Defining the Name text field
         final TextField ip = new TextField();
         ip.setPrefSize(600, 80);
@@ -598,14 +805,14 @@ public class Main extends Application {
 //        ip.setScaleY(5);
 
 //        ip.getText();
-        GridPane.setConstraints(ip, 0, 0);
+        GridPane.setConstraints(ip, 1, 0);
         grid.getChildren().add(ip);
 
         Button connect = new Button("Connect");
         connect.fontProperty().set(Font.font(20));
 
         connect.setPrefSize(200, 80);
-        GridPane.setConstraints(connect, 1, 0);
+        GridPane.setConstraints(connect, 2, 0);
         grid.getChildren().add(connect);
 
         connect.setOnAction(new EventHandler<ActionEvent>() {

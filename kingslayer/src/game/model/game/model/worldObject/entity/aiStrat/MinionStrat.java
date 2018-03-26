@@ -7,6 +7,7 @@ import game.message.toServer.MakeEntityRequest;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Role;
+import game.model.game.model.team.Team;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Entities;
@@ -17,6 +18,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class MinionStrat extends AIStrat {
+
+    // Moving target, update only every few frames
 
     private MinionStrat() {
 
@@ -111,11 +114,6 @@ public abstract class MinionStrat extends AIStrat {
             }
 
             model.processMessage(new SetEntityCommand(entity));
-
-//            Random rand = new Random();
-//            if (rand.nextDouble() < 0.05)
-//                model.processMessage(new NewEntityCommand(Entities.makeArrow(entity.getX(), entity.getY(),
-//                        entity.<Velocity>get(Entity.EntityProperty.VELOCITY).getAngle(), entity.getTeam())));
         }
     }
 
@@ -135,7 +133,7 @@ public abstract class MinionStrat extends AIStrat {
 
         @Override
         void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
-
+            wander(data, entity, model, seconds);
         }
 
         @Override
@@ -154,43 +152,96 @@ public abstract class MinionStrat extends AIStrat {
             double entityx = entity.getX();
             double entityy = entity.getY();
 
-            // Get destination.
-            Entity king = getClosestEnemy(data, entity, model);
-            int x = (int) (double) model.getEntity(king.id).getX();
-            int y = (int) (double) model.getEntity(king.id).getY();
+            int destx = 0;
+            int desty = 0;
 
-            // Check if path exists and king has moved, then generate a new path.
-            if (data.path.size() > 0 && !king.containedIn.contains(data.path.get(data.path.size() - 1))) {
-                data.path.clear();
-                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
-            }
+            Team team = entity.getTeam();
+            TeamResourceData teamData = model.getTeamData(team);
 
-            // If nothing in path and not at destination, generate a path. TODO might need better check
-            if (data.path.size() == 0 && !entity.checkCollision(king.getHitbox(), king.getX(), king.getY())) {//entityx != x && entityy != y) {
-                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
-            }
+            if (teamData.getEnemyKingInSight()) {
+                // If team sees enemy king, all minions should go to enemy king.
+                Entity king = getClosestKing(entity, model);
+                destx = (int) (double) king.getX();
+                desty = (int) (double) king.getY();
 
-            if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != x &&
-                    data.path.get(0).getTopLeftY() != y) {
-                data.path.clear();
-                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
-            }
+                // Check if path exists and king has moved, generate a new path.
+                if (data.path.size() > 0 && !king.containedIn.contains(data.path.get(data.path.size() - 1))) {
+                    data.path.clear();
+                    data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(destx, desty));
+                }
 
-            // Check if reached destination.
-            if (entity.containedIn.contains(model.getCell(x, y))) {
-                entity.setVelocity(entity.getVelocity().withMagnitude(0));
-                data.path.clear();
-                data.nextDestination = null;
-            } else if (!data.path.isEmpty()) {
-                if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY()) {
-                    data.path.remove(0);
+                // If nothing in path and not at destination, generate a path. TODO might need better check
+                if (data.path.size() == 0 && !entity.checkCollision(king.getHitbox(), king.getX(), king.getY())) {//entityx != x && entityy != y) {
+                    data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(destx, desty));
+                }
+
+                if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
+                        data.path.get(0).getTopLeftY() != desty) {
+                    data.path.clear();
+                    data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(destx, desty));
+                }
+
+                // Check if reached destination.
+                if (entity.containedIn.contains(model.getCell(destx, desty))) {
+                    entity.setVelocity(entity.getVelocity().withMagnitude(0));
+                    data.path.clear();
                     data.nextDestination = null;
-                } else {
-                    // Keep moving if cells are in path.
-                    data.nextDestination = data.path.get(0);
-                    astar.moveToCell(entity, data.nextDestination);
-                    if (entity.getVelocity().getMagnitude() == 0)
-                        entity.setVelocity(entity.getVelocity().withMagnitude(entity.get(Entity.EntityProperty.MAX_SPEED)));
+                } else if (!data.path.isEmpty()) {
+                    if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY()) {
+                        data.path.remove(0);
+                        data.nextDestination = null;
+                    } else {
+                        // Keep moving if cells are in path.
+                        data.nextDestination = data.path.get(0);
+                        astar.moveToCell(entity, data.nextDestination);
+                        if (entity.getVelocity().getMagnitude() == 0)
+                            entity.setVelocity(entity.getVelocity().withMagnitude(entity.get(Entity.EntityProperty.MAX_SPEED)));
+                    }
+                }
+            } else {
+                if (data.reachedDestination) {
+                    GridCell dest = model.getNextCell(entity.getTeam().team);
+                    while (!dest.isPassable() || !astar.isReachable(model.getCell((int) entityx, (int) entityy), dest))
+                        dest = model.getNextCell(entity.getTeam().team);
+
+
+                    destx = dest.getTopLeftX();
+                    desty = dest.getTopLeftY();
+                    data.finalDestination = dest;
+                    data.reachedDestination = false;
+                }
+
+                if (data.path.size() == 0 && !data.reachedDestination) {//entityx != destx && entityy != desty) {
+                    data.path = astar.astar(model.getCell((int) entityx, (int) entityy), data.finalDestination);
+                }
+
+                if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
+                        data.path.get(0).getTopLeftY() != desty) {
+                    data.path.clear();
+                    data.path = astar.astar(model.getCell((int) entityx, (int) entityy), data.finalDestination);
+                    data.reachedDestination = false;
+                }
+
+                if (data.finalDestination.getContents().contains(entity))
+                    data.reachedDestination = true;
+
+                // Check if reached destination.
+                if (data.reachedDestination) {
+                    entity.setVelocity(entity.getVelocity().withMagnitude(0));
+                    data.path.clear();
+                    data.nextDestination = null;
+                    data.finalDestination = null;
+                } else if (!data.path.isEmpty()) {
+                    if ((int) entityx == data.path.get(0).getTopLeftX() && (int) entityy == data.path.get(0).getTopLeftY()) {
+                        data.path.remove(0);
+                        data.nextDestination = null;
+                    } else {
+                        // Keep moving if cells are in path.
+                        data.nextDestination = data.path.get(0);
+                        astar.moveToCell(entity, data.nextDestination);
+                        if (entity.getVelocity().getMagnitude() == 0)
+                            entity.setVelocity(entity.getVelocity().withMagnitude(entity.get(Entity.EntityProperty.MAX_SPEED)));
+                    }
                 }
             }
 
@@ -356,6 +407,9 @@ public abstract class MinionStrat extends AIStrat {
         private int resourceType;
         private int resourceHeld;
         private GridCell nextDestination;
+        private GridCell finalDestination;
+        private boolean reachedDestination;
+        public boolean foundKing;
 
         MinionStratAIData() {
             path = new ArrayList<>();
@@ -365,6 +419,9 @@ public abstract class MinionStrat extends AIStrat {
             resourceType = 0;
             resourceHeld = 0;
             nextDestination = null;
+            finalDestination = null;
+            foundKing = false;
+            reachedDestination = true;
         }
     }
 
@@ -401,7 +458,7 @@ public abstract class MinionStrat extends AIStrat {
      * detect range or around a solid entity with in a closer range.
      * @return the enemy entities that this minion can detect
      */
-    Collection<Entity> detectedEnemies(Entity entity, ServerGameModel model) {
+    Collection<Entity> detectedEnemies(MinionStratAIData data, Entity entity, ServerGameModel model) {
         // TODO If there are any around a wall with a closer range (maybe)
         // TODO ignore arrows or try to dodge
 
@@ -421,6 +478,21 @@ public abstract class MinionStrat extends AIStrat {
             }
         }
 
+        if (enemies.parallelStream().filter(e -> e.has(Entity.EntityProperty.ROLE) &&
+                e.<Role>get(Entity.EntityProperty.ROLE) == Role.KING).count() > 0) {
+            model.getTeamData(entity.getTeam()).setEnemyKingInSight(true);
+            data.foundKing = true;
+        }
+
+        if (data.foundKing) {
+            if (enemies.parallelStream().filter(e -> e.has(Entity.EntityProperty.ROLE) &&
+                    e.<Role>get(Entity.EntityProperty.ROLE) == Role.KING).count() == 0) {
+                model.getTeamData(entity.getTeam()).setEnemyKingInSight(false);
+                data.foundKing = false;
+            }
+
+        }
+
         return enemies;
     }
 
@@ -435,7 +507,6 @@ public abstract class MinionStrat extends AIStrat {
             return new HashSet<>();
 
         // Minions shouldn't count enemies around a wall as attackable.
-        // TODO ignore arrows
 
         Collection<Entity> enemies = new HashSet<>();
         double x = entity.getX();
@@ -472,11 +543,26 @@ public abstract class MinionStrat extends AIStrat {
             return data.attackable.stream().min((e1, e2) ->
                     Double.compare(util.Util.dist(e1.getX(), e1.getY(), entity.getX(), entity.getY()),
                     util.Util.dist(e2.getX(), e2.getY(), entity.getX(), entity.getY()))).get();
+        } else if (!data.detected.isEmpty()) {
+            return data.detected.stream().min((e1, e2) ->
+                    Double.compare(util.Util.dist(e1.getX(), e1.getY(), entity.getX(), entity.getY()),
+                            util.Util.dist(e2.getX(), e2.getY(), entity.getX(), entity.getY()))).get();
+        } else {
+            // TODO location of last enemy seen?
+            // Returns the enemy king, assuming no fog of war. Could return closest king. Temporary for now? TODO
+            return model.getAllEntities().parallelStream().filter(e -> e.has(Entity.EntityProperty.TEAM) && e.getTeam() != entity.getTeam() &&
+                    e.has(Entity.EntityProperty.ROLE) && e.<Role>get(Entity.EntityProperty.ROLE) == Role.KING).findFirst().get();
         }
+    }
 
-        // TODO location of last enemy seen?
-
-        // Returns the enemy king, assuming no fog of war. Could return closest king. Temporary for now? TODO
+    /**
+     * Returns the closest enemy king to this entity.
+     * @param entity entity for which to ind closest enemy king
+     * @param model current state of game on server
+     * @return closest enemy king to this entity
+     */
+    Entity getClosestKing(Entity entity, ServerGameModel model) {
+        // Returns the closest enemy king.
         return model.getAllEntities().parallelStream().filter(e -> e.has(Entity.EntityProperty.TEAM) && e.getTeam() != entity.getTeam() &&
                 e.has(Entity.EntityProperty.ROLE) && e.<Role>get(Entity.EntityProperty.ROLE) == Role.KING).findFirst().get();
     }
@@ -601,11 +687,11 @@ public abstract class MinionStrat extends AIStrat {
 //
 //        // Next, scan for any enemies in the area. If there are enemies in the range,
 //        // perform the appropriate action.
-//        data.detected = detectedEnemies(entity, model);
-//        if (data.detected.size() > 0) {
-//            handleEnemyDetected();
-//            return;
-//        }
+        data.detected = detectedEnemies(data, entity, model);
+        if (data.detected.size() > 0) {
+            handleEnemyDetected(data, entity, model, seconds);
+            return;
+        }
 
         // If the minion has no other tasks to do, attack or handle detected enemies, it
         // should "wander." This is either moving on a set path to perform a task or

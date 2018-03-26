@@ -46,9 +46,15 @@ public class ServerGameModel extends GameModel {
 
     private Collection<GridCell> team2collector;
 
+    private double[][][] cellsToGoTo;
+
+    private double[] totalProbability;
+
     private boolean addedBuilding;
 
     private Entity building;
+
+    private Random random;
 
     private final Object lock = new Object();
 
@@ -139,6 +145,22 @@ public class ServerGameModel extends GameModel {
             }
         }
 
+        random = new Random(0);
+        cellsToGoTo = new double[NUM_TEAMS][getMapWidth()][getMapHeight()];
+        totalProbability = new double[NUM_TEAMS];
+        for (int x = 0; x < NUM_TEAMS; x++) {
+            for (int y = 0; y < getMapWidth(); y++) {
+                for (int z = 0; z < getMapHeight(); z++) {
+                    if (y < 4 || z > 95)
+                        cellsToGoTo[x][y][z] = 0;
+                    else {
+                        cellsToGoTo[x][y][z] = 1.0 / (getMapHeight() * getMapWidth());
+                        totalProbability[x] += 1.0 / (getMapHeight() * getMapWidth());
+                    }
+                }
+            }
+        }
+
         teamData.put(Team.ONE, new TeamResourceData());
         teamData.put(Team.TWO, new TeamResourceData());
 
@@ -180,7 +202,6 @@ public class ServerGameModel extends GameModel {
         runWithTimerTask();
     }
 
-
     public void runWithTimerTask() {
         final int[] totalFrameCount = {0};
         final int[] doAICount = {0};
@@ -188,7 +209,7 @@ public class ServerGameModel extends GameModel {
         updateFPS = new TimerTask() {
             public void run() {
                 synchronized (lock) {
-                    Log.info(String.valueOf("Server FPS: " + totalFrameCount[0]));
+//                    Log.info(String.valueOf("Server FPS: " + totalFrameCount[0]));
                     totalFrameCount[0] = 0;
                 }
             }
@@ -276,8 +297,11 @@ public class ServerGameModel extends GameModel {
 
     public void makeEntity(Entity e) {
         this.setEntity(e);
-        if (e.getCollideType() == CollisionStrat.CollideType.HARD)
+        if (e.getCollideType() == CollisionStrat.CollideType.HARD) {
             astar.updateModel(this);
+            for (int i = 0; i < NUM_TEAMS; i++)
+                setCellsToGoTo(i, (int) (double) e.getX(), (int) (double) e.getY(), 0);
+        }
         if (e.has(BUILDING_TYPE)) {
             addedBuilding = true;
             building = e;
@@ -291,10 +315,17 @@ public class ServerGameModel extends GameModel {
 
     @Override
     public void removeByID(long entityID) {
+
+        int locx = 0;
+        int locy = 0;
+
         // Check if wall/tree/building/hard object is being removed.
         boolean isHard = false;
-        if (getEntity(entityID).getCollideType() == CollisionStrat.CollideType.HARD)
+        if (getEntity(entityID).getCollideType() == CollisionStrat.CollideType.HARD) {
             isHard = true;
+            locx = (int) (double) getEntity(entityID).getX();
+            locy = (int) (double) getEntity(entityID).getY();
+        }
 
         // Check if the entity removed is a tree. If so, remove that cell from the corresponding resource set.
         if (getEntity(entityID).has(RESOURCE_TYPE)) {
@@ -317,8 +348,11 @@ public class ServerGameModel extends GameModel {
         clients.forEach(client -> client.processMessage(new RemoveEntityCommand(entityID)));
 
         // Update model used in astar if a hard object is removed.
-        if (isHard)
+        if (isHard) {
+            for (int i = 0; i < NUM_TEAMS; i++)
+                setCellsToGoTo(i, locx, locy, 1.0 / (getMapWidth() * getMapHeight())); // TODO may need to change this value
             astar.updateModel(this);
+        }
     }
 
     public Astar getAstar() {
@@ -334,6 +368,52 @@ public class ServerGameModel extends GameModel {
     public Collection<GridCell> getTeam1collector() { return team1collector; }
 
     public Collection<GridCell> getTeam2collector() { return team2collector; }
+
+    public TeamResourceData getTeamData(Team team) {
+        return teamData.get(team);
+    }
+
+    public double[][][] getCellsToGoTo() {
+        return cellsToGoTo;
+    }
+
+    public void setCellsToGoTo(int team, int x, int y, double probability) {
+        boolean changed = false;
+        if (cellsToGoTo[team][x][y] != probability)
+            changed = true;
+
+        totalProbability[team] -= cellsToGoTo[team][x][y];
+        cellsToGoTo[team][x][y] = probability;
+        totalProbability[team] += probability;
+
+        if (changed)
+            adjustCellsToGoTo(team);
+    }
+
+    public void adjustCellsToGoTo(int team) {
+        for (int x = 0; x < getMapWidth(); x++) {
+            for (int y = 0; y < getMapHeight(); y++) {
+                cellsToGoTo[team][x][y] /= totalProbability[team];
+            }
+        }
+        totalProbability[team] = 1;
+    }
+
+    public GridCell getNextCell(int team) {
+        double value = random.nextDouble();
+        double total = 0;
+        GridCell returnCell = getCell(0, 0);
+
+        for (int i = 0; i < getMapWidth(); i++) {
+            for (int j = 0; j < getMapHeight(); j++) {
+                total += cellsToGoTo[team][i][j];
+                if (total >= value)
+                    return getCell(i, j);
+            }
+        }
+
+        return returnCell;
+    }
 
     @Override
     public void update() {

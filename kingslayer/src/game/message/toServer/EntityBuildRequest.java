@@ -1,9 +1,6 @@
 package game.message.toServer;
 
-import game.model.game.grid.GridCell;
 import game.model.game.model.ServerGameModel;
-import game.model.game.model.team.Team;
-import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntitySpawner;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
@@ -52,8 +49,8 @@ public class EntityBuildRequest implements ToServerRequest {
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        System.out.println(model.getCell((int) x, (int) y).isVisable(creator.getTeam()));
-        if (//model.getCell((int) x, (int) y).isVisable(creator.getTeam()) &&
+        System.out.println(model.getCell((int) x, (int) y).isVisible(creator.getTeam()));
+        if (model.getCell((int) x, (int) y).isVisible(creator.getTeam()) &&
             !hitbox.getCollidesWith(model, x, y).findAny().isPresent() &&
             model.changeResource(creator.getTeam(), entity.resource, -entity.finalCost(model, creator.getTeam())))
             model.makeEntity(entity.makeEntity(x, y, creator.getTeam()));

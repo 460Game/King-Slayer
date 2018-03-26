@@ -27,6 +27,7 @@ import game.model.game.model.worldObject.entity.entities.Velocity;
 import game.model.game.model.worldObject.entity.slayer.SlayerData;
 import game.model.game.model.worldObject.entity.slayer.SlayerUpdateStrat;
 import game.model.game.model.worldObject.entity.updateStrat.*;
+import lobby.PlayerInfo;
 
 import java.awt.*;
 import java.lang.reflect.InvocationHandler;
@@ -214,6 +215,11 @@ public class NetworkCommon {
 
         kryo.register(BuildingSpawnerStrat.BuildingType.class);
         kryo.register(ClientRematchMsg.class);
+        kryo.register(SelectFeedBackMsg.class);
+        kryo.register(SelectRoleMsg.class);
+        kryo.register(PlayerInfo.class);
+        kryo.register(RequestSessionPlayerInfo.class);
+        kryo.register(SessionPlayerInfoCmd.class);
 
 
 
@@ -287,6 +293,40 @@ public class NetworkCommon {
 
     public static class ClientRematchMsg {
         public ClientRematchMsg() {}
+    }
+
+    public static class SelectRoleMsg {
+        Team tryTeam;
+        Role tryRole;
+        String name;
+        public SelectRoleMsg() {}
+        public SelectRoleMsg(Team team, Role role, String name) {
+            tryTeam = team;
+            tryRole = role;
+            this.name = name;
+        }
+    }
+
+    public static class SelectFeedBackMsg {
+        Map<String, PlayerInfo> map;
+        boolean s;
+        public SelectFeedBackMsg() {}
+        public SelectFeedBackMsg(boolean s, Map<String, PlayerInfo> map) {
+            this.s = s;
+            this.map = map;
+        }
+    }
+
+    public static class RequestSessionPlayerInfo {
+        public RequestSessionPlayerInfo() {}
+    }
+
+    public static class SessionPlayerInfoCmd {
+        int num;
+        public SessionPlayerInfoCmd() {}
+        public SessionPlayerInfoCmd(int numOnTeam) {
+            num = numOnTeam;
+        }
     }
 
 

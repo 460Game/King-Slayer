@@ -11,10 +11,12 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 import lobby.GameView2MainAdaptor;
 import lobby.Lobby;
+import lobby.PlayerInfo;
 import lobby.lobbyMessage.LobbyMessage;
 import lobby.Main;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class LobbyClient implements Lobby {//extends Application {
     static {
@@ -30,6 +32,7 @@ public class LobbyClient implements Lobby {//extends Application {
     public Main mainApp;
 
     public int connectId;
+    public String playerName;
 
     public LobbyClient(Stage window, LobbyClient2LobbyAdaptor lobbyAdaptor, Main mainApp) {
         this.window = window;
@@ -114,13 +117,31 @@ public class LobbyClient implements Lobby {//extends Application {
             }
 
             @Override
-            public void serverLobbyComfirmTeamAndRole(Integer connId, Team team, Role role, String playerName) {
+            public void showLobbyTeamChoice(int numOnTeam) {
+                lobbyAdaptor.setNumOnTeam(numOnTeam);
+                lobbyAdaptor.showChoiceTeamAndRoleScene();
+            }
+
+            @Override
+            public void serverLobbyTrySetTeamAndRole(Integer connId, Team team, Role role, String playerName) {
                 //client should not call
             }
 
             @Override
             public void serverStartRematch() {
                 //client should not call
+            }
+
+            @Override
+            public void clientTakeSelectFb(boolean s, Map<String, PlayerInfo> map) {
+                lobbyAdaptor.takeSelectFb(s, map);
+            }
+
+            @Override
+            public int getNumOnTeam() {
+                System.err.println("not used by client");
+                //not used by client
+                return -1;
             }
 
         });
@@ -145,8 +166,12 @@ public class LobbyClient implements Lobby {//extends Application {
         clientGameModel.processMessage(msg);
     }
 
-    public void lobbyClientReady(Team team, Role role, String playerName) {
-        client.notifyReady(team, role, playerName);
+    public void lobbyClientReady(Team team, Role role, String name) {
+        client.notifyReady(team, role, this.playerName);
+    }
+
+    public void lobbyClientReady(String name) {
+        client.notifyReady(name);
     }
 
     //TODO rename this to makeModel
@@ -234,6 +259,14 @@ public class LobbyClient implements Lobby {//extends Application {
         });
 
         client.rematch();
+    }
+
+    public void setName(String name) {
+        playerName = name;
+    }
+
+    public void selectRole(Team team, Role role) {
+        client.trySelectRole(team, role, playerName);
     }
 }
 

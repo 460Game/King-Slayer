@@ -12,6 +12,7 @@ import java.util.*;
 import util.*;
 import java.util.stream.Collectors;
 
+import static util.Const.NUM_TEAMS;
 import static util.Const.TILE_PIXELS;
 
 /**
@@ -178,15 +179,23 @@ public class Astar {
 
                     // Check if the diagonals are passable.
                     if (!model.getCell(i, current.getTopLeftY()).isPassable() &&
-                            !model.getCell(current.getTopLeftX(), j).isPassable())
+                            !model.getCell(current.getTopLeftX(), j).isPassable()) {
+                        for (int teams = 0; teams < NUM_TEAMS; teams++) {
+                            model.setCellsToGoTo(teams, i, current.getTopLeftY(), 0);
+                            model.setCellsToGoTo(teams, current.getTopLeftX(), j, 0);
+                        }
                         continue;
+                    }
 
                     GridCell neighbor = model.getCell(i, j);
 
                     // If the neighbor is not passable, cannot be in the path unless this neighbor
                     // is the final cell.
-                    if (!this.passable.contains(neighbor) && !neighbor.equals(end))
+                    if (!this.passable.contains(neighbor) && !neighbor.equals(end)) {
+                        for (int teams = 0; teams < NUM_TEAMS; teams++)
+                            model.setCellsToGoTo(teams, i, j, 0);
                         continue;
+                    }
 
                     // If the neighbor was already looked at, ignore it.
                     if (closed.contains(neighbor))
@@ -215,6 +224,16 @@ public class Astar {
 
         // A* couldn't find a path due to obstacles.
         return new LinkedList<>();
+    }
+
+    public boolean isReachable(GridCell start, GridCell end) {
+        List<GridCell> checkPath = astar(start, end);
+        if (checkPath.isEmpty()) {
+            for (int teams = 0; teams < NUM_TEAMS; teams++)
+                model.setCellsToGoTo(teams, end.getTopLeftX(), end.getTopLeftY(), 0);
+            return false;
+        }
+        return true;
     }
 
     /**
