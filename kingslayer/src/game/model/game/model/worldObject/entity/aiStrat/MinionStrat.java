@@ -484,6 +484,15 @@ public abstract class MinionStrat extends AIStrat {
             data.foundKing = true;
         }
 
+        if (data.foundKing) {
+            if (enemies.parallelStream().filter(e -> e.has(Entity.EntityProperty.ROLE) &&
+                    e.<Role>get(Entity.EntityProperty.ROLE) == Role.KING).count() == 0) {
+                model.getTeamData(entity.getTeam()).setEnemyKingInSight(false);
+                data.foundKing = false;
+            }
+
+        }
+
         return enemies;
     }
 
