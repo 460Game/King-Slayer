@@ -335,6 +335,10 @@ public class ServerGameModel extends GameModel {
 
     public Collection<GridCell> getTeam2collector() { return team2collector; }
 
+    public TeamResourceData getTeamData(Team team) {
+        return teamData.get(team);
+    }
+
     @Override
     public void update() {
         super.update();

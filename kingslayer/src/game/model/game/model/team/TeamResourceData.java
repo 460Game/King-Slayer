@@ -30,6 +30,7 @@ public class TeamResourceData {
     }
 
     private Map<Resource, Integer> resources = new HashMap<>();
+    private boolean isEnemyKingInSight = false;
 
     /**
      * Constructor for a team's resources. Initially, a team
@@ -47,5 +48,13 @@ public class TeamResourceData {
 
     public void setResource(Resource r, int num) {
         resources.put(r, num);
+    }
+
+    public boolean getEnemyKingInSight() {
+        return isEnemyKingInSight;
+    }
+
+    public void setEnemyKingInSight(boolean status) {
+        isEnemyKingInSight = status;
     }
 }

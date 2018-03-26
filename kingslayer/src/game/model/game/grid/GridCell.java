@@ -1,13 +1,11 @@
 package game.model.game.grid;
 
-import com.esotericsoftware.minlog.Log;
 import game.model.game.model.GameModel;
 import game.model.game.map.Tile;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 
@@ -19,7 +17,6 @@ import java.util.stream.Stream;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.SIGHT_RADIUS;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.TEAM;
 import static images.Images.TILE_IMAGE;
-import static util.Const.TILE_PIXELS;
 import static util.Util.toDrawCoords;
 
 /**
@@ -121,7 +118,7 @@ public class GridCell {
         });
     }
 
-    public boolean isVisable(Team team) {
+    public boolean isVisible(Team team) {
         return losRanges[team.team] != 0;
     }
 
@@ -129,8 +126,8 @@ public class GridCell {
         return explored[team.team];
     }
 
-    private boolean isPassibleMemo = false;
-    private boolean isPassibleMemoized = false;
+    private boolean isPassableMemo = false;
+    private boolean isPassableMemoized = false;
     /**
      * Returns true if the cell is able to be passed through, or equivalently,
      * if a pathing enemy should try to go through this tile. A cell is
@@ -139,20 +136,20 @@ public class GridCell {
      * @return true if the cell is able to be walked through
      */
     public boolean isPassable() {
-        if(isPassibleMemoized)
-            return isPassibleMemo;
-        isPassibleMemoized = true;
-        isPassibleMemo = contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD
+        if(isPassableMemoized)
+            return isPassableMemo;
+        isPassableMemoized = true;
+        isPassableMemo = contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD
                 || e.getCollideType() == CollisionStrat.CollideType.WATER);
-        return isPassibleMemo;
+        return isPassableMemo;
     }
 
     private boolean isVisableMemo;
 
     public boolean isSeeThrough() {
-        if(isPassibleMemoized)
+        if(isPassableMemoized)
             return isVisableMemo;
-        isPassibleMemoized = true;
+        isPassableMemoized = true;
         isVisableMemo = contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD);
         return isVisableMemo;
     }
@@ -182,7 +179,7 @@ public class GridCell {
      */
     public void addContents(GameModel model, Entity o) {
         contents.add(o);
-        isPassibleMemoized = false;
+        isPassableMemoized = false;
     }
 
     /**
@@ -192,7 +189,7 @@ public class GridCell {
      */
     public void removeContents(GameModel model, Entity o) {
         contents.remove(o);
-        isPassibleMemoized = false;
+        isPassableMemoized = false;
     }
 
     private static Map<String, Point> TILE_MAP;

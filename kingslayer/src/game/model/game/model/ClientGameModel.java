@@ -131,7 +131,7 @@ public class ClientGameModel extends GameModel {
         for (int i = (int) Math.max(0,x); i < Math.min(Math.ceil(x + w), this.getMapWidth()-1); i++) {
             for (int j = (int) Math.max(0, y); j < Math.min(Math.ceil(y + h), this.getMapHeight()); j++) {
                 GridCell cell = this.getCell(i, j);
-                if (cell.isVisable(team)) {
+                if (cell.isVisible(team)) {
                     visable.add(cell);
                 } else if (cell.isExplored(team)) {
                     explored.add(cell);
