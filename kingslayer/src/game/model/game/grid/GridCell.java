@@ -144,14 +144,15 @@ public class GridCell {
         return isPassableMemo;
     }
 
-    private boolean isVisableMemo;
+    private boolean isVisibleMemo;
+    private boolean isVisibleMemoized;
 
     public boolean isSeeThrough() {
-        if(isPassableMemoized)
-            return isVisableMemo;
-        isPassableMemoized = true;
-        isVisableMemo = contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD);
-        return isVisableMemo;
+        if(isVisibleMemoized)
+            return isVisibleMemo;
+        isVisibleMemoized = true;
+        isVisibleMemo = contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD);
+        return isVisibleMemo;
     }
 
     /**
@@ -180,6 +181,7 @@ public class GridCell {
     public void addContents(GameModel model, Entity o) {
         contents.add(o);
         isPassableMemoized = false;
+        isVisibleMemoized = false;
     }
 
     /**
@@ -190,6 +192,7 @@ public class GridCell {
     public void removeContents(GameModel model, Entity o) {
         contents.remove(o);
         isPassableMemoized = false;
+        isVisibleMemoized = false;
     }
 
     private static Map<String, Point> TILE_MAP;

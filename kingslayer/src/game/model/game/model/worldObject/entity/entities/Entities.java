@@ -19,8 +19,7 @@ public class Entities {
 
     public static Entity makeWater(double x, double y) {
         return new Entity(x, y, CellHitbox.SINGLETON,
-                WaterCollisionStrat.SINGLETON
-        );
+                WaterCollisionStrat.SINGLETON);
     }
 
     public static Entity makeTreasure(double x, double y) {
