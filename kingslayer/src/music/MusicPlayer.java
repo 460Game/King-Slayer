@@ -12,7 +12,7 @@ import java.io.File;
 public class MusicPlayer {
 
   private static Thread music = new Thread();
-  private static MediaPlayer intro = new MediaPlayer(new Media(new File("kingslayer/resources/music/Quest.mp3").toURI().toString()));
+  private static Clip intro;// = new MediaPlayer(new Media(MusicPlayer.class.getResourceAsStream("Quest.wav")));
   private static Clip gameClip;
 
   static {
@@ -21,6 +21,11 @@ public class MusicPlayer {
       AudioInputStream inputStream = AudioSystem.getAudioInputStream(
           MusicPlayer.class.getResourceAsStream("PirateCrew.wav"));
       gameClip.open(inputStream);
+
+      intro = AudioSystem.getClip();
+//      inputStream = AudioSystem.getAudioInputStream(
+//          MusicPlayer.class.getResourceAsStream("Quest.wav"));
+//      intro.open(inputStream);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -31,7 +36,7 @@ public class MusicPlayer {
     music = new Thread(){
       public void run() {
         try {
-          intro.play();
+//          intro.start();
         } catch (Exception e) {
           System.err.println(e.getMessage());
         }
