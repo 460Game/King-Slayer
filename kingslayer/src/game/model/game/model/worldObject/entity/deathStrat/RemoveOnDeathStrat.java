@@ -13,7 +13,7 @@ public class RemoveOnDeathStrat extends DeathStrat {
     @Override
     public void handleDeath(GameModel model, Entity entity) {
         model.execute(serverGameModel -> {
-            if (entity.has(Entity.EntityProperty.AI_DATA)) {
+            if (entity.has(Entity.EntityProperty.AI_DATA) && entity.get(Entity.EntityProperty.AI_DATA) instanceof MinionStrat.MinionStratAIData) {
                 MinionStrat.MinionStratAIData data = entity.get(Entity.EntityProperty.AI_DATA);
                 if (data.foundKing)
                     serverGameModel.getTeamData(entity.getTeam()).setEnemyKingInSight(false);
