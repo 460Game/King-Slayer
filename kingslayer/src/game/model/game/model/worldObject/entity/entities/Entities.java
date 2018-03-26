@@ -76,12 +76,12 @@ public class Entities {
         return new Entity(x, y,
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
-                pair(HEALTH, 25.0),
+                pair(HEALTH, 50.0),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.BUILDABLE_WOOD_WALL),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(TEAM, team),
                 pair(LEVEL, 0),
-                pair(MAX_HEALTH, 25.0),
+                pair(MAX_HEALTH, 50.0),
                 pair(BUILDING_TYPE, BuildingSpawnerStrat.BuildingType.WALL),
                 pair(Entity.EntityProperty.SIGHT_RADIUS, 2));
     }
@@ -191,13 +191,13 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
-                pair(HEALTH, 15.0),
+                pair(HEALTH, 50.0),
                 pair(BUILDING_TYPE, BuildingSpawnerStrat.BuildingType.TOWER),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.ARROW_TOWER),
                 pair(AI_STRAT, BuildingSpawnerStrat.TowerBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(LEVEL, 0),
-                pair(MAX_HEALTH, 15.0),
+                pair(MAX_HEALTH, 50.0),
                 pair(SIGHT_RADIUS, 4));
     }
 

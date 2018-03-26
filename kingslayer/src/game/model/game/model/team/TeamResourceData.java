@@ -37,7 +37,7 @@ public class TeamResourceData {
      * has 0 of all resources.
      */
     public TeamResourceData() {
-        resources.put(Resource.WOOD, 0);
+        resources.put(Resource.WOOD, 100);
         resources.put(Resource.STONE, 0);
         resources.put(Resource.METAL, 0);
     }

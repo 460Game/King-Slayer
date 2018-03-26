@@ -18,25 +18,24 @@ public class MusicPlayer {
   static {
     try {
       gameClip = AudioSystem.getClip();
-      AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-          MusicPlayer.class.getResourceAsStream("PirateCrew.wav"));
+      AudioInputStream inputStream = AudioSystem.getAudioInputStream(MusicPlayer.class.getResourceAsStream("PirateCrew.wav"));
       gameClip.open(inputStream);
 
       intro = AudioSystem.getClip();
-//      inputStream = AudioSystem.getAudioInputStream(
-//          MusicPlayer.class.getResourceAsStream("Quest.wav"));
-//      intro.open(inputStream);
+      inputStream = AudioSystem.getAudioInputStream(MusicPlayer.class.getResourceAsStream("Quest.wav"));
+      intro.open(inputStream);
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
   public static synchronized void playIntroMusic() {
-    gameClip.stop();
+    if (gameClip.isRunning())
+      gameClip.stop();
     music = new Thread(){
       public void run() {
         try {
-//          intro.start();
+          intro.start();
         } catch (Exception e) {
           System.err.println(e.getMessage());
         }
@@ -46,11 +45,12 @@ public class MusicPlayer {
   }
 
   public static synchronized void playGameMusic() {
-    intro.stop();
+    if (intro.isRunning())
+      intro.stop();
     music = new Thread(){
       public void run() {
         try {
-          gameClip.loop(1000);
+          gameClip.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (Exception e) {
           System.err.println(e.getMessage());
         }
