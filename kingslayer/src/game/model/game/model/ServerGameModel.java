@@ -145,7 +145,7 @@ public class ServerGameModel extends GameModel {
             }
         }
 
-        random = new Random(0);
+        random = new Random();
         cellsToGoTo = new double[NUM_TEAMS][getMapWidth()][getMapHeight()];
         totalProbability = new double[NUM_TEAMS];
         for (int x = 0; x < NUM_TEAMS; x++) {

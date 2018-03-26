@@ -16,7 +16,6 @@
           </JavaFxApplicationIcons>
         </option>
         <option name="keystore" value="" />
-        <option name="nativeBundle" value="all" />
         <option name="title" value="King Slayer" />
         <option name="vendor" value="COMP 460" />
         <option name="version" value="" />
