@@ -28,7 +28,7 @@ public class MusicPlayer {
 
   static {
     try {
-      gameClip = AudioSystem.getClip();
+      /*gameClip = AudioSystem.getClip();
       AudioInputStream inputStream = AudioSystem.getAudioInputStream(MusicPlayer.class.getResourceAsStream("PirateCrew.wav"));
       gameClip.open(inputStream);
 
@@ -54,14 +54,14 @@ public class MusicPlayer {
 
       construction = AudioSystem.getClip();
       inputStream = AudioSystem.getAudioInputStream(MusicPlayer.class.getResourceAsStream("Construction.wav"));
-      construction.open(inputStream);
+      construction.open(inputStream);*/
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
   public static synchronized void playIntroMusic() {
-    if (gameClip.isRunning())
+    /*if (gameClip.isRunning())
       gameClip.stop();
     intro.setFramePosition(0);
     music = new Thread(){
@@ -73,11 +73,11 @@ public class MusicPlayer {
         }
       }
     };
-    music.start();
+    music.start();*/
   }
 
   public static synchronized void playGameMusic() {
-    if (intro.isRunning())
+    /*if (intro.isRunning())
       intro.stop();
     gameClip.setFramePosition(0);
     music = new Thread(){
@@ -89,11 +89,11 @@ public class MusicPlayer {
         }
       }
     };
-    music.start();
+    music.start();*/
   }
 
   public static synchronized void playArrowSound() {
-    bow.setFramePosition(0);
+    /*bow.setFramePosition(0);
     music = new Thread(){
       public void run() {
         try {
@@ -103,11 +103,11 @@ public class MusicPlayer {
         }
       }
     };
-    music.start();
+    music.start();*/
   }
 
   public static synchronized void playChargeSound() {
-    charge.setFramePosition(0);
+    /*charge.setFramePosition(0);
     music = new Thread(){
       public void run() {
         try {
@@ -117,11 +117,11 @@ public class MusicPlayer {
         }
       }
     };
-    music.start();
+    music.start();*/
   }
 
   public static synchronized void playSellSound() {
-    sell.setFramePosition(0);
+    /*sell.setFramePosition(0);
     music = new Thread(){
       public void run() {
         try {
@@ -131,11 +131,11 @@ public class MusicPlayer {
         }
       }
     };
-    music.start();
+    music.start();*/
   }
 
   public static synchronized void playConstructionSound() {
-    construction.setFramePosition(0);
+    /*construction.setFramePosition(0);
     music = new Thread(){
       public void run() {
         try {
@@ -145,11 +145,11 @@ public class MusicPlayer {
         }
       }
     };
-    music.start();
+    music.start();*/
   }
 
   public static synchronized void playErrorSound() {
-    error.setFramePosition(0);
+    /*error.setFramePosition(0);
     music = new Thread(){
       public void run() {
         try {
@@ -159,7 +159,7 @@ public class MusicPlayer {
         }
       }
     };
-    music.start();
+    music.start();*/
   }
 
 }
