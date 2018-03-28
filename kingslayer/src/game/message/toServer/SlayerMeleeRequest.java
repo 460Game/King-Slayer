@@ -4,6 +4,7 @@ import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.slayer.SlayerData;
+import music.MusicPlayer;
 
 public class SlayerMeleeRequest extends ActionRequest {
 
@@ -55,6 +56,8 @@ public class SlayerMeleeRequest extends ActionRequest {
         }
 
         model.getEntity(id).set(Entity.EntityProperty.SLAYER_DATA, curSlayerData);
+
+        MusicPlayer.playChargeSound();
 
     }
 }

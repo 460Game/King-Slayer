@@ -5,6 +5,7 @@ import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Entities;
 import game.model.game.model.worldObject.entity.slayer.SlayerData;
+import music.MusicPlayer;
 
 /**
  * Message sent by a client to tell the server that it wants
@@ -75,5 +76,7 @@ public class ShootArrowRequest extends ActionRequest {
 
         Entity arrow = Entities.makeArrow(x, y, angle, team, model.getEntity(id), curSlayerData.arrowDamage, -1);
         model.makeEntity(arrow);
+
+        MusicPlayer.playArrowSound();
     }
 }
