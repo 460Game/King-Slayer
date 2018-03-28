@@ -47,7 +47,6 @@ public class UpgradeEntityRequest implements ToServerRequest {
         model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL) + 1), -cost)) {
       entity.upgrade();
       model.processMessage(new NewEntityCommand(entity));
-      MusicPlayer.playConstructionSound();
     }
   }
 }

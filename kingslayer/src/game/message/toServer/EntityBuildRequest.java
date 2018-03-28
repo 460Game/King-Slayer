@@ -55,6 +55,5 @@ public class EntityBuildRequest implements ToServerRequest {
             !hitbox.getCollidesWith(model, x, y).findAny().isPresent() &&
             model.changeResource(creator.getTeam(), entity.resource, -entity.finalCost(model, creator.getTeam())))
             model.makeEntity(entity.makeEntity(x, y, creator.getTeam()));
-      MusicPlayer.playConstructionSound();
     }
 }

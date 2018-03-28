@@ -36,9 +36,9 @@ public class MusicPlayer {
       inputStream = AudioSystem.getAudioInputStream(MusicPlayer.class.getResourceAsStream("Quest.wav"));
       intro.open(inputStream);
 
-//      error = AudioSystem.getClip();
-//      inputStream = AudioSystem.getAudioInputStream(new URL("https://www.zapsplat.com/music/game-tone-block-negative/"));
-//      error.open(inputStream);
+      error = AudioSystem.getClip();
+      inputStream = AudioSystem.getAudioInputStream(MusicPlayer.class.getResourceAsStream("Error.wav"));
+      error.open(inputStream);
 
       bow = AudioSystem.getClip();
       inputStream = AudioSystem.getAudioInputStream(MusicPlayer.class.getResourceAsStream("Bow.wav"));
@@ -140,6 +140,20 @@ public class MusicPlayer {
       public void run() {
         try {
           construction.start();
+        } catch (Exception e) {
+          System.err.println(e.getMessage());
+        }
+      }
+    };
+    music.start();
+  }
+
+  public static synchronized void playErrorSound() {
+    error.setFramePosition(0);
+    music = new Thread(){
+      public void run() {
+        try {
+          error.start();
         } catch (Exception e) {
           System.err.println(e.getMessage());
         }
