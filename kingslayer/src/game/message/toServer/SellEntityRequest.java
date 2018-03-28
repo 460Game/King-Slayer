@@ -3,6 +3,7 @@ package game.message.toServer;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
+import music.MusicPlayer;
 
 public class SellEntityRequest implements ToServerRequest {
   /**
@@ -33,6 +34,8 @@ public class SellEntityRequest implements ToServerRequest {
     if (entity.has(Entity.EntityProperty.LEVEL) && model.getEntity(entity.id) != null) {
       model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL)), amount);
       model.removeByID(entity.id);
+
+      MusicPlayer.playSellSound();
     }
   }
 }

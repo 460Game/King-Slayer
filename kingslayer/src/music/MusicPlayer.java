@@ -23,6 +23,7 @@ public class MusicPlayer {
   private static Clip error;
   private static Clip bow;
   private static Clip charge;
+  private static Clip sell;
 
   static {
     try {
@@ -45,6 +46,10 @@ public class MusicPlayer {
       charge = AudioSystem.getClip();
       inputStream = AudioSystem.getAudioInputStream(MusicPlayer.class.getResourceAsStream("Swish.wav"));
       charge.open(inputStream);
+
+      sell = AudioSystem.getClip();
+      inputStream = AudioSystem.getAudioInputStream(MusicPlayer.class.getResourceAsStream("Sell.wav"));
+      sell.open(inputStream);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -96,10 +101,15 @@ public class MusicPlayer {
 
   public static synchronized void playChargeSound() {
     charge.setFramePosition(0);
+    charge.start();
+  }
+
+  public static synchronized void playSellSound() {
+    sell.setFramePosition(0);
     music = new Thread(){
       public void run() {
         try {
-          charge.start();
+          sell.start();
         } catch (Exception e) {
           System.err.println(e.getMessage());
         }
