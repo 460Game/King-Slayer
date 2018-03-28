@@ -4,6 +4,7 @@ import game.message.toClient.NewEntityCommand;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.TeamResourceData;
 import game.model.game.model.worldObject.entity.Entity;
+import music.MusicPlayer;
 
 /**
  * Request sent by a client to the server that says the client
@@ -46,6 +47,7 @@ public class UpgradeEntityRequest implements ToServerRequest {
         model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL) + 1), -cost)) {
       entity.upgrade();
       model.processMessage(new NewEntityCommand(entity));
+      MusicPlayer.playConstructionSound();
     }
   }
 }

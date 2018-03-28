@@ -24,6 +24,7 @@ public class MusicPlayer {
   private static Clip bow;
   private static Clip charge;
   private static Clip sell;
+  private static Clip construction;
 
   static {
     try {
@@ -50,6 +51,10 @@ public class MusicPlayer {
       sell = AudioSystem.getClip();
       inputStream = AudioSystem.getAudioInputStream(MusicPlayer.class.getResourceAsStream("Sell.wav"));
       sell.open(inputStream);
+
+      construction = AudioSystem.getClip();
+      inputStream = AudioSystem.getAudioInputStream(MusicPlayer.class.getResourceAsStream("Construction.wav"));
+      construction.open(inputStream);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -58,6 +63,7 @@ public class MusicPlayer {
   public static synchronized void playIntroMusic() {
     if (gameClip.isRunning())
       gameClip.stop();
+    intro.setFramePosition(0);
     music = new Thread(){
       public void run() {
         try {
@@ -73,6 +79,7 @@ public class MusicPlayer {
   public static synchronized void playGameMusic() {
     if (intro.isRunning())
       intro.stop();
+    gameClip.setFramePosition(0);
     music = new Thread(){
       public void run() {
         try {
@@ -101,7 +108,16 @@ public class MusicPlayer {
 
   public static synchronized void playChargeSound() {
     charge.setFramePosition(0);
-    charge.start();
+    music = new Thread(){
+      public void run() {
+        try {
+          charge.start();
+        } catch (Exception e) {
+          System.err.println(e.getMessage());
+        }
+      }
+    };
+    music.start();
   }
 
   public static synchronized void playSellSound() {
@@ -110,6 +126,20 @@ public class MusicPlayer {
       public void run() {
         try {
           sell.start();
+        } catch (Exception e) {
+          System.err.println(e.getMessage());
+        }
+      }
+    };
+    music.start();
+  }
+
+  public static synchronized void playConstructionSound() {
+    construction.setFramePosition(0);
+    music = new Thread(){
+      public void run() {
+        try {
+          construction.start();
         } catch (Exception e) {
           System.err.println(e.getMessage());
         }
