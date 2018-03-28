@@ -21,11 +21,11 @@ public class MusicPlayer {
   private static Clip intro;
   private static Clip gameClip;
 
-  private static Clip error;
-  private static Clip bow;
-  private static Clip charge;
-  private static Clip sell;
-  private static Clip construction;
+//  private static Clip error;
+//  private static Clip bow;
+//  private static Clip charge;
+//  private static Clip sell;
+//  private static Clip construction;
 
   static {
     try {
@@ -76,7 +76,7 @@ public class MusicPlayer {
   public static synchronized void playArrowSound() {
     music = new Thread(() -> {
       try {
-        bow = AudioSystem.getClip();
+        Clip bow = AudioSystem.getClip();
         InputStream audioSrc = MusicPlayer.class.getResourceAsStream("Bow.wav");
         InputStream bufferedIn = new BufferedInputStream(audioSrc);
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(bufferedIn);
@@ -92,7 +92,7 @@ public class MusicPlayer {
   public static synchronized void playChargeSound() {
     music = new Thread(() -> {
       try {
-        charge = AudioSystem.getClip();
+        Clip charge = AudioSystem.getClip();
         InputStream audioSrc = MusicPlayer.class.getResourceAsStream("Swish.wav");
         InputStream bufferedIn = new BufferedInputStream(audioSrc);
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(bufferedIn);
@@ -108,7 +108,7 @@ public class MusicPlayer {
   public static synchronized void playSellSound() {
     music = new Thread(() -> {
       try {
-        sell = AudioSystem.getClip();
+        Clip sell = AudioSystem.getClip();
         InputStream audioSrc = MusicPlayer.class.getResourceAsStream("Sell.wav");
         InputStream bufferedIn = new BufferedInputStream(audioSrc);
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(bufferedIn);
@@ -124,7 +124,7 @@ public class MusicPlayer {
   public static synchronized void playConstructionSound() {
     music = new Thread(() -> {
       try {
-        construction = AudioSystem.getClip();
+        Clip construction = AudioSystem.getClip();
         InputStream audioSrc = MusicPlayer.class.getResourceAsStream("Construction.wav");
         InputStream bufferedIn = new BufferedInputStream(audioSrc);
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(bufferedIn);
@@ -140,7 +140,7 @@ public class MusicPlayer {
   public static synchronized void playErrorSound() {
     music = new Thread(() -> {
       try {
-        error = AudioSystem.getClip();
+        Clip error = AudioSystem.getClip();
         InputStream audioSrc = MusicPlayer.class.getResourceAsStream("Error.wav");
         InputStream bufferedIn = new BufferedInputStream(audioSrc);
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(bufferedIn);

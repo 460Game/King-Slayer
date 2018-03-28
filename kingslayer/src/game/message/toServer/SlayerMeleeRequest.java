@@ -57,7 +57,5 @@ public class SlayerMeleeRequest extends ActionRequest {
 
         model.getEntity(id).set(Entity.EntityProperty.SLAYER_DATA, curSlayerData);
 
-        MusicPlayer.playChargeSound();
-
     }
 }

@@ -76,7 +76,5 @@ public class ShootArrowRequest extends ActionRequest {
 
         Entity arrow = Entities.makeArrow(x, y, angle, team, model.getEntity(id), curSlayerData.arrowDamage, -1);
         model.makeEntity(arrow);
-
-        MusicPlayer.playArrowSound();
     }
 }
