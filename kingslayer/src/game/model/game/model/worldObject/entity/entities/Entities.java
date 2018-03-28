@@ -98,14 +98,14 @@ public class Entities {
         return new Entity(x, y,
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
-                pair(HEALTH, 15.0),
+                pair(HEALTH, 25.0),
                 pair(TEAM, team),
                 pair(BUILDING_TYPE, BuildingSpawnerStrat.BuildingType.COLLECTOR),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.RESOURCE_COLLECTOR),
                 pair(AI_STRAT, BuildingSpawnerStrat.ResourceCollectorBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(LEVEL, 0),
-                pair(MAX_HEALTH, 15.0),
+                pair(MAX_HEALTH, 25.0),
                 pair(SIGHT_RADIUS, 2));
     }
 
@@ -122,13 +122,13 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
-                pair(HEALTH, 15.0),
+                pair(HEALTH, 25.0),
                 pair(BUILDING_TYPE, BuildingSpawnerStrat.BuildingType.BARRACKS),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.BarracksBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(LEVEL, 0),
-                pair(MAX_HEALTH, 15.0),
+                pair(MAX_HEALTH, 25.0),
                 pair(SIGHT_RADIUS, 2));
     }
 
@@ -137,13 +137,13 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(TEAM, team),
-                pair(HEALTH, 15.0),
+                pair(HEALTH, 25.0),
                 pair(BUILDING_TYPE, BuildingSpawnerStrat.BuildingType.BARRACKS),
                 pair(DRAW_STRAT, UpgradableImageDrawStrat.BARRACKS),
                 pair(AI_STRAT, BuildingSpawnerStrat.RangedBarracksBuildingSpawnerStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(LEVEL, 0),
-                pair(MAX_HEALTH, 15.0),
+                pair(MAX_HEALTH, 25.0),
                 pair(SIGHT_RADIUS, 2));
     }
 
