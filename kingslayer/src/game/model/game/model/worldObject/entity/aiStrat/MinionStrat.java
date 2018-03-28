@@ -476,6 +476,7 @@ public abstract class MinionStrat extends AIStrat {
                         util.Util.dist(x, y, e.getX(), e.getY()) <= range
                                 && e.has(Entity.EntityProperty.TEAM)
                                 && e.getTeam() != entity.getTeam()
+                                && !e.has(Entity.EntityProperty.PROJECTILE)
                                 && checkLineOfSight(entity, e, model)).collect(Collectors.toSet()));
             }
         }
