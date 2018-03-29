@@ -20,6 +20,7 @@ public class MusicPlayer {
   private static Thread music = new Thread();
   private static Clip intro;
   private static Clip gameClip;
+  private static Clip danger;
 
 //  private static Clip error;
 //  private static Clip bow;
@@ -40,6 +41,12 @@ public class MusicPlayer {
       bufferedIn = new BufferedInputStream(audioSrc);
       audioStream = AudioSystem.getAudioInputStream(bufferedIn);
       intro.open(audioStream);
+
+      danger = AudioSystem.getClip();
+      audioSrc = MusicPlayer.class.getResourceAsStream("Danger.wav");
+      bufferedIn = new BufferedInputStream(audioSrc);
+      audioStream = AudioSystem.getAudioInputStream(bufferedIn);
+      danger.open(audioStream);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -146,6 +153,28 @@ public class MusicPlayer {
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(bufferedIn);
         error.open(audioStream);
         error.start();
+      } catch (Exception e) {
+        System.err.println(e.getMessage());
+      }
+    });
+    music.start();
+  }
+
+  public static synchronized void playDangerSound() {
+    music = new Thread(() -> {
+      try {
+        danger.loop(Clip.LOOP_CONTINUOUSLY);
+      } catch (Exception e) {
+        System.err.println(e.getMessage());
+      }
+    });
+    music.start();
+  }
+
+  public static synchronized void stopDangerSound() {
+    music = new Thread(() -> {
+      try {
+        danger.stop();
       } catch (Exception e) {
         System.err.println(e.getMessage());
       }

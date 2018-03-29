@@ -75,8 +75,35 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
     });
   }
 
+  private boolean flag = false;
+
   public void draw() {
     world.draw();
+
+    Entity opposingSlayer = null;
+    Entity myKing = null;
+    for (Entity e: model.getAllEntities()) {
+      if (e.has(Entity.EntityProperty.ROLE) && e.has(Entity.EntityProperty.TEAM)) {
+        if (e.getRole() == Role.SLAYER &&
+            e.getTeam().team == 1 - model.getLocalPlayer().getTeam().team)
+          opposingSlayer = e;
+        if (e.getRole() == Role.KING &&
+            e.getTeam() == model.getLocalPlayer().getTeam())
+          myKing = e;
+      }
+    }
+
+    if (opposingSlayer != null && myKing != null) {
+      boolean inDanger = model.getCell(myKing.getX().intValue(), myKing.getY().intValue())
+          .isVisible(opposingSlayer.getTeam());
+      if (inDanger && !flag) {
+        flag = true;
+        MusicPlayer.playDangerSound();
+      } else if (!inDanger && flag) {
+        flag = false;
+        MusicPlayer.stopDangerSound();
+      }
+    }
   }
 }
 
