@@ -361,6 +361,9 @@ public class Main extends Application {
 //                }
                 selectRedKing.setText("RED KING: SELECT");
                 selectBlueKing.setText("BLUE KING: SELECT");
+
+                selectRedSl.setText("RED SLAYER: SELECT");
+                selectBlueSl.setText("BLUE SLAYER: SELECT");
             });
 
 
