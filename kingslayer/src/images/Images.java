@@ -64,6 +64,11 @@ public abstract class Images {
     public static final Image BLUE_RESOURCE_MIONION_IMAGE_SHEET = getImage("minions_resource_blue.png");
     public static final Image RED_RESOURCE_MINION_IMAGE_SHEET = getImage("minions_resource_red.png");
 
+    public static final Image RED_KING_SELECT = getImage("red_king_select.png");
+    public static final Image RED_SLAYER_SELECT = getImage("red_slayer_select.png");
+    public static final Image BLUE_KING_SELECT = getImage("blue_king_select.png");
+    public static final Image BLUE_SLAYER_SELECT = getImage("blue_slayer_select.png");
+
 
     public static final Image FOG_BLACK_IMAGE = getImage("fog_black.png");
     public static final Image FOG_GREY_IMAGE = getImage("fog_grey.png");
