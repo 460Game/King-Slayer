@@ -20,12 +20,12 @@ public class ServerMapGenerator implements MapGenerator {
     private final int distMax;
     private final int FEATURE_SIZE = 4;
     private final int edgeWidth = 4;
-    private final int NUM_RIVER = 8;
+    private final int NUM_RIVER = 3;
 
     final static int NUM_STARTS_ROOM = 2;
-    final static int NUM_METAL_ROOM = 7;
-    final static int NUM_STONE_ROOM = 25;
-    final static int NUM_TRESURE_ROOM = 0;
+    final static int NUM_METAL_ROOM = 2;
+    final static int NUM_STONE_ROOM = 8;
+    final static int NUM_TRESURE_ROOM = 6;
 
     private Random random;
     private TS[][] grid;
@@ -35,7 +35,7 @@ public class ServerMapGenerator implements MapGenerator {
     public ServerMapGenerator(int mapW, int mapH) {
         this.mapW = mapW;
         this.mapH = mapH;
-        this.distMax = (int) Math.sqrt(mapW * mapW + mapH * mapH);
+        this.distMax = (int)( 0.4 * Math.sqrt(mapW * mapW + mapH * mapH));
 
         this.grid = new TS[this.mapW][this.mapH];
 
@@ -228,7 +228,7 @@ public class ServerMapGenerator implements MapGenerator {
         for (Loc t1 : points)
             for (Loc t2 : points) {
 
-                if (Util.dist(t1.x, t1.y, t2.x, t2.y) < distMax / 5)
+                if (Util.dist(t1.x, t1.y, t2.x, t2.y) < distMax)
 
                     for (Loc loc : walk(t1.x, t1.y, t2.x, t2.y, 0.9)) {
                         if (grid[loc.x][loc.y] == TS.river)
@@ -293,14 +293,14 @@ public class ServerMapGenerator implements MapGenerator {
                 }
             }*/
 
-        /*for (int i = 0; i < NUM_TRESURE_ROOM; i++) {
+        for (int i = 0; i < NUM_TRESURE_ROOM; i++) {
             t = rooms.poll();
             for (int x = t.x - 2; x <= t.x + 2; x++)
                 for (int y = t.y - 2; y <= t.y + 2; y++)
-                    if (random.nextDouble() < 0.3)
+                    if (random.nextDouble() < 0.1)
                         if(grid[x][y] != TS.edgeWater)
-                        grid[x][y] = TS.tresureNoBuild;
-        }*/
+                        grid[x][y] = TS.treasure;
+        }
 
 
 
