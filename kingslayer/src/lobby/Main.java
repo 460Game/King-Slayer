@@ -645,7 +645,27 @@ public class Main extends Application {
 
         selectRedKing = new Button("RED KING: SELECT");
         selectRedKing.setPrefSize(200, 50);
-        selectRedKing.setStyle("-fx-font: 15px \"Serif\";");
+//        selectRedKing.setStyle("-fx-font: 15px \"Serif\";");
+//        selectRedKing.setStyle("-fx-background-color:\n" +
+//                "        linear-gradient(#f0ff35, #a9ff00),\n" +
+//                "        radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);\n" +
+//                "    -fx-background-radius: 6, 5;\n" +
+//                "    -fx-background-insets: 0, 1;\n" +
+//                "    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );\n" +
+//                "    -fx-text-fill: #395306;");
+        selectRedKing.setStyle("-fx-background-color: \n" +
+                "        linear-gradient(#ffd65b, #e68400),\n" +
+                "        linear-gradient(#ffef84, #f2ba44),\n" +
+                "        linear-gradient(#ffea6a, #efaa22),\n" +
+                "        linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),\n" +
+                "        linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));\n" +
+                "    -fx-background-radius: 30;\n" +
+                "    -fx-background-insets: 0,1,2,3,0;\n" +
+                "    -fx-text-fill: #654b00;\n" +
+                "    -fx-font-weight: bold;\n" +
+                "    -fx-font-size: 14px;\n" +
+                "    -fx-padding: 10 20 10 20;");
+
         selectRedKing.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -674,7 +694,18 @@ public class Main extends Application {
 
         selectBlueKing = new Button("BLUE KING: SELECT");
         selectBlueKing.setPrefSize(200, 50);
-        selectBlueKing.setStyle("-fx-font: 15px \"Serif\";");
+        selectBlueKing.setStyle("-fx-background-color: \n" +
+                "        linear-gradient(#ffd65b, #e68400),\n" +
+                "        linear-gradient(#ffef84, #f2ba44),\n" +
+                "        linear-gradient(#ffea6a, #efaa22),\n" +
+                "        linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),\n" +
+                "        linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));\n" +
+                "    -fx-background-radius: 30;\n" +
+                "    -fx-background-insets: 0,1,2,3,0;\n" +
+                "    -fx-text-fill: #654b00;\n" +
+                "    -fx-font-weight: bold;\n" +
+                "    -fx-font-size: 14px;\n" +
+                "    -fx-padding: 10 20 10 20;");
         selectBlueKing.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -705,7 +736,18 @@ public class Main extends Application {
 
             selectRedSl = new Button("RED SLAYER: SELECT");
             selectRedSl.setPrefSize(200, 50);
-            selectRedSl.setStyle("-fx-font: 15px \"Serif\";");
+            selectRedSl.setStyle("-fx-background-color: \n" +
+                    "        linear-gradient(#ffd65b, #e68400),\n" +
+                    "        linear-gradient(#ffef84, #f2ba44),\n" +
+                    "        linear-gradient(#ffea6a, #efaa22),\n" +
+                    "        linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),\n" +
+                    "        linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));\n" +
+                    "    -fx-background-radius: 30;\n" +
+                    "    -fx-background-insets: 0,1,2,3,0;\n" +
+                    "    -fx-text-fill: #654b00;\n" +
+                    "    -fx-font-weight: bold;\n" +
+                    "    -fx-font-size: 14px;\n" +
+                    "    -fx-padding: 10 20 10 20;");
             selectRedSl.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -734,7 +776,18 @@ public class Main extends Application {
 
             selectBlueSl = new Button("BLUE SLAYER: SELECT");
             selectBlueSl.setPrefSize(200, 50);
-            selectBlueSl.setStyle("-fx-font: 15px \"Serif\";");
+            selectBlueSl.setStyle("-fx-background-color: \n" +
+                    "        linear-gradient(#ffd65b, #e68400),\n" +
+                    "        linear-gradient(#ffef84, #f2ba44),\n" +
+                    "        linear-gradient(#ffea6a, #efaa22),\n" +
+                    "        linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),\n" +
+                    "        linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));\n" +
+                    "    -fx-background-radius: 30;\n" +
+                    "    -fx-background-insets: 0,1,2,3,0;\n" +
+                    "    -fx-text-fill: #654b00;\n" +
+                    "    -fx-font-weight: bold;\n" +
+                    "    -fx-font-size: 14px;\n" +
+                    "    -fx-padding: 10 20 10 20;");
             selectBlueSl.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -757,6 +810,17 @@ public class Main extends Application {
         Button ready = new Button("Ready");
         ready.setPrefSize(200, 30);
         ready.setFont(Font.font(20));
+        ready.setStyle("-fx-padding: 8 15 15 15;\n" +
+                "    -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;\n" +
+                "    -fx-background-radius: 8;\n" +
+                "    -fx-background-color: \n" +
+                "        linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),\n" +
+                "        #9d4024,\n" +
+                "        #d86e3a,\n" +
+                "        radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);\n" +
+                "    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );\n" +
+                "    -fx-font-weight: bold;\n" +
+                "    -fx-font-size: 1.1em;");
 //        GridPane.setConstraints(ready, 3, 0);
         grid.add(ready, 2, 5, 1, 1);
 
