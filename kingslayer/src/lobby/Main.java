@@ -828,6 +828,7 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 Log.info("client click ready");
+                ready.setText("Loading...");
                 ready();
                 //the following would be done in the network part
 

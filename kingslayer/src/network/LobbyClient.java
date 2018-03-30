@@ -147,10 +147,15 @@ public class LobbyClient implements Lobby {//extends Application {
         });
     }
 
-    public void connectTo(String host) throws IOException {
+    public void connectTo(String host) {
         // We'll do the connect on a new thread so the ChatFrame can show a progress bar.
         // Connecting to localhost is usually so fast you won't see the progress bar.
-        client.connectToServer(5000, host);
+        try {
+            client.connectToServer(5000, host);
+        } catch (IOException e) {
+//            e.printStackTrace();
+            System.err.println("host not found");
+        }
         connectId = client.client.getID();
     }
 
