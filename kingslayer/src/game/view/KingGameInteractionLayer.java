@@ -17,6 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import music.MusicPlayer;
 import util.Pair;
 import util.Util;
 
@@ -88,6 +89,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       }
 
       if (spawner != null && placingGhost != null && !placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation) {
+        if (model.getResourceData().getResource(spawner.resource) >= spawner.finalCost(model)) {
+          MusicPlayer.playConstructionSound();
+        }
         model.processMessage(new EntityBuildRequest(spawner,
             model.getLocalPlayer(), Math.floor(x) + 0.5, Math.floor(y) + 0.5, placingGhost.getHitbox()));
         if (!holding) {
@@ -98,8 +102,12 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           if (model.getResourceData().getResource(spawner.resource) < spawner.finalCost(model)) {
             clearSelection();
             showError = true;
+
+            MusicPlayer.playErrorSound();
           }
         }
+      } else if (spawner != null && placingGhost != null && placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation) {
+        MusicPlayer.playErrorSound();
       } else if (upgrading) {
         // if you clicked the top part of an entity that is upgradable and is associated with your team
         if (model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().isPresent() &&
@@ -122,10 +130,14 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
                       GAME_CURSOR_IMAGE.getWidth() / 2,
                       GAME_CURSOR_IMAGE.getHeight() / 2));
                 }
+
+                MusicPlayer.playConstructionSound();
               } else {
                 if (entity.has(EntityProperty.LEVEL) && entity.<Integer>get(EntityProperty.LEVEL) < 2) {
                   clearSelection();
                   showError = true;
+
+                  MusicPlayer.playErrorSound();
                 }
               }
             }
@@ -149,9 +161,13 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
                       GAME_CURSOR_IMAGE.getWidth() / 2,
                       GAME_CURSOR_IMAGE.getHeight() / 2));
                 }
+
+                MusicPlayer.playConstructionSound();
               } else {
                 clearSelection();
                 showError = true;
+
+                MusicPlayer.playErrorSound();
               }
             }
           });
@@ -172,6 +188,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
               }
             }
           });
+
+          MusicPlayer.playSellSound();
           // if you clicked on the bottom of an entity with no entity in front of it
         } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
@@ -188,6 +206,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
               }
             }
           });
+
+          MusicPlayer.playSellSound();
         }
       }
     });
@@ -319,6 +339,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       model.processMessage(new NewEntityCommand(placingGhost));
     } else {
       showError = true;
+
+      MusicPlayer.playErrorSound();
     }
   }
 
@@ -331,6 +353,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       model.processMessage(new NewEntityCommand(placingGhost));
     } else {
       showError = true;
+
+      MusicPlayer.playErrorSound();
     }
   }
 
@@ -342,6 +366,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       model.processMessage(new NewEntityCommand(placingGhost));
     } else {
       showError = true;
+
+      MusicPlayer.playErrorSound();
     }
   }
 
@@ -367,6 +393,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       model.processMessage(new NewEntityCommand(placingGhost));
     } else {
       showError = true;
+
+      MusicPlayer.playErrorSound();
     }
   }
 

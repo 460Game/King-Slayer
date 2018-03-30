@@ -4,6 +4,7 @@ import game.model.game.model.ServerGameModel;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntitySpawner;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
+import music.MusicPlayer;
 
 /**
  * Message sent to create an entity in a client's game model. This message
