@@ -486,6 +486,7 @@ public class Main extends Application {
             lobbyClient.stop();
         if (lobbyServer != null)
             lobbyServer.closeServer();
+        MusicPlayer.stopMusic();
         Log.info("EXIT SELECTED");
         Platform.exit();
     }

@@ -5,10 +5,7 @@ import javafx.scene.media.MediaPlayer;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -163,6 +160,8 @@ public class MusicPlayer {
   public static synchronized void playDangerSound() {
     music = new Thread(() -> {
       try {
+        FloatControl gainControl = (FloatControl) gameClip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(0.5f);
         danger.loop(Clip.LOOP_CONTINUOUSLY);
       } catch (Exception e) {
         System.err.println(e.getMessage());
@@ -174,12 +173,20 @@ public class MusicPlayer {
   public static synchronized void stopDangerSound() {
     music = new Thread(() -> {
       try {
+        FloatControl gainControl = (FloatControl) gameClip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(1.0f);
         danger.stop();
       } catch (Exception e) {
         System.err.println(e.getMessage());
       }
     });
     music.start();
+  }
+
+  public static synchronized void stopMusic() {
+    gameClip.close();
+    intro.close();
+    danger.close();
   }
 
 }

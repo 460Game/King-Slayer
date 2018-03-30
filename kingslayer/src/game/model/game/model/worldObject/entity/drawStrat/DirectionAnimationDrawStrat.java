@@ -96,7 +96,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
             // Update image being used
             if (entity.<Velocity>get(VELOCITY).getMagnitude() != 0 || slayerData.meleeLastTime > 0) {
                 drawData.count++;
-                if (drawData.count > 11) {
+                if (drawData.count > 30) {
                     drawData.count = 0;
                     drawData.imageNum = (drawData.imageNum + 1) % 3;
                 }
@@ -145,7 +145,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
             // Update image being used
             if (entity.<Velocity>get(VELOCITY).getMagnitude() != 0) {
                 drawData.count++;
-                if (drawData.count > 11) {
+                if (drawData.count > 30) {
                     drawData.count = 0;
                     drawData.imageNum = (drawData.imageNum + 1) % 3;
                 }
@@ -282,7 +282,7 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
             // Update image being used
             if (entity.<Velocity>get(VELOCITY).getMagnitude() != 0) {
                 drawData.count++;
-                if (drawData.count > 5) {
+                if (drawData.count > 15) {
                     drawData.count = 0;
                     drawData.imageNum = (drawData.imageNum + 1) % 4;
                 }
