@@ -514,6 +514,7 @@ public class Main extends Application {
 
         window.setOnCloseRequest(e -> {
             MusicPlayer.stopMusic();
+            exit();
         });
 
         items[0].setOnActivate(this::connectForm);

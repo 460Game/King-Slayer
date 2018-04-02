@@ -88,17 +88,23 @@ public abstract class MinionStrat extends AIStrat {
                 // Check if path exists and king has moved, generate a new path.
                 if (data.path.size() > 0 && !king.containedIn.contains(data.path.get(data.path.size() - 1))) {
                     data.path.clear();
+                    data.finalDestination = model.getCell(destx, desty);
+                    data.reachedDestination = false;
                     data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(destx, desty));
                 }
 
                 // If nothing in path and not at destination, generate a path. TODO might need better check
                 if (data.path.size() == 0 && !entity.checkCollision(king.getHitbox(), king.getX(), king.getY())) {//entityx != x && entityy != y) {
                     data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(destx, desty));
+                    data.finalDestination = model.getCell(destx, desty);
+                    data.reachedDestination = false;
                 }
 
                 if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
                         data.path.get(0).getTopLeftY() != desty) {
                     data.path.clear();
+                    data.finalDestination = model.getCell(destx, desty);
+                    data.reachedDestination = false;
                     data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(destx, desty));
                 }
 
@@ -281,17 +287,23 @@ public abstract class MinionStrat extends AIStrat {
                 // Check if path exists and king has moved, generate a new path.
                 if (data.path.size() > 0 && !king.containedIn.contains(data.path.get(data.path.size() - 1))) {
                     data.path.clear();
+                    data.finalDestination = model.getCell(destx, desty);
+                    data.reachedDestination = false;
                     data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(destx, desty));
                 }
 
                 // If nothing in path and not at destination, generate a path. TODO might need better check
                 if (data.path.size() == 0 && !entity.checkCollision(king.getHitbox(), king.getX(), king.getY())) {//entityx != x && entityy != y) {
                     data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(destx, desty));
+                    data.finalDestination = model.getCell(destx, desty);
+                    data.reachedDestination = false;
                 }
 
                 if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
                         data.path.get(0).getTopLeftY() != desty) {
                     data.path.clear();
+                    data.finalDestination = model.getCell(destx, desty);
+                    data.reachedDestination = false;
                     data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(destx, desty));
                 }
 
@@ -412,18 +424,24 @@ public abstract class MinionStrat extends AIStrat {
                 // Check if path exists and king has moved, generate a new path.
                 if (data.path.size() > 0 && !king.containedIn.contains(data.path.get(data.path.size() - 1))) {
                     data.path.clear();
+                    data.finalDestination = model.getCell(destx, desty);
+                    data.reachedDestination = false;
                     data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(destx, desty));
                 }
 
                 // If nothing in path and not at destination, generate a path. TODO might need better check
                 if (data.path.size() == 0 && !entity.checkCollision(king.getHitbox(), king.getX(), king.getY())) {//entityx != x && entityy != y) {
                     data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(destx, desty));
+                    data.finalDestination = model.getCell(destx, desty);
+                    data.reachedDestination = false;
                 }
 
                 if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
                         data.path.get(0).getTopLeftY() != desty) {
                     data.path.clear();
                     data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(destx, desty));
+                    data.finalDestination = model.getCell(destx, desty);
+                    data.reachedDestination = false;
                 }
 
                 // Check if reached destination.

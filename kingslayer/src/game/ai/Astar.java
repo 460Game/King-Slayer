@@ -318,6 +318,7 @@ public class Astar {
      */
     public GridCell getClosestWood(GridCell cell) {
         // TODO make more efficient
+        // add team parameter and isVisible can be used to check
         return model.getWood().parallelStream().min((c1, c2) ->
                 Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
                 Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY()))).get();
