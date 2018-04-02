@@ -12,6 +12,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.ImageCursor;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import music.MusicPlayer;
 import util.Const;
 import util.Util;
@@ -33,8 +35,18 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
   private ClientGameModel model;
   private WorldPanel world;
 
+  private Text danger = new Text("Your king is in danger!");
+  private boolean showDanger = false;
+
   public SlayerGameInteractionLayer(ClientGameModel clientGameModel, WorldPanel worldPanel) {
     super(clientGameModel, worldPanel);
+
+    danger.setFill(Color.WHITE);
+    danger.setFont(new Font("Malgun Gothic Bold", 50));
+    danger.setStyle("-fx-stroke: black; -fx-stroke-width: 2px;");
+    danger.layoutXProperty().bind(this.widthProperty().divide(2).subtract(250));
+    danger.layoutYProperty().bind(this.heightProperty().subtract(300));
+    this.getChildren().add(danger);
 
     this.model = clientGameModel;
     world = worldPanel;
@@ -97,9 +109,11 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
       boolean inDanger = model.getCell(myKing.getX().intValue(), myKing.getY().intValue())
           .isVisible(opposingSlayer.getTeam());
       if (inDanger && !flag) {
+        danger.setVisible(true);
         flag = true;
         MusicPlayer.playDangerSound();
       } else if (!inDanger && flag) {
+        danger.setVisible(false);
         flag = false;
         MusicPlayer.stopDangerSound();
       }

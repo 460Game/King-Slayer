@@ -497,7 +497,7 @@ public class RemoteConnection {
      * @param host
      * @throws IOException
      */
-    public int connectToServer(int port, String host) throws IOException {
+    public int connectToServer(int port, String host) {
         if (isServer) {
             Log.error("Server should not connect to server crossing network");
             return -1;
@@ -513,7 +513,11 @@ public class RemoteConnection {
 //                // Server communication after connection can go here, or in Listener#connected().
 //            }
 //        }.start();
-        client.connect(port, host, NetworkCommon.port);
+        try {
+            client.connect(port, host, NetworkCommon.port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 
