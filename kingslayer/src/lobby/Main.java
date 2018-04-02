@@ -361,9 +361,10 @@ public class Main extends Application {
 //                }
                 selectRedKing.setText("RED KING: SELECT");
                 selectBlueKing.setText("BLUE KING: SELECT");
-
-                selectRedSl.setText("RED SLAYER: SELECT");
-                selectBlueSl.setText("BLUE SLAYER: SELECT");
+                if (selectRedSl != null) {
+                    selectRedSl.setText("RED SLAYER: SELECT");
+                    selectBlueSl.setText("BLUE SLAYER: SELECT");
+                }
             });
 
 
@@ -823,8 +824,14 @@ public class Main extends Application {
                 "        #d86e3a,\n" +
                 "        radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);\n" +
                 "    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );\n" +
+//                "    -fx-font-weight: bold;\n" +
+//                "    -fx-font-size: 1.1em;");
+                "    -fx-background-radius: 30;\n" +
+                "    -fx-background-insets: 0,1,2,3,0;\n" +
+                "    -fx-text-fill: #654b00;\n" +
                 "    -fx-font-weight: bold;\n" +
-                "    -fx-font-size: 1.1em;");
+                "    -fx-font-size: 14px;\n" +
+                "    -fx-padding: 10 20 10 20;");
 //        GridPane.setConstraints(ready, 3, 0);
         grid.add(ready, 2, 5, 1, 1);
 
