@@ -78,10 +78,10 @@ public class ServerMapGenerator implements MapGenerator {
         grass2(Tile.GRASS_2, null),
         barrier(Tile.GRASS_0, Entities::makeBox),
         unset(null, null),
-        startKingA(Tile.PATH, (x, y) -> Players.makeKing(x, y, Team.ONE)),
-        startSlayerA(Tile.PATH, (x, y) -> Players.makeSlayer(x, y, Team.ONE)),
-        startKingB(Tile.PATH, (x, y) -> Players.makeKing(x, y, Team.TWO)),
-        startSlayerB(Tile.PATH, (x, y) -> Players.makeSlayer(x, y, Team.TWO)),
+        startKingA(Tile.PATH, (x, y) -> Players.makeKing(x, y, Team.RED_TEAM)),
+        startSlayerA(Tile.PATH, (x, y) -> Players.makeSlayer(x, y, Team.RED_TEAM)),
+        startKingB(Tile.PATH, (x, y) -> Players.makeKing(x, y, Team.BLUE_TEAM)),
+        startSlayerB(Tile.PATH, (x, y) -> Players.makeSlayer(x, y, Team.BLUE_TEAM)),
         bridge(Tile.SHALLOW_WATER, null),
         road(Tile.PATH, null);
 

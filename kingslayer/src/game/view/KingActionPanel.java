@@ -13,8 +13,6 @@ import javafx.scene.text.Text;
 
 import java.awt.*;
 
-import static util.Const.PANEL_BG;
-
 public class KingActionPanel extends ActionPanel {
   private ClientGameModel model;
   private KingGameInteractionLayer gameInteractionLayer;

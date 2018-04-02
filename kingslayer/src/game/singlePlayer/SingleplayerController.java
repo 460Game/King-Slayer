@@ -33,7 +33,7 @@ public class SingleplayerController {
         ClientGameModel clientModel = new ClientGameModel(new CopyingModelWrapper(serverModel));
         Map<Model, PlayerInfo> testingMap = new HashMap<>();
         Model clientGameModel2 = new CopyingModelWrapper(clientModel);
-        testingMap.put(clientGameModel2, new PlayerInfo(Team.ONE, role, "tester"));
+        testingMap.put(clientGameModel2, new PlayerInfo(Team.RED_TEAM, role, "tester"));
 
         serverModel.init(Collections.singleton(clientGameModel2), testingMap);
         serverModel.start();
@@ -56,9 +56,9 @@ public class SingleplayerController {
         });
         gameView.start(primaryStage);
 
-        serverModel.changeResource(Team.ONE, TeamResourceData.Resource.WOOD, 10000000);
-        serverModel.changeResource(Team.ONE, TeamResourceData.Resource.STONE, 10000000);
-        serverModel.changeResource(Team.ONE, TeamResourceData.Resource.METAL, 10000000);
+        serverModel.changeResource(Team.RED_TEAM, TeamResourceData.Resource.WOOD, 10000000);
+        serverModel.changeResource(Team.RED_TEAM, TeamResourceData.Resource.STONE, 10000000);
+        serverModel.changeResource(Team.RED_TEAM, TeamResourceData.Resource.METAL, 10000000);
     }
 
 //    public static void main(String args[]) {

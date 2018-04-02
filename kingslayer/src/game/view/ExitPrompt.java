@@ -11,7 +11,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 import static images.Images.CURSOR_IMAGE;
-import static util.Const.PANEL_BG;
 import static util.Const.PROMPT_BG;
 
 public class ExitPrompt extends Region {

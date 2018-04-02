@@ -21,23 +21,17 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.effect.GaussianBlur;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import music.MusicPlayer;
@@ -45,8 +39,6 @@ import network.LobbyClient;
 import network.LobbyClient2LobbyAdaptor;
 import network.LobbyServer;
 
-import java.io.IOException;
-import java.lang.management.PlatformManagedObject;
 import java.util.Map;
 
 import static images.Images.*;
@@ -372,7 +364,7 @@ public class Main extends Application {
                 Team team = entry.getValue().getTeam();
                 Role role = entry.getValue().getRole();
                 String name = entry.getValue().getPlayerName();
-                if (team == Team.ONE && role == Role.KING) {
+                if (team == Team.RED_TEAM && role == Role.KING) {
                     System.out.println("RED KING IS " + name);
                     Platform.runLater(() -> {
 //                        redKingLabel.setText("RED KING: " + name);
@@ -380,13 +372,13 @@ public class Main extends Application {
                     });
 
                 }
-                else if (team == Team.ONE && role == Role.SLAYER) {
+                else if (team == Team.RED_TEAM && role == Role.SLAYER) {
                     Platform.runLater(() -> {
                         selectRedSl.setText("RED SLAYER: " + name);
                     });
 
                 }
-                else if (team == Team.TWO && role == Role.KING) {
+                else if (team == Team.BLUE_TEAM && role == Role.KING) {
                     System.out.println("BLUE KING IS " + name);
                     Platform.runLater(() -> {
 //                        blueKingLabel.setText("BLUE KING: " + name);
@@ -394,7 +386,7 @@ public class Main extends Application {
                     });
 
                 }
-                else if (team == Team.TWO && role == Role.SLAYER) {
+                else if (team == Team.BLUE_TEAM && role == Role.SLAYER) {
                     Platform.runLater(() -> {
                         selectBlueSl.setText("BLUE SLAYER: " + name);
                     });
@@ -644,8 +636,8 @@ public class Main extends Application {
 
 
 //        teamChoice = new ChoiceBox<>();
-//        teamChoice.getItems().add(Team.ONE);
-//        teamChoice.getItems().add(Team.TWO);
+//        teamChoice.getItems().add(Team.RED_TEAM);
+//        teamChoice.getItems().add(Team.BLUE_TEAM);
 //        teamChoice.setPrefSize(200, 60);
 //        teamChoice.setStyle("-fx-font: 30px \"Serif\";");
 
@@ -675,7 +667,7 @@ public class Main extends Application {
         selectRedKing.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                lobbyClient.selectRole(Team.ONE, Role.KING);
+                lobbyClient.selectRole(Team.RED_TEAM, Role.KING);
             }
         });
         grid.add(selectRedKing, 1, 0, 1, 1);
@@ -715,7 +707,7 @@ public class Main extends Application {
         selectBlueKing.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                lobbyClient.selectRole(Team.TWO, Role.KING);
+                lobbyClient.selectRole(Team.BLUE_TEAM, Role.KING);
             }
         });
         grid.add(selectBlueKing, 4, 0, 1, 1);
@@ -757,7 +749,7 @@ public class Main extends Application {
             selectRedSl.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    lobbyClient.selectRole(Team.ONE, Role.SLAYER);
+                    lobbyClient.selectRole(Team.RED_TEAM, Role.SLAYER);
                 }
             });
             grid.add(selectRedSl, 1, 1, 1, 1);
@@ -797,7 +789,7 @@ public class Main extends Application {
             selectBlueSl.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    lobbyClient.selectRole(Team.TWO, Role.SLAYER);
+                    lobbyClient.selectRole(Team.BLUE_TEAM, Role.SLAYER);
                 }
             });
             grid.add(selectBlueSl, 4, 1, 1, 1);

@@ -15,7 +15,6 @@ import javafx.scene.text.TextAlignment;
 import util.Const;
 
 import static images.Images.CURSOR_IMAGE;
-import static util.Const.PANEL_BG;
 
 public class ResourcePanel extends FlowPane {
     private ClientGameModel model;
@@ -30,7 +29,7 @@ public class ResourcePanel extends FlowPane {
         super(16,4);
         this.model = model;
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
-        this.setBackground(PANEL_BG);
+        this.setBackground(model.getTeam().getPanelBG());
         woodTxt = new Text("0");
         woodTxt.setFont(new Font(20));
         woodTxt.setFill(Color.WHITE);

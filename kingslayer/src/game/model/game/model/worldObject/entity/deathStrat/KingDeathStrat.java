@@ -1,6 +1,5 @@
 package game.model.game.model.worldObject.entity.deathStrat;
 
-import game.message.toClient.SetEntityCommand;
 import game.model.game.model.GameModel;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
@@ -15,7 +14,7 @@ public class KingDeathStrat extends DeathStrat {
 
         System.out.println("A king dies!");
         Consumer<ServerGameModel> serverConsumer = (server) -> {
-            server.teamWin((entity.getTeam() == Team.ONE) ? Team.TWO : Team.ONE);
+            server.teamWin((entity.getTeam() == Team.RED_TEAM) ? Team.BLUE_TEAM : Team.RED_TEAM);
 //            server.getClients().forEach(client -> client.processMessage(new SetEntityCommand(b)));
         };
         model.execute(serverConsumer, (client) -> {

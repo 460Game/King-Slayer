@@ -127,7 +127,7 @@ public class GameView {
 
         if (FPSPrint) {
 
-            FPSPanel fpsPanel = new FPSPanel();
+            FPSPanel fpsPanel = new FPSPanel(model);
             fpsPanel.setPrefHeight(50);
             fpsPanel.setPrefWidth(50);
             root.getChildren().add(fpsPanel);

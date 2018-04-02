@@ -1,7 +1,6 @@
 package game.model.game.model.worldObject.entity.drawStrat;
 
 import game.model.game.model.ClientGameModel;
-import game.model.game.model.Model;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
@@ -9,13 +8,10 @@ import game.model.game.model.worldObject.entity.entities.Velocity;
 import game.model.game.model.worldObject.entity.slayer.SlayerData;
 import images.Images;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -182,9 +178,9 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
         @Override
         Image getImage(Entity entity) {
             switch (entity.<Team>get(TEAM)) {
-                case ONE:
+                case RED_TEAM:
                     return Images.RED_KING_IMAGE_SHEET;
-                case TWO:
+                case BLUE_TEAM:
                     return Images.BLUE_KING_IMAGE_SHEET;
                 default:
                     return null;
@@ -196,9 +192,9 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
         @Override
         Image getImage(Entity entity) {
             switch (entity.<Team>get(TEAM)) {
-                case ONE:
+                case RED_TEAM:
                     return Images.RED_SLAYER_IMAGE_SHEET;
-                case TWO:
+                case BLUE_TEAM:
                     return Images.BLUE_SLAYER_IMAGE_SHEET;
                 default:
                     return null;
@@ -210,9 +206,9 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
         @Override
         Image getImage(Entity entity) {
             switch (entity.<Team>get(TEAM)) {
-                case ONE:
+                case RED_TEAM:
                     return Images.RED_RANGED_IMAGE_SHEET;
-                case TWO:
+                case BLUE_TEAM:
                     return Images.BLUE_RANGED_IMAGE_SHEET;
                 default:
                     return null;
@@ -224,9 +220,9 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
         @Override
         Image getImage(Entity entity) {
             switch (entity.<Team>get(TEAM)) {
-                case ONE:
+                case RED_TEAM:
                     return Images.RED_MELEE_IMAGE_SHEET;
-                case TWO:
+                case BLUE_TEAM:
                     return Images.BLUE_MELEE_IMAGE_SHEET;
                 default:
                     return null;
@@ -238,9 +234,9 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
         @Override
         Image getImage(Entity entity) {
             switch (entity.<Team>get(TEAM)) {
-                case ONE:
+                case RED_TEAM:
                     return Images.RED_SIEGE_IMAGE_SHEET;
-                case TWO:
+                case BLUE_TEAM:
                     return Images.BLUE_SIEGE_IMAGE_SHEET;
                 default:
                     return null;
@@ -253,9 +249,9 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
         @Override
         Image getImage(Entity entity) {
             switch (entity.<Team>get(TEAM)) {
-                case ONE:
+                case RED_TEAM:
                     return Images.RED_EXPLORER_IMAGE_SHEET;
-                case TWO:
+                case BLUE_TEAM:
                     return Images.BLUE_EXPLORER_IMAGE_SHEET;
                 default:
                     return null;
@@ -318,9 +314,9 @@ public abstract class DirectionAnimationDrawStrat extends DrawStrat {
         @Override
         Image getImage(Entity entity) {
             switch (entity.<Team>get(TEAM)) {
-                case ONE:
+                case RED_TEAM:
                     return Images.RED_RESOURCE_MINION_IMAGE_SHEET;
-                case TWO:
+                case BLUE_TEAM:
                     return Images.BLUE_RESOURCE_MIONION_IMAGE_SHEET;
                 default:
                     return null;
