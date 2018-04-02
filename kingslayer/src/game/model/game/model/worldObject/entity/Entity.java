@@ -1,5 +1,6 @@
 package game.model.game.model.worldObject.entity;
 
+import com.esotericsoftware.minlog.Log;
 import game.message.toServer.RemoveEntityRequest;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ClientGameModel;
@@ -23,6 +24,7 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.*;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.*;
+import static game.model.game.model.worldObject.entity.aiStrat.BuildingSpawnerStrat.BuildingType.WALL;
 import static util.Util.toDrawCoords;
 
 /**
@@ -373,8 +375,19 @@ public class Entity {
     public void upgrade() {
         if (this.has(LEVEL) && (int) this.get(LEVEL) < 3) {
             this.set(LEVEL, (int) this.get(LEVEL) + 1);
-            this.set(HEALTH, (double) this.get(HEALTH) + 10);
-            this.set(MAX_HEALTH, (double) this.get(MAX_HEALTH) + 10);
+            switch ((BuildingSpawnerStrat.BuildingType) this.get(BUILDING_TYPE)) {
+                case WALL:  case TOWER:
+                    this.set(HEALTH, (double) this.get(HEALTH) + 20);
+                    this.set(MAX_HEALTH, (double) this.get(MAX_HEALTH) + 20);
+                    break;
+                case COLLECTOR: case BARRACKS:  case EXPLORER:
+                    this.set(HEALTH, (double) this.get(HEALTH) + 10);
+                    this.set(MAX_HEALTH, (double) this.get(MAX_HEALTH) + 10);
+                    break;
+                default:
+                    Log.error("Unknown building to upgrade.\n");
+                    break;
+            }
         }
         upgraded = true;
     }
