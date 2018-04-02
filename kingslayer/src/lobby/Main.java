@@ -4,6 +4,7 @@ import com.esotericsoftware.minlog.Log;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import game.singlePlayer.SingleplayerController;
+import images.Images;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -20,6 +21,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -245,7 +248,7 @@ public class Main extends Application {
 
     private GridPane inputNumOfPlayers() {
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(window.getHeight()/2, 100, window.getHeight()/2 + 100, 100));
+        grid.setPadding(new Insets(window.getHeight()/2, 100, window.getHeight()/2 + 100, 350));
         grid.setVgap(5);
         grid.setHgap(5);
 
@@ -350,12 +353,17 @@ public class Main extends Application {
 
         {
             Platform.runLater(()-> {
-                redKingLabel.setText("RED KING: ");
-                blueKingLabel.setText("BLUE KING: ");
-                if (redSlLabel != null) {//TODO: tempory, remove later
-                    redSlLabel.setText("RED SLAYER: ");
-                    blueSlLabel.setText("BLUE SLAYER: ");
-                }
+//                redKingLabel.setText("RED KING: ");
+//                blueKingLabel.setText("BLUE KING: ");
+//                if (redSlLabel != null) {//TODO: tempory, remove later
+//                    redSlLabel.setText("RED SLAYER: ");
+//                    blueSlLabel.setText("BLUE SLAYER: ");
+//                }
+                selectRedKing.setText("RED KING: SELECT");
+                selectBlueKing.setText("BLUE KING: SELECT");
+
+                selectRedSl.setText("RED SLAYER: SELECT");
+                selectBlueSl.setText("BLUE SLAYER: SELECT");
             });
 
 
@@ -366,25 +374,28 @@ public class Main extends Application {
                 if (team == Team.ONE && role == Role.KING) {
                     System.out.println("RED KING IS " + name);
                     Platform.runLater(() -> {
-                        redKingLabel.setText("RED KING: " + name);
+//                        redKingLabel.setText("RED KING: " + name);
+                        selectRedKing.setText("RED KING: " + name);
                     });
+
                 }
                 else if (team == Team.ONE && role == Role.SLAYER) {
                     Platform.runLater(() -> {
-                        redSlLabel.setText("RED SLAYER: " + name);
+                        selectRedSl.setText("RED SLAYER: " + name);
                     });
 
                 }
                 else if (team == Team.TWO && role == Role.KING) {
                     System.out.println("BLUE KING IS " + name);
                     Platform.runLater(() -> {
-                        blueKingLabel.setText("BLUE KING: " + name);
+//                        blueKingLabel.setText("BLUE KING: " + name);
+                        selectBlueKing.setText("BLUE KING: " + name);
                     });
 
                 }
                 else if (team == Team.TWO && role == Role.SLAYER) {
                     Platform.runLater(() -> {
-                        blueSlLabel.setText("BLUE SLAYER: " + name);
+                        selectBlueSl.setText("BLUE SLAYER: " + name);
                     });
 
                 }
@@ -604,29 +615,26 @@ public class Main extends Application {
     //Panes code
     public GridPane choiceTeamAndRolePane() {
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(window.getHeight()/2 - 150, 100, window.getHeight()/2 + 100, 250));
-        grid.setVgap(50);
+        grid.setPadding(new Insets(window.getHeight()/2 - 180, 200, window.getHeight()/2 + 100, 450));
+        grid.setVgap(5);
         grid.setHgap(5);
 
 
+        ImageView redKingSelect = new ImageView(Images.RED_KING_SELECT);
+        redKingSelect.setFitWidth(80);
+        redKingSelect.setFitHeight(80);
 
-        Rectangle rec = new Rectangle();
-        rec.setWidth(150);
-        rec.setHeight(150);
-        rec.setFill(Color.RED);
-        grid.add(rec, 0, 0, 1, 2);
+//        Rectangle rec = new Rectangle();
+//        rec.setWidth(150);
+//        rec.setHeight(150);
+//        rec.setFill(Color.RED);
+        grid.add(redKingSelect, 0, 0, 1, 1);
 
-//        roleChoice = new ChoiceBox<>();
-//        roleChoice.getItems().add(Role.KING);
-//        roleChoice.getItems().add(Role.SLAYER);
-//        roleChoice.setPrefSize(200, 60);
-//        roleChoice.setStyle("-fx-font: 30px \"Serif\";");
 
-        redKingLabel = new Label("RED KING: ");
-        redKingLabel.setPrefSize(300, 60);
-        redKingLabel.setStyle("-fx-font: 25px \"Serif\";");
-//        GridPane.setConstraints(roleChoice, 2, 0);
-        grid.add(redKingLabel, 1, 0, 1, 1);
+//        redKingLabel = new Label("RED KING: ");
+//        redKingLabel.setPrefSize(300, 5);
+//        redKingLabel.setStyle("-fx-font: 15px \"Serif\";");
+//        grid.add(redKingLabel, 1, 0, 1, 1);
 
 
 //        teamChoice = new ChoiceBox<>();
@@ -635,99 +643,158 @@ public class Main extends Application {
 //        teamChoice.setPrefSize(200, 60);
 //        teamChoice.setStyle("-fx-font: 30px \"Serif\";");
 
-        selectRedKing = new Button("SELECT");
-        selectRedKing.setPrefSize(150, 30);
-        selectRedKing.setStyle("-fx-font: 25px \"Serif\";");
+        selectRedKing = new Button("RED KING: SELECT");
+        selectRedKing.setPrefSize(200, 50);
+//        selectRedKing.setStyle("-fx-font: 15px \"Serif\";");
+//        selectRedKing.setStyle("-fx-background-color:\n" +
+//                "        linear-gradient(#f0ff35, #a9ff00),\n" +
+//                "        radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);\n" +
+//                "    -fx-background-radius: 6, 5;\n" +
+//                "    -fx-background-insets: 0, 1;\n" +
+//                "    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );\n" +
+//                "    -fx-text-fill: #395306;");
+        selectRedKing.setStyle("-fx-background-color: \n" +
+                "        linear-gradient(#ffd65b, #e68400),\n" +
+                "        linear-gradient(#ffef84, #f2ba44),\n" +
+                "        linear-gradient(#ffea6a, #efaa22),\n" +
+                "        linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),\n" +
+                "        linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));\n" +
+                "    -fx-background-radius: 30;\n" +
+                "    -fx-background-insets: 0,1,2,3,0;\n" +
+                "    -fx-text-fill: #654b00;\n" +
+                "    -fx-font-weight: bold;\n" +
+                "    -fx-font-size: 14px;\n" +
+                "    -fx-padding: 10 20 10 20;");
+
         selectRedKing.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 lobbyClient.selectRole(Team.ONE, Role.KING);
             }
         });
-        grid.add(selectRedKing, 1, 1, 1, 1);
+        grid.add(selectRedKing, 1, 0, 1, 1);
 
 
+        ImageView imBlueKing = new ImageView(Images.BLUE_KING_SELECT);
+        imBlueKing.setFitWidth(80);
+        imBlueKing.setFitHeight(80);
 
-        Rectangle recBlue = new Rectangle();
-        recBlue.setWidth(150);
-        recBlue.setHeight(150);
-        recBlue.setFill(Color.BLUE);
-        grid.add(recBlue, 3, 0, 1, 2);
+//        Rectangle recBlue = new Rectangle();
+//        recBlue.setWidth(150);
+//        recBlue.setHeight(150);
+//        recBlue.setFill(Color.BLUE);
+        grid.add(imBlueKing, 3, 0, 1, 1);
 
-        blueKingLabel = new Label("BLUE KING: ");
-        blueKingLabel.setPrefSize(300, 30);
-        blueKingLabel.setStyle("-fx-font: 25px \"Serif\";");
-//        GridPane.setConstraints(roleChoice, 2, 0);
-        grid.add(blueKingLabel, 4, 0, 1, 1);
+//        blueKingLabel = new Label("BLUE KING: ");
+//        blueKingLabel.setPrefSize(300, 30);
+//        blueKingLabel.setStyle("-fx-font: 25px \"Serif\";");
+////        GridPane.setConstraints(roleChoice, 2, 0);
+//        grid.add(blueKingLabel, 4, 0, 1, 1);
 
 
-        selectBlueKing = new Button("SELECT");
-        selectBlueKing.setPrefSize(150, 30);
-        selectBlueKing.setStyle("-fx-font: 25px \"Serif\";");
+        selectBlueKing = new Button("BLUE KING: SELECT");
+        selectBlueKing.setPrefSize(200, 50);
+        selectBlueKing.setStyle("-fx-background-color: \n" +
+                "        linear-gradient(#ffd65b, #e68400),\n" +
+                "        linear-gradient(#ffef84, #f2ba44),\n" +
+                "        linear-gradient(#ffea6a, #efaa22),\n" +
+                "        linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),\n" +
+                "        linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));\n" +
+                "    -fx-background-radius: 30;\n" +
+                "    -fx-background-insets: 0,1,2,3,0;\n" +
+                "    -fx-text-fill: #654b00;\n" +
+                "    -fx-font-weight: bold;\n" +
+                "    -fx-font-size: 14px;\n" +
+                "    -fx-padding: 10 20 10 20;");
         selectBlueKing.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 lobbyClient.selectRole(Team.TWO, Role.KING);
             }
         });
-        grid.add(selectBlueKing, 4, 1, 1, 1);
+        grid.add(selectBlueKing, 4, 0, 1, 1);
 
         System.out.println("check num in team " + numOnTeam);
         if (numOnTeam >= 2) {
 
-            Rectangle rec2 = new Rectangle();
-            rec2.setWidth(150);
-            rec2.setHeight(150);
-            rec2.setFill(Color.RED);
-            grid.add(rec2, 0, 2, 1, 2);
+//            Rectangle rec2 = new Rectangle();
+//            rec2.setWidth(150);
+//            rec2.setHeight(150);
+//            rec2.setFill(Color.RED);
 
-            redSlLabel = new Label("RED SLAYER: ");
-            redSlLabel.setPrefSize(300, 60);
-            redSlLabel.setStyle("-fx-font: 25px \"Serif\";");
-            grid.add(redSlLabel, 1, 2, 1, 1);
+            ImageView imRedSl = new ImageView(Images.RED_SLAYER_SELECT);
+            imRedSl.setFitWidth(80);
+            imRedSl.setFitHeight(80);
+
+            grid.add(imRedSl, 0, 1, 1, 1);
+
+//            redSlLabel = new Label("RED SLAYER: ");
+//            redSlLabel.setPrefSize(300, 60);
+//            redSlLabel.setStyle("-fx-font: 25px \"Serif\";");
+//            grid.add(redSlLabel, 1, 1, 1, 1);
 
 
-//        teamChoice = new ChoiceBox<>();
-//        teamChoice.getItems().add(Team.ONE);
-//        teamChoice.getItems().add(Team.TWO);
-//        teamChoice.setPrefSize(200, 60);
-//        teamChoice.setStyle("-fx-font: 30px \"Serif\";");
-
-            selectRedSl = new Button("SELECT");
-            selectRedSl.setPrefSize(150, 30);
-            selectRedSl.setStyle("-fx-font: 25px \"Serif\";");
+            selectRedSl = new Button("RED SLAYER: SELECT");
+            selectRedSl.setPrefSize(200, 50);
+            selectRedSl.setStyle("-fx-background-color: \n" +
+                    "        linear-gradient(#ffd65b, #e68400),\n" +
+                    "        linear-gradient(#ffef84, #f2ba44),\n" +
+                    "        linear-gradient(#ffea6a, #efaa22),\n" +
+                    "        linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),\n" +
+                    "        linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));\n" +
+                    "    -fx-background-radius: 30;\n" +
+                    "    -fx-background-insets: 0,1,2,3,0;\n" +
+                    "    -fx-text-fill: #654b00;\n" +
+                    "    -fx-font-weight: bold;\n" +
+                    "    -fx-font-size: 14px;\n" +
+                    "    -fx-padding: 10 20 10 20;");
             selectRedSl.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
                     lobbyClient.selectRole(Team.ONE, Role.SLAYER);
                 }
             });
-            grid.add(selectRedSl, 1, 3, 1, 1);
+            grid.add(selectRedSl, 1, 1, 1, 1);
 
-            Rectangle recBlue2 = new Rectangle();
-            recBlue2.setWidth(150);
-            recBlue2.setHeight(150);
-            recBlue2.setFill(Color.BLUE);
-            grid.add(recBlue2, 3, 2, 1, 2);
+//            Rectangle recBlue2 = new Rectangle();
+//            recBlue2.setWidth(150);
+//            recBlue2.setHeight(150);
+//            recBlue2.setFill(Color.BLUE);
 
-
-            blueSlLabel = new Label("BLUE SLAYER: ");
-            blueSlLabel.setPrefSize(300, 30);
-            blueSlLabel.setStyle("-fx-font: 25px \"Serif\";");
-//        GridPane.setConstraints(roleChoice, 2, 0);
-            grid.add(blueSlLabel, 4, 2, 1, 1);
+            ImageView imBlueSl = new ImageView(Images.BLUE_SLAYER_SELECT);
+            imBlueSl.setFitWidth(80);
+            imBlueSl.setFitHeight(80);
+            grid.add(imBlueSl, 3, 1, 1, 1);
 
 
-            selectBlueSl = new Button("SELECT");
-            selectBlueSl.setPrefSize(150, 30);
-            selectBlueSl.setStyle("-fx-font: 25px \"Serif\";");
+//            blueSlLabel = new Label("BLUE SLAYER: ");
+//            blueSlLabel.setPrefSize(300, 30);
+//            blueSlLabel.setStyle("-fx-font: 25px \"Serif\";");
+////        GridPane.setConstraints(roleChoice, 2, 0);
+//            grid.add(blueSlLabel, 4, 2, 1, 1);
+
+
+            selectBlueSl = new Button("BLUE SLAYER: SELECT");
+            selectBlueSl.setPrefSize(200, 50);
+            selectBlueSl.setStyle("-fx-background-color: \n" +
+                    "        linear-gradient(#ffd65b, #e68400),\n" +
+                    "        linear-gradient(#ffef84, #f2ba44),\n" +
+                    "        linear-gradient(#ffea6a, #efaa22),\n" +
+                    "        linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),\n" +
+                    "        linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));\n" +
+                    "    -fx-background-radius: 30;\n" +
+                    "    -fx-background-insets: 0,1,2,3,0;\n" +
+                    "    -fx-text-fill: #654b00;\n" +
+                    "    -fx-font-weight: bold;\n" +
+                    "    -fx-font-size: 14px;\n" +
+                    "    -fx-padding: 10 20 10 20;");
             selectBlueSl.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
                     lobbyClient.selectRole(Team.TWO, Role.SLAYER);
                 }
             });
-            grid.add(selectBlueSl, 4, 3, 1, 1);
+            grid.add(selectBlueSl, 4, 1, 1, 1);
         }
 
 
@@ -743,6 +810,17 @@ public class Main extends Application {
         Button ready = new Button("Ready");
         ready.setPrefSize(200, 30);
         ready.setFont(Font.font(20));
+        ready.setStyle("-fx-padding: 8 15 15 15;\n" +
+                "    -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;\n" +
+                "    -fx-background-radius: 8;\n" +
+                "    -fx-background-color: \n" +
+                "        linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),\n" +
+                "        #9d4024,\n" +
+                "        #d86e3a,\n" +
+                "        radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);\n" +
+                "    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );\n" +
+                "    -fx-font-weight: bold;\n" +
+                "    -fx-font-size: 1.1em;");
 //        GridPane.setConstraints(ready, 3, 0);
         grid.add(ready, 2, 5, 1, 1);
 
@@ -750,6 +828,7 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 Log.info("client click ready");
+                ready.setText("Loading...");
                 ready();
                 //the following would be done in the network part
 

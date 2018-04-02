@@ -7,10 +7,12 @@ import game.model.game.model.team.Role;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntitySpawner;
 import game.model.game.model.worldObject.entity.entities.Entities;
+import game.model.game.model.worldObject.entity.slayer.SlayerData;
 import javafx.geometry.Point2D;
 import javafx.scene.ImageCursor;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import music.MusicPlayer;
 import util.Const;
 import util.Util;
 
@@ -42,11 +44,16 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
         return;
       }
       double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
+
+      SlayerData curSlayerData = model.getLocalPlayer().get(Entity.EntityProperty.SLAYER_DATA);
+      if (curSlayerData.meleeLastTime <= 0 && curSlayerData.magic >= SlayerData.meleeCost) {
+        MusicPlayer.playChargeSound();
+      }
+
       model.processMessage(new SlayerMeleeRequest(model.getLocalPlayer().id,
           model.getLocalPlayer().getX(),
           model.getLocalPlayer().getY(),
           angle, model.getLocalPlayer().getTeam()));
-
     });
 
     world.onGameRightClick((x, y) -> {
@@ -54,6 +61,12 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
         return;
       }
       double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
+
+      SlayerData curSlayerData = model.getLocalPlayer().get(Entity.EntityProperty.SLAYER_DATA);
+      if (curSlayerData.magic >= SlayerData.arrowCost) {
+        MusicPlayer.playArrowSound();
+      }
+
       model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
           model.getLocalPlayer().getX(),
           model.getLocalPlayer().getY(),
@@ -62,8 +75,35 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
     });
   }
 
+  private boolean flag = false;
+
   public void draw() {
     world.draw();
+
+    Entity opposingSlayer = null;
+    Entity myKing = null;
+    for (Entity e: model.getAllEntities()) {
+      if (e.has(Entity.EntityProperty.ROLE) && e.has(Entity.EntityProperty.TEAM)) {
+        if (e.getRole() == Role.SLAYER &&
+            e.getTeam().team == 1 - model.getLocalPlayer().getTeam().team)
+          opposingSlayer = e;
+        if (e.getRole() == Role.KING &&
+            e.getTeam() == model.getLocalPlayer().getTeam())
+          myKing = e;
+      }
+    }
+
+    if (opposingSlayer != null && myKing != null) {
+      boolean inDanger = model.getCell(myKing.getX().intValue(), myKing.getY().intValue())
+          .isVisible(opposingSlayer.getTeam());
+      if (inDanger && !flag) {
+        flag = true;
+        MusicPlayer.playDangerSound();
+      } else if (!inDanger && flag) {
+        flag = false;
+        MusicPlayer.stopDangerSound();
+      }
+    }
   }
 }
 
