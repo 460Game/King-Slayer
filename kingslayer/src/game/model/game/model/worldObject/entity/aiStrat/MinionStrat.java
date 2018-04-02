@@ -553,6 +553,7 @@ public abstract class MinionStrat extends AIStrat {
             // Get current position.
             double entityx = entity.getX();
             double entityy = entity.getY();
+            GridCell wood, stone, metal;
 
             // Holds the final destination.
             int x, y;
@@ -562,26 +563,47 @@ public abstract class MinionStrat extends AIStrat {
             if (!data.hasResource) {
                 entity.set(Entity.EntityProperty.MAX_SPEED, 1.0);
                 if ((int) entity.get(Entity.EntityProperty.LEVEL) == 0) {
-                    GridCell wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy));
+                    wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy));
                     if (wood == null)
                         return;
                     x = wood.getTopLeftX();
                     y = wood.getTopLeftY();
                     data.resourceType = 0;
                 } else if ((int) entity.get(Entity.EntityProperty.LEVEL) == 1) {
-                    GridCell stone = astar.getClosestStone(model.getCell((int) entityx, (int) entityy));
-                    if (stone == null)
-                        return;
-                    x = stone.getTopLeftX();
-                    y = stone.getTopLeftY();
-                    data.resourceType = 1;
+                    stone = astar.getClosestStone(model.getCell((int) entityx, (int) entityy));
+                    if (stone == null) {
+                        wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy));
+                        if (wood == null)
+                            return;
+                        x = wood.getTopLeftX();
+                        y = wood.getTopLeftY();
+                        data.resourceType = 0;
+                    } else {
+                        x = stone.getTopLeftX();
+                        y = stone.getTopLeftY();
+                        data.resourceType = 1;
+                    }
                 } else {
-                    GridCell metal = astar.getClosestMetal(model.getCell((int) entityx, (int) entityy));
-                    if (metal == null)
-                        return;
-                    x = metal.getTopLeftX();
-                    y = metal.getTopLeftY();
-                    data.resourceType = 2;
+                    metal = astar.getClosestMetal(model.getCell((int) entityx, (int) entityy));
+                    if (metal == null) {
+                        stone = astar.getClosestStone(model.getCell((int) entityx, (int) entityy));
+                        if (stone == null) {
+                            wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy));
+                            if (wood == null)
+                                return;
+                            x = wood.getTopLeftX();
+                            y = wood.getTopLeftY();
+                            data.resourceType = 0;
+                        } else {
+                            x = stone.getTopLeftX();
+                            y = stone.getTopLeftY();
+                            data.resourceType = 1;
+                        }
+                    } else {
+                        x = metal.getTopLeftX();
+                        y = metal.getTopLeftY();
+                        data.resourceType = 2;
+                    }
                 }
             } else {
                 // Should this go up hiehger level?
