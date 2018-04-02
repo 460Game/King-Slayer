@@ -11,7 +11,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 import static images.Images.CURSOR_IMAGE;
-import static util.Const.PROMPT_BG;
 
 public class TeamWinPrompt extends Region {
     private ClientGameModel model;
@@ -21,7 +20,7 @@ public class TeamWinPrompt extends Region {
         this.view = gameView;
 
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
-        this.setBackground(PROMPT_BG);
+        this.setBackground(model.getTeam().getPanelBG());
         Text text = new Text("Chicken Dinner Winner Winner!");
         text.setFont(new Font(20));
         text.setFill(Color.BLACK);

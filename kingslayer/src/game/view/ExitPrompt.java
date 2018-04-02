@@ -11,7 +11,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 import static images.Images.CURSOR_IMAGE;
-import static util.Const.PROMPT_BG;
 
 public class ExitPrompt extends Region {
     private ClientGameModel model;
@@ -20,20 +19,21 @@ public class ExitPrompt extends Region {
         this.model = model;
         this.view = view;
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
-        this.setBackground(PROMPT_BG);
-        Text text = new Text("EXIT?");
-        text.setFont(new Font(20));
-        text.setFill(Color.BLACK);
-        text.setLayoutX(10);
+        this.setBackground(model.getTeam().getPanelBG());
+        Text text = new Text("Exit?");
+        text.setFont(new Font("Goudy Old Style", 60));
+        Font.getFamilies().forEach(System.out::println);
+        text.setFill(Color.WHITE);
+        text.setLayoutX(200);
         text.setTextAlignment(TextAlignment.CENTER);
-        text.setLayoutY(50);
+        text.setLayoutY(100);
 
         Button confirm = new Button("Back To Lobby");
         Button cancle = new Button("Cancel");
-        confirm.setTranslateX(100);
-        confirm.setTranslateY(100);
-        cancle.setTranslateX(400);
-        cancle.setTranslateY(100);
+        confirm.setTranslateX(50);
+        confirm.setTranslateY(240);
+        cancle.setTranslateX(450);
+        cancle.setTranslateY(240);
         confirm.setOnAction(l -> {
 //            Platform.exit();
             Platform.runLater(() -> view.goBackToMain());
