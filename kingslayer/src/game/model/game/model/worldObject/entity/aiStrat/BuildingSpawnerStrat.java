@@ -14,7 +14,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.*;
-import static java.lang.Math.*;
 
 public abstract class BuildingSpawnerStrat extends AIStrat {
 
@@ -35,20 +34,12 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns(Entity entity) {
-            return 5;
-        } // TODO CHANGE BACK
+            return 6 - entity.<Integer>get(LEVEL);     // LVL 0: 6, LVL 1: 5, LVL 2: 4 -> Maybe 6/5.5/5?
+        }
 
         @Override
         int maxActive(Entity entity) {
-            return 10;
-           /* switch (entity.<Integer>get(LEVEL)) {
-                case 0:
-                    return 15;
-                case 1:
-                    return 10;
-                default:
-                    return 3;
-            }*/
+            return 2 * entity.<Integer>get(LEVEL) + 8; // LVL 0: 8, LVL 1: 10, LVL 2: 12
         }
 
         @Override
@@ -59,7 +50,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
                 case 1:
                     return Minions.makeRangedMinion(x, y, team, entity.get(LEVEL), entity);
                 default:
-                    return Minions.makeExplorationMinion(x, y, team, entity.get(LEVEL), entity);
+                    return Minions.makeKnightMinion(x, y, team, entity.get(LEVEL), entity);
             }
         }
     }
@@ -133,7 +124,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         Entity makeEntity(double x, double y, Team team, Entity entity, ServerGameModel model) {
-            Entity minion = Minions.makeExplorationMinion(x, y, team, entity.get(LEVEL), entity);
+            Entity minion = Minions.makeKnightMinion(x, y, team, entity.get(LEVEL), entity);
            // minion.set(HEALTH, 100.0 + 10 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0));
             return minion;
         }
@@ -148,14 +139,12 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns(Entity entity) {
-            return 5;
+            return 2.5 - 0.5 * entity.<Integer>get(LEVEL);     // LVL 0: 2.5, LVL 1: 2, LVL 2: 1.5 -> Maybe constant
         }
 
         @Override
         int maxActive(Entity entity) {
-//            System.out.println("level: " + entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 10));
-//            return 10 + 5 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0); // TODO change back later
-            return 1;
+            return 2 + entity.<Integer>get(LEVEL);      // LVL 0: 2, LVL 1: 3, LVL 2: 4 -> Maybe change
         }
 
         @Override
@@ -172,6 +161,10 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         public static final TowerBuildingSpawnerStrat SINGLETON = new TowerBuildingSpawnerStrat();
 
+        double attackRange(Entity entity) {
+            return 5 + 2 * entity.<Integer>get(LEVEL);     // LVL 0: 5, LVL 1: 7, LVL 2: 9  TODO may need balancing
+        }
+
         @Override
         boolean canAttack() {
             return true;
@@ -179,7 +172,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns(Entity entity) {
-            return 1 - 0.02 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0);
+            return 1 - 0.02 * entity.<Integer>getOrDefault(Entity.EntityProperty.LEVEL, 0);  // LVL 0: 1, LVL 1: 0.08, LVL 2: 0.06
         }
 
         @Override
@@ -210,12 +203,11 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
      */
     Collection<Entity> attackableEnemies(Entity entity, ServerGameModel model) {
         // Minions shouldn't count enemies around a wall as attackable.
-        // TODO ignore arrows
 
         Collection<Entity> enemies = new HashSet<>();
         double x = entity.getX();
         double y = entity.getY();
-        double range = 5; // TODO change
+        double range = ((TowerBuildingSpawnerStrat) entity.get(AI_STRAT)).attackRange(entity);
 
         // Add enemies within the range of this entity and in the line of sight of this enemy.
         for (int i = (int) (x - range); i <= (int) (x + range); i++) {
@@ -368,11 +360,10 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
         while (data.elapsedTime > timeBetweenSpawns(entity)) {
             data.elapsedTime -= timeBetweenSpawns(entity);
             if (data.spawnCounter < maxActive(entity)) {
-
                 if (!canAttack()) {
-
                     // Find possible spawn points: cells not blocked by hard entities.
-                    Set<GridCell> neighbors = model.getNeighbors(model.getCell((int) (double) entity.getX(), (int) (double) entity.getY()));
+                    Set<GridCell> neighbors = model.getNeighbors(model.getCell((int) (double) entity.getX(),
+                            (int) (double) entity.getY()));
                     Set<GridCell> passable = neighbors.stream().filter(GridCell::isPassable).collect(Collectors.toSet());
 
                     // If cell directly below it is clear, spawn it there. Otherwise, find another
@@ -412,13 +403,13 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
                     }
                 }
             }
-            if (entity.getUpgraded()) {
-                for (Entity e : data.spawned) {
-                    e.setUpgraded(false);
-                    e.set(LEVEL, entity.get(LEVEL));
-                    // TODO UP grade other stuff
-                }
-            }
+//            if (entity.getUpgraded()) {
+//                for (Entity e : data.spawned) {
+//                    e.setUpgraded(false);
+//                    e.set(LEVEL, entity.get(LEVEL));
+//                    // TODO UP grade other stuff
+//                }
+//            }
         }
     }
 }
