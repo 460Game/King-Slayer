@@ -20,12 +20,12 @@ public class ServerMapGenerator implements MapGenerator {
     private final int distMax;
     private final int FEATURE_SIZE = 4;
     private final int edgeWidth = 4;
-    private final int NUM_RIVER = 3;
+    private final int NUM_RIVER = 4;
 
     final static int NUM_STARTS_ROOM = 2;
     final static int NUM_METAL_ROOM = 2;
     final static int NUM_STONE_ROOM = 8;
-    final static int NUM_TRESURE_ROOM = 6;
+    final static int NUM_TRESURE_ROOM = 4;
 
     private Random random;
     private TS[][] grid;
@@ -35,7 +35,7 @@ public class ServerMapGenerator implements MapGenerator {
     public ServerMapGenerator(int mapW, int mapH) {
         this.mapW = mapW;
         this.mapH = mapH;
-        this.distMax = (int)( 0.4 * Math.sqrt(mapW * mapW + mapH * mapH));
+        this.distMax = (int) (0.3 * Math.sqrt(mapW * mapW + mapH * mapH));
 
         this.grid = new TS[this.mapW][this.mapH];
 
@@ -54,9 +54,9 @@ public class ServerMapGenerator implements MapGenerator {
     @Override
     public Collection<Entity> makeStartingEntities() {
         Set<Entity> entities = new HashSet<>();
-        for(int i = 0; i < this.mapW; i++)
-            for(int j = 0; j < this.mapH; j++)
-                grid[i][j].makeE(i,j).ifPresent(entities::add);
+        for (int i = 0; i < this.mapW; i++)
+            for (int j = 0; j < this.mapH; j++)
+                grid[i][j].makeE(i, j).ifPresent(entities::add);
         return entities;
     }
 
@@ -67,11 +67,10 @@ public class ServerMapGenerator implements MapGenerator {
     public static enum TS {
         river(Tile.DEEP_WATER, Entities::makeWater),
         edgeWater(Tile.DEEP_WATER, Entities::makeWater),
-        treasure(Tile.PATH, Entities::makeTreasure),//Treasure::new),
-        //tresureNoBuild(Tile.NO_BUILD, Entities::makeTreasure),//Treasure::new),
+        treasure(Tile.PATH, Entities::makeTreasure),
         metal(Tile.GRASS_0, Entities::makeMetal),
         stone(Tile.GRASS_0, Entities::makeStone),
-        tree(Tile.GRASS_0, Entities::makeTree),//Tree::new),
+        tree(Tile.GRASS_0, Entities::makeTree),
         wall(Tile.GRASS_0, Entities::makeWall),
         room(Tile.GRASS_0, null),
         grass0(Tile.GRASS_0, null),
@@ -89,8 +88,9 @@ public class ServerMapGenerator implements MapGenerator {
         private Tile make;
         private BiFunction<Double, Double, Entity> spawner;
 
-        TS(Tile make, BiFunction<Double, Double,Entity> spawner) {
-            this.make = make; this.spawner = spawner;
+        TS(Tile make, BiFunction<Double, Double, Entity> spawner) {
+            this.make = make;
+            this.spawner = spawner;
         }
 
         public Tile make() {
@@ -98,9 +98,9 @@ public class ServerMapGenerator implements MapGenerator {
         }
 
         public Optional<Entity> makeE(int i, int j) {
-            if(spawner == null)
+            if (spawner == null)
                 return Optional.empty();
-            Entity e = spawner.apply(i + 0.5,j + 0.5);
+            Entity e = spawner.apply(i + 0.5, j + 0.5);
             return Optional.of(e);
         }
     }
@@ -111,7 +111,7 @@ public class ServerMapGenerator implements MapGenerator {
 //        makeMap(Long.parseLong("-5713126425086333025"));
 //        makeMap(Long.parseLong("-1609539064927447349"));
 //        makeMap(Long.parseLong("6736756290173747940"));
-     //   makeMap(Long.parseLong("-4733834012032569948"));
+        //   makeMap(Long.parseLong("-4733834012032569948"));
     }
 
     public void makeMap(long seed) {
@@ -199,9 +199,9 @@ public class ServerMapGenerator implements MapGenerator {
                     //set mapW of everything within 4 to 0
                     for (int x = i - FEATURE_SIZE / 2; x <= i + FEATURE_SIZE / 2; x++)
                         for (int y = j - FEATURE_SIZE / 2; y <= j + FEATURE_SIZE / 2; y++)
-                            if(grid[x][y] != TS.edgeWater)
+                            if (grid[x][y] != TS.edgeWater)
                                 grid[x][y] = TS.room;
-;
+
 
                     for (int x = i - FEATURE_SIZE; x <= i + FEATURE_SIZE; x++)
                         for (int y = j - FEATURE_SIZE; y <= j + FEATURE_SIZE; y++)
@@ -234,12 +234,12 @@ public class ServerMapGenerator implements MapGenerator {
                         if (grid[loc.x][loc.y] == TS.river)
                             grid[loc.x][loc.y] = TS.bridge;
                         if (grid[loc.x][loc.y] == TS.unset) //alert this changed
-                            if (random.nextDouble() < 0.98)
+                            if (random.nextDouble() < 0.99)
                                 grid[loc.x][loc.y] = TS.road;
                             else
                                 grid[loc.x][loc.y] = TS.treasure;
-                            if(grid[loc.x][loc.y] == TS.room)
-                                grid[loc.x][loc.y] = TS.road;
+                        if (grid[loc.x][loc.y] == TS.room)
+                            grid[loc.x][loc.y] = TS.road;
 
                     }
 
@@ -253,91 +253,75 @@ public class ServerMapGenerator implements MapGenerator {
         startingLocations = new ArrayList<>();
 
 
-        assert(NUM_STARTS_ROOM == 2);
         t = rooms.poll();
-        grid[t.x-1][t.y] = TS.startKingA;
-        grid[t.x+1][t.y] = TS.startSlayerA;
+        grid[t.x - 1][t.y] = TS.startKingA;
+        grid[t.x + 1][t.y] = TS.startSlayerA;
         startingLocations.add(t);
 
         t = rooms.poll();
-        grid[t.x-1][t.y] = TS.startKingB;
-        grid[t.x+1][t.y] = TS.startSlayerB;
+        grid[t.x - 1][t.y] = TS.startKingB;
+        grid[t.x + 1][t.y] = TS.startSlayerB;
         startingLocations.add(t);
 
         for (int i = 0; i < NUM_METAL_ROOM; i++) {
             t = rooms.poll();
             for (int x = t.x - 1; x <= t.x + 1; x++)
                 for (int y = t.y - 1; y <= t.y + 1; y++)
-                    if (random.nextDouble() < 0.6)
-                        if(grid[x][y] != TS.edgeWater)
-                        grid[x][y] = TS.metal;
+                    if (random.nextDouble() < 0.8)
+                        if (grid[x][y] != TS.edgeWater)
+                            grid[x][y] = TS.metal;
         }
 
         for (int i = 0; i < NUM_STONE_ROOM; i++) {
             t = rooms.poll();
             for (int x = t.x - 1; x <= t.x + 1; x++)
                 for (int y = t.y - 1; y <= t.y + 1; y++)
-                    if (random.nextDouble() < 0.3)
-                        if(grid[x][y] != TS.edgeWater)
-                        grid[x][y] = TS.stone;
+                    if (random.nextDouble() < 0.5)
+                        if (grid[x][y] != TS.edgeWater)
+                            grid[x][y] = TS.stone;
         }
-
-
-    /*    for (int i = 1; i < this.mapW-1; i++)
-            for (int j = 1; j < mapH-1; j++) {
-                if(grid[i-1][j]== TS.edgeWater || grid[i+1][j]== TS.edgeWater || grid[i][j-1]== TS.edgeWater || grid[i][j+1]== TS.edgeWater ||
-                grid[i-1][j]== TS.river || grid[i+1][j]== TS.river|| grid[i][j-1]== TS.river||grid[i][j+1]== TS.river) {
-
-                    if(grid[i][j] == TS.road || grid[i][j] == TS.room)
-                        grid[i][j] = TS.grass0;
-                }
-            }*/
 
         for (int i = 0; i < NUM_TRESURE_ROOM; i++) {
             t = rooms.poll();
             for (int x = t.x - 2; x <= t.x + 2; x++)
                 for (int y = t.y - 2; y <= t.y + 2; y++)
                     if (random.nextDouble() < 0.1)
-                        if(grid[x][y] != TS.edgeWater)
-                        grid[x][y] = TS.treasure;
+                        if (grid[x][y] != TS.edgeWater)
+                            grid[x][y] = TS.treasure;
         }
-
-
-
 
         for (int x = 0; x < mapW; x++) {
             for (int y = 0; y < mapH; y++) {
-                    Set<Loc> set = new HashSet<>();
-                    flood(set, TS.unset, x,y);
-                    if(set.size() > 100) {
+                Set<Loc> set = new HashSet<>();
+                flood(set, TS.unset, x, y);
+                if (set.size() > 80) {
 
-                        //gen forest
-                        for(Loc t2 : set) {
-                            if(random.nextDouble() < 0.35)
-                                 grid[t2.x][t2.y] = TS.tree;
-                            else
-                                if (random.nextDouble() < 0.55) {
-                                    grid[t2.x][t2.y] = TS.grass0;
-                                } else {
-                                    if (random.nextBoolean()) {
-                                        grid[t2.x][t2.y] = TS.grass1;
-                                    } else {
-                                        grid[t2.x][t2.y] = TS.grass2;
-                                    }
-                                }
-                        }
-
-                    } else if(set.size() > 5){
-
-                        //gen walls
-                        for(Loc t2 : set) {
-                            grid[t2.x][t2.y] = TS.wall;
-                        }
-                    } else {
-                        for(Loc t2 : set) {
-                            grid[t2.x][t2.y] = TS.barrier;
+                    //gen forest
+                    for (Loc t2 : set) {
+                        if (random.nextDouble() < 0.55)
+                            grid[t2.x][t2.y] = TS.tree;
+                        else if (random.nextDouble() < 0.55) {
+                            grid[t2.x][t2.y] = TS.grass0;
+                        } else {
+                            if (random.nextBoolean()) {
+                                grid[t2.x][t2.y] = TS.grass1;
+                            } else {
+                                grid[t2.x][t2.y] = TS.grass2;
+                            }
                         }
                     }
+
+                } else if (set.size() > 3) {
+
+                    //gen walls
+                    for (Loc t2 : set) {
+                        grid[t2.x][t2.y] = TS.wall;
+                    }
+                } else {
+                    for (Loc t2 : set) {
+                        grid[t2.x][t2.y] = TS.barrier;
+                    }
+                }
 
             }
         }
@@ -428,11 +412,11 @@ public class ServerMapGenerator implements MapGenerator {
         }
 
         boolean change = true;
-        while(change) {
+        while (change) {
             change = false;
             for (int x = 1; x < mapW - 1; x++) {
                 for (int y = 1; y < mapH - 1; y++) {
-                    if(!set.contains(new Loc(x,y))) {
+                    if (!set.contains(new Loc(x, y))) {
                         int count = 0;
                         if (set.contains(new Loc(x + 1, y)))
                             count++;
@@ -468,7 +452,7 @@ public class ServerMapGenerator implements MapGenerator {
                         toRemove.add(l);
                 }
             }
-            if(!toRemove.isEmpty())
+            if (!toRemove.isEmpty())
                 change = true;
             set.removeAll(toRemove);
         }

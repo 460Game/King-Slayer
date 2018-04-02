@@ -55,12 +55,12 @@ public abstract class Const {
     /**
      * Width of the game map, in terms of number of grid cells.
      */
-    public final static int GRID_X_SIZE = 70;
+    public final static int GRID_X_SIZE = 80;
 
     /**
      * Height of the game map, in terms of number of grid cells.
      */
-    public final static int GRID_Y_SIZE = 70;
+    public final static int GRID_Y_SIZE = 80;
 
     /**
      * Width of the initial game screen.
@@ -101,9 +101,9 @@ public abstract class Const {
     /**
      * The time period between different water animations.
      */
-    public static final int WATER_ANIM_PERIOD = UPDATES_PER_SECOND * 4;
+    public static final int WATER_ANIM_PERIOD = UPDATES_PER_SECOND * 3;
 
-    public final static int AI_LOOP_UPDATE_PER_FRAMES = 20;
+    public final static int AI_LOOP_UPDATE_PER_FRAMES = 25;
 
     public static final int LEVEL_WOOD = 0;
     public static final int LEVEL_STONE = 1;
