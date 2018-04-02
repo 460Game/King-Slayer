@@ -73,7 +73,7 @@ public class Minions {
                 pair(MAX_SPEED, 1.0));
     }
 
-    public static Entity makeExplorationMinion(double x, double y, Team team, int level, Entity spawner) {
+    public static Entity makeKnightMinion(double x, double y, Team team, int level, Entity spawner) {
         return new Entity(x, y,
                 hitbox,
                 UnitCollisionStrat.SINGLETON,
@@ -82,13 +82,13 @@ public class Minions {
                 pair(SPAWNED_ID, spawner.id),
                 pair(UPDATE_STRAT, MovingStrat.SINGLETON),
                 pair(DRAW_STRAT, DirectionAnimationDrawStrat.EXPLORATION_ANIMATION),
-                pair(AI_STRAT, MinionStrat.RangedMinionStrat.SINGLETON), // TODO
+                pair(AI_STRAT, MinionStrat.KnightMinionStrat.SINGLETON), // TODO
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
                 pair(SIGHT_RADIUS, 3),
                 pair(HEALTH, 10.0),
                 pair(MAX_HEALTH, 10.0),
-                pair(MAX_SPEED, 3.0));
+                pair(MAX_SPEED, 2.0));
     }
 
     public static Entity makeResourceMinion(double x, double y, Team team, int level, Entity spawner) {
