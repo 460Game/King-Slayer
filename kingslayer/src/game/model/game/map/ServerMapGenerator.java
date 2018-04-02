@@ -298,7 +298,7 @@ public class ServerMapGenerator implements MapGenerator {
 
                     //gen forest
                     for (Loc t2 : set) {
-                        if (random.nextDouble() < 0.55)
+                        if (random.nextDouble() < 0.3)
                             grid[t2.x][t2.y] = TS.tree;
                         else if (random.nextDouble() < 0.55) {
                             grid[t2.x][t2.y] = TS.grass0;
