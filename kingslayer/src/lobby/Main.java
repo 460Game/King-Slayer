@@ -486,7 +486,6 @@ public class Main extends Application {
             lobbyClient.stop();
         if (lobbyServer != null)
             lobbyServer.closeServer();
-        MusicPlayer.stopMusic();
         Log.info("EXIT SELECTED");
         Platform.exit();
     }
@@ -519,6 +518,10 @@ public class Main extends Application {
         window.setY(2);
         window.setTitle("King Slayer" + random.nextInt());
         //  window.setFullScreen(true);
+
+        window.setOnCloseRequest(e -> {
+            MusicPlayer.stopMusic();
+        });
 
         items[0].setOnActivate(this::connectForm);
         items[0].setActive(true);
