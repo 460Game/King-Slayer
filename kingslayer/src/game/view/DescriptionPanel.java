@@ -11,7 +11,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import static images.Images.CURSOR_IMAGE;
-import static util.Const.PANEL_BG;
 
 public class DescriptionPanel extends Region {
   private GameModel model;
@@ -22,7 +21,7 @@ public class DescriptionPanel extends Region {
   public DescriptionPanel(ClientGameModel model, Text description) {
     this.model = model;
     this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
-    this.setBackground(PANEL_BG);
+    this.setBackground(model.getTeam().getPanelBG());
     this.description = description;
     description.setTranslateX(10);
     description.setTranslateY(25);

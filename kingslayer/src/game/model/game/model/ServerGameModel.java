@@ -161,8 +161,8 @@ public class ServerGameModel extends GameModel {
             }
         }
 
-        teamData.put(Team.ONE, new TeamResourceData());
-        teamData.put(Team.TWO, new TeamResourceData());
+        teamData.put(Team.RED_TEAM, new TeamResourceData());
+        teamData.put(Team.BLUE_TEAM, new TeamResourceData());
 
         int i = 0;
         // Send player to client
@@ -337,7 +337,7 @@ public class ServerGameModel extends GameModel {
                 metal.remove(getCell((int) (double) getEntity(entityID).getX(), (int) (double) getEntity(entityID).getY()));
         } else if (getEntity(entityID).has(BUILDING_TYPE)) {
             if (getEntity(entityID).get(BUILDING_TYPE) == BuildingSpawnerStrat.BuildingType.COLLECTOR) {
-                if (getEntity(entityID).getTeam() == Team.ONE)
+                if (getEntity(entityID).getTeam() == Team.RED_TEAM)
                     team1collector.removeAll(getEntity(entityID).containedIn);
                 else
                     team2collector.removeAll(getEntity(entityID).containedIn); // TODO support multiple teams?
@@ -442,7 +442,7 @@ public class ServerGameModel extends GameModel {
         if (addedBuilding) {
             addedBuilding = false;
             if (building.get(BUILDING_TYPE) == BuildingSpawnerStrat.BuildingType.COLLECTOR)
-                if (building.getTeam() == Team.ONE)
+                if (building.getTeam() == Team.RED_TEAM)
                     team1collector.addAll(building.containedIn);
                 else
                     team2collector.addAll(building.containedIn); // TODO support multiple teams?

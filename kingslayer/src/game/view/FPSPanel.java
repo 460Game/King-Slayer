@@ -1,5 +1,6 @@
 package game.view;
 
+import game.model.game.model.ClientGameModel;
 import javafx.scene.ImageCursor;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -11,9 +12,9 @@ import static images.Images.CURSOR_IMAGE;
 public class FPSPanel extends Region {
     private Text text;
 
-    public FPSPanel() {
+    public FPSPanel(ClientGameModel model) {
         this.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
-        this.setBackground(Const.PANEL_BG);
+        this.setBackground(model.getTeam().getPanelBG());
         text = new Text();
         text.setFont(new Font(20));
         text.setFill(Color.WHITE);

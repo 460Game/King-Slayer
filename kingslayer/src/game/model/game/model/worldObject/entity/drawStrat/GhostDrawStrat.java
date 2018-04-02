@@ -90,9 +90,9 @@ public class GhostDrawStrat extends ImageDrawStrat {
   public static class ResourceCollectorGhostDrawStrat extends GhostDrawStrat {
     public Image getImage(Entity entity) {
       switch (entity.getTeam()) {
-        case ONE:
+        case RED_TEAM:
           return Images.RED_RESOURCE_COLLECTOR_IMAGE;
-        case TWO:
+        case BLUE_TEAM:
           return Images.BLUE_RESOURCE_COLLECTOR_IMAGE;
         default:
           return null;
@@ -106,9 +106,9 @@ public class GhostDrawStrat extends ImageDrawStrat {
   public static class BarracksGhostDrawStrat extends GhostDrawStrat {
     public Image getImage(Entity entity) {
       switch (entity.getTeam()) {
-        case ONE:
+        case RED_TEAM:
           return Images.RED_WOOD_BARRACKS_IMAGE;
-        case TWO:
+        case BLUE_TEAM:
           return Images.BLUE_WOOD_BARRACKS_IMAGE;
         default:
           return null;
@@ -122,9 +122,9 @@ public class GhostDrawStrat extends ImageDrawStrat {
   public static class ArrowTowerGhostDrawStrat extends GhostDrawStrat {
     public Image getImage(Entity entity) {
       switch (entity.getTeam()) {
-        case ONE:
+        case RED_TEAM:
           return Images.RED_WOOD_ARROW_TOWER_IMAGE;
-        case TWO:
+        case BLUE_TEAM:
           return Images.BLUE_WOOD_ARROW_TOWER_IMAGE;
         default:
           return null;

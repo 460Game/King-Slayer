@@ -1,6 +1,8 @@
 package game.model.game.model.team;
 
+import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
+import util.Const;
 
 /**
  * Enumeration of all possible teams in the game.
@@ -10,12 +12,12 @@ public enum Team {
     /**
      * Team 1's players, minions, and towers.
      */
-    ONE(0, Color.RED),
+    RED_TEAM(0, Color.RED),
 
     /**
      * Team 2's players, minions, and towers.
      */
-    TWO(1, Color.BLUE);
+    BLUE_TEAM(1, Color.BLUE);
 
     /**
      * Team number of the entity.
@@ -44,9 +46,15 @@ public enum Team {
      */
     public static Team valueOf(int i) {
         if(i == 1)
-            return Team.ONE;
+            return Team.RED_TEAM;
         if(i == 2)
-            return Team.TWO;
+            return Team.BLUE_TEAM;
         throw new RuntimeException("Invalid team number");
+    }
+
+    public Background getPanelBG() {
+        if(team == 1)
+            return Const.PANEL_BG_RED;
+        return Const.PANEL_BG_BLUE;
     }
 }

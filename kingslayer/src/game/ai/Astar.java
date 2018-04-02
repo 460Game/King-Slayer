@@ -1,6 +1,5 @@
 package game.ai;
 
-import com.esotericsoftware.minlog.Log;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
@@ -353,7 +352,7 @@ public class Astar {
      * @return closest collector tile to the specified cell and team
      */
     public GridCell getClosestCollector(GridCell cell, Team team) {
-        if (team == Team.ONE) {
+        if (team == Team.RED_TEAM) {
             if (model.getTeam1collector().isEmpty())
                 return null; // TODO temp
             return model.getTeam1collector().parallelStream().min((c1, c2) ->
