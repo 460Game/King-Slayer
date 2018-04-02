@@ -161,7 +161,7 @@ public class MusicPlayer {
     music = new Thread(() -> {
       try {
         FloatControl gainControl = (FloatControl) gameClip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(0.5f);
+        gainControl.setValue(0.25f);
         danger.loop(Clip.LOOP_CONTINUOUSLY);
       } catch (Exception e) {
         System.err.println(e.getMessage());
