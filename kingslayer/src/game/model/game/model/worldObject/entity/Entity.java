@@ -12,6 +12,7 @@ import game.model.game.model.worldObject.entity.collideStrat.ProjectileCollision
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import game.model.game.model.worldObject.entity.deathStrat.DeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
+import game.model.game.model.worldObject.entity.entities.Minions;
 import game.model.game.model.worldObject.entity.entities.Velocity;
 import game.model.game.model.worldObject.entity.slayer.SlayerData;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
@@ -53,6 +54,7 @@ public class Entity {
         AI_DATA(AIData.class, PropType.SERVER_ONLY),
         AI_STRAT(AIStrat.class, PropType.SERVER_ONLY),
         BUILDING_TYPE(BuildingSpawnerStrat.BuildingType.class, PropType.ACTIVE_SYNC),
+        MINION_TYPE(Minions.MinionType.class, PropType.ACTIVE_SYNC),
         COLLISION_STRAT(CollisionStrat.class, PropType.ON_CHANGE_ONLY),
         DAMAGE_DEALT(Double.class, PropType.ON_CHANGE_ONLY),
         DEATH_STRAT(DeathStrat.class, PropType.ON_CHANGE_ONLY),

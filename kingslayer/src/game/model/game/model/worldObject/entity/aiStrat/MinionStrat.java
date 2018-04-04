@@ -658,7 +658,7 @@ public abstract class MinionStrat extends AIStrat {
         private GridCell nextDestination;       // For pathing.
         private GridCell finalDestination;      // For pathing.
         private boolean reachedDestination;     // For pathing.
-        private boolean foundKing;
+        public boolean foundKing;
 
         MinionStratAIData() {
             path = new ArrayList<>();
