@@ -46,6 +46,7 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
     danger.setStyle("-fx-stroke: black; -fx-stroke-width: 2px;");
     danger.layoutXProperty().bind(this.widthProperty().divide(2).subtract(250));
     danger.layoutYProperty().bind(this.heightProperty().subtract(300));
+    danger.setVisible(false);
     this.getChildren().add(danger);
 
     this.model = clientGameModel;
