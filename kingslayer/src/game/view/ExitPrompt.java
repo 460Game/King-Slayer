@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import util.CssSheet;
 
 import static images.Images.CURSOR_IMAGE;
 
@@ -29,11 +30,13 @@ public class ExitPrompt extends Region {
         text.setLayoutY(100);
 
         Button confirm = new Button("Back To Lobby");
-        Button cancle = new Button("Cancel");
+        confirm.setStyle(CssSheet.YELLO_BUTTON_CSS);
+        Button cancle = new Button("    Cancel    ");
+        cancle.setStyle(CssSheet.YELLO_BUTTON_CSS);
         confirm.setTranslateX(50);
-        confirm.setTranslateY(240);
-        cancle.setTranslateX(450);
-        cancle.setTranslateY(240);
+        confirm.setTranslateY(220);
+        cancle.setTranslateX(350);
+        cancle.setTranslateY(220);
         confirm.setOnAction(l -> {
 //            Platform.exit();
             Platform.runLater(() -> view.goBackToMain());
