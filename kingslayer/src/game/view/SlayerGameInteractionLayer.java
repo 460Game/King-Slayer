@@ -7,6 +7,7 @@ import game.model.game.model.team.Role;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.EntitySpawner;
 import game.model.game.model.worldObject.entity.entities.Entities;
+import game.model.game.model.worldObject.entity.entities.Minions;
 import game.model.game.model.worldObject.entity.slayer.SlayerData;
 import javafx.geometry.Point2D;
 import javafx.scene.ImageCursor;
@@ -20,6 +21,12 @@ import util.Util;
 
 //import static images.Images.DELETE_CURSOR_IMAGE;
 //import static images.Images.UPGRADE_CURSOR_IMAGE;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Function;
+import java.util.stream.Stream;
+
 import static images.Images.*;
 import static javafx.scene.input.KeyCode.*;
 import static javafx.scene.input.KeyCode.DIGIT3;
@@ -94,21 +101,31 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
     world.draw();
 
     Entity opposingSlayer = null;
+    Collection<Entity> opposingMinions = Collections.EMPTY_LIST;
     Entity myKing = null;
     for (Entity e: model.getAllEntities()) {
       if (e.has(Entity.EntityProperty.ROLE) && e.has(Entity.EntityProperty.TEAM)) {
         if (e.getRole() == Role.SLAYER &&
             e.getTeam().team == 1 - model.getLocalPlayer().getTeam().team)
           opposingSlayer = e;
+        if (e.has(Entity.EntityProperty.MINION_TYPE) &&
+            e.get(Entity.EntityProperty.MINION_TYPE) == Minions.MinionType.FIGHTER &&
+            e.getTeam().team == 1 - model.getLocalPlayer().getTeam().team)
+          opposingMinions.add(e);
         if (e.getRole() == Role.KING &&
             e.getTeam() == model.getLocalPlayer().getTeam())
           myKing = e;
       }
     }
 
+    final Entity myFinalKing = myKing;
     if (opposingSlayer != null && myKing != null) {
-      boolean inDanger = model.getCell(myKing.getX().intValue(), myKing.getY().intValue())
-          .isVisible(opposingSlayer.getTeam());
+      final Stream<Boolean> visibleMinions =
+          opposingMinions.stream().map(e -> Math.sqrt(Math.pow(myFinalKing.getX() - e.getX(), 2) +
+              Math.pow(myFinalKing.getY() - e.getY(), 2)) <= 5);
+      boolean inDanger = Math.sqrt(Math.pow(myKing.getX() - opposingSlayer.getX(), 2) +
+          Math.pow(myKing.getY() - opposingSlayer.getY(), 2)) <= 5 ||
+          visibleMinions.anyMatch((e) -> e);
       if (inDanger && !flag) {
         danger.setVisible(true);
         flag = true;

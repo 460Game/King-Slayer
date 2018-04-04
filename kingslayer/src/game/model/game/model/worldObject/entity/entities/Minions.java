@@ -15,6 +15,11 @@ import static util.Pair.pair;
 
 public class Minions {
 
+    public enum MinionType {
+        FIGHTER,
+        GATHERER
+    }
+
     private static final double MINION_RADIUS = 0.25;
 
     static private CircleHitbox hitbox = new CircleHitbox(MINION_RADIUS);
@@ -34,7 +39,8 @@ public class Minions {
                 pair(SIGHT_RADIUS, 3),
                 pair(HEALTH, 5.0),
                 pair(MAX_HEALTH, 5.0),
-                pair(MAX_SPEED, 1.0));
+                pair(MAX_SPEED, 1.0),
+                pair(MINION_TYPE, MinionType.FIGHTER));
     }
 
     public static Entity makeRangedMinion(double x, double y, Team team, int level, Entity spawner) {
@@ -52,7 +58,8 @@ public class Minions {
                 pair(SIGHT_RADIUS, 3),
                 pair(HEALTH, 5.0),
                 pair(MAX_HEALTH, 5.0),
-                pair(MAX_SPEED, 1.0));
+                pair(MAX_SPEED, 1.0),
+                pair(MINION_TYPE, MinionType.FIGHTER));
     }
 
     public static Entity makeSiegeMinion(double x, double y, Team team, int level, Entity spawner) {
@@ -70,7 +77,8 @@ public class Minions {
                 pair(SIGHT_RADIUS, 3),
                 pair(HEALTH, 5.0),
                 pair(MAX_HEALTH, 5.0),
-                pair(MAX_SPEED, 1.0));
+                pair(MAX_SPEED, 1.0),
+                pair(MINION_TYPE, MinionType.FIGHTER));
     }
 
     public static Entity makeKnightMinion(double x, double y, Team team, int level, Entity spawner) {
@@ -88,7 +96,8 @@ public class Minions {
                 pair(SIGHT_RADIUS, 3),
                 pair(HEALTH, 10.0),
                 pair(MAX_HEALTH, 10.0),
-                pair(MAX_SPEED, 2.0));
+                pair(MAX_SPEED, 2.0),
+                pair(MINION_TYPE, MinionType.FIGHTER));
     }
 
     public static Entity makeResourceMinion(double x, double y, Team team, int level, Entity spawner) {
@@ -106,6 +115,7 @@ public class Minions {
                 pair(SIGHT_RADIUS, 3),
                 pair(HEALTH, 5.0),
                 pair(MAX_HEALTH, 5.0),
-                pair(MAX_SPEED, 1.0));
+                pair(MAX_SPEED, 1.0),
+                pair(MINION_TYPE, MinionType.GATHERER));
     }
 }
