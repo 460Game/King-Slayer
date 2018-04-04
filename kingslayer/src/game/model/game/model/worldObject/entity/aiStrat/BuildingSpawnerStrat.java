@@ -403,13 +403,13 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
                     }
                 }
             }
-//            if (entity.getUpgraded()) {
-//                for (Entity e : data.spawned) {
-//                    e.setUpgraded(false);
-//                    e.set(LEVEL, entity.get(LEVEL));
-//                    // TODO UP grade other stuff
-//                }
-//            }
+            if (entity.getUpgraded()) {
+                for (Entity e : data.spawned) {
+                    e.setUpgraded(false);
+                    e.set(LEVEL, entity.get(LEVEL));
+                    // TODO UP grade other stuff
+                }
+            }
         }
     }
 }

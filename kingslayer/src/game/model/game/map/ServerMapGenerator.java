@@ -106,8 +106,8 @@ public class ServerMapGenerator implements MapGenerator {
     }
 
     public void makeMap() {
-        makeMap((new Random()).nextLong());
-//        makeMap(Long.parseLong("680063342784308026")); // Good for path testing.
+//        makeMap((new Random()).nextLong());
+        makeMap(Long.parseLong("-2142394214886197830")); // Good for path testing.
 //        makeMap(Long.parseLong("-5713126425086333025"));
 //        makeMap(Long.parseLong("-1609539064927447349"));
 //        makeMap(Long.parseLong("6736756290173747940"));
@@ -298,7 +298,7 @@ public class ServerMapGenerator implements MapGenerator {
 
                     //gen forest
                     for (Loc t2 : set) {
-                        if (random.nextDouble() < 0.55)
+                        if (random.nextDouble() < 0.3)
                             grid[t2.x][t2.y] = TS.tree;
                         else if (random.nextDouble() < 0.55) {
                             grid[t2.x][t2.y] = TS.grass0;
