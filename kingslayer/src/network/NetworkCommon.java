@@ -22,6 +22,7 @@ import game.model.game.model.worldObject.entity.deathStrat.KingDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.RemoveOnDeathStrat;
 import game.model.game.model.worldObject.entity.deathStrat.SlayerDeathStrat;
 import game.model.game.model.worldObject.entity.drawStrat.*;
+import game.model.game.model.worldObject.entity.entities.Minions;
 import game.model.game.model.worldObject.entity.entities.NonMovingVelocity;
 import game.model.game.model.worldObject.entity.entities.Velocity;
 import game.model.game.model.worldObject.entity.slayer.SlayerData;
@@ -214,6 +215,7 @@ public class NetworkCommon {
         kryo.register(SlayerRespawnStartCountRequest.class);
 
         kryo.register(BuildingSpawnerStrat.BuildingType.class);
+        kryo.register(Minions.MinionType.class);
         kryo.register(ClientRematchMsg.class);
         kryo.register(SelectFeedBackMsg.class);
         kryo.register(SelectRoleMsg.class);
