@@ -49,7 +49,10 @@ public class TeamWinPrompt extends Region {
         });
         rematch.setOnAction(l-> {
 //            Platform.runLater(() -> view.restart());
-            Platform.runLater(() -> view.rematch());
+            Platform.runLater(() -> {
+                text.setText("Waiting for rematch...");
+                view.rematch();
+            });
         });
 
         this.getChildren().addAll(text, back_to_lobby, rematch);

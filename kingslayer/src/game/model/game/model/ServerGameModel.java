@@ -209,7 +209,7 @@ public class ServerGameModel extends GameModel {
         updateFPS = new TimerTask() {
             public void run() {
                 synchronized (lock) {
-//                    Log.info(String.valueOf("Server FPS: " + totalFrameCount[0]));
+                    Log.info(String.valueOf("Server FPS: " + totalFrameCount[0]));
                     totalFrameCount[0] = 0;
                 }
             }

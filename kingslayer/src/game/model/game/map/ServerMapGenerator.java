@@ -112,6 +112,7 @@ public class ServerMapGenerator implements MapGenerator {
 //        makeMap(Long.parseLong("-1609539064927447349"));
 //        makeMap(Long.parseLong("6736756290173747940"));
         //   makeMap(Long.parseLong("-4733834012032569948"));
+        // makeMap(Long.parseLong("8539555192000551887");       // FUNNNY
     }
 
     public void makeMap(long seed) {

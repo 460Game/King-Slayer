@@ -101,7 +101,7 @@ public abstract class MinionStrat extends AIStrat {
                     data.reachedDestination = false;
                 }
 
-                if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
+                if (data.path.size() > 0 && data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
                         data.path.get(0).getTopLeftY() != desty) {
                     data.path.clear();
                     data.finalDestination = model.getCell(destx, desty);
@@ -142,7 +142,7 @@ public abstract class MinionStrat extends AIStrat {
                     data.path = astar.astar(model.getCell((int) entityx, (int) entityy), data.finalDestination);
                 }
 
-                if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
+                if (data.path.size() > 0 && data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
                         data.path.get(0).getTopLeftY() != desty) {
                     data.path.clear();
                     data.path = astar.astar(model.getCell((int) entityx, (int) entityy), data.finalDestination);
@@ -252,7 +252,7 @@ public abstract class MinionStrat extends AIStrat {
                     data.reachedDestination = false;
                 }
 
-                if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
+                if (data.path.size() > 0 && data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
                         data.path.get(0).getTopLeftY() != desty) {
                     data.path.clear();
                     data.finalDestination = model.getCell(destx, desty);
@@ -294,7 +294,7 @@ public abstract class MinionStrat extends AIStrat {
                     data.path = astar.astar(model.getCell((int) entityx, (int) entityy), data.finalDestination);
                 }
 
-                if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
+                if (data.path.size() > 0 && data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
                         data.path.get(0).getTopLeftY() != desty) {
                     data.path.clear();
                     data.path = astar.astar(model.getCell((int) entityx, (int) entityy), data.finalDestination);
@@ -399,7 +399,7 @@ public abstract class MinionStrat extends AIStrat {
                 }
 
                 // Trying to path into wall, refind path. Check that next is not final destination.
-                if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
+                if (data.path.size() > 0 && data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
                         data.path.get(0).getTopLeftY() != desty) {
                     data.path.clear();
                     data.finalDestination = model.getCell(destx, desty);
@@ -439,7 +439,8 @@ public abstract class MinionStrat extends AIStrat {
                     data.path = astar.astar(model.getCell((int) entityx, (int) entityy), data.finalDestination);
                 }
 
-                if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
+                // Path size > 0 to check if blocked off
+                if (data.path.size() > 0 && data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != destx &&
                         data.path.get(0).getTopLeftY() != desty) {
                     data.path.clear();
                     data.reachedDestination = false;
@@ -593,7 +594,7 @@ public abstract class MinionStrat extends AIStrat {
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
             }
 
-            if (data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != x &&
+            if (data.path.size() > 0 && data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != x &&
                     data.path.get(0).getTopLeftY() != y) {
                 data.path.clear();
                 data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));

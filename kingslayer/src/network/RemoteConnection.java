@@ -293,6 +293,10 @@ public class RemoteConnection {
                         if (readyClients.containsKey(connection.getID())) {
                             return;
                         }
+                        if (readyMsg.getRole() == null || readyMsg.getTeam() == null || readyMsg.getPlayerName() == null) {
+                            System.out.println("can't ready without role, team!");
+                            return;
+                        }
 
                         System.out.println("checccccc: " + readyMsg.getTeam() + readyMsg.getRole() + readyMsg.getPlayerName());
 //                        adaptor.serverLobbyTrySetTeamAndRole(connection.getID(),
