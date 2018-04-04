@@ -54,6 +54,7 @@ public abstract class MinionStrat extends AIStrat {
             data.path.clear();
             data.nextDestination = null;
             data.finalDestination = null;
+            data.reachedDestination = true;
             entity.setVelocity(entity.getVelocity().withMagnitude(0));
             if (waitCounter >= 1) {
                 Entity enemy = getClosestEnemy(data, entity, model);
