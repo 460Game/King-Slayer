@@ -129,9 +129,9 @@ public class LobbyServer implements Lobby { //extends Application {
 //                    (conn2PlayerInfo.get(connId).getTeam().team != teamIdx
 //                            || conn2PlayerInfo.get(connId).getRole().val != roleIdx)
 
-                    Map<String, PlayerInfo> selectResult = new HashMap<>();
+                    Map<Integer, PlayerInfo> selectResult = new HashMap<>();
                     for (Map.Entry<Integer, PlayerInfo> entry : conn2PlayerInfo.entrySet()) {
-                        selectResult.put(entry.getValue().getPlayerName(), entry.getValue());
+                        selectResult.put(entry.getKey(), entry.getValue());
                     }
                     server.confirmSelect(false, selectResult);
                     return;
@@ -146,9 +146,9 @@ public class LobbyServer implements Lobby { //extends Application {
 
                     conn2PlayerInfo.put(connId, new PlayerInfo(team, role, playerName));
 
-                    Map<String, PlayerInfo> selectResult = new HashMap<>();
+                    Map<Integer, PlayerInfo> selectResult = new HashMap<>();
                     for (Map.Entry<Integer, PlayerInfo> entry : conn2PlayerInfo.entrySet()) {
-                        selectResult.put(entry.getValue().getPlayerName(), entry.getValue());
+                        selectResult.put(entry.getKey(), entry.getValue());
                     }
                     server.confirmSelect(true, selectResult);
                     return;
@@ -172,13 +172,18 @@ public class LobbyServer implements Lobby { //extends Application {
             }
 
             @Override
-            public void clientTakeSelectFb(boolean s, Map<String, PlayerInfo> map) {
+            public void clientTakeSelectFb(boolean s, Map<Integer, PlayerInfo> map) {
                 //server don't use this
             }
 
             @Override
             public int getNumOnTeam() {
                 return numOnTeam;
+            }
+
+            @Override
+            public Map<Integer, PlayerInfo> getPlayerInfoMap() {
+                return conn2PlayerInfo;
             }
 
         });

@@ -84,7 +84,7 @@ public class RemoteConnection {
         client.sendTCP(new NetworkCommon.SelectRoleMsg(team, role, playerName));
     }
 
-    public void confirmSelect(boolean success, Map<String, PlayerInfo> selectResult) {
+    public void confirmSelect(boolean success, Map<Integer, PlayerInfo> selectResult) {
         server.sendToAllTCP(new NetworkCommon.SelectFeedBackMsg(success, selectResult));
     }
 
@@ -286,17 +286,18 @@ public class RemoteConnection {
                     }
 
                     if (obj instanceof NetworkCommon.ClientReadyMsg) {
+
+                        // Note: readyMsg.getTeam and getRole are not used anymore!
                         NetworkCommon.ClientReadyMsg readyMsg = (NetworkCommon.ClientReadyMsg) obj;
 
-                        //TODO: change it to be defensive here
-                        //TODO: important line added here!!!!!!!!!!!!!!!!
                         if (readyClients.containsKey(connection.getID())) {
                             return;
                         }
-//                        if (readyMsg.getRole() == null || readyMsg.getTeam() == null || readyMsg.getPlayerName() == null) {
-//                            System.out.println("can't ready without role, team!");
-//                            return;
-//                        }
+
+                        if (!adaptor.getPlayerInfoMap().containsKey(connection.getID())) {
+                            System.err.println("can't ready without role, team!");
+                            return;
+                        }
 
                         System.out.println("checccccc: " + readyMsg.getTeam() + readyMsg.getRole() + readyMsg.getPlayerName());
 //                        adaptor.serverLobbyTrySetTeamAndRole(connection.getID(),
