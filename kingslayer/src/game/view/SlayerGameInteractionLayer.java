@@ -128,6 +128,7 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
           visibleMinions.anyMatch((e) -> e);
       if (inDanger && !flag) {
         danger.setVisible(true);
+        world.requestFocus();
         flag = true;
         MusicPlayer.playDangerSound();
       } else if (!inDanger && flag) {
