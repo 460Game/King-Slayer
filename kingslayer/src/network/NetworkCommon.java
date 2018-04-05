@@ -310,10 +310,10 @@ public class NetworkCommon {
     }
 
     public static class SelectFeedBackMsg {
-        Map<String, PlayerInfo> map;
+        Map<Integer, PlayerInfo> map;
         boolean s;
         public SelectFeedBackMsg() {}
-        public SelectFeedBackMsg(boolean s, Map<String, PlayerInfo> map) {
+        public SelectFeedBackMsg(boolean s, Map<Integer, PlayerInfo> map) {
             this.s = s;
             this.map = map;
         }

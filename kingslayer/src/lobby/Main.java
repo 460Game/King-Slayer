@@ -325,7 +325,7 @@ public class Main extends Application {
             }
 
             @Override
-            public void takeSelectFb(boolean s, Map<String, PlayerInfo> map) {
+            public void takeSelectFb(boolean s, Map<Integer, PlayerInfo> map) {
                 takeFb(s, map);
             }
 
@@ -339,7 +339,7 @@ public class Main extends Application {
 
         Platform.runLater(() -> window.setScene(inputNumOfPlayersScene()));
     }
-    private void takeFb(boolean s, Map<String, PlayerInfo> map) {
+    private void takeFb(boolean s, Map<Integer, PlayerInfo> map) {
         if (!s) {
             System.out.println("Fail to select role");
         }
@@ -361,7 +361,7 @@ public class Main extends Application {
             });
 
 
-            for (Map.Entry<String, PlayerInfo> entry : map.entrySet()) {
+            for (Map.Entry<Integer, PlayerInfo> entry : map.entrySet()) {
                 Team team = entry.getValue().getTeam();
                 Role role = entry.getValue().getRole();
                 String name = entry.getValue().getPlayerName();
@@ -434,7 +434,7 @@ public class Main extends Application {
             }
 
             @Override
-            public void takeSelectFb(boolean s, Map<String, PlayerInfo> map) {
+            public void takeSelectFb(boolean s, Map<Integer, PlayerInfo> map) {
                 takeFb(s, map);
             }
 
@@ -623,35 +623,10 @@ public class Main extends Application {
         redKingSelect.setFitWidth(80);
         redKingSelect.setFitHeight(80);
 
-//        Rectangle rec = new Rectangle();
-//        rec.setWidth(150);
-//        rec.setHeight(150);
-//        rec.setFill(Color.RED);
         grid.add(redKingSelect, 0, 0, 1, 1);
-
-
-//        redKingLabel = new Label("RED KING: ");
-//        redKingLabel.setPrefSize(300, 5);
-//        redKingLabel.setStyle("-fx-font: 15px \"Serif\";");
-//        grid.add(redKingLabel, 1, 0, 1, 1);
-
-
-//        teamChoice = new ChoiceBox<>();
-//        teamChoice.getItems().add(Team.RED_TEAM);
-//        teamChoice.getItems().add(Team.BLUE_TEAM);
-//        teamChoice.setPrefSize(200, 60);
-//        teamChoice.setStyle("-fx-font: 30px \"Serif\";");
 
         selectRedKing = new Button("RED KING: SELECT");
         selectRedKing.setPrefSize(200, 50);
-//        selectRedKing.setStyle("-fx-font: 15px \"Serif\";");
-//        selectRedKing.setStyle("-fx-background-color:\n" +
-//                "        linear-gradient(#f0ff35, #a9ff00),\n" +
-//                "        radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);\n" +
-//                "    -fx-background-radius: 6, 5;\n" +
-//                "    -fx-background-insets: 0, 1;\n" +
-//                "    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );\n" +
-//                "    -fx-text-fill: #395306;");
 
         selectRedKing.setStyle(CssSheet.RED_SELECT_BUTTON);
 
@@ -668,18 +643,7 @@ public class Main extends Application {
         imBlueKing.setFitWidth(80);
         imBlueKing.setFitHeight(80);
 
-//        Rectangle recBlue = new Rectangle();
-//        recBlue.setWidth(150);
-//        recBlue.setHeight(150);
-//        recBlue.setFill(Color.BLUE);
         grid.add(imBlueKing, 3, 0, 1, 1);
-
-//        blueKingLabel = new Label("BLUE KING: ");
-//        blueKingLabel.setPrefSize(300, 30);
-//        blueKingLabel.setStyle("-fx-font: 25px \"Serif\";");
-////        GridPane.setConstraints(roleChoice, 2, 0);
-//        grid.add(blueKingLabel, 4, 0, 1, 1);
-
 
         selectBlueKing = new Button("BLUE KING: SELECT");
         selectBlueKing.setPrefSize(200, 50);
@@ -694,23 +658,11 @@ public class Main extends Application {
 
         System.out.println("check num in team " + numOnTeam);
         if (numOnTeam >= 2) {
-
-//            Rectangle rec2 = new Rectangle();
-//            rec2.setWidth(150);
-//            rec2.setHeight(150);
-//            rec2.setFill(Color.RED);
-
             ImageView imRedSl = new ImageView(Images.RED_SLAYER_SELECT);
             imRedSl.setFitWidth(80);
             imRedSl.setFitHeight(80);
 
             grid.add(imRedSl, 0, 1, 1, 1);
-
-//            redSlLabel = new Label("RED SLAYER: ");
-//            redSlLabel.setPrefSize(300, 60);
-//            redSlLabel.setStyle("-fx-font: 25px \"Serif\";");
-//            grid.add(redSlLabel, 1, 1, 1, 1);
-
 
             selectRedSl = new Button("RED SLAYER: SELECT");
             selectRedSl.setPrefSize(200, 50);
@@ -723,23 +675,10 @@ public class Main extends Application {
             });
             grid.add(selectRedSl, 1, 1, 1, 1);
 
-//            Rectangle recBlue2 = new Rectangle();
-//            recBlue2.setWidth(150);
-//            recBlue2.setHeight(150);
-//            recBlue2.setFill(Color.BLUE);
-
             ImageView imBlueSl = new ImageView(Images.BLUE_SLAYER_SELECT);
             imBlueSl.setFitWidth(80);
             imBlueSl.setFitHeight(80);
             grid.add(imBlueSl, 3, 1, 1, 1);
-
-
-//            blueSlLabel = new Label("BLUE SLAYER: ");
-//            blueSlLabel.setPrefSize(300, 30);
-//            blueSlLabel.setStyle("-fx-font: 25px \"Serif\";");
-////        GridPane.setConstraints(roleChoice, 2, 0);
-//            grid.add(blueSlLabel, 4, 2, 1, 1);
-
 
             selectBlueSl = new Button("BLUE SLAYER: SELECT");
             selectBlueSl.setPrefSize(200, 50);
@@ -752,16 +691,6 @@ public class Main extends Application {
             });
             grid.add(selectBlueSl, 4, 1, 1, 1);
         }
-
-
-
-
-//        playerName = new TextField();
-//        playerName.setPromptText("Enter player name.");
-//        playerName.setPrefSize(200, 60);
-//        playerName.setFont(Font.font(30));
-//        GridPane.setConstraints(playerName, 2, 0);
-//        grid.getChildren().add(playerName);
 
         Button ready = new Button("Ready");
         ready.setPrefSize(200, 30);

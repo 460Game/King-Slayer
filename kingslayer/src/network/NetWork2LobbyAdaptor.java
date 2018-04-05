@@ -18,7 +18,9 @@ public interface NetWork2LobbyAdaptor {
     public void serverLobbyTrySetTeamAndRole(Integer connId, Team team, Role role, String playerName);
     public void serverStartRematch();
 
-    void clientTakeSelectFb(boolean s, Map<String, PlayerInfo> map);
+    void clientTakeSelectFb(boolean s, Map<Integer, PlayerInfo> map);
 
     int getNumOnTeam();
+
+    Map<Integer, PlayerInfo> getPlayerInfoMap();
 }

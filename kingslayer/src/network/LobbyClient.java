@@ -133,7 +133,7 @@ public class LobbyClient implements Lobby {//extends Application {
             }
 
             @Override
-            public void clientTakeSelectFb(boolean s, Map<String, PlayerInfo> map) {
+            public void clientTakeSelectFb(boolean s, Map<Integer, PlayerInfo> map) {
                 lobbyAdaptor.takeSelectFb(s, map);
             }
 
@@ -142,6 +142,12 @@ public class LobbyClient implements Lobby {//extends Application {
                 System.err.println("not used by client");
                 //not used by client
                 return -1;
+            }
+
+            @Override
+            public Map<Integer, PlayerInfo> getPlayerInfoMap() {
+                System.out.println("getPlayerInfoMap should not be used here");
+                return null;
             }
 
         });
