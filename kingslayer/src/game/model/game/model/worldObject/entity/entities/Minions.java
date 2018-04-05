@@ -96,7 +96,7 @@ public class Minions {
                 pair(SIGHT_RADIUS, 3),
                 pair(HEALTH, 10.0),
                 pair(MAX_HEALTH, 10.0),
-                pair(MAX_SPEED, 2.0),
+                pair(MAX_SPEED, 1.5),
                 pair(MINION_TYPE, MinionType.FIGHTER));
     }
 

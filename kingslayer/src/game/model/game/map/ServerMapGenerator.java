@@ -20,12 +20,12 @@ public class ServerMapGenerator implements MapGenerator {
     private final int distMax;
     private final int FEATURE_SIZE = 4;
     private final int edgeWidth = 4;
-    private final int NUM_RIVER = 4;
+    private final int NUM_RIVER = 3;
 
     final static int NUM_STARTS_ROOM = 2;
     final static int NUM_METAL_ROOM = 2;
     final static int NUM_STONE_ROOM = 8;
-    final static int NUM_TRESURE_ROOM = 4;
+    final static int NUM_TRESURE_ROOM = 8;
 
     private Random random;
     private TS[][] grid;
@@ -37,11 +37,7 @@ public class ServerMapGenerator implements MapGenerator {
         this.mapH = mapH;
         this.distMax = (int) (0.3 * Math.sqrt(mapW * mapW + mapH * mapH));
 
-        this.grid = new TS[this.mapW][this.mapH];
 
-        for (int i = 0; i < this.mapW; i++)
-            for (int j = 0; j < this.mapH; j++)
-                grid[i][j] = TS.unset;
 
         makeMap();
     }
@@ -65,31 +61,37 @@ public class ServerMapGenerator implements MapGenerator {
     }
 
     public static enum TS {
-        river(Tile.DEEP_WATER, Entities::makeWater),
-        edgeWater(Tile.DEEP_WATER, Entities::makeWater),
-        treasure(Tile.PATH, Entities::makeTreasure),
-        metal(Tile.GRASS_0, Entities::makeMetal),
-        stone(Tile.GRASS_0, Entities::makeStone),
-        tree(Tile.GRASS_0, Entities::makeTree),
-        wall(Tile.GRASS_0, Entities::makeWall),
-        room(Tile.GRASS_0, null),
-        grass0(Tile.GRASS_0, null),
-        grass1(Tile.GRASS_1, null),
-        grass2(Tile.GRASS_2, null),
-        barrier(Tile.GRASS_0, Entities::makeBox),
-        unset(null, null),
-        startKingA(Tile.PATH, (x, y) -> Players.makeKing(x, y, Team.RED_TEAM)),
-        startSlayerA(Tile.PATH, (x, y) -> Players.makeSlayer(x, y, Team.RED_TEAM)),
-        startKingB(Tile.PATH, (x, y) -> Players.makeKing(x, y, Team.BLUE_TEAM)),
-        startSlayerB(Tile.PATH, (x, y) -> Players.makeSlayer(x, y, Team.BLUE_TEAM)),
-        bridge(Tile.SHALLOW_WATER, null),
-        road(Tile.PATH, null);
+        river(Tile.DEEP_WATER, false, Entities::makeWater),
+        edgeWater(Tile.DEEP_WATER, false, Entities::makeWater),
+        treasure(Tile.PATH, true, Entities::makeTreasure),
+        metal(Tile.GRASS_0, false, Entities::makeMetal),
+        stone(Tile.GRASS_0, false, Entities::makeStone),
+        tree(Tile.GRASS_0, false, Entities::makeTree),
+        wall(Tile.GRASS_0, false, Entities::makeWall),
+        room(Tile.GRASS_0, false, null),
+        grass0(Tile.GRASS_0, true, null),
+        grass1(Tile.GRASS_1, true, null),
+        grass2(Tile.GRASS_2, true, null),
+        barrier(Tile.GRASS_0, false, Entities::makeBox),
+        unset(null, false, null),
+        startKingA(Tile.PATH, true, (x, y) -> Players.makeKing(x, y, Team.RED_TEAM)),
+        startSlayerA1(Tile.PATH, true, (x, y) -> Players.makeSlayer(x, y, Team.RED_TEAM)),
+        startSlayerA2(Tile.PATH, true, (x, y) -> Players.makeSlayer(x, y, Team.RED_TEAM)),
+        startSlayerA3(Tile.PATH, true, (x, y) -> Players.makeSlayer(x, y, Team.RED_TEAM)),
+        startKingB(Tile.PATH, true, (x, y) -> Players.makeKing(x, y, Team.BLUE_TEAM)),
+        startSlayerB1(Tile.PATH, true, (x, y) -> Players.makeSlayer(x, y, Team.BLUE_TEAM)),
+        startSlayerB2(Tile.PATH, true, (x, y) -> Players.makeSlayer(x, y, Team.BLUE_TEAM)),
+        startSlayerB3(Tile.PATH, true,(x, y) -> Players.makeSlayer(x, y, Team.BLUE_TEAM)),
+        bridge(Tile.SHALLOW_WATER, true, null),
+        road(Tile.PATH, true, null);
 
         private Tile make;
+        private boolean passable;
         private BiFunction<Double, Double, Entity> spawner;
 
-        TS(Tile make, BiFunction<Double, Double, Entity> spawner) {
+        TS(Tile make, boolean passable, BiFunction<Double, Double, Entity> spawner) {
             this.make = make;
+            this.passable = passable;
             this.spawner = spawner;
         }
 
@@ -106,7 +108,17 @@ public class ServerMapGenerator implements MapGenerator {
     }
 
     public void makeMap() {
+
+
+
         makeMap((new Random()).nextLong());
+
+        while(!connected()) {
+            System.out.println("Gneerated bad map! Regenerating...");
+            makeMap((new Random()).nextLong());
+        }
+
+
    //     makeMap(Long.parseLong("-2142394214886197830")); // Good for path testing.
 //        makeMap(Long.parseLong("-5713126425086333025"));
 //        makeMap(Long.parseLong("-1609539064927447349"));
@@ -115,11 +127,48 @@ public class ServerMapGenerator implements MapGenerator {
         // makeMap(Long.parseLong("8539555192000551887");       // FUNNNY
     }
 
+    private boolean connected() {
+
+        Set<Loc> set = new HashSet<>();
+
+        for (int i = 0; i < this.mapW; i++) {
+            for (int j = 0; j < mapH; j++) {
+                if (grid[i][j] == TS.startKingA ||
+                        grid[i][j] == TS.startKingB ||
+                        grid[i][j] == TS.startSlayerA1 ||
+                        grid[i][j] == TS.startSlayerA2 ||
+                        grid[i][j] == TS.startSlayerA3 ||
+                        grid[i][j] == TS.startSlayerB1 ||
+                        grid[i][j] == TS.startSlayerB2 ||
+                        grid[i][j] == TS.startSlayerB3) {
+                    set.add(new Loc(i, j));
+                }
+            }
+        }
+
+        for(Loc loc : set) {
+            Set<Loc> reach = floodPassable(true, loc.x, loc.y);
+            for(Loc loc2 : set) {
+                if(!reach.contains(loc2))
+                        return false;
+            }
+        }
+
+                return true;
+    }
+
     public void makeMap(long seed) {
         System.out.println("Generating gameMap with seed " + seed);
         this.random = new Random(seed);
 
         //Pick
+
+        this.grid = new TS[this.mapW][this.mapH];
+
+        for (int i = 0; i < this.mapW; i++)
+            for (int j = 0; j < this.mapH; j++)
+                grid[i][j] = TS.unset;
+
 
         double[][] w = new double[this.mapW][mapH];
 
@@ -256,12 +305,16 @@ public class ServerMapGenerator implements MapGenerator {
 
         t = rooms.poll();
         grid[t.x - 1][t.y] = TS.startKingA;
-        grid[t.x + 1][t.y] = TS.startSlayerA;
+        grid[t.x + 1][t.y] = TS.startSlayerA1;
+        grid[t.x][t.y+1] = TS.startSlayerA2;
+        grid[t.x][t.y-1] = TS.startSlayerA3;
         startingLocations.add(t);
 
         t = rooms.poll();
         grid[t.x - 1][t.y] = TS.startKingB;
-        grid[t.x + 1][t.y] = TS.startSlayerB;
+        grid[t.x + 1][t.y] = TS.startSlayerB1;
+        grid[t.x][t.y - 1] = TS.startSlayerB2;
+        grid[t.x][t.y + 1] = TS.startSlayerB3;
         startingLocations.add(t);
 
         for (int i = 0; i < NUM_METAL_ROOM; i++) {
@@ -355,6 +408,36 @@ public class ServerMapGenerator implements MapGenerator {
             flood(set, type, x - 1, y);
             flood(set, type, x, y + 1);
             flood(set, type, x, y - 1);
+        }
+    }
+
+
+    /**
+     * returns the set of all connected tiles of the same type
+     *
+     * @param x the tiles x
+     * @param y the tiles y
+     */
+    private Set<Loc> floodPassable(boolean passable, int x, int y) {
+        Set<Loc> set = new HashSet<>();
+        floodPassable(set, passable, x, y);
+        return set;
+    }
+
+    /**
+     * returns the set of all connected tiles of the same type
+     *
+     * @param set the set to addContents too
+     * @param x   the tiles x
+     * @param y   the tiles y
+     */
+    private void floodPassable(Set<Loc> set, boolean passable, int x, int y) {
+        if (x >= 0 && y >= 0 && x < this.mapW && y < mapH && grid[x][y].passable == passable && !set.contains(new Loc(x, y))) {
+            set.add(new Loc(x, y));
+            floodPassable(set, passable, x + 1, y);
+            floodPassable(set, passable, x - 1, y);
+            floodPassable(set, passable, x, y + 1);
+            floodPassable(set, passable, x, y - 1);
         }
     }
 
