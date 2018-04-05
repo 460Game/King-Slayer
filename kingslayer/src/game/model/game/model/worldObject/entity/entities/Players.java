@@ -39,9 +39,9 @@ public class Players {
             pair(DEATH_STRAT, SlayerDeathStrat.SINGLETON),
             pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
             pair(SLAYER_DATA, new SlayerData()),
-            pair(SIGHT_RADIUS, 10),
+            pair(SIGHT_RADIUS, 7),
             pair(MAX_HEALTH, 50.0),
-            pair(MAX_SPEED, 3.0));
+            pair(MAX_SPEED, 1.0));
     }
 
     public static Entity makeKing(double x, double y, Team team) {
@@ -56,8 +56,8 @@ public class Players {
             pair(DRAW_STRAT, DirectionAnimationDrawStrat.KING_ANIMATION),
             pair(DEATH_STRAT, KingDeathStrat.SINGLETON),
             pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
-            pair(SIGHT_RADIUS, 10),
+            pair(SIGHT_RADIUS, 7),
             pair(MAX_HEALTH, 75.0),
-            pair(MAX_SPEED, 3.0));
+            pair(MAX_SPEED, 1.0));
     }
 }
