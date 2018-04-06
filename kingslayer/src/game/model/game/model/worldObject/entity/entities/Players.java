@@ -41,7 +41,25 @@ public class Players {
             pair(SLAYER_DATA, new SlayerData()),
             pair(SIGHT_RADIUS, 7),
             pair(MAX_HEALTH, 50.0),
-            pair(MAX_SPEED, 1.0));
+            pair(MAX_SPEED, 2.5));
+    }
+
+    public static Entity makeSlayer(Double x, Double y, Team team, long id) {
+        Log.info("Making slayer2 " + x + " " + y + " " + team);
+        return new Entity(id, x, y,
+                hitbox,
+                UnitCollisionStrat.SINGLETON,
+                pair(HEALTH, 50.0),
+                pair(TEAM, team),
+                pair(ROLE, Role.SLAYER),
+                pair(UPDATE_STRAT, SlayerUpdateStrat.SINGLETON),
+                pair(DRAW_STRAT, DirectionAnimationDrawStrat.SLAYER_ANIMATION),
+                pair(DEATH_STRAT, SlayerDeathStrat.SINGLETON),
+                pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
+                pair(SLAYER_DATA, new SlayerData()),
+                pair(SIGHT_RADIUS, 7),
+                pair(MAX_HEALTH, 50.0),
+                pair(MAX_SPEED, 2.5));
     }
 
     public static Entity makeKing(double x, double y, Team team) {
@@ -58,6 +76,6 @@ public class Players {
             pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
             pair(SIGHT_RADIUS, 7),
             pair(MAX_HEALTH, 75.0),
-            pair(MAX_SPEED, 1.0));
+            pair(MAX_SPEED, 3.0));
     }
 }

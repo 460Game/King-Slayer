@@ -170,12 +170,15 @@ public class GameView {
                     actionPanel.draw();
 
                     if (model.getWinningTeam() != null && model.getWinningTeam() == model.getTeam()) {
+                        System.out.println("team win set visible");
                         teamWinPrompt.setVisible(true);
                     } else if (model.getWinningTeam() != null && model.getWinningTeam() != model.getTeam()) {
+                        System.out.println("team lose set visible");
                         teamLosePrompt.setVisible(true);
                     }
                 } catch(Exception e) {
-                    Log.error("Game Loop Exception", e);
+                    e.printStackTrace();
+//                    Log.error("Game Loop Exception", e);
                 }
             }
         };

@@ -213,6 +213,21 @@ public class Entity {
             this.<UpdateStrat>get(UPDATE_STRAT).init(this);
     }
 
+    public Entity(long originalId, double x, double y, Hitbox hitbox, CollisionStrat collisionStrat, Pair<EntityProperty, Object>... varargs) {
+        this.add(X, x);
+        this.add(Y, y);
+        this.add(HITBOX, hitbox);
+        this.add(COLLISION_STRAT, collisionStrat);
+        id = originalId;
+        for (Pair<EntityProperty, Object> pair : varargs)
+            add(pair);
+
+        if (this.has(AI_STRAT))
+            this.<AIStrat>get(AI_STRAT).init(this);
+        if (this.has(UPDATE_STRAT))
+            this.<UpdateStrat>get(UPDATE_STRAT).init(this);
+    }
+
     /**
      * Default constructor needed for serialization.
      */

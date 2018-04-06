@@ -369,13 +369,13 @@ public class Main extends Application {
                     System.out.println("RED KING IS " + name);
                     Platform.runLater(() -> {
 //                        redKingLabel.setText("RED KING: " + name);
-                        selectRedKing.setText("RED KING: " + name);
+                        selectRedKing.setText(name);
                     });
 
                 }
                 else if (team == Team.RED_TEAM && role == Role.SLAYER) {
                     Platform.runLater(() -> {
-                        selectRedSl.setText("RED SLAYER: " + name);
+                        selectRedSl.setText(name);
                     });
 
                 }
@@ -383,13 +383,13 @@ public class Main extends Application {
                     System.out.println("BLUE KING IS " + name);
                     Platform.runLater(() -> {
 //                        blueKingLabel.setText("BLUE KING: " + name);
-                        selectBlueKing.setText("BLUE KING: " + name);
+                        selectBlueKing.setText(name);
                     });
 
                 }
                 else if (team == Team.BLUE_TEAM && role == Role.SLAYER) {
                     Platform.runLater(() -> {
-                        selectBlueSl.setText("BLUE SLAYER: " + name);
+                        selectBlueSl.setText(name);
                     });
 
                 }

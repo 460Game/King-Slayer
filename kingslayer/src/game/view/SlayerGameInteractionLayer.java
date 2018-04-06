@@ -60,7 +60,7 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
     world = worldPanel;
 
     world.onGameLeftClick((x, y) -> {
-      if (model.clientLoseControl) {
+      if (model.getLoseControl()) {
         return;
       }
       double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
@@ -73,11 +73,11 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
       model.processMessage(new SlayerMeleeRequest(model.getLocalPlayer().id,
           model.getLocalPlayer().getX(),
           model.getLocalPlayer().getY(),
-          angle, model.getLocalPlayer().getTeam()));
+          angle, model.getTeam()));
     });
 
     world.onGameRightClick((x, y) -> {
-      if (model.clientLoseControl) {
+      if (model.getLoseControl()) {
         return;
       }
       double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
@@ -90,7 +90,7 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
       model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
           model.getLocalPlayer().getX(),
           model.getLocalPlayer().getY(),
-          angle, model.getLocalPlayer().getTeam()));
+          angle, model.getTeam()));
 
     });
   }
@@ -103,17 +103,26 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
     Entity opposingSlayer = null;
     Collection<Entity> opposingMinions = Collections.EMPTY_LIST;
     Entity myKing = null;
-    for (Entity e: model.getAllEntities()) {
+      for (Entity e: model.getAllEntities()) {
       if (e.has(Entity.EntityProperty.ROLE) && e.has(Entity.EntityProperty.TEAM)) {
+        if (e.getRole() == null) {
+          System.err.println("e.getRole is null");
+        }
+        if (e.getTeam() == null) {
+          System.err.println("e.getTeam is null");
+        }
+        if (model.getTeam() == null) {
+          System.err.println("model.getTeam is null");
+        }
         if (e.getRole() == Role.SLAYER &&
-            e.getTeam().team == 1 - model.getLocalPlayer().getTeam().team)
+            e.getTeam() != model.getTeam())
           opposingSlayer = e;
         if (e.has(Entity.EntityProperty.MINION_TYPE) &&
             e.get(Entity.EntityProperty.MINION_TYPE) == Minions.MinionType.FIGHTER &&
-            e.getTeam().team == 1 - model.getLocalPlayer().getTeam().team)
+            e.getTeam() != model.getTeam())
           opposingMinions.add(e);
         if (e.getRole() == Role.KING &&
-            e.getTeam() == model.getLocalPlayer().getTeam())
+            e.getTeam() == model.getTeam())
           myKing = e;
       }
     }

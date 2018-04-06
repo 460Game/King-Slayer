@@ -242,7 +242,7 @@ public class ServerGameModel extends GameModel {
             }
         };
 
-        t.scheduleAtFixedRate(updateTimerTask, 10, 1000/60);
+        t.scheduleAtFixedRate(updateTimerTask, 10, 1000 / 60);
     }
 
     private Timer t = new Timer();
@@ -359,15 +359,25 @@ public class ServerGameModel extends GameModel {
         return astar;
     }
 
-    public Collection<GridCell> getWood() { return wood; }
+    public Collection<GridCell> getWood() {
+        return wood;
+    }
 
-    public Collection<GridCell> getStone() { return stone; }
+    public Collection<GridCell> getStone() {
+        return stone;
+    }
 
-    public Collection<GridCell> getMetal() { return metal; }
+    public Collection<GridCell> getMetal() {
+        return metal;
+    }
 
-    public Collection<GridCell> getTeam1collector() { return team1collector; }
+    public Collection<GridCell> getTeam1collector() {
+        return team1collector;
+    }
 
-    public Collection<GridCell> getTeam2collector() { return team2collector; }
+    public Collection<GridCell> getTeam2collector() {
+        return team2collector;
+    }
 
     public TeamResourceData getTeamData(Team team) {
         return teamData.get(team);
