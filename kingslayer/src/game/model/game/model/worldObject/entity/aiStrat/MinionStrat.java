@@ -391,7 +391,7 @@ public abstract class MinionStrat extends AIStrat {
             nextDestination = null;
             finalDestination = null;
             foundKing = false;
-            reachedDestination = false;
+            reachedDestination = true;
         }
     }
 
