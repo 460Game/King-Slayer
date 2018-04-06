@@ -13,7 +13,7 @@ public class SlayerDieCommand implements ToClientCommand {
 
     @Override
     public void executeClient(ClientGameModel model) {
-        if(model.getLocalPlayer().id == this.id)
+        if(model.getLocalPlayerId() == this.id)
             model.slayerDead();
     }
 }
