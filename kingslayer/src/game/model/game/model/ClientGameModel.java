@@ -23,6 +23,7 @@ import music.MusicPlayer;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_STRAT;
@@ -35,7 +36,7 @@ public class ClientGameModel extends GameModel {
 
     private TeamResourceData resourceData = new TeamResourceData();
 
-    private Team winningTeam = null;
+    private AtomicReference<Team> winningTeam = new AtomicReference<>();
     private Team losingTeam = null;
     private Team thisTeam;
     private String name;
@@ -160,11 +161,11 @@ public class ClientGameModel extends GameModel {
     }
 
     public void changeWinningTeam(Team team) {
-        if (winningTeam == getTeam()) {
+        if (winningTeam.get() != null) {
             System.out.println("set winning team twice");
             return; //already won
         }
-        winningTeam = team;
+        winningTeam.set(team);
     }
 
     public void changeLosingTeam(Team team) {
@@ -173,7 +174,7 @@ public class ClientGameModel extends GameModel {
     }
 
     public Team getWinningTeam() {
-        return winningTeam;
+        return winningTeam.get();
     }
 
     public Team getLosingTeam() {
