@@ -160,7 +160,10 @@ public class ClientGameModel extends GameModel {
     }
 
     public void changeWinningTeam(Team team) {
-        if (winningTeam == getTeam()) return; //already won
+        if (winningTeam == getTeam()) {
+            System.out.println("set winning team twice");
+            return; //already won
+        }
         winningTeam = team;
     }
 

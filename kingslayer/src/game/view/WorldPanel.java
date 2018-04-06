@@ -136,8 +136,8 @@ public class WorldPanel extends Region {
         });
 
         this.setOnKeyPressed(e -> {
-//            if (model.clientLoseControl)
-//                return;
+            if (model.clientLoseControl)
+                return;
             if (currentlyPressed.contains(e.getCode()))
                 return;
             currentlyPressed.add(e.getCode());
