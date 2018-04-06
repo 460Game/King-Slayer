@@ -112,9 +112,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         // if you clicked the top part of an entity that is upgradable and is associated with your team
         if (model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
-            model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().get().getTeam() == model.getLocalPlayer().getTeam()) {
+            model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().get().getTeam() == model.getTeam()) {
           model.getEntitiesAt(x.intValue(), (int) (y + 20.0 / 32.0)).stream().findFirst().ifPresent(entity -> {
-            if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getLocalPlayer().getTeam()) {
+            if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getTeam()) {
               if (entity.has(EntityProperty.LEVEL) && entity.<Integer>get(EntityProperty.LEVEL) < 2 &&
                   model.getResourceData()
                       .getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) +
