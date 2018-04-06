@@ -54,8 +54,9 @@ public class TeamWinPrompt extends Region {
             Platform.runLater(() -> {
                 text.setText("Waiting for rematch...");
                 view.rematch();
+                stop();
             });
-            stop();
+
         });
 
         this.getChildren().addAll(text, back_to_lobby, rematch);

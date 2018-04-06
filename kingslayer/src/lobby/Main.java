@@ -76,14 +76,19 @@ public class Main extends Application {
     TextField playerName = new TextField();
     ChoiceBox numChoice;
 
-    Label redKingLabel;
-    Label blueKingLabel;
-    Label redSlLabel;
-    Label blueSlLabel;
+
     Button selectRedKing;
     Button selectBlueKing;
+
     Button selectRedSl;
     Button selectBlueSl;
+
+    Button selectRedSl2;
+    Button selectBlueSl2;
+
+    Button selectRedSl3;
+    Button selectBlueSl3;
+;
 
     MenuItem[] items = new MenuItem[] {
         new MenuItem("Join LAN"),
@@ -256,6 +261,8 @@ public class Main extends Application {
         numChoice = new ChoiceBox<>();
         numChoice.getItems().add("1v1");
         numChoice.getItems().add("2v2");
+        numChoice.getItems().add("3v3");
+        numChoice.getItems().add("4v4");
         numChoice.setPrefSize(200, 60);
         numChoice.setStyle("-fx-font: 30px \"Serif\";");
 
@@ -657,7 +664,7 @@ public class Main extends Application {
         grid.add(selectBlueKing, 4, 0, 1, 1);
 
         System.out.println("check num in team " + numOnTeam);
-        if (numOnTeam >= 2) {
+        if (numOnTeam == 2) {
             ImageView imRedSl = new ImageView(Images.RED_SLAYER_SELECT);
             imRedSl.setFitWidth(80);
             imRedSl.setFitHeight(80);
@@ -690,6 +697,41 @@ public class Main extends Application {
                 }
             });
             grid.add(selectBlueSl, 4, 1, 1, 1);
+        }
+
+        if (numOnTeam == 3) {
+            ImageView imRedSl = new ImageView(Images.RED_SLAYER_SELECT);
+            imRedSl.setFitWidth(80);
+            imRedSl.setFitHeight(80);
+
+            grid.add(imRedSl, 0, 2, 1, 1);
+
+            selectRedSl2 = new Button("RED SLAYER: SELECT");
+            selectRedSl2.setPrefSize(200, 50);
+            selectRedSl2.setStyle(CssSheet.RED_SELECT_BUTTON);
+            selectRedSl2.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    lobbyClient.selectRole(Team.RED_TEAM, Role.SLAYER);
+                }
+            });
+            grid.add(selectRedSl2, 1, 2, 1, 1);
+
+            ImageView imBlueSl = new ImageView(Images.BLUE_SLAYER_SELECT);
+            imBlueSl.setFitWidth(80);
+            imBlueSl.setFitHeight(80);
+            grid.add(imBlueSl, 3, 2, 1, 1);
+
+            selectBlueSl2 = new Button("BLUE SLAYER: SELECT");
+            selectBlueSl2.setPrefSize(200, 50);
+            selectBlueSl2.setStyle(CssSheet.BLUE_SELECT_BUTTON);
+            selectBlueSl2.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    lobbyClient.selectRole(Team.BLUE_TEAM, Role.SLAYER);
+                }
+            });
+            grid.add(selectBlueSl, 4, 2, 1, 1);
         }
 
         Button ready = new Button("Ready");
