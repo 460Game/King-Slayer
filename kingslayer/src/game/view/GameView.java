@@ -175,7 +175,8 @@ public class GameView {
                         teamLosePrompt.setVisible(true);
                     }
                 } catch(Exception e) {
-                    Log.error("Game Loop Exception", e);
+                    e.printStackTrace();
+                  //  Log.error("Game Loop Exception", e.);
                 }
             }
         };
