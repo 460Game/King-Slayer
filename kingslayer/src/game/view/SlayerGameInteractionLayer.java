@@ -60,7 +60,7 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
     world = worldPanel;
 
     world.onGameLeftClick((x, y) -> {
-      if (model.clientLoseControl) {
+      if (model.getLoseControl()) {
         return;
       }
       double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
@@ -77,7 +77,7 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
     });
 
     world.onGameRightClick((x, y) -> {
-      if (model.clientLoseControl) {
+      if (model.getLoseControl()) {
         return;
       }
       double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
