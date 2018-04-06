@@ -84,7 +84,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     this.getChildren().add(error);
 
     world.onGameLeftClick((x, y) -> {
-      if (model.clientLoseControl) {
+      if (model.getLoseControl()) {
         return;
       }
 
@@ -215,7 +215,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     });
 
     world.onGameRightClick((x, y) -> {
-      if (model.clientLoseControl) {
+      if (model.getLoseControl()) {
         return;
       }
 
@@ -250,7 +250,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     });
 
     world.onKeyPress(kc -> {
-      if (model.clientLoseControl) {
+      if (model.getLoseControl()) {
         return;
       }
 
