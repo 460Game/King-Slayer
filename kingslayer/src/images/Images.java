@@ -44,7 +44,7 @@ public abstract class Images {
     public static Image TILE_IMAGE = getImage("tile_map.png");
     public static Image MENU_SPASH_BG_IMAGE = getImage("castleSplash.jpg");
     public static final Image[] METAL_IMAGES = getImages("iron_ingots.png",
-        "iron_ingots_1.png","iron_ingots_3.png","iron_ingots_4.png","iron_ingots_5.png", "iron_ingots_6.png",
+        "iron_ingots_1.png", "iron_ingots_2.png", "iron_ingots_3.png","iron_ingots_4.png","iron_ingots_5.png", "iron_ingots_6.png",
         "iron_ingots_7.png", "iron_ingots_8.png", "iron_ingots_9.png");
     public static final Image[] STONE_IMAGES = getImages("boulder.png","boulder_1.png","boulder_2.png","boulder_3.png", "boulder_4.png");
     public static final Image[] TREE_IMAGES = getImages("tree.png", "tree_1.png", "tree_2.png", "tree_3.png", "tree_4.png");
