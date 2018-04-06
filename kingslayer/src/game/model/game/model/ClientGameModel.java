@@ -206,4 +206,8 @@ public class ClientGameModel extends GameModel {
             throwable.printStackTrace();
         }
     }
+
+    public long getLocalPlayerId() {
+        return localPlayer;
+    }
 }
