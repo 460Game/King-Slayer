@@ -103,7 +103,7 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
     Entity opposingSlayer = null;
     Collection<Entity> opposingMinions = Collections.EMPTY_LIST;
     Entity myKing = null;
-    for (Entity e: model.getAllEntities()) {
+      for (Entity e: model.getAllEntities()) {
       if (e.has(Entity.EntityProperty.ROLE) && e.has(Entity.EntityProperty.TEAM)) {
         if (e.getRole() == null) {
           System.err.println("e.getRole is null");
