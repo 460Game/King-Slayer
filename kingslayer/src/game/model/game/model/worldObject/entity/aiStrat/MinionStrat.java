@@ -43,24 +43,39 @@ public abstract class MinionStrat extends AIStrat {
 
         @Override
         void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
-            wander(data, entity, model, seconds);
+            Entity enemy = getClosestEnemy(data, entity, model);
+            int enemyx = (int) (double) enemy.getX();
+            int enemyy = (int) (double) enemy.getY();
+
+//            Astar astar = model.getAstar();
+            Astar astar = new Astar(model);
+
+            data.path.clear();
+            data.nextDestination = null;
+            data.finalDestination = null;
+            data.reachedDestination = true;
+
+            entity.setVelocity(entity.getVelocity().withMagnitude(entity.get(Entity.EntityProperty.MAX_SPEED)));
+            astar.moveToCell(entity, model.getCell(enemyx, enemyy));
+            model.processMessage(new SetEntityCommand(entity));
+//            wander(data, entity, model, seconds);
         }
 
-        private double waitCounter = 2;
+        private double attackCounter = 2;
 
         @Override
         void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
-            waitCounter += seconds;
+            attackCounter += seconds;
             data.path.clear();
             data.nextDestination = null;
             data.finalDestination = null;
             data.reachedDestination = true;
             entity.setVelocity(entity.getVelocity().withMagnitude(0));
-            if (waitCounter >= 1) {
+            if (attackCounter >= 1) {
                 Entity enemy = getClosestEnemy(data, entity, model);
                 double dir = Util.angle2Points(entity.getX(), entity.getY(), enemy.getX(), enemy.getY());
                 model.processMessage(new MakeEntityRequest(Entities.makeArrow(entity.getX(), entity.getY(), dir, entity.getTeam(), entity, 1, -1)));
-                waitCounter = 0;
+                attackCounter = 0;
             }
         }
     }
@@ -69,6 +84,8 @@ public abstract class MinionStrat extends AIStrat {
     public static class RangedMinionStrat extends MinionStrat {
 
         public static final RangedMinionStrat SINGLETON = new RangedMinionStrat();
+
+        private double attackCounter = 2;
 
         @Override
         double attackRange() {
@@ -82,10 +99,22 @@ public abstract class MinionStrat extends AIStrat {
 
         @Override
         void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
-            wander(data, entity, model, seconds);
-        }
+            Entity enemy = getClosestEnemy(data, entity, model);
+            int enemyx = (int) (double) enemy.getX();
+            int enemyy = (int) (double) enemy.getY();
 
-        private double attackCounter = 2;
+//            Astar astar = model.getAstar();
+            Astar astar = new Astar(model);
+
+            data.path.clear();
+            data.nextDestination = null;
+            data.finalDestination = null;
+            data.reachedDestination = true;
+
+            entity.setVelocity(entity.getVelocity().withMagnitude(entity.get(Entity.EntityProperty.MAX_SPEED)));
+            astar.moveToCell(entity, model.getCell(enemyx, enemyy));
+            model.processMessage(new SetEntityCommand(entity));
+        }
 
         @Override
         void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
@@ -120,7 +149,22 @@ public abstract class MinionStrat extends AIStrat {
 
         @Override
         void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
-            wander(data, entity, model, seconds);
+            Entity enemy = getClosestEnemy(data, entity, model);
+            int enemyx = (int) (double) enemy.getX();
+            int enemyy = (int) (double) enemy.getY();
+
+//            Astar astar = model.getAstar();
+            Astar astar = new Astar(model);
+
+            data.path.clear();
+            data.nextDestination = null;
+            data.finalDestination = null;
+            data.reachedDestination = true;
+
+            entity.setVelocity(entity.getVelocity().withMagnitude(entity.get(Entity.EntityProperty.MAX_SPEED)));
+            astar.moveToCell(entity, model.getCell(enemyx, enemyy));
+            model.processMessage(new SetEntityCommand(entity));
+//            wander(data, entity, model, seconds);
         }
 
         @Override
@@ -154,7 +198,7 @@ public abstract class MinionStrat extends AIStrat {
             handleEnemyDetected(data, entity, model, seconds);
         }
 
-        private double waitCounter = -1; // TODO think of better way to do the waiting
+        private double waitCounter = -1;
 
         @Override
         void wander(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
