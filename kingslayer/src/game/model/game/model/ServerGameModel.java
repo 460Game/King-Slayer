@@ -451,7 +451,7 @@ public class ServerGameModel extends GameModel {
         }
         if (addedBuilding) {
             addedBuilding = false;
-            if (building.get(BUILDING_TYPE) == BuildingSpawnerStrat.BuFldingType.COLLECTOR)
+            if (building.get(BUILDING_TYPE) == BuildingSpawnerStrat.BuildingType.COLLECTOR)
                 if (building.getTeam() == Team.RED_TEAM)
                     team1collector.addAll(building.containedIn);
                 else
