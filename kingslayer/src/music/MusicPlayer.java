@@ -158,29 +158,34 @@ public class MusicPlayer {
   }
 
   public static synchronized void playDangerSound() {
-    music = new Thread(() -> {
-      try {
-        FloatControl gainControl = (FloatControl) gameClip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(0.25f);
-        danger.loop(Clip.LOOP_CONTINUOUSLY);
-      } catch (Exception e) {
-        System.err.println(e.getMessage());
-      }
-    });
-    music.start();
+    if(!danger.isRunning()) {
+      danger.setFramePosition(0);
+      music = new Thread(() -> {
+        try {
+          FloatControl gainControl = (FloatControl) gameClip.getControl(FloatControl.Type.MASTER_GAIN);
+          gainControl.setValue(0.25f);
+          danger.start();
+        } catch (Exception e) {
+          System.err.println(e.getMessage());
+        }
+      });
+      music.start();
+    }
   }
 
   public static synchronized void stopDangerSound() {
-    music = new Thread(() -> {
-      try {
-        FloatControl gainControl = (FloatControl) gameClip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(1.0f);
-        danger.stop();
-      } catch (Exception e) {
-        System.err.println(e.getMessage());
-      }
-    });
-    music.start();
+    if (danger.isRunning()) {
+      music = new Thread(() -> {
+        try {
+          FloatControl gainControl = (FloatControl) gameClip.getControl(FloatControl.Type.MASTER_GAIN);
+          gainControl.setValue(1.0f);
+          danger.stop();
+        } catch (Exception e) {
+          System.err.println(e.getMessage());
+        }
+      });
+      music.start();
+    }
   }
 
   public static synchronized void stopMusic() {

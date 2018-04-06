@@ -135,12 +135,12 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
       boolean inDanger = Math.sqrt(Math.pow(myKing.getX() - opposingSlayer.getX(), 2) +
           Math.pow(myKing.getY() - opposingSlayer.getY(), 2)) <= 5 ||
           visibleMinions.anyMatch((e) -> e);
-      if (inDanger && !flag) {
+      if (inDanger) {
         danger.setVisible(true);
         world.requestFocus();
         flag = true;
         MusicPlayer.playDangerSound();
-      } else if (!inDanger && flag) {
+      } else {
         danger.setVisible(false);
         flag = false;
         MusicPlayer.stopDangerSound();

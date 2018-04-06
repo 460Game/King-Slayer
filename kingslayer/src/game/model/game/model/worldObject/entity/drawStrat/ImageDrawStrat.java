@@ -169,7 +169,19 @@ public abstract class ImageDrawStrat extends DrawStrat {
     public static class MetalImageDrawStrat extends ImageDrawStrat {
         @Override
         Image getImage(Entity entity) {
-            return Images.METAL_IMAGES[0];
+            int amount = entity.<Integer>get(Entity.EntityProperty.RESOURCE_AMOUNT);
+            if (amount >= 30)
+                return Images.METAL_IMAGES[0];
+            else if (amount >= 25)
+                return Images.METAL_IMAGES[2];
+            else if (amount >= 20)
+                return Images.METAL_IMAGES[4];
+            else if (amount >= 15)
+                return Images.METAL_IMAGES[6];
+            else if (amount >= 10)
+                return Images.METAL_IMAGES[8];
+            else
+                return Images.METAL_IMAGES[9];
         }
 
         @Override
