@@ -9,19 +9,21 @@ import java.util.TimerTask;
 public class SlayerRespawnStartCountRequest extends ActionRequest {
     Team team;
     String name;
+    long id;
 
     public SlayerRespawnStartCountRequest() {}
 
-    public SlayerRespawnStartCountRequest(Team team, String name) {
+    public SlayerRespawnStartCountRequest(Team team, String name, long id) {
         this.team = team;
         this.name = name;
+        this.id = id;
     }
     @Override
     public void executeServer(ServerGameModel model) {
         Timer timer;
         TimerTask respawn = new TimerTask() {
             public void run() {
-                model.processMessage(new RespawnSlayerRequest(team, name));
+                model.processMessage(new RespawnSlayerRequest(team, name, id));
             }
         };
 

@@ -187,9 +187,9 @@ public class ClientGameModel extends GameModel {
         return state;
     }
 
-    public void respawnSlayerRequest() {
-        server.processMessage(new RespawnSlayerRequest(getTeam(), getName()));
-    }
+//    public void respawnSlayerRequest() {
+//        server.processMessage(new RespawnSlayerRequest(getTeam(), getName(), ));
+//    }
 
     public String getName() {
         return name;
