@@ -85,21 +85,21 @@ public abstract class MinionStrat extends AIStrat {
             wander(data, entity, model, seconds);
         }
 
-        private double waitCounter = 2;
+        private double attackCounter = 2;
 
         @Override
         void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
-            waitCounter += seconds;
+            attackCounter += seconds;
             data.path.clear();
             data.nextDestination = null;
             data.finalDestination = null;
             data.reachedDestination = true;
             entity.setVelocity(entity.getVelocity().withMagnitude(0));
-            if (waitCounter >= 1) {
+            if (attackCounter >= 1) {
                 Entity enemy = getClosestEnemy(data, entity, model);
                 double dir = Util.angle2Points(entity.getX(), entity.getY(), enemy.getX(), enemy.getY());
                 model.processMessage(new MakeEntityRequest(Entities.makeArrow(entity.getX(), entity.getY(), dir, entity.getTeam(), entity, 1, -1)));
-                waitCounter = 0;
+                attackCounter = 0;
             }
         }
     }
@@ -159,7 +159,9 @@ public abstract class MinionStrat extends AIStrat {
         @Override
         void wander(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
 
-            if (waitCounter >= 2)
+            // Higher level minions collect/drop off resources faster.
+            // LVL 1.5: 2, LVL 2: 1.25, LVL 3: 1
+            if (waitCounter >= 1.75 - 0.25 * ((int) entity.get(Entity.EntityProperty.LEVEL)))
                 waitCounter = -1;
             if (waitCounter >= 0) {
                 waitCounter += seconds;
@@ -178,8 +180,8 @@ public abstract class MinionStrat extends AIStrat {
 
             // TODO find ones that are visible, higher tier should also collect lower tier
             // Check if the minion should go to a resource or back to a collector.
-            if (!data.hasResource) {
-                entity.set(Entity.EntityProperty.MAX_SPEED, 1.0);
+            if (!data.hasResource) {            // Doesn't have resource.
+                entity.set(Entity.EntityProperty.MAX_SPEED, 1.0);           // Reset back to normal speed
                 if ((int) entity.get(Entity.EntityProperty.LEVEL) == 0) {
                     wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy));
                     if (wood == null)
@@ -224,12 +226,14 @@ public abstract class MinionStrat extends AIStrat {
                     }
                 }
             } else {
-                // Should this go up hiehger level?
-                entity.set(Entity.EntityProperty.MAX_SPEED, 0.5);
+                // Speed with resource varies by level.
+                entity.set(Entity.EntityProperty.MAX_SPEED, 0.5 + 0.25 * (int) entity.get(Entity.EntityProperty.LEVEL));
                 GridCell collector = astar.getClosestCollector(model.getCell((int) entityx, (int) entityy), entity.getTeam());
                 if (collector == null) {
                     entity.setVelocity(entity.getVelocity().withMagnitude(0));
                     data.path.clear();
+                    data.nextDestination = null;
+                    data.finalDestination = null;
                     model.processMessage(new SetEntityCommand(entity));
                     return;
                 }
@@ -237,47 +241,63 @@ public abstract class MinionStrat extends AIStrat {
                 y = collector.getTopLeftY();
             }
 
-            // Check if path exists and resource disappeared, then generate a new path.
-            if (data.path.size() > 0 && (data.path.get(data.path.size() - 1).getTopLeftX() != x ||
-                    data.path.get(data.path.size() - 1).getTopLeftY() != y)) {
+            data.finalDestination = model.getCell(x, y);
+
+            // All these will result in generating a new path.
+            // First check: path exists and resource disappeared
+            // Second check: nothing in path and not at destination.
+            // Third check: trying to path into wall and next cell is not final destination.
+            if (data.path.size() > 0 && !data.path.get(data.path.size() - 1).equals(data.finalDestination) ||
+                    (data.path.size() == 0 && !data.reachedDestination) ||
+                    (data.path.size() > 0 && data.nextDestination != null && !data.nextDestination.isPassable() &&
+                    !data.finalDestination.equals(data.path.get(0)))) {
                 data.path.clear();
-                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
+                data.reachedDestination = false;
+                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), data.finalDestination);
             }
 
-            // If nothing in path and not at destination, generate a path. TODO might need better check
-            if (data.path.size() == 0 && entityx != x && entityy != y) {
-                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
-            }
-
-            if (data.path.size() > 0 && data.nextDestination != null && !data.nextDestination.isPassable() && data.path.get(0).getTopLeftX() != x &&
-                    data.path.get(0).getTopLeftY() != y) {
-                data.path.clear();
-                data.path = astar.astar(model.getCell((int) entityx, (int) entityy), model.getCell(x, y));
-            }
+            if (entity.containedIn.contains(data.finalDestination))
+                data.reachedDestination = true;
 
             // Check if reached destination.
-            if (entity.containedIn.contains(model.getCell(x, y))) {
-                // TODO change wait counter depending on level?
+            if (data.reachedDestination) {
                 waitCounter = 2;
                 // Stop movement and clear path.
                 entity.setVelocity(entity.getVelocity().withMagnitude(0));
                 data.path.clear();
+                data.reachedDestination = false;
                 data.nextDestination = null;
+                data.finalDestination = null;
 
                 // Update resource counts if applicable, and change path destination.
                 data.hasResource = !data.hasResource;
+
+                // Just harvested resources.
                 if (data.hasResource) {
                     waitCounter = 0;
                     Entity res = model.getEntitiesAt(x, y).stream().filter(e ->
                             e.has(Entity.EntityProperty.RESOURCE_AMOUNT)).findFirst().get();
                     if ((int) entity.get(Entity.EntityProperty.LEVEL) == 0)
                         data.resourceHeld += Math.min(Const.FIRST_LEVEL_WOOD_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
-                    else if ((int) entity.get(Entity.EntityProperty.LEVEL) == 1)
-                        data.resourceHeld += Math.min(Const.SECOND_LEVEL_STONE_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
-                    else
-                        data.resourceHeld += Math.min(Const.THIRD_LEVEL_METAL_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
+                    else if ((int) entity.get(Entity.EntityProperty.LEVEL) == 1) {
+                        // Second tier gatherer. Collect more wood than lvl 1.
+                        if (data.resourceType == 0)
+                            data.resourceHeld += Math.min(Const.SECOND_LEVEL_WOOD_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
+                        else
+                            data.resourceHeld += Math.min(Const.SECOND_LEVEL_STONE_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
+                    }
+                    else {
+                        // Third tier gatherer. Collect more wood and stone than lvl 1/lvl 2.
+                        if (data.resourceType == 0)
+                            data.resourceHeld += Math.min(Const.THIRD_LEVEL_WOOD_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
+                        else if (data.resourceType == 1)
+                            data.resourceHeld += Math.min(Const.THIRD_LEVEL_STONE_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
+                        else
+                            data.resourceHeld += Math.min(Const.THIRD_LEVEL_METAL_COLLECTED, res.get(Entity.EntityProperty.RESOURCE_AMOUNT));
+                    }
                     res.decreaseResourceAmount(model, data.resourceHeld);
                 } else {
+                    // Dumping resources into collector.
                     if (data.resourceType == 0)
                         model.changeResource(entity.getTeam(), TeamResourceData.Resource.WOOD, data.resourceHeld);
                     else if (data.resourceType == 1)
@@ -326,7 +346,7 @@ public abstract class MinionStrat extends AIStrat {
             nextDestination = null;
             finalDestination = null;
             foundKing = false;
-            reachedDestination = true;
+            reachedDestination = false;
         }
     }
 
