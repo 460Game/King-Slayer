@@ -173,6 +173,7 @@ public abstract class MinionStrat extends AIStrat {
             // Get current position.
             double entityx = entity.getX();
             double entityy = entity.getY();
+            Team team = entity.getTeam();
             GridCell wood, stone, metal;
 
             // Holds the final destination.
@@ -183,16 +184,16 @@ public abstract class MinionStrat extends AIStrat {
             if (!data.hasResource) {            // Doesn't have resource.
                 entity.set(Entity.EntityProperty.MAX_SPEED, 1.0);           // Reset back to normal speed
                 if ((int) entity.get(Entity.EntityProperty.LEVEL) == 0) {
-                    wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy));
+                    wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy), team);
                     if (wood == null)
                         return;
                     x = wood.getTopLeftX();
                     y = wood.getTopLeftY();
                     data.resourceType = 0;
                 } else if ((int) entity.get(Entity.EntityProperty.LEVEL) == 1) {
-                    stone = astar.getClosestStone(model.getCell((int) entityx, (int) entityy));
+                    stone = astar.getClosestStone(model.getCell((int) entityx, (int) entityy), team);
                     if (stone == null) {
-                        wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy));
+                        wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy), team);
                         if (wood == null)
                             return;
                         x = wood.getTopLeftX();
@@ -204,11 +205,11 @@ public abstract class MinionStrat extends AIStrat {
                         data.resourceType = 1;
                     }
                 } else {
-                    metal = astar.getClosestMetal(model.getCell((int) entityx, (int) entityy));
+                    metal = astar.getClosestMetal(model.getCell((int) entityx, (int) entityy), team);
                     if (metal == null) {
-                        stone = astar.getClosestStone(model.getCell((int) entityx, (int) entityy));
+                        stone = astar.getClosestStone(model.getCell((int) entityx, (int) entityy), team);
                         if (stone == null) {
-                            wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy));
+                            wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy), team);
                             if (wood == null)
                                 return;
                             x = wood.getTopLeftX();

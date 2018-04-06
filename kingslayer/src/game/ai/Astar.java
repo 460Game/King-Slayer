@@ -316,10 +316,9 @@ public class Astar {
      * @param cell cell to find the closest wood tile from
      * @return closest wood tile to the specified cell
      */
-    public GridCell getClosestWood(GridCell cell) {
+    public GridCell getClosestWood(GridCell cell, Team t) {
         // TODO make more efficient
-        // add team parameter and isVisible can be used to check
-        Optional<GridCell> wood = model.getWood().parallelStream().min((c1, c2) ->
+        Optional<GridCell> wood = model.getWood().parallelStream().filter(c -> c.isVisible(t)).min((c1, c2) ->
                 Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
                 Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY())));
         return wood.isPresent() ? wood.get() : null;
@@ -330,8 +329,8 @@ public class Astar {
      * @param cell cell to find the closest stone tile from
      * @return closest stone tile to the specified cell
      */
-    public GridCell getClosestStone(GridCell cell) {
-         Optional<GridCell> stone = model.getStone().parallelStream().min((c1, c2) ->
+    public GridCell getClosestStone(GridCell cell, Team t) {
+         Optional<GridCell> stone = model.getStone().parallelStream().filter(c -> c.isVisible(t)).min((c1, c2) ->
                 Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
                         Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY())));
         return stone.isPresent() ? stone.get() : null;
@@ -342,8 +341,8 @@ public class Astar {
      * @param cell cell to find the closest metal tile from
      * @return closest metal tile to the specified cell
      */
-    public GridCell getClosestMetal(GridCell cell) {
-        Optional<GridCell> metal = model.getMetal().parallelStream().min((c1, c2) ->
+    public GridCell getClosestMetal(GridCell cell, Team t) {
+        Optional<GridCell> metal = model.getMetal().parallelStream().filter(c -> c.isVisible(t)).min((c1, c2) ->
                 Double.compare(Util.dist(cell.getCenterX(), cell.getCenterY(), c1.getCenterX(), c1.getCenterY()),
                         Util.dist(cell.getCenterX(), cell.getCenterY(), c2.getCenterX(), c2.getCenterY())));
         return metal.isPresent() ? metal.get() : null;
