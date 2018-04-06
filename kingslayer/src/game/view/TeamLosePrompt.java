@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import music.MusicPlayer;
 import util.CssSheet;
 
 import static images.Images.CURSOR_IMAGE;
@@ -45,6 +46,7 @@ public class TeamLosePrompt extends Region {
         rematch.setTranslateY(220);
 
         confirm.setOnAction(l -> {
+            MusicPlayer.stopDangerSound();
             view.goBackToMain();
         });
         rematch.setOnAction(l-> {

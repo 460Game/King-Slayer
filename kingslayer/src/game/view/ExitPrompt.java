@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import music.MusicPlayer;
 import util.CssSheet;
 
 import static images.Images.CURSOR_IMAGE;
@@ -39,6 +40,7 @@ public class ExitPrompt extends Region {
         cancle.setTranslateY(220);
         confirm.setOnAction(l -> {
 //            Platform.exit();
+            MusicPlayer.stopDangerSound();
             Platform.runLater(() -> view.goBackToMain());
         });
         cancle.setOnAction(l-> {

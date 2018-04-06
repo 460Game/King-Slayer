@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import music.MusicPlayer;
 import util.CssSheet;
 
 import static images.Images.CURSOR_IMAGE;
@@ -44,6 +45,7 @@ public class TeamWinPrompt extends Region {
         back_to_lobby.setStyle(CssSheet.YELLO_BUTTON_CSS);
         rematch.setStyle(CssSheet.YELLO_BUTTON_CSS);
         back_to_lobby.setOnAction(l -> {
+            MusicPlayer.stopDangerSound();
             //TODO: change this to be another class
             Platform.runLater(() -> view.goBackToMain());
         });
