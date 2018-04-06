@@ -146,9 +146,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
-            model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().getTeam() == model.getLocalPlayer().getTeam()) {
+            model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().getTeam() == model.getTeam()) {
           model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
-            if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getLocalPlayer().getTeam()) {
+            if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getTeam()) {
               if (model.getResourceData()
                   .getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) + 1)) >=
                   upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE),
@@ -176,9 +176,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       } else if (deleting) {
         if (model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
-            model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().get().getTeam() == model.getLocalPlayer().getTeam()) {
+            model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().get().getTeam() == model.getTeam()) {
           model.getEntitiesAt(x.intValue(), (int) (y + 20.0 / 32.0)).stream().findFirst().ifPresent(entity -> {
-            if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getLocalPlayer().getTeam()) {
+            if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getTeam()) {
               model.processMessage(new SellEntityRequest(entity,
                   sellPrice.get(entity.<BuildingSpawnerStrat.BuildingType>get(Entity.EntityProperty.BUILDING_TYPE))));
               if (!holding) {
@@ -195,9 +195,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
-            model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().getTeam() == model.getLocalPlayer().getTeam()) {
+            model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().getTeam() == model.getTeam()) {
           model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
-            if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getLocalPlayer().getTeam()) {
+            if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getTeam()) {
               model.processMessage(new SellEntityRequest(entity,
                   sellPrice.get(entity.<BuildingSpawnerStrat.BuildingType>get(Entity.EntityProperty.BUILDING_TYPE))));
               if (!holding) {
@@ -350,7 +350,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     if (model.getResourceData().getResource(EntitySpawner.RESOURCE_COLLETOR_SPAWNER.resource) >= EntitySpawner.RESOURCE_COLLETOR_SPAWNER.finalCost(model)) {
       placingGhost =
           Entities.makeResourceCollectorGhost((int) world.screenToGameX(world.mouseX) + 0.5, (int) world.screenToGameY(world.mouseY) + 0.5,
-              model.getLocalPlayer().getTeam());
+              model.getTeam());
       spawner = EntitySpawner.RESOURCE_COLLETOR_SPAWNER;
       model.processMessage(new NewEntityCommand(placingGhost));
     } else {
@@ -363,7 +363,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   public void selectArrowTower() {
     if (model.getResourceData().getResource(EntitySpawner.ARROW_TOWER_SPAWNER.resource) >= EntitySpawner.ARROW_TOWER_SPAWNER.finalCost(model)) {
       placingGhost = Entities.makeArrowTowerGhost((int) world.screenToGameX(world.mouseX) + 0.5, (int) world.screenToGameY(world.mouseY) + 0.5,
-          model.getLocalPlayer().getTeam());
+          model.getTeam());
       spawner = EntitySpawner.ARROW_TOWER_SPAWNER;
       model.processMessage(new NewEntityCommand(placingGhost));
     } else {
@@ -390,7 +390,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   public void selectBarracks() {
     if (model.getResourceData().getResource(EntitySpawner.BARRACKS_SPAWNER.resource) >= EntitySpawner.BARRACKS_SPAWNER.finalCost(model)) {
       placingGhost = Entities.makeBarracksGhost((int) world.screenToGameX(world.mouseX) + 0.5, (int) world.screenToGameY(world.mouseY) + 0.5,
-          model.getLocalPlayer().getTeam());
+          model.getTeam());
       spawner = EntitySpawner.BARRACKS_SPAWNER;
       model.processMessage(new NewEntityCommand(placingGhost));
     } else {
