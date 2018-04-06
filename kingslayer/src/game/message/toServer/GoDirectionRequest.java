@@ -1,6 +1,7 @@
 package game.message.toServer;
 
 import game.model.game.model.ServerGameModel;
+import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Velocity;
 
 /**
@@ -44,7 +45,7 @@ public class GoDirectionRequest extends ActionRequest {
     @Override
     public void executeServer(ServerGameModel model) {
         if (model.getEntity(id) == null) return;
-        model.getEntity(id).setVelocity(Velocity.NONE.withMagnitude(3).withAngle(angle));
+        model.getEntity(id).setVelocity(Velocity.NONE.withMagnitude(model.getEntity(id).get(Entity.EntityProperty.MAX_SPEED)).withAngle(angle));
         //TODO where is max speed
     }
 }
