@@ -265,11 +265,11 @@ public class GameView {
         exitPrompt.stop();
         exitPrompt = null;
 
-        teamWinPrompt.stop();
-        teamWinPrompt = null;
+//        teamWinPrompt.stop();
+//        teamWinPrompt = null;
 
-        teamLosePrompt.stop();
-        teamLosePrompt = null;
+//        teamLosePrompt.stop();
+//        teamLosePrompt = null;
 
         System.out.println("window is null " + window + " " + model);
         int status = mainApp.rematch();

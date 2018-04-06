@@ -55,6 +55,7 @@ public class TeamWinPrompt extends Region {
                 text.setText("Waiting for rematch...");
                 view.rematch();
             });
+            stop();
         });
 
         this.getChildren().addAll(text, back_to_lobby, rematch);

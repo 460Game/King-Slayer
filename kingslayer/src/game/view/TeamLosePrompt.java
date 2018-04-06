@@ -54,6 +54,7 @@ public class TeamLosePrompt extends Region {
             Platform.runLater(() -> {
                 text.setText("Waiting for rematch...");
                 view.rematch();
+                stop();
             });
         });
 
