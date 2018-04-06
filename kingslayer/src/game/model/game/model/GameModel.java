@@ -241,6 +241,7 @@ public abstract class GameModel implements Model {
     }
 
     public void slayerDead() {
+        System.out.println("slayer diesssssssss");
         clientLoseControl.set(true);
     }
     public boolean getLoseControl() {
