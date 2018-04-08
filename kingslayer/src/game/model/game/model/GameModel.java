@@ -40,14 +40,9 @@ public abstract class GameModel implements Model {
 
     public abstract void execute(Consumer<ServerGameModel> serverAction, Consumer<ClientGameModel> clientAction);
 
-    //temporary
-    //need to clean up
-    public int respawnCnt = 0;
-    public double respawnX;
-    public double respawnY;
-
     /**
      * Constructor for the game model.
+     *
      * @param generator map generator for this game model
      */
     public GameModel(MapGenerator generator) {
@@ -77,6 +72,7 @@ public abstract class GameModel implements Model {
 
     /**
      * Gets the map width in terms of number of grid cells.
+     *
      * @return the number of grid cells in the width of the map
      */
     public int getMapWidth() {
@@ -85,6 +81,7 @@ public abstract class GameModel implements Model {
 
     /**
      * Gets the map height in terms of number of grid cells.
+     *
      * @return the number of grid cells in the height of the map
      */
     public int getMapHeight() {
@@ -94,12 +91,13 @@ public abstract class GameModel implements Model {
     /**
      * Gets the cell at the specified coordinates. The coordinates represent
      * the upper left corner of the cell.
+     *
      * @param x x-coordinate
      * @param y y-coordinate
      * @return the cell with the given upper left coordinates
      */
     public GridCell getCell(int x, int y) {
-        if(x < 0 || x >= getMapWidth() || y < 0 || y >= getMapWidth()){
+        if (x < 0 || x >= getMapWidth() || y < 0 || y >= getMapWidth()) {
             Log.error("Requested Invalid Cell");
             return null;
         }
@@ -109,6 +107,7 @@ public abstract class GameModel implements Model {
     /**
      * Gets the tile at the specified coordinates. The coordinates represent
      * the upper left corner of the cell.
+     *
      * @param x x-coordinate
      * @param y y-coordinate
      * @return tile of the cell with the given upper left coordinates
@@ -130,29 +129,38 @@ public abstract class GameModel implements Model {
      * @param entityID ID of the entity to be removed
      */
     public void removeByID(long entityID) {
-        if(entities.containsKey(entityID))
+        if (entities.containsKey(entityID))
             remove(entities.get(entityID));
     }
 
     public void remove(Entity entity) {
-        if(entity.containedIn != null)
+        if (entity.containedIn != null)
             entity.containedIn.forEach(cell -> cell.removeContents(this, entity));
         entities.remove(entity.id);
     }
 
+    int fogCount = 0;
+
     public void update() {
         ArrayList<Message> list = new ArrayList<>();
         messageQueue.drainTo(list);
-
-        list.forEach(m -> m.execute(this));
+        for(Message m : list)
+            m.execute(this);
 
         long modelCurrentTime = this.nanoTime();
 
-        entities.values().forEach(e -> e.update(this, modelCurrentTime));
-        entities.values().forEach(e -> e.updateCells(this));
+        for (Entity e : entities.values())
+            e.update(this, modelCurrentTime);
+        for (Entity e : entities.values())
+            e.updateCells(this);
 
         allCells.forEach(cell -> cell.collideContents(this));
-        allCells.forEach(cell -> cell.updatePeriodicLOS(this));
+        if (fogCount >= FOG_UPDATE_PER_FRAMES) {
+            for (GridCell cell : allCells)
+                cell.updatePeriodicLOS(this);
+            fogCount = 0;
+        }
+        fogCount++;
     }
 
     public Collection<GridCell> getAllCells() {
@@ -176,7 +184,7 @@ public abstract class GameModel implements Model {
     returns false if unknown entity
      */
     public boolean trySetEntityData(long id, EnumMap<Entity.EntityProperty, Object> data) {
-        if(entities.containsKey(id)) {
+        if (entities.containsKey(id)) {
             entities.get(id).setData(data);
             return true;
         } else {
@@ -186,7 +194,7 @@ public abstract class GameModel implements Model {
 
     public void setEntity(Entity entity) {
         Entity e = entities.get(entity.id);
-        if(e != null)
+        if (e != null)
             e.setData(entity.getData());
         else
             entities.put(entity.id, entity);
@@ -205,7 +213,7 @@ public abstract class GameModel implements Model {
 
     public Stream<Entity> getEntitiesOfType(BuildingSpawnerStrat.BuildingType type) {
         return getAllEntities().stream().filter(entity -> entity.has(Entity.EntityProperty.BUILDING_TYPE) &&
-            entity.get(Entity.EntityProperty.BUILDING_TYPE) == type);
+                entity.get(Entity.EntityProperty.BUILDING_TYPE) == type);
     }
 
     private long AINanoTime = -1;
@@ -221,7 +229,8 @@ public abstract class GameModel implements Model {
         long cur = System.nanoTime();
         double elapsed = NANOS_TO_SECONDS * (cur - AINanoTime);
         AINanoTime = cur;
-        entities.values().forEach(e -> e.updateAI(serverGameModel, elapsed));;
+        entities.values().forEach(e -> e.updateAI(serverGameModel, elapsed));
+        ;
     }
 
     public Stream<GridCell> streamCells() {
@@ -232,6 +241,7 @@ public abstract class GameModel implements Model {
         System.out.println("slayer diesssssssss");
         clientLoseControl.set(true);
     }
+
     public boolean getLoseControl() {
         return clientLoseControl.get();
     }
