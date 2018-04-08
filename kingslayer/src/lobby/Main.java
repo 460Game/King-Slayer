@@ -432,6 +432,12 @@ public class Main extends Application {
             }
         }, this);
 
+        try {
+            lobbyClient.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 //        window.getScene().getRoot().getChildrenUnmodifiable().remove(0, 1);
 
         Platform.runLater(() -> window.setScene(inputNumOfPlayersScene()));
