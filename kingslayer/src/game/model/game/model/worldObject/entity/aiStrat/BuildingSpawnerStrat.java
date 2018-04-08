@@ -144,7 +144,7 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         int maxActive(Entity entity) {
-            return 2 + entity.<Integer>get(LEVEL);      // LVL 0: 2, LVL 1: 3, LVL 2: 4 -> Maybe change
+            return 1 + entity.<Integer>get(LEVEL);      // LVL 0: 1, LVL 1: 2, LVL 2: 3 -> Maybe change
         }
 
         @Override
