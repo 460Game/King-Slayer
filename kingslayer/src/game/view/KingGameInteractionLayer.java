@@ -26,6 +26,7 @@ import util.Util;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static images.Images.*;
 import static javafx.scene.input.KeyCode.*;
@@ -43,6 +44,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
   private EntitySpawner spawner;
   private Entity placingGhost;
+  private ReentrantLock lock = new ReentrantLock();
   public boolean upgrading = false;
   public boolean deleting = false;
   private boolean holding = false;
@@ -84,11 +86,13 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     this.getChildren().add(error);
 
     world.onGameLeftClick((x, y) -> {
+      lock.lock();
       if (model.getLoseControl()) {
         return;
       }
 
-      if (spawner != null && placingGhost != null && !placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation) {
+      if (spawner != null && placingGhost != null && !model.getEntitiesAt(x.intValue(), y.intValue()).stream()
+          .filter(e -> !(e.get(EntityProperty.DRAW_STRAT) instanceof GhostDrawStrat)).findFirst().isPresent()) {
         if (model.getResourceData().getResource(spawner.resource) >= spawner.finalCost(model)) {
           MusicPlayer.playConstructionSound();
         }
@@ -106,7 +110,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
             MusicPlayer.playErrorSound();
           }
         }
-      } else if (spawner != null && placingGhost != null && placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation) {
+      } else if (spawner != null && placingGhost != null && model.getEntitiesAt(x.intValue(), y.intValue()).stream()
+          .filter(e -> !(e.get(EntityProperty.DRAW_STRAT) instanceof GhostDrawStrat)).findFirst().isPresent()) {
         MusicPlayer.playErrorSound();
       } else if (upgrading) {
         // if you clicked the top part of an entity that is upgradable and is associated with your team
@@ -214,9 +219,11 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           MusicPlayer.playSellSound();
         }
       }
+      lock.unlock();
     });
 
     world.onGameRightClick((x, y) -> {
+      lock.lock();
       if (model.getLoseControl()) {
         return;
       }
@@ -233,9 +240,11 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         deleting = false;
         world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
       }
+      lock.unlock();
     });
 
     world.onGameMouseMove((x, y) -> {
+      lock.lock();
       if (model.getLocalPlayer() != null && spawner != null) {
         double placingX = Math.floor(x) + 0.5;
         double placingY = Math.floor(y) + 0.5;
@@ -250,15 +259,18 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           placingGhost.<GhostDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).invalidLocation = true;
         }
       }
+      lock.unlock();
     });
 
     world.onKeyPress(kc -> {
+      lock.lock();
       if (model.getLoseControl()) {
         return;
       }
 
       if (placingGhost != null && kc != W && kc != A && kc != S && kc != D && kc != SHIFT) {
-        model.removeByID(placingGhost.id);
+        System.out.println("AAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH " + kc.getName());
+        model.remove(placingGhost);
         placingGhost = null;
         spawner = null;
       }
@@ -306,7 +318,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
       if (kc == SHIFT)
         holding = true;
 
-
+      lock.unlock();
     });
 
     world.onKeyRelease(kc -> {
@@ -318,23 +330,27 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 //            GAME_CURSOR_IMAGE.getHeight() / 2));
 //      }
 
+      lock.lock();
       holding = false;
       if (kc == SHIFT && placingGhost != null) {
         model.remove(placingGhost);
         spawner = null;
         placingGhost = null;
       }
+      lock.unlock();
     });
   }
 
   public void clearSelection() {
+    lock.lock();
     if (placingGhost != null)
-      model.removeByID(placingGhost.id);
+      model.remove(placingGhost);
     placingGhost = null;
     spawner = null;
     upgrading = false;
     deleting = false;
     world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
+    lock.unlock();
   }
 
   public void selectWall() {
