@@ -581,6 +581,7 @@ public class Main extends Application {
             lobbyServer.closeServer();
         Log.info("EXIT SELECTED");
         Platform.exit();
+        System.exit(0);
     }
 
     public static void main(String args[]) {

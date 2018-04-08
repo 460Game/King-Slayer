@@ -227,17 +227,15 @@ public class ServerGameModel extends GameModel {
                     doAICount[0]++;
                     totalFrameCount[0]++;
 
-                    ServerGameModel.this.update();
                     if (clients != null) {
                         if (doAICount[0] % Const.AI_LOOP_UPDATE_PER_FRAMES == 0) {
                             updateAI(ServerGameModel.this);
+                            clients.forEach(model -> model.processMessage(new UpdateResourceCommand(teamData.get(clientToPlayerInfo.get(model).getTeam()))));
                             doAICount[0] = 0;
                         }
-
-                        for (Model model : clients) {
-                            model.processMessage(new UpdateResourceCommand(teamData.get(clientToPlayerInfo.get(model).getTeam()))); //TEMPORARY GARBAGE
-                        }
                     }
+
+                    ServerGameModel.this.update();
                 }
             }
         };
@@ -428,6 +426,19 @@ public class ServerGameModel extends GameModel {
     @Override
     public void update() {
         super.update();
+
+      //  entities.values().parallelStream().forEach(e -> {
+          entities.values().forEach(e -> {
+            if(e.needSync) {
+                e.needSync = false;
+                this.processMessage(new SetEntityCommand(e));
+            }
+            e.syncRequiredFeilds.forEach(syncFeild -> {
+                this.processMessage(new SyncEntityFieldCommand(e, syncFeild));
+            });
+            e.syncRequiredFeilds.clear();
+        });
+
         if (wood.isEmpty()) {
             Set<Entity> woods = getAllEntities().stream().filter(e -> e.has(RESOURCE_TYPE)
                     && e.get(RESOURCE_TYPE) == TeamResourceData.Resource.WOOD).collect(Collectors.toSet());

@@ -35,7 +35,7 @@ public class Entities {
                 pair(RESOURCE_TYPE, TeamResourceData.Resource.WOOD),
                 pair(RESOURCE_AMOUNT, 15), // TODO
                 pair(DRAW_STRAT, ImageDrawStrat.TREE_IMAGE_DRAW_STRAT),
-                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON)); // TODO death
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
     }
 
     public static Entity makeStone(double x, double y) {
@@ -45,7 +45,7 @@ public class Entities {
                 pair(RESOURCE_TYPE, TeamResourceData.Resource.STONE),
                 pair(RESOURCE_AMOUNT, 20), // TODO
                 pair(DRAW_STRAT, ImageDrawStrat.STONE_IMAGE_DRAW_STRAT),
-                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON)); // TODO death
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
     }
 
     public static Entity makeMetal(double x, double y) {
@@ -55,7 +55,7 @@ public class Entities {
                 pair(RESOURCE_TYPE, TeamResourceData.Resource.METAL),
                 pair(RESOURCE_AMOUNT, 30), // TODO
                 pair(DRAW_STRAT, ImageDrawStrat.METAL_IMAGE_DRAW_STRAT),
-                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON)); // TODO death
+                pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
     }
 
     public static Entity makeWall(double x, double y) {
