@@ -35,11 +35,14 @@ import java.lang.reflect.InvocationHandler;
 import java.util.*;
 
 public class NetworkCommon {
+
     static {
         Log.set(Log.LEVEL_INFO);
     }
 
     public static int port = 54555;
+    public static int tcpPort = 5000;
+    public static int serverUDPPort = 54777;
 
     // This registers serializes files
     public static void register (EndPoint endPoint) {

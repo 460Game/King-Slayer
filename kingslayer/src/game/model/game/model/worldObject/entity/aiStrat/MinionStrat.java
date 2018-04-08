@@ -223,14 +223,15 @@ public abstract class MinionStrat extends AIStrat {
             // Holds the final destination.
             int x, y;
 
-            // TODO find ones that are visible, higher tier should also collect lower tier
             // Check if the minion should go to a resource or back to a collector.
             if (!data.hasResource) {            // Doesn't have resource.
                 entity.set(Entity.EntityProperty.MAX_SPEED, 1.0);           // Reset back to normal speed
                 if ((int) entity.get(Entity.EntityProperty.LEVEL) == 0) {
                     wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy), team);
-                    if (wood == null)
+                    if (wood == null) {
+                        entity.setVelocity(entity.getVelocity().withMagnitude(0));
                         return;
+                    }
                     x = wood.getTopLeftX();
                     y = wood.getTopLeftY();
                     data.resourceType = 0;
@@ -238,8 +239,10 @@ public abstract class MinionStrat extends AIStrat {
                     stone = astar.getClosestStone(model.getCell((int) entityx, (int) entityy), team);
                     if (stone == null) {
                         wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy), team);
-                        if (wood == null)
+                        if (wood == null) {
+                            entity.setVelocity(entity.getVelocity().withMagnitude(0));
                             return;
+                        }
                         x = wood.getTopLeftX();
                         y = wood.getTopLeftY();
                         data.resourceType = 0;
@@ -254,8 +257,10 @@ public abstract class MinionStrat extends AIStrat {
                         stone = astar.getClosestStone(model.getCell((int) entityx, (int) entityy), team);
                         if (stone == null) {
                             wood = astar.getClosestWood(model.getCell((int) entityx, (int) entityy), team);
-                            if (wood == null)
+                            if (wood == null) {
+                                entity.setVelocity(entity.getVelocity().withMagnitude(0));
                                 return;
+                            }
                             x = wood.getTopLeftX();
                             y = wood.getTopLeftY();
                             data.resourceType = 0;

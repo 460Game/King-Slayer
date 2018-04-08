@@ -16,6 +16,7 @@ import lobby.lobbyMessage.LobbyMessage;
 import lobby.Main;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.Map;
 
 public class LobbyClient implements Lobby {//extends Application {
@@ -280,6 +281,12 @@ public class LobbyClient implements Lobby {//extends Application {
 
     public void selectRole(Team team, Role role) {
         client.trySelectRole(team, role, playerName);
+    }
+
+    public InetAddress discoverHost() {
+        InetAddress ret = client.client.discoverHost(NetworkCommon.serverUDPPort, NetworkCommon.tcpPort);
+        System.out.println(ret);
+        return ret;
     }
 }
 

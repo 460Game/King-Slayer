@@ -9,11 +9,15 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
+import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -40,7 +44,9 @@ import network.LobbyClient2LobbyAdaptor;
 import network.LobbyServer;
 import util.CssSheet;
 
+import java.net.InetAddress;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static images.Images.*;
 import static util.Util.random;
@@ -90,8 +96,9 @@ public class Main extends Application {
     Button selectRedSl3;
     Button selectBlueSl3;
 
-    Button buttonOfMyRole;
-;
+    Thread findHostThread;
+
+    AtomicReference<CustomMenuItem> hostDropDownItem = new AtomicReference(null);
 
     MenuItem[] items = new MenuItem[] {
         new MenuItem("Join LAN"),
@@ -234,6 +241,54 @@ public class Main extends Application {
     }
 
     private void connectForm() {
+        lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
+            @Override
+            public void showChoiceTeamAndRoleScene() {
+                Platform.setImplicitExit(false);
+                Log.info("set chooseTeamAndRoleScene scene");
+                Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
+//                window.setScene(new Scene(choiceTeamAndRoleScene()));
+            }
+
+            @Override
+            public void takeSelectFb(boolean s, Map<Integer, PlayerInfo> map) {
+                takeFb(s, map);
+            }
+
+            @Override
+            public void setNumOnTeam(int numOnTeam) {
+                Main.this.numOnTeam = numOnTeam;
+            }
+
+            @Override
+            public void roleReadyLock(PlayerInfo info) {
+                readyLockLocalMethod(info);
+            }
+        }, this);
+
+        try {
+            lobbyClient.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        findHostThread = new Thread(() -> {
+            while (!connected) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (lobbyClient == null) continue;
+                InetAddress addr = lobbyClient.discoverHost();
+                System.out.println(addr);
+                if (addr != null) {
+                    hostDropDownItem.get().setContent(new Text(addr.toString()));
+                }
+            }
+        });
+        findHostThread.start();
+
         Platform.runLater(() -> window.setScene(ipFormScene()));
     }
 
@@ -464,7 +519,7 @@ public class Main extends Application {
 
         try {
             lobbyClient.setName(nameOfPlayer.getText());
-            lobbyClient.start();
+//            lobbyClient.start();
             lobbyClient.connectTo("localhost");
             //TODO: change this to Ping back later
             Thread.sleep(2000); //(connection needs time)
@@ -487,30 +542,6 @@ public class Main extends Application {
 
     private void joinGame(String host) throws Exception {
         Log.info("JOIN GAME SELECTED");
-        lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
-            @Override
-            public void showChoiceTeamAndRoleScene() {
-                Platform.setImplicitExit(false);
-                Log.info("set chooseTeamAndRoleScene scene");
-                Platform.runLater(() -> window.setScene(chooseTeamAndRoleScene()));
-//                window.setScene(new Scene(choiceTeamAndRoleScene()));
-            }
-
-            @Override
-            public void takeSelectFb(boolean s, Map<Integer, PlayerInfo> map) {
-                takeFb(s, map);
-            }
-
-            @Override
-            public void setNumOnTeam(int numOnTeam) {
-                Main.this.numOnTeam = numOnTeam;
-            }
-
-            @Override
-            public void roleReadyLock(PlayerInfo info) {
-                readyLockLocalMethod(info);
-            }
-        }, this);
 
         lobbyClient.setName(playerName.getText());
         lobbyClient.start();
@@ -564,6 +595,7 @@ public class Main extends Application {
     }
 
     public void startMain(Stage window_arg) {
+
         MusicPlayer.playIntroMusic();
 
         this.window = window_arg;
@@ -851,6 +883,47 @@ public class Main extends Application {
 
         //Defining the Name text field
         final TextField ip = new TextField();
+
+        ContextMenu hostsDropDown = new ContextMenu();
+        hostsDropDown.hide();
+
+        hostDropDownItem.set(new CustomMenuItem());
+
+        hostDropDownItem.get().setContent(new Text("Not host found"));
+
+
+        hostsDropDown.getItems().add(hostDropDownItem.get());
+        hostDropDownItem.get().setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                ip.setText(((Text)hostDropDownItem.get().getContent()).getText());
+            }
+        });
+
+        ip.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean aBoolean2) {
+
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        addr[0] = lobbyClient.discoverHost();
+//                    }
+//                }).start();
+//                if (addr[0] == null) {
+//                    ((Text)tmp.getContent()).setText("No host found yet");
+//                } else {
+//                    ((Text)tmp.getContent()).setText(addr[0].toString());
+//                }
+
+//                System.out.println("focued listener: " + addr[0]);
+//                hosts.hide();
+
+
+                hostsDropDown.show(ip, Side.BOTTOM, 0, 0);
+            }
+        });
+
         ip.setPrefSize(600, 80);
         ip.setPromptText("Enter ip.");
         ip.setPrefColumnCount(100);
@@ -884,6 +957,7 @@ public class Main extends Application {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
                 //TODO: Change here to ping back later
                 connected = true;
                 //the following would be done in the network part
