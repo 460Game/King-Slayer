@@ -30,7 +30,7 @@ public abstract class GameModel implements Model {
 
     private LinkedBlockingQueue<Message> messageQueue;
 
-    private final Map<Long, Entity> entities;
+    final Map<Long, Entity> entities;
 
     public AtomicBoolean clientLoseControl = new AtomicBoolean(false);
 
@@ -143,28 +143,16 @@ public abstract class GameModel implements Model {
     public void update() {
         ArrayList<Message> list = new ArrayList<>();
         messageQueue.drainTo(list);
+
         list.forEach(m -> m.execute(this));
 
         long modelCurrentTime = this.nanoTime();
 
         entities.values().forEach(e -> e.update(this, modelCurrentTime));
         entities.values().forEach(e -> e.updateCells(this));
+
         allCells.forEach(cell -> cell.collideContents(this));
         allCells.forEach(cell -> cell.updatePeriodicLOS(this));
-
-        this.execute(serverGameModel -> {
-            entities.values().forEach(e -> {
-                if(e.needSync) {
-                    e.needSync = false;
-                    serverGameModel.processMessage(new SetEntityCommand(e));
-                }
-                e.syncRequiredFeilds.forEach(syncFeild -> {
-                    serverGameModel.processMessage(new SyncEntityFieldCommand(e, syncFeild));
-                });
-                e.syncRequiredFeilds.clear();
-            });
-
-        }, clientGameModel -> {});
     }
 
     public Collection<GridCell> getAllCells() {
@@ -223,7 +211,7 @@ public abstract class GameModel implements Model {
     private long AINanoTime = -1;
 
     /*
-    Server only mthod for updating the
+    Server only method for updating the
      */
     public void updateAI(ServerGameModel serverGameModel) {
         if (AINanoTime == -1) {

@@ -24,7 +24,6 @@ public class ExitPrompt extends Region {
         this.setBackground(model.getTeam().getPanelBG());
         Text text = new Text("Exit?");
         text.setFont(new Font("Goudy Old Style", 60));
-        Font.getFamilies().forEach(System.out::println);
         text.setFill(Color.WHITE);
         text.setLayoutX(200);
         text.setTextAlignment(TextAlignment.CENTER);
@@ -39,7 +38,6 @@ public class ExitPrompt extends Region {
         cancle.setTranslateX(350);
         cancle.setTranslateY(220);
         confirm.setOnAction(l -> {
-//            Platform.exit();
             MusicPlayer.stopDangerSound();
             Platform.runLater(() -> view.goBackToMain());
         });
