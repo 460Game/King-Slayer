@@ -74,48 +74,48 @@ public class GridCell {
 
     }
 
+    public void updatePeriodicLOS(GameModel model) {
+        //This is running pretty slowly
+        //So specializing  some things for performance
+        //Commented code is the old more general ('correct') approach
+        boolean seeThrough = this.isSeeThrough();
 
-    public Stream<GridCell> getNeighbors(GameModel model) {
-        Stream.Builder<GridCell> builder = Stream.builder();
-        if(this.x > 0)
-        builder.add(model.getCell(this.x - 1, y));
-        if(this.x < model.getMapWidth() - 1)
-        builder.add(model.getCell(this.x + 1, y));
-        if(this.y > 0)
-        builder.add(model.getCell(this.x , y - 1));
-        if(this.y < model.getMapHeight() - 1)
-        builder.add(model.getCell(this.x, this.y + 1));
-        return builder.build();
-    }
+        losRanges[Team.BLUE_TEAM.team] = 0;
+        losRanges[Team.RED_TEAM.team] = 0;
 
-    public void updatePeriodicLOS(GameModel gameModel) {
-
-        boolean passable = this.isSeeThrough();
-
-        for (Team team : Team.values()) {
-            losRanges[team.team] = 0;
+        for (Entity entity : this.contents) {
+            if (entity.has(TEAM) && entity.has(SIGHT_RADIUS)) {
+                int sr = entity.get(SIGHT_RADIUS);
+                int tm = entity.getTeam().team;
+                if (losRanges[tm] < sr) {
+                    losRanges[tm] = sr;
+                    explored[tm] = true;
+                }
+            }
         }
 
-        this.streamContents().filter(entity -> entity.has(TEAM) && entity.has(SIGHT_RADIUS)).forEach(entity -> {
-            int sr = entity.get(SIGHT_RADIUS);
-            int tm = entity.getTeam().team;
-            if (losRanges[tm] < sr) {
-                losRanges[tm] = sr;
-                explored[tm] = true;
-            }
-        });
+        int count = 0;
+        GridCell[] arr = new GridCell[4];
+        if (this.x > 0)
+            arr[count++] = model.getCell(this.x - 1, y);
+        if (this.x < model.getMapWidth() - 1)
+            arr[count++] = model.getCell(this.x + 1, y);
+        if (this.y > 0)
+            arr[count++] = model.getCell(this.x, y - 1);
+        if (this.y < model.getMapHeight() - 1)
+            arr[count++] = model.getCell(this.x, this.y + 1);
 
-        getNeighbors(gameModel).forEach(neighbor -> {
+        for (int n = 0; n < count; n++) {
             for (int i = 0; i < losRanges.length; i++) {
-                int range = neighbor.losRanges[i] - 1;
-                if(!passable)
+                int range = arr[n].losRanges[i] - 1;
+                if (!seeThrough)
                     range = Math.min(1, range);
                 if (losRanges[i] < range) {
                     losRanges[i] = range;
                     explored[i] = true;
                 }
             }
-        });
+        }
     }
 
     public boolean isVisible(Team team) {
@@ -128,6 +128,7 @@ public class GridCell {
 
     private boolean isPassableMemo = false;
     private boolean isPassableMemoized = false;
+
     /**
      * Returns true if the cell is able to be passed through, or equivalently,
      * if a pathing enemy should try to go through this tile. A cell is
@@ -136,7 +137,7 @@ public class GridCell {
      * @return true if the cell is able to be walked through
      */
     public boolean isPassable() {
-        if(isPassableMemoized)
+        if (isPassableMemoized)
             return isPassableMemo;
         isPassableMemoized = true;
         isPassableMemo = contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD
@@ -148,7 +149,7 @@ public class GridCell {
     private boolean isVisibleMemoized;
 
     public boolean isSeeThrough() {
-        if(isVisibleMemoized)
+        if (isVisibleMemoized)
             return isVisibleMemo;
         isVisibleMemoized = true;
         isVisibleMemo = contents.stream().noneMatch(e -> e.getCollideType() == CollisionStrat.CollideType.HARD);

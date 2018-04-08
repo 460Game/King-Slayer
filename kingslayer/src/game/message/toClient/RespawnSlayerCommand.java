@@ -17,7 +17,6 @@ public class RespawnSlayerCommand implements ToClientCommand {
         if(model.getLoseControl() && model.getTeam() == model.getEntity(id).getTeam() && id == model.getLocalPlayerId()) {
             model.setLocalPlayer(id);
             model.clientLoseControl.set(false);
-            model.respawnCnt = 0;
         }
 
     }
