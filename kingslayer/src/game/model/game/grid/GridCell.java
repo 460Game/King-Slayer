@@ -6,6 +6,7 @@ import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
+import game.model.game.model.worldObject.entity.entities.Entities;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 
@@ -14,9 +15,11 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_STRAT;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.SIGHT_RADIUS;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.TEAM;
 import static images.Images.TILE_IMAGE;
+import static util.Util.kryo;
 import static util.Util.toDrawCoords;
 
 /**
@@ -30,6 +33,7 @@ public class GridCell {
      * List of entities that currently reside on the cell.
      */
     private ArrayList<Entity> contents = new ArrayList<>();
+    private ArrayList<Entity> losGhosts = new ArrayList<>();
 
     /**
      * X-coordinate of the top left of this cell.
@@ -80,6 +84,10 @@ public class GridCell {
         //Commented code is the old more general ('correct') approach
         boolean seeThrough = this.isSeeThrough();
 
+        boolean[] oldState = new boolean[Team.values().length];
+        oldState[Team.BLUE_TEAM.team] = losRanges[Team.BLUE_TEAM.team] != 0;
+        oldState[Team.RED_TEAM.team] = losRanges[Team.RED_TEAM.team] != 0;
+
         losRanges[Team.BLUE_TEAM.team] = 0;
         losRanges[Team.RED_TEAM.team] = 0;
 
@@ -114,6 +122,30 @@ public class GridCell {
                     losRanges[i] = range;
                     explored[i] = true;
                 }
+            }
+        }
+
+
+        boolean[] newState = new boolean[Team.values().length];
+        newState[Team.BLUE_TEAM.team] = losRanges[Team.BLUE_TEAM.team] != 0;
+        newState[Team.RED_TEAM.team] = losRanges[Team.RED_TEAM.team] != 0;
+
+        for(int i = 0; i < Team.values().length; i++) {
+            if(newState[i] != oldState[i]) {
+
+                if(newState[i]) {
+                    //remove all ghosts from this cell for team i
+                    losGhosts.clear();
+
+                } else {
+                    //Make a new ghost and add it to this cell for team i
+                    for(Entity e : contents) {
+                        if(e.has(DRAW_STRAT) && e.getCollideType() == CollisionStrat.CollideType.HARD)
+                        losGhosts.add(kryo.copy(e));
+                    }
+                }
+
+
             }
         }
     }
@@ -172,6 +204,12 @@ public class GridCell {
      */
     public Stream<Entity> streamContents() {
         return contents.stream();
+    }
+
+
+
+    public Stream<Entity> exploredContents() {
+        return losGhosts.stream();
     }
 
     /**
