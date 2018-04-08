@@ -240,7 +240,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         if (Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), placingX, placingY) <= 4) {
           placingGhost.setX(placingX);
           placingGhost.setY(placingY);
-          placingGhost.<GhostDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).invalidLocation = false;
+          placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation =
+              model.getEntitiesAt((int) placingX, (int) placingY).stream().skip(1).findFirst().isPresent();
         } else {
           placingGhost.setX(placingX);
           placingGhost.setY(placingY);
