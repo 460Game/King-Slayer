@@ -142,8 +142,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
               }
             }
           });
-          // if you clicked on the bottom of an entity (that is upgradable and is associated with your team) with no entity in front of it
-        } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent() &&
+          // if you clicked on the bottom of an entity (that is upgradable and is associated with your team) with no non-minion entity in front of it
+        } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream()
+            .filter(e -> !e.has(EntityProperty.MINION_TYPE)).findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().getTeam() == model.getTeam()) {
@@ -192,7 +193,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
           MusicPlayer.playSellSound();
           // if you clicked on the bottom of an entity with no entity in front of it
-        } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent() &&
+        } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream()
+            .filter(e -> !e.has(EntityProperty.MINION_TYPE)).findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().getTeam() == model.getTeam()) {
