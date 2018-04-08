@@ -222,6 +222,8 @@ public class NetworkCommon {
         kryo.register(PlayerInfo.class);
         kryo.register(RequestSessionPlayerInfo.class);
         kryo.register(SessionPlayerInfoCmd.class);
+        kryo.register(ReadyStatusMsg.class);
+        kryo.register(ReadyLockMsg.class);
 
 
 
@@ -328,6 +330,22 @@ public class NetworkCommon {
         public SessionPlayerInfoCmd() {}
         public SessionPlayerInfoCmd(int numOnTeam) {
             num = numOnTeam;
+        }
+    }
+
+    public static class ReadyStatusMsg {
+        boolean status;
+        public ReadyStatusMsg() {}
+        public ReadyStatusMsg(boolean s) {
+            status = s;
+        }
+    }
+
+    public static class ReadyLockMsg {
+        PlayerInfo info;
+        public ReadyLockMsg() {}
+        public ReadyLockMsg(PlayerInfo playerInfo) {
+            info = playerInfo;
         }
     }
 
