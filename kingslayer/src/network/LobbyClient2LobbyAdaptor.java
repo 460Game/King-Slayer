@@ -10,4 +10,6 @@ public interface LobbyClient2LobbyAdaptor {
     void takeSelectFb(boolean s, Map<Integer, PlayerInfo> map);
 
     void setNumOnTeam(int numOnTeam);
+
+    void roleReadyLock(PlayerInfo info);
 }

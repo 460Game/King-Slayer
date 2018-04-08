@@ -60,6 +60,7 @@ public class Main extends Application {
 
     private int currentItem = 0;
     private AnimationTimer animator;
+    Button ready;
 
     ChoiceBox<Team> teamChoice;
     ChoiceBox<Role> roleChoice;
@@ -88,6 +89,8 @@ public class Main extends Application {
 
     Button selectRedSl3;
     Button selectBlueSl3;
+
+    Button buttonOfMyRole;
 ;
 
     MenuItem[] items = new MenuItem[] {
@@ -107,6 +110,33 @@ public class Main extends Application {
             return lobbyClient.closeClientLobby();
         }
         return 0;
+    }
+
+    public void allClientReady() {
+        Platform.runLater(() -> {
+            ready.setText("Loading...");
+        });
+    }
+
+    public void readyButtonFb(boolean status) {
+        if (Platform.isFxApplicationThread()) {
+            if (status) {
+                ready.setText("Waiting...");
+
+            } else {
+                ready.setText("NEED TO SELECT");
+                //TODO: fail to ready
+            }
+            return;
+        }
+        Platform.runLater(() -> {
+            if (status) {
+                ready.setText("Waiting...");
+            } else {
+                ready.setText("NEED TO SELECT");
+                //TODO: fail to ready
+            }
+        });
     }
 
     private class MenuItem extends HBox {
@@ -340,12 +370,38 @@ public class Main extends Application {
             public void setNumOnTeam(int numOnTeam) {
                 Main.this.numOnTeam = numOnTeam;
             }
+
+            @Override
+            public void roleReadyLock(PlayerInfo info) {
+                readyLockLocalMethod(info);
+            }
         }, this);
 
 //        window.getScene().getRoot().getChildrenUnmodifiable().remove(0, 1);
 
         Platform.runLater(() -> window.setScene(inputNumOfPlayersScene()));
     }
+
+    public void readyLockLocalMethod(PlayerInfo info) {
+        if (info.role == Role.KING) {
+            if (info.team == Team.BLUE_TEAM) {
+                selectBlueKing.setStyle(CssSheet.GREY_SELECT_BUTTON);
+            }
+            if (info.team == Team.RED_TEAM) {
+                selectRedKing.setStyle(CssSheet.GREY_SELECT_BUTTON);
+            }
+        }
+
+        if (info.role == Role.SLAYER) {
+            if (info.team == Team.BLUE_TEAM) {
+                selectBlueSl.setStyle(CssSheet.GREY_SELECT_BUTTON);
+            }
+            if (info.team == Team.RED_TEAM) {
+                selectRedSl.setStyle(CssSheet.GREY_SELECT_BUTTON);
+            }
+        }
+    }
+
     private void takeFb(boolean s, Map<Integer, PlayerInfo> map) {
         if (!s) {
             System.out.println("Fail to select role");
@@ -448,6 +504,11 @@ public class Main extends Application {
             @Override
             public void setNumOnTeam(int numOnTeam) {
                 Main.this.numOnTeam = numOnTeam;
+            }
+
+            @Override
+            public void roleReadyLock(PlayerInfo info) {
+                readyLockLocalMethod(info);
             }
         }, this);
 
@@ -735,7 +796,7 @@ public class Main extends Application {
             grid.add(selectBlueSl, 4, 2, 1, 1);
         }
 
-        Button ready = new Button("Ready");
+        ready = new Button("Ready");
         ready.setPrefSize(200, 30);
         ready.setFont(Font.font(20));
         ready.setStyle(CssSheet.YELLO_BUTTON_CSS);
@@ -746,7 +807,6 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 Log.info("client click ready");
-                ready.setText("Loading...");
                 ready();
                 //the following would be done in the network part
 
