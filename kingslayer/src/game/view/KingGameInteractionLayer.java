@@ -142,8 +142,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
               }
             }
           });
-          // if you clicked on the bottom of an entity (that is upgradable and is associated with your team) with no entity in front of it
-        } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent() &&
+          // if you clicked on the bottom of an entity (that is upgradable and is associated with your team) with no non-minion entity in front of it
+        } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream()
+            .filter(e -> !e.has(EntityProperty.MINION_TYPE)).findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().getTeam() == model.getTeam()) {
@@ -192,7 +193,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
           MusicPlayer.playSellSound();
           // if you clicked on the bottom of an entity with no entity in front of it
-        } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream().findFirst().isPresent() &&
+        } else if (!model.getEntitiesAt(x.intValue(), y.intValue() + 1).stream()
+            .filter(e -> !e.has(EntityProperty.MINION_TYPE)).findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().getTeam() == model.getTeam()) {
@@ -240,7 +242,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         if (Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), placingX, placingY) <= 4) {
           placingGhost.setX(placingX);
           placingGhost.setY(placingY);
-          placingGhost.<GhostDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).invalidLocation = false;
+          placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation =
+              model.getEntitiesAt((int) placingX, (int) placingY).stream().skip(1).findFirst().isPresent();
         } else {
           placingGhost.setX(placingX);
           placingGhost.setY(placingY);
