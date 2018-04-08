@@ -23,4 +23,8 @@ public interface NetWork2LobbyAdaptor {
     int getNumOnTeam();
 
     Map<Integer, PlayerInfo> getPlayerInfoMap();
+
+    public void readyButtonFb(boolean status);
+
+    public void roleReadLock(PlayerInfo info);
 }

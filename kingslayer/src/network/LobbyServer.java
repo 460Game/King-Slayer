@@ -186,6 +186,16 @@ public class LobbyServer implements Lobby { //extends Application {
                 return conn2PlayerInfo;
             }
 
+            @Override
+            public void readyButtonFb(boolean status) {
+
+            }
+
+            @Override
+            public void roleReadLock(PlayerInfo info) {
+                //don't use this
+            }
+
         });
     }
 

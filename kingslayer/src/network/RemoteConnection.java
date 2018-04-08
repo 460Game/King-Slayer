@@ -296,7 +296,11 @@ public class RemoteConnection {
 
                         if (!adaptor.getPlayerInfoMap().containsKey(connection.getID())) {
                             System.err.println("can't ready without role, team!");
+                            server.sendToTCP(c.getID(), new NetworkCommon.ReadyStatusMsg(false));
                             return;
+                        } else {
+                            server.sendToTCP(c.getID(), new NetworkCommon.ReadyStatusMsg(true));
+                            server.sendToAllTCP(new NetworkCommon.ReadyLockMsg(adaptor.getPlayerInfoMap().get(c.getID())));
                         }
 
                         System.out.println("checccccc: " + readyMsg.getTeam() + readyMsg.getRole() + readyMsg.getPlayerName());
@@ -374,6 +378,12 @@ public class RemoteConnection {
 
                     Log.debug("Client " + client.getID() + "received " + obj.toString());
 
+                    if (obj instanceof NetworkCommon.ReadyLockMsg) {
+                        adaptor.roleReadLock(((NetworkCommon.ReadyLockMsg)obj).info);
+                    }
+                    if (obj instanceof NetworkCommon.ReadyStatusMsg) {
+                        adaptor.readyButtonFb(((NetworkCommon.ReadyStatusMsg) obj).status);
+                    }
                     if (obj instanceof NetworkCommon.SessionPlayerInfoCmd) {
                         NetworkCommon.SessionPlayerInfoCmd msg = (NetworkCommon.SessionPlayerInfoCmd) obj;
                         adaptor.showLobbyTeamChoice(msg.num);

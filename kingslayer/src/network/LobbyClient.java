@@ -96,12 +96,9 @@ public class LobbyClient implements Lobby {//extends Application {
 
             @Override
             public void makeModel() {
+                mainApp.allClientReady();
                 lobbyClientMakeModel();
-//                try {
-//                    Thread.sleep(5000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+
                 client.notifyMadeModel();
             }
 
@@ -148,6 +145,16 @@ public class LobbyClient implements Lobby {//extends Application {
             public Map<Integer, PlayerInfo> getPlayerInfoMap() {
                 System.out.println("getPlayerInfoMap should not be used here");
                 return null;
+            }
+
+            @Override
+            public void readyButtonFb(boolean status) {
+                mainApp.readyButtonFb(status);
+            }
+
+            @Override
+            public void roleReadLock(PlayerInfo info) {
+                lobbyAdaptor.roleReadyLock(info);
             }
 
         });
