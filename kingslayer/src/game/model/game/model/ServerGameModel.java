@@ -240,7 +240,7 @@ public class ServerGameModel extends GameModel {
             }
         };
 
-        t.scheduleAtFixedRate(updateTimerTask, 10, 1000 / 60);
+        t.scheduleAtFixedRate(updateTimerTask, 10, 1000 / UPDATES_PER_SECOND); //
     }
 
     private Timer t = new Timer();
