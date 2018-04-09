@@ -90,7 +90,7 @@ public class Minions {
                 pair(SPAWNED_ID, spawner.id),
                 pair(UPDATE_STRAT, MovingStrat.SINGLETON),
                 pair(DRAW_STRAT, DirectionAnimationDrawStrat.EXPLORATION_ANIMATION),
-                pair(AI_STRAT, MinionStrat.KnightMinionStrat.SINGLETON), // TODO
+                pair(AI_STRAT, MinionStrat.KnightMinionStrat.SINGLETON),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON),
                 pair(DRAW_DATA, AnimationDrawData.makeAnimated()),
                 pair(SIGHT_RADIUS, 3),

@@ -101,9 +101,10 @@ public abstract class Const {
     public final static int AI_LOOP_UPDATE_PER_FRAMES = 15;
     public final static int FOG_UPDATE_PER_FRAMES = 5;
 
-    public static final int LEVEL_WOOD = 0;
-    public static final int LEVEL_STONE = 1;
-    public static final int LEVEL_METAL = 2;
+    // TODO balancing
+    public final static int STARTING_WOOD = 15;
+    public final static int STARTING_STONE = 20;
+    public final static int STARTING_METAL = 30;
 
     public static final int FIRST_LEVEL_WOOD_COLLECTED = 3;
     public static final int SECOND_LEVEL_WOOD_COLLECTED = 10;

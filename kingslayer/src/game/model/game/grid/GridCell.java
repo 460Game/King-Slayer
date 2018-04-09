@@ -267,7 +267,7 @@ public class GridCell {
     /**
      * Draws the tile in a specified cell on the map.
      *
-     * @param firstAnimation TODO
+     * @param firstAnimation
      */
     public void draw(PixelWriter writer, GameModel model, boolean firstAnimation) {
         Point maxPoint = new Point(0, 0);
