@@ -98,6 +98,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           .filter(e -> !(e.get(EntityProperty.DRAW_STRAT) instanceof GhostDrawStrat)).findFirst().isPresent() &&
           !placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation &&
           Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), x.intValue(), y.intValue()) <= 4) {
+          .filter(e -> e.has(EntityProperty.DRAW_STRAT) && !(e.get(EntityProperty.DRAW_STRAT) instanceof GhostDrawStrat)).findFirst().isPresent() &&
+          !placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation) {
         if (model.getResourceData().getResource(spawner.resource) >= spawner.finalCost(model)) {
           MusicPlayer.playConstructionSound();
         }

@@ -162,10 +162,9 @@ public class LobbyClient implements Lobby {//extends Application {
     }
 
     public void connectTo(String host) {
-        // We'll do the connect on a new thread so the ChatFrame can show a progress bar.
-        // Connecting to localhost is usually so fast you won't see the progress bar.
         client.connectToServer(5000, host);
         connectId = client.client.getID();
+        System.out.println("finish connecting");
     }
 
 

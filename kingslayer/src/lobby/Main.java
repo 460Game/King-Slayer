@@ -100,6 +100,9 @@ public class Main extends Application {
     Thread findHostThread;
 
     AtomicReference<CustomMenuItem> hostDropDownItem = new AtomicReference(null);
+
+    AtomicReference<Text> hostDropDownText = new AtomicReference(null);
+
     boolean isServer = false;
 
     MenuItem[] items = new MenuItem[] {
@@ -278,7 +281,7 @@ public class Main extends Application {
         findHostThread = new Thread(() -> {
             while (!connected) {
                 try {
-                    Thread.sleep(10);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -286,7 +289,13 @@ public class Main extends Application {
                 InetAddress addr = lobbyClient.discoverHost();
                 System.out.println(addr);
                 if (addr != null) {
-                    hostDropDownItem.get().setContent(new Text(addr.toString()));
+//                    ((Text)(hostDropDownItem.get().getContent())).setText(String.valueOf(random.nextInt()));
+
+                    ((Text)(hostDropDownItem.get().getContent())).setText(addr.toString().split("/")[1]);
+
+//                    Text replace = new Text(addr.toString().split("/")[1]);
+//                    replace.setFont(Font.font("", FontWeight.BOLD, 25));
+//                    hostDropDownText.getAndSet(replace);
                 }
             }
         });
@@ -334,7 +343,7 @@ public class Main extends Application {
 
     private GridPane inputNumOfPlayers() {
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(window.getHeight()/2, 100, window.getHeight()/2 + 100, 350));
+        grid.setPadding(new Insets(window.getHeight()/2, 100, window.getHeight()/2 + 100, 600));
         grid.setVgap(5);
         grid.setHgap(5);
 
@@ -343,7 +352,7 @@ public class Main extends Application {
         nameOfPlayer.setPromptText("Enter your name.");
 //        numOfPlayer.setText("Default Player");
         nameOfPlayer.setPrefColumnCount(100);
-        nameOfPlayer.setPrefSize(500, 60);
+        nameOfPlayer.setPrefSize(300, 60);
         nameOfPlayer.setFont(Font.font ("Verdana", 30));
 
         numChoice = new ChoiceBox<>();
@@ -368,6 +377,7 @@ public class Main extends Application {
         Button set = new Button("Set");
         set.setPrefSize(100, 60);
         set.setFont(Font.font ("Verdana", 20));
+        set.setStyle(CssSheet.YELLO_BUTTON_CSS);
         GridPane.setConstraints(set, 2, 0);
         grid.getChildren().add(set);
 
@@ -376,6 +386,10 @@ public class Main extends Application {
             public void handle(ActionEvent event) {
                 if (playerNumAlreadySet) return;
                 playerNumAlreadySet = true;
+//                set.setStyle(CssSheet.GREY_SELECT_BUTTON);
+                set.setText("Loading...");
+
+
                 lobbyServer.setNumOfPlayersAndHostName(nameOfPlayer.getText(), ((String)numChoice.getValue()).charAt(0) - '0');
                 if (((String)numChoice.getValue()).startsWith("1")) {
                     numOnTeam = 1;
@@ -533,6 +547,7 @@ public class Main extends Application {
             lobbyClient.connectTo("localhost");
             //TODO: change this to Ping back later
             Thread.sleep(2000); //(connection needs time)
+            System.out.println("connected");
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -866,11 +881,13 @@ public class Main extends Application {
             e.printStackTrace();
         }
 
-        Text addrText = new Text("IP: "+ serverAddr.toString().split("/")[1]);
-        addrText.setFont(Font.font("", FontWeight.BOLD, 25));
-        addrText.setFill(Color.web("#090a0c"));
+        if (lobbyServer != null) {
+            Text addrText = new Text("IP: "+ serverAddr.toString().split("/")[1]);
+            addrText.setFont(Font.font("", FontWeight.BOLD, 25));
+            addrText.setFill(Color.web("#090a0c"));
+            grid.add(addrText, 2, 6, 3, 1);
+        }
 
-        grid.add(addrText, 2, 6, 3, 1);
         return grid;
     }
 
@@ -893,13 +910,14 @@ public class Main extends Application {
 
     private GridPane ipForm() {
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(window.getHeight()/2, 200, window.getHeight()/2 + 100, 200));
-        grid.setVgap(50);
+        grid.setPadding(new Insets(window.getHeight()/2, 200, window.getHeight()/2 + 100, 500));
+        grid.setVgap(15);
         grid.setHgap(5);
 
         playerName = new TextField();
         playerName.setPrefSize(600, 80);
         playerName.setPromptText("Enter your name.");
+        playerName.setText("Default Name");
         playerName.setPrefColumnCount(50);
 
         playerName.setFont(Font.font("Verdana",30));
@@ -916,6 +934,8 @@ public class Main extends Application {
         Text itemText = new Text("No host found by host discovery");
         itemText.setFont(Font.font("", FontWeight.BOLD, 25));
         hostDropDownItem.get().setContent(itemText);
+
+        hostDropDownText.set(itemText);
 
 
         hostsDropDown.getItems().add(hostDropDownItem.get());
@@ -961,14 +981,16 @@ public class Main extends Application {
 //        ip.setScaleY(5);
 
 //        ip.getText();
-        GridPane.setConstraints(ip, 1, 0);
+        GridPane.setConstraints(ip, 0, 1);
         grid.getChildren().add(ip);
 
         Button connect = new Button("Connect");
         connect.fontProperty().set(Font.font(20));
 
+        connect.setStyle(CssSheet.YELLO_BUTTON_CSS);
+
         connect.setPrefSize(200, 80);
-        GridPane.setConstraints(connect, 2, 0);
+        GridPane.setConstraints(connect, 0, 2);
         grid.getChildren().add(connect);
 
         connect.setOnAction(new EventHandler<ActionEvent>() {
