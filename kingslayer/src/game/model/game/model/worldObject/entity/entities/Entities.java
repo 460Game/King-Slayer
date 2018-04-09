@@ -13,6 +13,7 @@ import game.model.game.model.worldObject.entity.drawStrat.*;
 import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.*;
+import static util.Const.*;
 import static util.Pair.pair;
 
 public class Entities {
@@ -33,7 +34,7 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(RESOURCE_TYPE, TeamResourceData.Resource.WOOD),
-                pair(RESOURCE_AMOUNT, 15), // TODO
+                pair(RESOURCE_AMOUNT, STARTING_WOOD),
                 pair(DRAW_STRAT, ImageDrawStrat.TREE_IMAGE_DRAW_STRAT),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
     }
@@ -43,7 +44,7 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(RESOURCE_TYPE, TeamResourceData.Resource.STONE),
-                pair(RESOURCE_AMOUNT, 20), // TODO
+                pair(RESOURCE_AMOUNT, STARTING_STONE),
                 pair(DRAW_STRAT, ImageDrawStrat.STONE_IMAGE_DRAW_STRAT),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
     }
@@ -53,7 +54,7 @@ public class Entities {
                 CellHitbox.SINGLETON,
                 HardCollisionStrat.SINGLETON,
                 pair(RESOURCE_TYPE, TeamResourceData.Resource.METAL),
-                pair(RESOURCE_AMOUNT, 30), // TODO
+                pair(RESOURCE_AMOUNT, STARTING_METAL),
                 pair(DRAW_STRAT, ImageDrawStrat.METAL_IMAGE_DRAW_STRAT),
                 pair(DEATH_STRAT, RemoveOnDeathStrat.SINGLETON));
     }

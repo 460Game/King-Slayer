@@ -42,7 +42,6 @@ public class SetEntityCommand implements ToClientCommand {
      *
      * If entity with same UUID already exists in this model, should copy the new one into it.
      * If it doesn't exist copy the whole thing!
-     * TODO
      */
     @Override
     public void executeClient(ClientGameModel model) {

@@ -81,7 +81,7 @@ public class UnitCollisionStrat extends SoftCollisionStrat {
         if (hitVerticalWall)
             a.setX(b.getX() - (hitleft ? 1 : -1) * (0.5 + a.getHitbox().getRadius(collisionAngle + PI/2)));
         else if (hitHorizontalWall)
-            a.setY(b.getY() - (hittop ? 1 : -1) * (0.5 + a.getHitbox().getRadius(collisionAngle))); //TODO is this angle right? @ryan
+            a.setY(b.getY() - (hittop ? 1 : -1) * (0.5 + a.getHitbox().getRadius(collisionAngle)));
 //        else {
 //            a.data.x = b.data.x - Math.cos(collisionAngle) * (a.data.hitbox.getRadius(collisionAngle) + 0.5 * Math.sqrt(2));
 //            a.data.y = b.data.y - Math.sin(collisionAngle) * (a.data.hitbox.getRadius(collisionAngle) + 0.5 * Math.sqrt(2));

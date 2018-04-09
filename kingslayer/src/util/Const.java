@@ -91,24 +91,20 @@ public abstract class Const {
      * Number of updates per second.
      * Should equal 1e9 / UPDATE_LOOP_TIME_NANOS.
      */
-    public final static int UPDATES_PER_SECOND = 60;
-
-    /**
-     * Number of nanoseconds to optimally spend on each update loop.
-     */
-    public final static int UPDATE_LOOP_TIME_NANOS = 16666667;
+    public final static int UPDATES_PER_SECOND = 20;
 
     /**
      * The time period between different water animations.
      */
     public static final int WATER_ANIM_PERIOD = UPDATES_PER_SECOND * 3;
 
-    public final static int AI_LOOP_UPDATE_PER_FRAMES = 25;
+    public final static int AI_LOOP_UPDATE_PER_FRAMES = 15;
     public final static int FOG_UPDATE_PER_FRAMES = 5;
 
-    public static final int LEVEL_WOOD = 0;
-    public static final int LEVEL_STONE = 1;
-    public static final int LEVEL_METAL = 2;
+    // TODO balancing
+    public final static int STARTING_WOOD = 15;
+    public final static int STARTING_STONE = 20;
+    public final static int STARTING_METAL = 30;
 
     public static final int FIRST_LEVEL_WOOD_COLLECTED = 3;
     public static final int SECOND_LEVEL_WOOD_COLLECTED = 10;

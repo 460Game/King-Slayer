@@ -28,9 +28,9 @@ public class TreasureGhostCollisionStrat extends GhostCollisionStrat{
         // collected the treasure by a certain amount.
         Consumer<ServerGameModel> serverConsumer = (server) -> {
             server.removeByID(a.id);
-            server.changeResource(b.getTeam(), TeamResourceData.Resource.WOOD, (int) (Math.random() * 30 + 10));
-            server.changeResource(b.getTeam(), TeamResourceData.Resource.STONE, (int) (Math.random() * 10 + 5));
-            server.changeResource(b.getTeam(), TeamResourceData.Resource.METAL, (int) (Math.random() * 5 + 1));
+            server.changeResource(b.getTeam(), TeamResourceData.Resource.WOOD, (int) (Math.random() * 31 + 10)); // 10 to 40
+            server.changeResource(b.getTeam(), TeamResourceData.Resource.STONE, (int) (Math.random() * 11 + 10)); // 10 to 20
+            server.changeResource(b.getTeam(), TeamResourceData.Resource.METAL, (int) (Math.random() * 5 + 4)); // 4 to 8
             // TODO determine what resource is given and how much
         };
         model.execute(serverConsumer, (client) -> {});

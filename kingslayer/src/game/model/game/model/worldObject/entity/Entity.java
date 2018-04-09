@@ -67,7 +67,7 @@ public class Entity {
         MAX_HEALTH(Double.class, PropType.ACTIVE_SYNC),
         MAX_SPEED(Double.class, PropType.ON_CHANGE_ONLY),
         PLAYER_NAME(String.class, PropType.ON_CHANGE_ONLY),
-        PROJECTILE(ProjectileCollisionStrat.Projectile.class, PropType.ACTIVE_SYNC), //TODO
+        PROJECTILE(ProjectileCollisionStrat.Projectile.class, PropType.ACTIVE_SYNC),
         RESOURCE_AMOUNT(Integer.class, PropType.ACTIVE_SYNC),
         RESOURCE_TYPE(TeamResourceData.Resource.class, PropType.ACTIVE_SYNC),
         ROLE(Role.class, PropType.ACTIVE_SYNC),
