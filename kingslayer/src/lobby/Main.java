@@ -45,6 +45,7 @@ import network.LobbyServer;
 import util.CssSheet;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -99,6 +100,7 @@ public class Main extends Application {
     Thread findHostThread;
 
     AtomicReference<CustomMenuItem> hostDropDownItem = new AtomicReference(null);
+    boolean isServer = false;
 
     MenuItem[] items = new MenuItem[] {
         new MenuItem("Join LAN"),
@@ -272,6 +274,7 @@ public class Main extends Application {
             e.printStackTrace();
         }
 
+
         findHostThread = new Thread(() -> {
             while (!connected) {
                 try {
@@ -392,6 +395,7 @@ public class Main extends Application {
     }
 
     private void guiSetNumOfPlayer() {
+
 
         lobbyServer = new LobbyServer();
         try {
@@ -841,6 +845,8 @@ public class Main extends Application {
 //        GridPane.setConstraints(ready, 3, 0);
         grid.add(ready, 2, 5, 1, 1);
 
+
+
         ready.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -853,6 +859,18 @@ public class Main extends Application {
 
         });
 
+        InetAddress serverAddr = null;
+        try {
+            serverAddr = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        Text addrText = new Text("IP: "+ serverAddr.toString().split("/")[1]);
+        addrText.setFont(Font.font("", FontWeight.BOLD, 25));
+        addrText.setFill(Color.web("#090a0c"));
+
+        grid.add(addrText, 2, 6, 3, 1);
         return grid;
     }
 
@@ -895,7 +913,9 @@ public class Main extends Application {
 
         hostDropDownItem.set(new CustomMenuItem());
 
-        hostDropDownItem.get().setContent(new Text("Not host found"));
+        Text itemText = new Text("No host found by host discovery");
+        itemText.setFont(Font.font("", FontWeight.BOLD, 25));
+        hostDropDownItem.get().setContent(itemText);
 
 
         hostsDropDown.getItems().add(hostDropDownItem.get());

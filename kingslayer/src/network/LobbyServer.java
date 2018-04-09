@@ -125,9 +125,9 @@ public class LobbyServer implements Lobby { //extends Application {
             public void serverLobbyTrySetTeamAndRole(Integer connId, Team team, Role role, String playerName) {
                 int teamIdx = (team == null) ? -1 : team.team;
                 int roleIdx = (role == null) ? -1 : role.val;
-                if (teamIdx < 0 || roleIdx < 0 || teamRoleMap[teamIdx][roleIdx]) {
-//                    (conn2PlayerInfo.get(connId).getTeam().team != teamIdx
-//                            || conn2PlayerInfo.get(connId).getRole().val != roleIdx)
+
+
+                if (teamIdx < 0 || roleIdx < 0) {
 
                     Map<Integer, PlayerInfo> selectResult = new HashMap<>();
                     for (Map.Entry<Integer, PlayerInfo> entry : conn2PlayerInfo.entrySet()) {
@@ -136,6 +136,30 @@ public class LobbyServer implements Lobby { //extends Application {
                     server.confirmSelect(false, selectResult);
                     return;
                 }
+                //unselect logic
+                if (teamRoleMap[teamIdx][roleIdx]) {
+                    if (conn2PlayerInfo.containsKey(connId) && conn2PlayerInfo.get(connId).getRole() == role
+                            && conn2PlayerInfo.get(connId).getTeam() == team) {
+                        Map<Integer, PlayerInfo> selectResult = new HashMap<>();
+                        for (Map.Entry<Integer, PlayerInfo> entry : conn2PlayerInfo.entrySet()) {
+                            if (entry.getKey() != connId) {
+                                selectResult.put(entry.getKey(), entry.getValue());
+                            }
+                        }
+                        conn2PlayerInfo.remove(connId);
+                        teamRoleMap[teamIdx][roleIdx] = false;
+                        server.confirmSelect(true, selectResult);
+                        return;
+                    } else {
+                        Map<Integer, PlayerInfo> selectResult = new HashMap<>();
+                        for (Map.Entry<Integer, PlayerInfo> entry : conn2PlayerInfo.entrySet()) {
+                            selectResult.put(entry.getKey(), entry.getValue());
+                        }
+                        server.confirmSelect(false, selectResult);
+                        return;
+                    }
+                }
+
                 //role not taken
                 if (!teamRoleMap[teamIdx][roleIdx]) {
                     teamRoleMap[teamIdx][roleIdx] = true;
