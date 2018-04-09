@@ -136,6 +136,7 @@ public class LobbyServer implements Lobby { //extends Application {
                     server.confirmSelect(false, selectResult);
                     return;
                 }
+
                 //unselect logic
                 if (teamRoleMap[teamIdx][roleIdx]) {
                     if (conn2PlayerInfo.containsKey(connId) && conn2PlayerInfo.get(connId).getRole() == role

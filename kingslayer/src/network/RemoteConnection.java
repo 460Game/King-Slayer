@@ -7,6 +7,7 @@ import game.model.game.model.*;
 import game.model.game.model.team.Role;
 import game.model.game.model.team.Team;
 import lobby.PlayerInfo;
+import sun.nio.ch.Net;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -361,8 +362,8 @@ public class RemoteConnection {
                 }
             });
 
-            server.bind(NetworkCommon.port);
             server.start();
+            server.bind(NetworkCommon.port, NetworkCommon.serverUDPPort);
             Log.debug("Server started");
         } else {//if the client receives it
             NetworkCommon.register(client);
@@ -533,7 +534,7 @@ public class RemoteConnection {
 //            }
 //        }.start();
         try {
-            client.connect(port, host, NetworkCommon.port);
+            client.connect(port, host, NetworkCommon.port, NetworkCommon.serverUDPPort);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -548,7 +549,6 @@ public class RemoteConnection {
 
         sendQueueMsgThread = null;
         consumeQueueMsgThread = null;
-//        toBeConsumeMsgQueue = null;
 
         if (isServer) {
             server.stop();
