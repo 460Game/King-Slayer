@@ -893,13 +893,14 @@ public class Main extends Application {
 
     private GridPane ipForm() {
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(window.getHeight()/2, 200, window.getHeight()/2 + 100, 200));
-        grid.setVgap(50);
+        grid.setPadding(new Insets(window.getHeight()/2, 200, window.getHeight()/2 + 100, 500));
+        grid.setVgap(15);
         grid.setHgap(5);
 
         playerName = new TextField();
         playerName.setPrefSize(600, 80);
         playerName.setPromptText("Enter your name.");
+        playerName.setText("Default Name");
         playerName.setPrefColumnCount(50);
 
         playerName.setFont(Font.font("Verdana",30));
@@ -961,14 +962,16 @@ public class Main extends Application {
 //        ip.setScaleY(5);
 
 //        ip.getText();
-        GridPane.setConstraints(ip, 1, 0);
+        GridPane.setConstraints(ip, 0, 1);
         grid.getChildren().add(ip);
 
         Button connect = new Button("Connect");
         connect.fontProperty().set(Font.font(20));
 
+        connect.setStyle(CssSheet.YELLO_BUTTON_CSS);
+
         connect.setPrefSize(200, 80);
-        GridPane.setConstraints(connect, 2, 0);
+        GridPane.setConstraints(connect, 0, 2);
         grid.getChildren().add(connect);
 
         connect.setOnAction(new EventHandler<ActionEvent>() {
