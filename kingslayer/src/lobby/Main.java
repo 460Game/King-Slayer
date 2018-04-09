@@ -100,6 +100,9 @@ public class Main extends Application {
     Thread findHostThread;
 
     AtomicReference<CustomMenuItem> hostDropDownItem = new AtomicReference(null);
+
+    AtomicReference<Text> hostDropDownText = new AtomicReference(null);
+
     boolean isServer = false;
 
     MenuItem[] items = new MenuItem[] {
@@ -278,7 +281,7 @@ public class Main extends Application {
         findHostThread = new Thread(() -> {
             while (!connected) {
                 try {
-                    Thread.sleep(10);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -286,7 +289,13 @@ public class Main extends Application {
                 InetAddress addr = lobbyClient.discoverHost();
                 System.out.println(addr);
                 if (addr != null) {
-                    hostDropDownItem.get().setContent(new Text(addr.toString().split("/")[1]));
+//                    ((Text)(hostDropDownItem.get().getContent())).setText(String.valueOf(random.nextInt()));
+
+                    ((Text)(hostDropDownItem.get().getContent())).setText(addr.toString().split("/")[1]);
+
+//                    Text replace = new Text(addr.toString().split("/")[1]);
+//                    replace.setFont(Font.font("", FontWeight.BOLD, 25));
+//                    hostDropDownText.getAndSet(replace);
                 }
             }
         });
@@ -925,6 +934,8 @@ public class Main extends Application {
         Text itemText = new Text("No host found by host discovery");
         itemText.setFont(Font.font("", FontWeight.BOLD, 25));
         hostDropDownItem.get().setContent(itemText);
+
+        hostDropDownText.set(itemText);
 
 
         hostsDropDown.getItems().add(hostDropDownItem.get());
