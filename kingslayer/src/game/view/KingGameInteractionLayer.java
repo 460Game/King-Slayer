@@ -98,8 +98,6 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           .filter(e -> !(e.get(EntityProperty.DRAW_STRAT) instanceof GhostDrawStrat)).findFirst().isPresent() &&
           !placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation &&
           Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), x.intValue(), y.intValue()) <= 4) {
-          .filter(e -> e.has(EntityProperty.DRAW_STRAT) && !(e.get(EntityProperty.DRAW_STRAT) instanceof GhostDrawStrat)).findFirst().isPresent() &&
-          !placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation) {
         if (model.getResourceData().getResource(spawner.resource) >= spawner.finalCost(model)) {
           MusicPlayer.playConstructionSound();
         }
@@ -164,7 +162,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().getTeam() == model.getTeam()) {
           model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
             if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getTeam()) {
-              if (model.getResourceData()
+              if (entity.has(EntityProperty.LEVEL) && entity.<Integer>get(EntityProperty.LEVEL) < 2 &&
+                  model.getResourceData()
                   .getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) + 1)) >=
                   upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE),
                       entity.<Integer>get(EntityProperty.LEVEL)))) {
