@@ -46,7 +46,6 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
   private EntitySpawner spawner;
   private Entity placingGhost;
-  private volatile boolean inUse = false;
   public boolean upgrading = false;
   public boolean deleting = false;
   private boolean holding = false;
@@ -88,8 +87,6 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     this.getChildren().add(error);
 
     world.onGameLeftClick((x, y) -> {
-      while(inUse);
-      inUse = true;
       if (model.getLoseControl()) {
         return;
       }
@@ -125,31 +122,34 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         if (model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().isPresent() &&
             model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().get().has(EntityProperty.BUILDING_TYPE) &&
             model.getEntitiesAt(x.intValue(), (int) (y + 20.0/32.0)).stream().findFirst().get().getTeam() == model.getTeam()) {
+
           model.getEntitiesAt(x.intValue(), (int) (y + 20.0 / 32.0)).stream().findFirst().ifPresent(entity -> {
             if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getTeam()) {
-              if (entity.has(EntityProperty.LEVEL) && entity.<Integer>get(EntityProperty.LEVEL) < 2 &&
-                  model.getResourceData()
-                      .getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) +
-                          1)) >=
-                      upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE),
-                          entity.<Integer>get(EntityProperty.LEVEL)))) {
-                model.processMessage(new UpgradeEntityRequest(entity,
+              if (entity.has(EntityProperty.LEVEL) && entity.<Integer>get(EntityProperty.LEVEL) < 2) {
+                if (model.getResourceData()
+                    .getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) + 1)) >=
                     upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE),
-                        entity.<Integer>get(EntityProperty.LEVEL)))));
-                if (!holding) {
-                  upgrading = false;
-                  world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
-                      GAME_CURSOR_IMAGE.getWidth() / 2,
-                      GAME_CURSOR_IMAGE.getHeight() / 2));
-                }
+                        entity.<Integer>get(EntityProperty.LEVEL)))) {
 
-                MusicPlayer.playConstructionSound();
-              } else {
-                if (entity.has(EntityProperty.LEVEL) && entity.<Integer>get(EntityProperty.LEVEL) < 2) {
-                  clearSelection();
-                  showError = true;
+                  model.processMessage(new UpgradeEntityRequest(entity,
+                      upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE),
+                          entity.<Integer>get(EntityProperty.LEVEL)))));
+                  if (!holding) {
+                    upgrading = false;
+                    world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
+                        GAME_CURSOR_IMAGE.getWidth() / 2,
+                        GAME_CURSOR_IMAGE.getHeight() / 2));
+                  }
 
-                  MusicPlayer.playErrorSound();
+                  MusicPlayer.playConstructionSound();
+
+                } else {
+                  if (entity.has(EntityProperty.LEVEL) && entity.<Integer>get(EntityProperty.LEVEL) < 2) {
+                    clearSelection();
+                    showError = true;
+
+                    MusicPlayer.playErrorSound();
+                  }
                 }
               }
             }
@@ -162,27 +162,29 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
             model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().get().getTeam() == model.getTeam()) {
           model.getEntitiesAt(x.intValue(), y.intValue()).stream().findFirst().ifPresent(entity -> {
             if (entity.has(EntityProperty.BUILDING_TYPE) && entity.getTeam() == model.getTeam()) {
-              if (entity.has(EntityProperty.LEVEL) && entity.<Integer>get(EntityProperty.LEVEL) < 2 &&
-                  model.getResourceData()
-                  .getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) + 1)) >=
-                  upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE),
-                      entity.<Integer>get(EntityProperty.LEVEL)))) {
-                model.processMessage(new UpgradeEntityRequest(entity,
+              if (entity.has(EntityProperty.LEVEL) && entity.<Integer>get(EntityProperty.LEVEL) < 2) {
+                if (model.getResourceData()
+                    .getResource(TeamResourceData.levelToResource.get(entity.<Integer>get(EntityProperty.LEVEL) + 1)) >=
                     upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE),
-                        entity.<Integer>get(EntityProperty.LEVEL)))));
-                if (!holding) {
-                  upgrading = false;
-                  world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
-                      GAME_CURSOR_IMAGE.getWidth() / 2,
-                      GAME_CURSOR_IMAGE.getHeight() / 2));
+                        entity.<Integer>get(EntityProperty.LEVEL)))) {
+
+                  model.processMessage(new UpgradeEntityRequest(entity,
+                      upgradeCost.get(new Pair(entity.get(EntityProperty.BUILDING_TYPE),
+                          entity.<Integer>get(EntityProperty.LEVEL)))));
+                  if (!holding) {
+                    upgrading = false;
+                    world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
+                        GAME_CURSOR_IMAGE.getWidth() / 2,
+                        GAME_CURSOR_IMAGE.getHeight() / 2));
+                  }
+
+                  MusicPlayer.playConstructionSound();
+                } else {
+                  clearSelection();
+                  showError = true;
+
+                  MusicPlayer.playErrorSound();
                 }
-
-                MusicPlayer.playConstructionSound();
-              } else {
-                clearSelection();
-                showError = true;
-
-                MusicPlayer.playErrorSound();
               }
             }
           });
@@ -227,12 +229,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           MusicPlayer.playSellSound();
         }
       }
-      inUse = false;
     });
 
     world.onGameRightClick((x, y) -> {
-      while(inUse);
-      inUse = true;
       if (model.getLoseControl()) {
         return;
       }
@@ -249,12 +248,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         deleting = false;
         world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
       }
-      inUse = false;
     });
 
     world.onGameMouseMove((x, y) -> {
-      while(inUse);
-      inUse = true;
       if (model.getLocalPlayer() != null && spawner != null) {
         double placingX = Math.floor(x) + 0.5;
         double placingY = Math.floor(y) + 0.5;
@@ -269,19 +265,14 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           placingGhost.<GhostDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).invalidLocation = true;
         }
       }
-      inUse = false;
     });
 
     world.onKeyPress(kc -> {
-      System.out.println("is locked? " + inUse);
-      while(inUse);
-      inUse = true;
       if (model.getLoseControl()) {
         return;
       }
 
       if (placingGhost != null && kc != W && kc != A && kc != S && kc != D && kc != SHIFT) {
-        System.out.println("AAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH " + kc.getName());
         model.remove(placingGhost);
         placingGhost = null;
         spawner = null;
@@ -329,35 +320,19 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
       if (kc == SHIFT)
         holding = true;
-
-      inUse = false;
-      System.out.println("unlocked");
     });
 
     world.onKeyRelease(kc -> {
-//      if (holding && (kc == Q || kc == E)) {
-//        upgrading = false;
-//        deleting = false;
-//        world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE,
-//            GAME_CURSOR_IMAGE.getWidth() / 2,
-//            GAME_CURSOR_IMAGE.getHeight() / 2));
-//      }
-
-      while(inUse);
-      inUse = true;
       holding = false;
       if (kc == SHIFT && placingGhost != null) {
         model.remove(placingGhost);
         spawner = null;
         placingGhost = null;
       }
-      inUse = false;
     });
   }
 
   public void clearSelection() {
-    while(inUse);
-    inUse = true;
     if (placingGhost != null)
       model.remove(placingGhost);
     placingGhost = null;
@@ -365,7 +340,6 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     upgrading = false;
     deleting = false;
     world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
-    inUse = false;
   }
 
   public void selectWall() {
