@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.DRAW_STRAT;
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.PLAYER_NAME;
@@ -142,8 +143,7 @@ public class ClientGameModel extends GameModel {
             }
         }
 
-        visable.stream().flatMap(GridCell::streamContents).filter(entity -> entity.has(DRAW_STRAT)).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc, this));
-        explored.stream().flatMap(GridCell::exploredContents).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc, this));
+        Stream.concat(visable.stream().flatMap(GridCell::streamContents).filter(entity -> entity.has(DRAW_STRAT)), explored.stream().flatMap(GridCell::exploredContents)).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc, this));
 
         explored.forEach(cell -> {
             gc.drawImage(Images.FOG_GREY_EXPLORED_IMAGE, toDrawCoords(cell.getTopLeftX()-0.5), toDrawCoords(cell.getTopLeftY()-0.5), toDrawCoords(2.0), toDrawCoords(2.0));
