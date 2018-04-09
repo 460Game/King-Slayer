@@ -43,6 +43,7 @@ public class TeamResourceData {
     }
 
     public int getResource(Resource r) {
+        
         return resources.get(r);
     }
 
