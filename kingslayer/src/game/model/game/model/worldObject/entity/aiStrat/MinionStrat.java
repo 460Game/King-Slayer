@@ -80,7 +80,6 @@ public abstract class MinionStrat extends AIStrat {
         }
     }
 
-    // TODO fix issure where slayer runs by minion and freezes
     public static class RangedMinionStrat extends MinionStrat {
 
         public static final RangedMinionStrat SINGLETON = new RangedMinionStrat();
@@ -692,8 +691,13 @@ public abstract class MinionStrat extends AIStrat {
         } else {
             if (data.reachedDestination) {
                 GridCell dest = model.getNextCell(entity.getTeam().team);
-                while (!dest.isPassable() || !astar.isReachable(model.getCell((int) entityx, (int) entityy), dest))
+                int counter = 0;
+                while (!dest.isPassable() || !astar.isReachable(model.getCell((int) entityx, (int) entityy), dest)) {
                     dest = model.getNextCell(entity.getTeam().team);
+                    counter++;
+                    if (counter > 10)
+                        return;
+                }
 
                 data.finalDestination = dest;
                 data.reachedDestination = false;

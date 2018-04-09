@@ -9,6 +9,7 @@ import game.model.game.model.team.Team;
 import lobby.PlayerInfo;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -224,6 +225,7 @@ public class RemoteConnection {
                     return new RemoteConnection.GameConnection("ServerName");
                 }
             };
+//            System.out.println("!!!!!!! " + InetAddress.getLocalHost() + " !!!!!!!!");
         } else {
 //            //TODO change this later
             client = new Client(10000000, 10000000 /2);
@@ -345,6 +347,8 @@ public class RemoteConnection {
                     }
 
                     if (obj instanceof NetworkCommon.SelectRoleMsg) {
+                        //cannot change role or team if ready!!!
+                        if (readyClients.containsKey(c.getID())) return;
                         NetworkCommon.SelectRoleMsg msg = (NetworkCommon.SelectRoleMsg) obj;
                         adaptor.serverLobbyTrySetTeamAndRole(c.getID(), msg.tryTeam, msg.tryRole, msg.name);
                     }

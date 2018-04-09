@@ -45,15 +45,15 @@ public enum Team {
      * @return the team corresponding to the specified number
      */
     public static Team valueOf(int i) {
-        if(i == 1)
+        if(i == Team.RED_TEAM.team)
             return Team.RED_TEAM;
-        if(i == 2)
+        if(i == Team.BLUE_TEAM.team)
             return Team.BLUE_TEAM;
         throw new RuntimeException("Invalid team number");
     }
 
     public Background getPanelBG() {
-        if(team == 1)
+        if(team == Team.RED_TEAM.team)
             return Const.PANEL_BG_RED;
         return Const.PANEL_BG_BLUE;
     }

@@ -1,5 +1,6 @@
 package util;
 
+import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.minlog.Log;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -7,6 +8,7 @@ import javafx.scene.transform.*;
 import java.util.*;
 
 import static java.lang.Math.PI;
+import static network.NetworkCommon.KyroRegister;
 import static util.Const.*;
 
 /**
@@ -18,6 +20,11 @@ public class Util {
      * Helper random class to generate random seeds.
      */
     public static Random random = new Random();
+
+    public static Kryo kryo = new Kryo();
+    static{
+        KyroRegister(kryo);
+    }
 
     /**
      * Returns true if the two sets have a non-empty intersection.

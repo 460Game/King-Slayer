@@ -143,6 +143,7 @@ public class ClientGameModel extends GameModel {
         }
 
         visable.stream().flatMap(GridCell::streamContents).filter(entity -> entity.has(DRAW_STRAT)).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc, this));
+        explored.stream().flatMap(GridCell::exploredContents).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc, this));
 
         explored.forEach(cell -> {
             gc.drawImage(Images.FOG_GREY_EXPLORED_IMAGE, toDrawCoords(cell.getTopLeftX()-0.5), toDrawCoords(cell.getTopLeftY()-0.5), toDrawCoords(2.0), toDrawCoords(2.0));
