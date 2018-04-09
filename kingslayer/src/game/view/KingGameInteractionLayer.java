@@ -91,10 +91,12 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         return;
       }
 
+      double placingX = Math.floor(x) + 0.5;
+      double placingY = Math.floor(y) + 0.5;
       if (spawner != null && placingGhost != null && !model.getEntitiesAt(x.intValue(), y.intValue()).stream()
-          .filter(e -> !(e.get(EntityProperty.DRAW_STRAT) instanceof GhostDrawStrat)).findFirst().isPresent() &&
+          .anyMatch(e -> e.has(EntityProperty.DRAW_STRAT) && !(e.get(EntityProperty.DRAW_STRAT) instanceof GhostDrawStrat)) &&
           !placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation &&
-          Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), x.intValue(), y.intValue()) <= 4) {
+          Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), placingX, placingY) <= 4) {
         if (model.getResourceData().getResource(spawner.resource) >= spawner.finalCost(model)) {
           MusicPlayer.playConstructionSound();
         }
@@ -113,9 +115,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
           }
         }
       } else if (spawner != null && placingGhost != null && (model.getEntitiesAt(x.intValue(), y.intValue()).stream()
-          .filter(e -> !(e.get(EntityProperty.DRAW_STRAT) instanceof GhostDrawStrat)).findFirst().isPresent() ||
+          .anyMatch(e -> e.has(EntityProperty.DRAW_STRAT) && !(e.get(EntityProperty.DRAW_STRAT) instanceof GhostDrawStrat)) ||
           placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation ||
-          Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), x.intValue(), y.intValue()) > 4)) {
+          Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), placingX, placingY) > 4)) {
         MusicPlayer.playErrorSound();
       } else if (upgrading) {
         // if you clicked the top part of an entity that is upgradable and is associated with your team
