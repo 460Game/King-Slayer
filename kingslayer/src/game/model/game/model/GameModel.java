@@ -14,6 +14,7 @@ import util.Util;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -33,6 +34,7 @@ public abstract class GameModel implements Model {
     final Map<Long, Entity> entities;
 
     public AtomicBoolean clientLoseControl = new AtomicBoolean(false);
+    public AtomicLong loseControlTime = new AtomicLong(0);
 
     protected void queueMessage(Message message) {
         messageQueue.add(message);
@@ -238,8 +240,9 @@ public abstract class GameModel implements Model {
     }
 
     public void slayerDead() {
-        System.out.println("slayer diesssssssss");
+//        System.out.println("slayer diesssssssss");
         clientLoseControl.set(true);
+        loseControlTime.set(nanoTime());
     }
 
     public boolean getLoseControl() {
