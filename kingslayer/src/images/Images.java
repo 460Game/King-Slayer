@@ -41,6 +41,9 @@ public abstract class Images {
     public static final Image SIEGE_SYMBOL_IMAGE = getImage("siege_symbol.png");
     public static final Image EXPLORATION_SYMBOL_IMAGE = getImage("exploration_symbol.png");
 
+    public static final Image SHOOTING_SYMBOL_IMAGE = getImage("shootIcon.png");
+    public static final Image CHARGING_SYMBOL_IMAGE = getImage("chargeIcon.png");
+
     public static Image TILE_IMAGE = getImage("tile_map.png");
     public static Image MENU_SPASH_BG_IMAGE = getImage("castleSplash.jpg");
     public static final Image[] METAL_IMAGES = getImages("iron_ingots.png",
