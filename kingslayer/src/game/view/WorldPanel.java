@@ -1,6 +1,7 @@
 package game.view;
 
 import com.esotericsoftware.minlog.Log;
+import game.message.toServer.SlayerRespawnStartCountRequest;
 import game.model.game.model.ClientGameModel;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -8,10 +9,14 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Affine;
 import util.Const;
 import util.Util;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -101,13 +106,14 @@ public class WorldPanel extends Region {
 
     public void draw() {
 
-
         if(!useMinimap && model.getLocalPlayer() != null) {
             x = model.getLocalPlayer().getX() + 0.1 * toWorldCoords(mouseX - getWidth() / 2);
             y = model.getLocalPlayer().getY() + 0.15 * toWorldCoords(mouseY - getHeight() / 2);
         }
         x = Math.min(Math.max(gameW/2, x), model.getMapWidth() - gameW/2);
         y = Math.min(Math.max(gameH/2, y), model.getMapHeight() - gameH/2);
+
+
         gameW = toWorldCoords(getWidth() / scaleFactor);
         gameH = toWorldCoords(getHeight() / scaleFactor);
         xt = -toDrawCoords(x * scaleFactor) + getWidth() / 2;
@@ -123,6 +129,16 @@ public class WorldPanel extends Region {
         bgGC.drawImage(waterTick > WATER_ANIM_PERIOD / 2 ? BGImage1 : BGImage2, 0, 0);
         model.drawForeground(fgGC, x - gameW / 2, y - gameH / 2, gameW, gameH);
         waterTick = (waterTick + 1) % WATER_ANIM_PERIOD;
+
+        if (model.getLoseControl()) {
+           fgGC.setFill(Color.WHITE);
+            Font oriFont = fgGC.getFont();
+            fgGC.setFont(Font.font("", FontWeight.BOLD, 50));
+            int timeLeft = (int) ((SlayerRespawnStartCountRequest.delayCnt/1E3 - ((model.nanoTime() - model.loseControlTime.get())/1E9)));
+//            fgGC.fillText("Respawn in: 9 seconds", toDrawCoords(x) - 270, toDrawCoords(y));//(double)toDrawCoords(x), (double)toDrawCoords(y));
+           fgGC.fillText("Respawn in: " + timeLeft + " seconds", toDrawCoords(x) - 270, toDrawCoords(y));//(double)toDrawCoords(x), (double)toDrawCoords(y));
+            fgGC.setFont(oriFont);
+        }
 
 
         this.setOnScroll(e -> {

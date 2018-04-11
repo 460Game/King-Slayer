@@ -13,8 +13,20 @@ public class SlayerUpdateStrat extends MovingStrat {
     public void update(Entity entity, GameModel model) {
         SlayerData slayerData = SlayerData.copyOf((SlayerData) entity.get(Entity.EntityProperty.SLAYER_DATA));
 
+        int time = (int) ((double) (model.nanoTime() - model.startTime) / 1000000000);
+
+
+        // Idk why this doesnt work :(
+        // Give slayer .25 extra mana regen rate for every 30 seconds in the game.
+//        if (time > 0 && time % 30 == 0 && slayerData.readyToUpRegen) {
+//            System.out.println("increasing slayer regen rate");
+//            slayerData.regenRate = slayerData.regenRate + .25;
+//            slayerData.readyToUpRegen = false;
+//        } else if ((time - 1) % 30 == 0)
+//            slayerData.readyToUpRegen = true;
+
         if (slayerData.magic < 100) {
-            slayerData.magic += 4 * entity.timeDelta;
+            slayerData.magic += (slayerData.regenRate + 0.25 * (time / 30)) * entity.timeDelta;
             if (slayerData.magic > 100) slayerData.magic = 100;
         }
 

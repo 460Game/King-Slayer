@@ -22,16 +22,11 @@ public class SlayerDeathStrat extends DeathStrat {
         long oriId = entity.id;
         Consumer<ServerGameModel> serverConsumer = (server) -> {
             server.remove(entity);
-          //  server.processMessage(new SlayerD);
             server.processMessage(new SlayerDieCommand(entity.id));
             server.processMessage(new RemoveEntityCommand(entity));
             server.processMessage(new SlayerRespawnStartCountRequest(team, name, oriId));
-//            server.getClients().forEach(client -> client.processMessage(new SetEntityCommand(b)));
         };
         model.execute(serverConsumer, (client) -> {
-  //      client.slayerDead();
-//            a.data.updateData.velocity.setMagnitude(0);
-//            client.removeByID(a.id);
         });
     }
 }

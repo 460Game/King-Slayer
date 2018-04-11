@@ -7,6 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class SlayerRespawnStartCountRequest extends ActionRequest {
+    public static final long delayCnt = 10000;
     Team team;
     String name;
     long id;
@@ -28,6 +29,6 @@ public class SlayerRespawnStartCountRequest extends ActionRequest {
         };
 
         Timer t = new Timer();
-        t.schedule(respawn, 10000);
+        t.schedule(respawn, delayCnt);
     }
 }

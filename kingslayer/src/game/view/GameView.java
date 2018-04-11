@@ -1,23 +1,17 @@
 package game.view;
 
 import com.esotericsoftware.minlog.Log;
-import game.message.toServer.StopRequest;
 import game.model.game.model.ClientGameModel;
-import game.model.game.model.ServerGameModel;
 import game.model.game.model.gameState.Loading;
 import game.model.game.model.team.Role;
-import game.model.game.model.worldObject.entity.Entity;
 import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lobby.GameView2MainAdaptor;
-import lobby.Main;
 import music.MusicPlayer;
 
 import java.util.*;
@@ -36,9 +30,13 @@ public class GameView {
     private GameView2MainAdaptor mainApp;
     private AnimationTimer timer;
 
+    private long startTime;
+    private double elapsedTime;
+
     Group root;
     WorldPanel worldPanel;
     GameInteractionLayer gameInteractionLayer;
+    int actionPanelYOffset;
     ActionPanel actionPanel;
     Minimap minimap;
     ResourcePanel resourcePanel;
@@ -75,9 +73,11 @@ public class GameView {
         if (model.getLocalPlayer().getRole() == Role.KING) {
             gameInteractionLayer = new KingGameInteractionLayer(model, worldPanel);
             actionPanel = new KingActionPanel(model, (KingGameInteractionLayer) gameInteractionLayer);
+            actionPanelYOffset = 135;
         } else {
             gameInteractionLayer = new SlayerGameInteractionLayer(model, worldPanel);
             actionPanel = new SlayerActionPanel(model, (SlayerGameInteractionLayer) gameInteractionLayer);
+            actionPanelYOffset = 165;
         }
         minimap = new Minimap(model, worldPanel);
         resourcePanel = new ResourcePanel(model);
@@ -94,7 +94,7 @@ public class GameView {
         actionPanel.setPrefWidth(335);
         actionPanel.setPrefHeight(130);
         actionPanel.layoutXProperty().bind(Bindings.max(minimap.widthProperty(), window.widthProperty().divide(2).subtract(150)));
-        actionPanel.layoutYProperty().bind(window.heightProperty().subtract(135));
+        actionPanel.layoutYProperty().bind(window.heightProperty().subtract(actionPanelYOffset));
 
         // resourcePanel.setPrefWidth(300);
         //  resourcePanel.setPrefHeight(40);
@@ -129,13 +129,15 @@ public class GameView {
 
             FPSPanel fpsPanel = new FPSPanel(model);
             fpsPanel.setPrefHeight(50);
-            fpsPanel.setPrefWidth(50);
+            fpsPanel.setPrefWidth(120);
             root.getChildren().add(fpsPanel);
 
             //FPS print
             TimerTask updateFPS = new TimerTask() {
                 public void run() {
-                    fpsPanel.setFPS(totalFrameCount[0]);
+                    long current = System.nanoTime();
+                    elapsedTime = (double) (current - startTime);
+                    fpsPanel.setFPS(totalFrameCount[0], elapsedTime / 1000000000.0);
                     totalFrameCount[0] = 0;
                 }
             };
@@ -184,6 +186,8 @@ public class GameView {
         };
 
         timer.start();
+
+        startTime = System.nanoTime();
 
         Scene scene = new Scene(root);
 
