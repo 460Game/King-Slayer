@@ -37,13 +37,15 @@ public class SlayerActionPanel extends ActionPanel {
 
         Label shoot = new Label("Shoot arrow   ");
         shoot.setGraphic(new ImageView(Images.SHOOTING_SYMBOL_IMAGE));
-        shoot.setStyle("-fx-background-color: #ffffffaa;");
+        shoot.setTextFill(Color.WHITE);
+        //shoot.setStyle("-fx-background-color: #ffffffaa;");
         //shoot.setStyle("-fx-border-color: #aaaaaa; -fx-border-width: 2px;");
         grid.add(shoot, 1, 1);
 
         Label charge = new Label("Charge           ");
         charge.setGraphic(new ImageView(Images.CHARGING_SYMBOL_IMAGE));
-        charge.setStyle("-fx-background-color: #ffffffaa;");
+        charge.setTextFill(Color.WHITE);
+        //charge.setStyle("-fx-background-color: #ffffffaa;");
         //charge.setStyle("-fx-border-color: #ffffffaa; -fx-border-width: 2px;");
         grid.add(charge, 0, 1);
 

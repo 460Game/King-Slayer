@@ -19,7 +19,7 @@ public abstract class Const {
     public static final double MIN_ZOOM = 0.8;
     public static final Paint PANEL_BG_COLOR_RED = Color.color(0.6,0.0,0.0,0.6);
     public static final Background PANEL_BG_RED = new Background(new BackgroundFill(PANEL_BG_COLOR_RED, new CornerRadii(10), null));
-    public static final Paint PANEL_BG_COLOR_BLUE = Color.color(0.0,0.0,0.6,0.6);
+    public static final Paint PANEL_BG_COLOR_BLUE = Color.color(0.0,0.0,0.8,0.6);
     public static final Background PANEL_BG_BLUE = new Background(new BackgroundFill(PANEL_BG_COLOR_BLUE, new CornerRadii(10), null));
     public static boolean FPSPrint = true;
 
