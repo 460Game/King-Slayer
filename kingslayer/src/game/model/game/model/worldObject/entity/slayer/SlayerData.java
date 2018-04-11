@@ -12,6 +12,7 @@ public class SlayerData {
         ret.meleeLastTime = a.meleeLastTime;
         ret.magic = a.magic;
         ret.meleeAngle = a.meleeAngle;
+        ret.regenRate = a.regenRate;
         return ret;
     }
 
@@ -19,6 +20,11 @@ public class SlayerData {
     public double meleeAngle = 0;
     public double magic = 100;
 
+    public boolean readyToUpRegen = false;
+    public double regenRate = 4;
+
     public SlayerData() {}
+
+    public void setRegenRate(double rate) { this.regenRate = rate; }
 
 }

@@ -30,6 +30,9 @@ public class GameView {
     private GameView2MainAdaptor mainApp;
     private AnimationTimer timer;
 
+    private long startTime;
+    private double elapsedTime;
+
     Group root;
     WorldPanel worldPanel;
     GameInteractionLayer gameInteractionLayer;
@@ -126,13 +129,15 @@ public class GameView {
 
             FPSPanel fpsPanel = new FPSPanel(model);
             fpsPanel.setPrefHeight(50);
-            fpsPanel.setPrefWidth(50);
+            fpsPanel.setPrefWidth(120);
             root.getChildren().add(fpsPanel);
 
             //FPS print
             TimerTask updateFPS = new TimerTask() {
                 public void run() {
-                    fpsPanel.setFPS(totalFrameCount[0]);
+                    long current = System.nanoTime();
+                    elapsedTime = (double) (current - startTime);
+                    fpsPanel.setFPS(totalFrameCount[0], elapsedTime / 1000000000.0);
                     totalFrameCount[0] = 0;
                 }
             };
@@ -181,6 +186,8 @@ public class GameView {
         };
 
         timer.start();
+
+        startTime = System.nanoTime();
 
         Scene scene = new Scene(root);
 

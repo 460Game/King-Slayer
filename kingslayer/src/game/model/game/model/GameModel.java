@@ -143,7 +143,12 @@ public abstract class GameModel implements Model {
 
     int fogCount = 0;
 
+    public long startTime = -1;
+
     public void update() {
+        if (startTime == -1)
+            startTime = System.nanoTime();
+
         ArrayList<Message> list = new ArrayList<>();
         messageQueue.drainTo(list);
         for(Message m : list)

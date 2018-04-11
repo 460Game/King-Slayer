@@ -24,7 +24,17 @@ public class FPSPanel extends Region {
         this.getChildren().add(text);
     }
 
-    public void setFPS(int fps) {
-        text.setText(fps + "");
+    public void setFPS(int fps, double time) {
+        int minutes;
+        int seconds;
+        String minute;
+        String second;
+
+        minutes = (int) time / 60;
+        seconds = (int) time % 60;
+        minute = (minutes < 10) ? "0" + minutes : "" + minutes;
+        second = (seconds < 10) ? "0" + seconds : "" + seconds;
+
+        text.setText(fps + ", " + minute + ":" + second);
     }
 }
