@@ -104,28 +104,28 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
     Collection<Entity> opposingMinions = Collections.EMPTY_LIST;
     Entity myKing = null;
       for (Entity e: model.getAllEntities()) {
-      if (e.has(Entity.EntityProperty.ROLE) && e.has(Entity.EntityProperty.TEAM)) {
-        if (e.getRole() == null) {
-          System.err.println("e.getRole is null");
+        if (e.has(Entity.EntityProperty.ROLE) && e.has(Entity.EntityProperty.TEAM)) {
+          if (e.getRole() == null) {
+            System.err.println("e.getRole is null");
+          }
+          if (e.getTeam() == null) {
+            System.err.println("e.getTeam is null");
+          }
+          if (model.getTeam() == null) {
+            System.err.println("model.getTeam is null");
+          }
+          if (e.getRole() == Role.SLAYER &&
+              e.getTeam() != model.getTeam())
+            opposingSlayer = e;
+          if (e.has(Entity.EntityProperty.MINION_TYPE) &&
+              e.get(Entity.EntityProperty.MINION_TYPE) == Minions.MinionType.FIGHTER &&
+              e.getTeam() != model.getTeam())
+            opposingMinions.add(e);
+          if (e.getRole() == Role.KING &&
+              e.getTeam() == model.getTeam())
+            myKing = e;
         }
-        if (e.getTeam() == null) {
-          System.err.println("e.getTeam is null");
-        }
-        if (model.getTeam() == null) {
-          System.err.println("model.getTeam is null");
-        }
-        if (e.getRole() == Role.SLAYER &&
-            e.getTeam() != model.getTeam())
-          opposingSlayer = e;
-        if (e.has(Entity.EntityProperty.MINION_TYPE) &&
-            e.get(Entity.EntityProperty.MINION_TYPE) == Minions.MinionType.FIGHTER &&
-            e.getTeam() != model.getTeam())
-          opposingMinions.add(e);
-        if (e.getRole() == Role.KING &&
-            e.getTeam() == model.getTeam())
-          myKing = e;
       }
-    }
 
     final Entity myFinalKing = myKing;
     if (opposingSlayer != null && myKing != null) {
