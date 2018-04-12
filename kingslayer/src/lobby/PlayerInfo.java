@@ -7,12 +7,21 @@ public class PlayerInfo {
     Team team;
     Role role;
     String playerName;
+    public int slayerIdx;
     public PlayerInfo() {}
 
     public PlayerInfo(Team team, Role role, String playerName) {
         this.team = team;
         this.role = role;
         this.playerName = playerName;
+        slayerIdx = -1;
+    }
+
+    public PlayerInfo(Team team, Role role, String playerName, int idx) {
+        this.team = team;
+        this.role = role;
+        this.playerName = playerName;
+        slayerIdx = idx;
     }
 
     public static PlayerInfo copyOf(PlayerInfo p) {
@@ -31,6 +40,7 @@ public class PlayerInfo {
     public Team getTeam() {
         return team;
     }
+    public int getSlayerIdx() { return slayerIdx; }
 
 //    @Override
 //    public boolean equals(Object obj) {

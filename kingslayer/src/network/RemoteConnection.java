@@ -81,9 +81,9 @@ public class RemoteConnection {
         }
     }
 
-    public void trySelectRole(Team team, Role role, String playerName) {
+    public void trySelectRole(Team team, Role role, String playerName, int slayerIdx) {
         if (isServer) return;
-        client.sendTCP(new NetworkCommon.SelectRoleMsg(team, role, playerName));
+        client.sendTCP(new NetworkCommon.SelectRoleMsg(team, role, playerName, slayerIdx));
     }
 
     public void confirmSelect(boolean success, Map<Integer, PlayerInfo> selectResult) {
@@ -351,7 +351,7 @@ public class RemoteConnection {
                         //cannot change role or team if ready!!!
                         if (readyClients.containsKey(c.getID())) return;
                         NetworkCommon.SelectRoleMsg msg = (NetworkCommon.SelectRoleMsg) obj;
-                        adaptor.serverLobbyTrySetTeamAndRole(c.getID(), msg.tryTeam, msg.tryRole, msg.name);
+                        adaptor.serverLobbyTrySetTeamAndRole(c.getID(), msg.tryTeam, msg.tryRole, msg.name, msg.slayerIdx);
                     }
 
                 }
@@ -392,7 +392,7 @@ public class RemoteConnection {
                     if (obj instanceof NetworkCommon.SessionPlayerInfoCmd) {
                         NetworkCommon.SessionPlayerInfoCmd msg = (NetworkCommon.SessionPlayerInfoCmd) obj;
                         adaptor.showLobbyTeamChoice(msg.num);
-                        client.sendTCP(new NetworkCommon.SelectRoleMsg(null, null, null));
+                        client.sendTCP(new NetworkCommon.SelectRoleMsg(null, null, null, -1));
                     }
 
                     if (obj instanceof NetworkCommon.SelectFeedBackMsg) {
