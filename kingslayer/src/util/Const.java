@@ -23,6 +23,9 @@ public abstract class Const {
     public static final Background PANEL_BG_BLUE = new Background(new BackgroundFill(PANEL_BG_COLOR_BLUE, new CornerRadii(10), null));
     public static boolean FPSPrint = true;
 
+    public static final int SECONDS_TO_SLAYER_MANA_REGEN_UP = 30;
+    public static final double AMOUNT_SLAYER_MANA_REGEN_UP = 0.25;
+
     /**
      * Flag that signals whether to update in debugging mdode.
      */

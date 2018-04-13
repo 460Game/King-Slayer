@@ -5,25 +5,28 @@ import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Velocity;
 import game.model.game.model.worldObject.entity.updateStrat.MovingStrat;
 
+import static util.Const.AMOUNT_SLAYER_MANA_REGEN_UP;
+import static util.Const.SECONDS_TO_SLAYER_MANA_REGEN_UP;
+
 public class SlayerUpdateStrat extends MovingStrat {
     public static final SlayerUpdateStrat SINGLETON = new SlayerUpdateStrat();
     private SlayerUpdateStrat() {}
 
     @Override
     public void update(Entity entity, GameModel model) {
-        SlayerData slayerData = SlayerData.copyOf((SlayerData) entity.get(Entity.EntityProperty.SLAYER_DATA));
+        SlayerData slayerData = SlayerData.copyOf(entity.get(Entity.EntityProperty.SLAYER_DATA));
 
         int time = (int) ((double) (model.nanoTime() - model.startTime) / 1000000000);
 
 
         // Idk why this doesnt work :(
         // Give slayer .25 extra mana regen rate for every 30 seconds in the game.
-//        if (time > 0 && time % 30 == 0 && slayerData.readyToUpRegen) {
-//            System.out.println("increasing slayer regen rate");
-//            slayerData.regenRate = slayerData.regenRate + .25;
-//            slayerData.readyToUpRegen = false;
-//        } else if ((time - 1) % 30 == 0)
-//            slayerData.readyToUpRegen = true;
+        if (time > 0 && time % SECONDS_TO_SLAYER_MANA_REGEN_UP == 0 && slayerData.readyToUpRegen) {
+            System.out.println("increasing slayer regen rate");
+            slayerData.regenRate = slayerData.regenRate + AMOUNT_SLAYER_MANA_REGEN_UP;
+            slayerData.readyToUpRegen = false;
+        } else if ((time - 1) % SECONDS_TO_SLAYER_MANA_REGEN_UP == 0)
+            slayerData.readyToUpRegen = true;
 
         if (slayerData.magic < 100) {
 //            slayerData.magic += (slayerData.regenRate + 0.25 * (time / 30)) * entity.timeDelta;
@@ -44,6 +47,5 @@ public class SlayerUpdateStrat extends MovingStrat {
             entity.translateY(entity.getVelocity().getVy() * entity.timeDelta);
         }
         entity.set(Entity.EntityProperty.SLAYER_DATA, slayerData);
-
     }
 }

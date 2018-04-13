@@ -13,6 +13,7 @@ public class SlayerData {
         ret.magic = a.magic;
         ret.meleeAngle = a.meleeAngle;
         ret.regenRate = a.regenRate;
+        ret.readyToUpRegen = a.readyToUpRegen;
         return ret;
     }
 
