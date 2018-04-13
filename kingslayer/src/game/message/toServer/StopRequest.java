@@ -36,7 +36,7 @@ public class StopRequest extends ActionRequest {
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        if(model.getEntity(id).has(Entity.EntityProperty.VELOCITY))
+        if(model.getEntity(id) != null && model.getEntity(id).has(Entity.EntityProperty.VELOCITY))
             model.getEntity(id).setVelocity(model.getEntity(id).getVelocity().withMagnitude(0));
     }
 }
