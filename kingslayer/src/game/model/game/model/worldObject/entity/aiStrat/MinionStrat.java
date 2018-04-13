@@ -1,7 +1,7 @@
 package game.model.game.model.worldObject.entity.aiStrat;
 
-import com.esotericsoftware.minlog.Log;
 import game.ai.Astar;
+import game.message.toServer.DoDamageRequest;
 import game.message.toClient.SetEntityCommand;
 import game.message.toServer.MakeEntityRequest;
 import game.model.game.grid.GridCell;
@@ -41,26 +41,6 @@ public abstract class MinionStrat extends AIStrat {
             return 5.0;
         }
 
-        @Override
-        void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
-            Entity enemy = getClosestEnemy(data, entity, model);
-            int enemyx = (int) (double) enemy.getX();
-            int enemyy = (int) (double) enemy.getY();
-
-//            Astar astar = model.getAstar();
-            Astar astar = new Astar(model);
-
-            data.path.clear();
-            data.nextDestination = null;
-            data.finalDestination = null;
-            data.reachedDestination = true;
-
-            entity.setVelocity(entity.getVelocity().withMagnitude(entity.get(Entity.EntityProperty.MAX_SPEED)));
-            astar.moveToCell(entity, model.getCell(enemyx, enemyy));
-            model.processMessage(new SetEntityCommand(entity));
-//            wander(data, entity, model, seconds);
-        }
-
         private double attackCounter = 2;
 
         @Override
@@ -77,6 +57,7 @@ public abstract class MinionStrat extends AIStrat {
                 model.processMessage(new MakeEntityRequest(Entities.makeArrow(entity.getX(), entity.getY(), dir, entity.getTeam(), entity, 1, -1)));
                 attackCounter = 0;
             }
+            model.processMessage(new SetEntityCommand(entity));
         }
     }
 
@@ -97,25 +78,6 @@ public abstract class MinionStrat extends AIStrat {
         }
 
         @Override
-        void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
-            Entity enemy = getClosestEnemy(data, entity, model);
-            int enemyx = (int) (double) enemy.getX();
-            int enemyy = (int) (double) enemy.getY();
-
-//            Astar astar = model.getAstar();
-            Astar astar = new Astar(model);
-
-            data.path.clear();
-            data.nextDestination = null;
-            data.finalDestination = null;
-            data.reachedDestination = true;
-
-            entity.setVelocity(entity.getVelocity().withMagnitude(entity.get(Entity.EntityProperty.MAX_SPEED)));
-            astar.moveToCell(entity, model.getCell(enemyx, enemyy));
-            model.processMessage(new SetEntityCommand(entity));
-        }
-
-        @Override
         void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
             attackCounter += seconds;
             data.path.clear();
@@ -129,6 +91,7 @@ public abstract class MinionStrat extends AIStrat {
                 model.processMessage(new MakeEntityRequest(Entities.makeArrow(entity.getX(), entity.getY(), dir, entity.getTeam(), entity, 1, -1)));
                 attackCounter = 0;
             }
+            model.processMessage(new SetEntityCommand(entity));
         }
     }
 
@@ -138,37 +101,30 @@ public abstract class MinionStrat extends AIStrat {
 
         @Override
         double attackRange() {
-            return 0.35;
-        }
+            return 0.8;
+        }   // minion radius is 0.25, player radius is 0.45
 
         @Override
         double detectRange() {
             return 5.0;
         }
 
+        private double attackCounter = 2;
+
         @Override
-        void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
-            Entity enemy = getClosestEnemy(data, entity, model);
-            int enemyx = (int) (double) enemy.getX();
-            int enemyy = (int) (double) enemy.getY();
-
-//            Astar astar = model.getAstar();
-            Astar astar = new Astar(model);
-
+        void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
+            attackCounter += seconds;
             data.path.clear();
             data.nextDestination = null;
             data.finalDestination = null;
             data.reachedDestination = true;
-
-            entity.setVelocity(entity.getVelocity().withMagnitude(entity.get(Entity.EntityProperty.MAX_SPEED)));
-            astar.moveToCell(entity, model.getCell(enemyx, enemyy));
+            entity.setVelocity(entity.getVelocity().withMagnitude(0));
+            if (attackCounter >= 1) {
+                Entity enemy = getClosestEnemy(data, entity, model);
+                model.processMessage(new DoDamageRequest(enemy, 5));
+                attackCounter = 0;
+            }
             model.processMessage(new SetEntityCommand(entity));
-//            wander(data, entity, model, seconds);
-        }
-
-        @Override
-        void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
-            wander(data, entity, model, seconds); // TODO TEMP
         }
     }
 
@@ -416,15 +372,29 @@ public abstract class MinionStrat extends AIStrat {
      * Handles the action to perform when the minion detects
      * an enemy.
      */
-    abstract void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds);
-    // TODO attacking minions can chase closest enemy and collectors should run away
+    void handleEnemyDetected(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds) {
+        Entity enemy = getClosestEnemy(data, entity, model);
+        int enemyx = (int) (double) enemy.getX();
+        int enemyy = (int) (double) enemy.getY();
+
+//            Astar astar = model.getAstar();
+        Astar astar = new Astar(model);
+
+        data.path.clear();
+        data.nextDestination = null;
+        data.finalDestination = null;
+        data.reachedDestination = true;
+
+        entity.setVelocity(entity.getVelocity().withMagnitude(entity.get(Entity.EntityProperty.MAX_SPEED)));
+        astar.moveToCell(entity, model.getCell(enemyx, enemyy));
+        model.processMessage(new SetEntityCommand(entity));
+    }
 
     /**
      * Handles the action to perform when the minion detects
      * an attackable enemy.
      */
     abstract void handleEnemyAttackable(MinionStratAIData data, Entity entity, ServerGameModel model, double seconds);
-    // TODO attacking minions should attack closest enemy and collectors should run away (shouldnt even get to this position)
 
     /**
      * Returns all the enemy entities this minion can detect. These are all the
