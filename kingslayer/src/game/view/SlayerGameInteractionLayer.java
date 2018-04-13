@@ -11,6 +11,7 @@ import game.model.game.model.worldObject.entity.entities.Minions;
 import game.model.game.model.worldObject.entity.slayer.SlayerData;
 import javafx.geometry.Point2D;
 import javafx.scene.ImageCursor;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -60,42 +61,58 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
     world = worldPanel;
 
     world.onGameLeftClick((x, y) -> {
-      if (model.getLoseControl()) {
-        return;
-      }
-      double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
-
-      SlayerData curSlayerData = model.getLocalPlayer().get(Entity.EntityProperty.SLAYER_DATA);
-      if (curSlayerData.meleeLastTime <= 0 && curSlayerData.magic >= SlayerData.meleeCost) {
-        MusicPlayer.playChargeSound();
-      }
-
-      model.processMessage(new SlayerMeleeRequest(model.getLocalPlayer().id,
-          model.getLocalPlayer().getX(),
-          model.getLocalPlayer().getY(),
-          angle, model.getTeam()));
+      charge(x, y);
     });
 
     world.onGameRightClick((x, y) -> {
-      if (model.getLoseControl()) {
-        return;
-      }
-      double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
+      System.out.println(x + " " + y);
+      shootArrow(x, y);
+    });
 
-      SlayerData curSlayerData = model.getLocalPlayer().get(Entity.EntityProperty.SLAYER_DATA);
-      if (curSlayerData.magic >= SlayerData.arrowCost) {
-        MusicPlayer.playArrowSound();
-      }
-
-      model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
-          model.getLocalPlayer().getX(),
-          model.getLocalPlayer().getY(),
-          angle, model.getTeam()));
-
+    danger.setOnMouseClicked(e -> {
+      double x = world.screenToGameX(danger.getLayoutX() + e.getX());
+      double y = world.screenToGameY(danger.getLayoutY() + e.getY());
+      System.out.println("AAAHHHHHHH!!!!!!" + x + " " + y);
+      if (e.getButton() == MouseButton.PRIMARY)
+        charge(x, y);
+      if (e.getButton() == MouseButton.SECONDARY)
+        shootArrow(x, y);
     });
   }
 
-  private boolean flag = false;
+  private void charge(Double x, Double y) {
+    if (model.getLoseControl()) {
+      return;
+    }
+    double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
+
+    SlayerData curSlayerData = model.getLocalPlayer().get(Entity.EntityProperty.SLAYER_DATA);
+    if (curSlayerData.meleeLastTime <= 0 && curSlayerData.magic >= SlayerData.meleeCost) {
+      MusicPlayer.playChargeSound();
+    }
+
+    model.processMessage(new SlayerMeleeRequest(model.getLocalPlayer().id,
+        model.getLocalPlayer().getX(),
+        model.getLocalPlayer().getY(),
+        angle, model.getTeam()));
+  }
+
+  private void shootArrow(Double x, Double y) {
+    if (model.getLoseControl()) {
+      return;
+    }
+    double angle = Math.atan2(y - model.getLocalPlayer().getY(), x - model.getLocalPlayer().getX());
+
+    SlayerData curSlayerData = model.getLocalPlayer().get(Entity.EntityProperty.SLAYER_DATA);
+    if (curSlayerData.magic >= SlayerData.arrowCost) {
+      MusicPlayer.playArrowSound();
+    }
+
+    model.processMessage(new ShootArrowRequest(model.getLocalPlayer().id,
+        model.getLocalPlayer().getX(),
+        model.getLocalPlayer().getY(),
+        angle, model.getTeam()));
+  }
 
   public void draw() {
     world.draw();
@@ -138,11 +155,9 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
       if (inDanger) {
         danger.setVisible(true);
         world.requestFocus();
-        flag = true;
         MusicPlayer.playDangerSound();
       } else {
         danger.setVisible(false);
-        flag = false;
         MusicPlayer.stopDangerSound();
       }
     }
