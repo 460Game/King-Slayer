@@ -65,14 +65,12 @@ public class SlayerGameInteractionLayer extends GameInteractionLayer {
     });
 
     world.onGameRightClick((x, y) -> {
-      System.out.println(x + " " + y);
       shootArrow(x, y);
     });
 
     danger.setOnMouseClicked(e -> {
       double x = world.screenToGameX(danger.getLayoutX() + e.getX());
       double y = world.screenToGameY(danger.getLayoutY() + e.getY());
-      System.out.println("AAAHHHHHHH!!!!!!" + x + " " + y);
       if (e.getButton() == MouseButton.PRIMARY)
         charge(x, y);
       if (e.getButton() == MouseButton.SECONDARY)
