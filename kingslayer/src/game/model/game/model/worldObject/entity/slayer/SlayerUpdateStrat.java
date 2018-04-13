@@ -26,7 +26,8 @@ public class SlayerUpdateStrat extends MovingStrat {
 //            slayerData.readyToUpRegen = true;
 
         if (slayerData.magic < 100) {
-            slayerData.magic += (slayerData.regenRate + 0.25 * (time / 30)) * entity.timeDelta;
+//            slayerData.magic += (slayerData.regenRate + 0.25 * (time / 30)) * entity.timeDelta;
+            slayerData.magic += slayerData.regenRate * entity.timeDelta;
             if (slayerData.magic > 100) slayerData.magic = 100;
         }
 
