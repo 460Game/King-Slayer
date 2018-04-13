@@ -43,7 +43,8 @@ public class UpgradeEntityRequest implements ToServerRequest {
     Entity entity = model.getEntity(entityID);
 
       // Check if upgradable, not at max level, and if team has enough resources to upgrade.
-    if (entity.has(Entity.EntityProperty.LEVEL) && entity.<Integer>get(Entity.EntityProperty.LEVEL) < 2 &&
+    if (entity != null &&
+        entity.has(Entity.EntityProperty.LEVEL) && entity.<Integer>get(Entity.EntityProperty.LEVEL) < 2 &&
         model.changeResource(entity.getTeam(), TeamResourceData.levelToResource.get(entity.<Integer>get(Entity.EntityProperty.LEVEL) + 1), -cost)) {
       entity.upgrade();
       model.processMessage(new NewEntityCommand(entity));
