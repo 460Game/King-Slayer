@@ -111,9 +111,9 @@ public class ServerMapGenerator implements MapGenerator {
 
 
 
-//        makeMap((new Random()).nextLong());
+        makeMap((new Random()).nextLong());
 
-        makeMap(Long.parseLong("8375815974471404619")); // Good for path testing, close spawn.
+//        makeMap(Long.parseLong("8375815974471404619")); // Good for path testing, close spawn.
 //        makeMap(Long.parseLong("1318193456440539338")); // Good for path testing, close spawn.
 //        makeMap(Long.parseLong("-5713126425086333025"));
 //        makeMap(Long.parseLong("-1609539064927447349"));
