@@ -18,6 +18,7 @@ import game.model.game.model.worldObject.entity.entities.Velocity;
 import game.model.game.model.worldObject.entity.slayer.SlayerData;
 import game.model.game.model.worldObject.entity.updateStrat.UpdateStrat;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.util.Pair;
 import util.*;
 import game.model.game.model.GameModel;
@@ -263,41 +264,37 @@ public class Entity {
 
         if (!this.invincible() && this.getData().get(ROLE) == Role.KING) {
 
-            if (this.getHealth() != this.getMaxHealth()) {
                 gc.setFill(Color.RED);
-                gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, 40, 6);
+                gc.fillRect(toDrawCoords(getX()) - 18, toDrawCoords(getY()) - 20, 36, 4);
                 gc.setFill(Color.GREEN);
-                gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, (getHealth() / getMaxHealth()) * 40, 6);
-            }
+                gc.fillRect(toDrawCoords(getX()) - 18, toDrawCoords(getY()) - 20, (getHealth() / getMaxHealth()) * 36, 4);
             gc.setStroke(Color.WHITE);
 //            System.out.println((String)get(PLAYER_NAME));
             String name = this.get(PLAYER_NAME);
             if (name.length() >= 1) {
 //                System.out.println("Hello");
-                gc.strokeText(name, toDrawCoords(getX()) - 3.5 * name.length(), toDrawCoords(getY()) - 30);
+                gc.strokeText(name, toDrawCoords(getX()) - 3.0 * name.length(), toDrawCoords(getY()) - 22);
             }
         }
 
         if (!this.invincible() && this.getData().get(ROLE) == Role.SLAYER) {
 
-            if (this.getHealth() != this.getMaxHealth()) {
                 gc.setFill(Color.RED);
-                gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, 40, 6);
+                gc.fillRect(toDrawCoords(getX()) - 18, toDrawCoords(getY()) - 24, 36, 4);
                 gc.setFill(Color.GREEN);
-                gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, (getHealth() / getMaxHealth()) * 40, 6);
-            }
+                gc.fillRect(toDrawCoords(getX()) - 18, toDrawCoords(getY()) - 24, (getHealth() / getMaxHealth()) * 36, 4);
             gc.setFill(Color.GREY);
-            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 24, 40, 6);
+            gc.fillRect(toDrawCoords(getX()) - 18, toDrawCoords(getY()) - 20, 36, 4);
             gc.setFill(Color.BLUE);
-            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 24,
-                    (((SlayerData) this.getData().get(SLAYER_DATA)).magic / 100.00) * 40, 6);
+            gc.fillRect(toDrawCoords(getX()) - 18, toDrawCoords(getY()) - 20,
+                    (((SlayerData) this.getData().get(SLAYER_DATA)).magic / 100.00) * 36, 4);
 
             gc.setStroke(Color.WHITE);
 //            System.out.println((String)get(PLAYER_NAME));
             String name = this.get(PLAYER_NAME);
             if (name.length() >= 1) {
 //                System.out.println("Hello");
-                gc.strokeText(name, toDrawCoords(getX()) - 3.5 * name.length(), toDrawCoords(getY()) - 30);
+                gc.strokeText(name, toDrawCoords(getX()) - 3.0 * name.length(), toDrawCoords(getY()) - 27);
             }
         }
     }

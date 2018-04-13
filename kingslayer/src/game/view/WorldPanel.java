@@ -72,6 +72,8 @@ public class WorldPanel extends Region {
         model.writeBackground(BGImage1, true);
         model.writeBackground(BGImage2, false);
 
+        fgGC.setFont(new Font("Courier New", 10));
+
     }
 
     private double scaleFactor = 2;
