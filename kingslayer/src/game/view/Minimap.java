@@ -84,7 +84,7 @@ public class Minimap extends Region {
                         if (player.has(Entity.EntityProperty.ROLE)) {
                             minimapGC.setFill(player.getTeam().color);
                             minimapGC.fillOval(player.getX()-3, player.getY()-3, 3, 3);
-                        } else if (player.has(Entity.EntityProperty.TEAM)) {
+                        } else if (player.has(Entity.EntityProperty.TEAM) && !player.has(Entity.EntityProperty.PROJECTILE)) {
                             minimapGC.setFill(player.getTeam().color);
                             minimapGC.fillOval(player.getX()-3, player.getY()-3, 1, 1);
                         }
