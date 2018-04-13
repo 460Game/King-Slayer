@@ -7,7 +7,6 @@ import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
-import game.model.game.model.worldObject.entity.entities.Entities;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 
@@ -144,7 +143,11 @@ public class GridCell {
                         Log.info("Copying " + e);
                         if(e.has(DRAW_STRAT) && e.getCollideType() == CollisionStrat.CollideType.HARD) {
                             //kryo.reference(e);
-                            losGhosts.add(kryo.copy(e));
+                            try {
+                                losGhosts.add(kryo.copy(e));
+                            } catch(Exception ex){
+                                // :(
+                            }
                         }
                     }
                 }

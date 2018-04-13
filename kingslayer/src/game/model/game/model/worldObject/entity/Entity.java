@@ -8,6 +8,7 @@ import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.*;
 import game.model.game.model.worldObject.entity.aiStrat.*;
 import game.model.game.model.worldObject.entity.collideStrat.CollisionStrat;
+import game.model.game.model.worldObject.entity.collideStrat.GhostCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.ProjectileCollisionStrat;
 import game.model.game.model.worldObject.entity.collideStrat.hitbox.Hitbox;
 import game.model.game.model.worldObject.entity.deathStrat.DeathStrat;
@@ -34,7 +35,6 @@ import static util.Util.toDrawCoords;
  * and drawing.
  */
 public class Entity {
-
 
     private enum PropType {
         ON_CHANGE_ONLY, //sent only if changed on server
