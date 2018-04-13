@@ -84,6 +84,8 @@ public class Main extends Application {
     TextField playerName = new TextField();
     ChoiceBox numChoice;
 
+    InvalidationListener resize;
+
 
     Button selectRedKing;
     Button selectBlueKing;
@@ -309,31 +311,31 @@ public class Main extends Application {
 
     private void setAnimator(Pane addedPane) {
 
-        InvalidationListener resize = l -> {
-            font = Font.font("", FontWeight.BOLD, window.getHeight()/400 * 18);
-            for(MenuItem item : items)
-                item.updateSize();
-        };
+//        InvalidationListener resize = l -> {
+//            font = Font.font("", FontWeight.BOLD, window.getHeight()/400 * 18);
+//            for(MenuItem item : items)
+//                item.updateSize();
+//        };
 
-        window.heightProperty().addListener(resize);
-        window.widthProperty().addListener(resize);
-        window.maximizedProperty().addListener(resize);
+//        window.heightProperty().addListener(resize);
+//        window.widthProperty().addListener(resize);
+//        window.maximizedProperty().addListener(resize);
 
-        double[] bgOpac = new double[]{2.0};
-        animator.stop();
+//        double[] bgOpac = new double[]{2.0};
+//        animator.stop();
         animator = new AnimationTimer() {
 
         @Override
         public void handle(long now) {
-                midGC.clearRect(0, 0, window.getWidth(), window.getHeight());
-                midGC.setFill(Color.color(0.6, 0.6, 0.7, 0.4 + (Math.abs(bgOpac[0] % 2 - 1)) * 0.3));
-                bgOpac[0] += 0.002;
-
-                midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
-                midGC.drawImage(LOGO_TEXT_IMAGE, window.getWidth()/4, 50, window.getWidth()/2,
-                        (153/645.0)*window.getWidth()/2);
-
-                bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, window.getWidth(), window.getHeight());
+//                midGC.clearRect(0, 0, window.getWidth(), window.getHeight());
+//                midGC.setFill(Color.color(0.6, 0.6, 0.7, 0.4 + (Math.abs(bgOpac[0] % 2 - 1)) * 0.3));
+//                bgOpac[0] += 0.002;
+//
+//                midGC.fillRect(0, 0, window.getWidth(), window.getHeight());
+//                midGC.drawImage(LOGO_TEXT_IMAGE, window.getWidth()/4, 50, window.getWidth()/2,
+//                        (153/645.0)*window.getWidth()/2);
+//
+//                bgGC.drawImage(MENU_SPASH_BG_IMAGE, 0, 0, window.getWidth(), window.getHeight());
 
                 addedPane.setTranslateX(window.getWidth() / 2 - addedPane.getWidth()/2 -200);
                 addedPane.setTranslateY(window.getHeight() - addedPane.getHeight() + 200);
@@ -666,7 +668,7 @@ public class Main extends Application {
         items[5].setOnActivate(this::exit);
         menuBox = new VBox(10, items);
 
-        InvalidationListener resize = l -> {
+        resize = l -> {
             font = Font.font("", FontWeight.BOLD, window.getHeight()/400 * 18);
             for(MenuItem item : items)
                 item.updateSize();
