@@ -50,8 +50,7 @@ public class EntityBuildRequest implements ToServerRequest {
      */
     @Override
     public void executeServer(ServerGameModel model) {
-        System.out.println(model.getCell((int) x, (int) y).isVisible(creator.getTeam()));
-        if (//model.getCell((int) x, (int) y).isVisible(creator.getTeam()) &&
+        if (model.getCell((int) x, (int) y).isVisible(creator.getTeam()) &&
             !hitbox.getCollidesWith(model, x, y).findAny().isPresent() &&
             model.changeResource(creator.getTeam(), entity.resource, -entity.finalCost(model, creator.getTeam())))
             model.makeEntity(entity.makeEntity(x, y, creator.getTeam()));

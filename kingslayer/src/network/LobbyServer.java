@@ -36,14 +36,15 @@ public class LobbyServer implements Lobby { //extends Application {
 
     int numOnTeam;
 
-    public boolean[][] teamRoleMap; //TODO: cleanup this
+    public int[][] teamRoleMap; //TODO: cleanup this
+
     //usage: teamRoleMap[team][role]
 
     public LobbyServer() {
         conn2TeamAndRole = new HashMap<>();
         conn2ClientGameModel = new HashMap<>();
         clientGameModelToTeamAndRole = new HashMap<>();
-        teamRoleMap = new boolean[2][2];
+        teamRoleMap = new int[2][2];
     }
 
     public void setNumOfPlayers(int numOfPlayers) {
@@ -122,7 +123,7 @@ public class LobbyServer implements Lobby { //extends Application {
             }
 
             @Override
-            public void serverLobbyTrySetTeamAndRole(Integer connId, Team team, Role role, String playerName) {
+            public void serverLobbyTrySetTeamAndRole(Integer connId, Team team, Role role, String playerName, int slayerIdx) {
                 int teamIdx = (team == null) ? -1 : team.team;
                 int roleIdx = (role == null) ? -1 : role.val;
 
@@ -131,16 +132,20 @@ public class LobbyServer implements Lobby { //extends Application {
 
                     Map<Integer, PlayerInfo> selectResult = new HashMap<>();
                     for (Map.Entry<Integer, PlayerInfo> entry : conn2PlayerInfo.entrySet()) {
-                        selectResult.put(entry.getKey(), entry.getValue());
+                        PlayerInfo infoWithIdx = new PlayerInfo(entry.getValue().getTeam(),
+                                entry.getValue().getRole(), entry.getValue().getPlayerName(), entry.getValue().getSlayerIdx());
+
+                        selectResult.put(entry.getKey(), infoWithIdx);
                     }
                     server.confirmSelect(false, selectResult);
                     return;
                 }
 
                 //unselect logic
-                if (teamRoleMap[teamIdx][roleIdx]) {
+                if (teamRoleMap[teamIdx][roleIdx] > 0) {
                     if (conn2PlayerInfo.containsKey(connId) && conn2PlayerInfo.get(connId).getRole() == role
-                            && conn2PlayerInfo.get(connId).getTeam() == team) {
+                            && conn2PlayerInfo.get(connId).getTeam() == team
+                            && conn2PlayerInfo.get(connId).getSlayerIdx() == slayerIdx) {
                         Map<Integer, PlayerInfo> selectResult = new HashMap<>();
                         for (Map.Entry<Integer, PlayerInfo> entry : conn2PlayerInfo.entrySet()) {
                             if (entry.getKey() != connId) {
@@ -148,28 +153,47 @@ public class LobbyServer implements Lobby { //extends Application {
                             }
                         }
                         conn2PlayerInfo.remove(connId);
-                        teamRoleMap[teamIdx][roleIdx] = false;
+                        teamRoleMap[teamIdx][roleIdx]--;
                         server.confirmSelect(true, selectResult);
                         return;
-                    } else {
-                        Map<Integer, PlayerInfo> selectResult = new HashMap<>();
-                        for (Map.Entry<Integer, PlayerInfo> entry : conn2PlayerInfo.entrySet()) {
-                            selectResult.put(entry.getKey(), entry.getValue());
-                        }
-                        server.confirmSelect(false, selectResult);
-                        return;
                     }
+//                    else {
+//                        Map<Integer, PlayerInfo> selectResult = new HashMap<>();
+//                        for (Map.Entry<Integer, PlayerInfo> entry : conn2PlayerInfo.entrySet()) {
+//                            selectResult.put(entry.getKey(), entry.getValue());
+//                        }
+//                        server.confirmSelect(false, selectResult);
+//                        return;
+//                    }
                 }
 
                 //role not taken
-                if (!teamRoleMap[teamIdx][roleIdx]) {
-                    teamRoleMap[teamIdx][roleIdx] = true;
+//                if (!teamRoleMap[teamIdx][roleIdx]) {
+//                    teamRoleMap[teamIdx][roleIdx] = true;
+//                    if (conn2PlayerInfo.containsKey(connId)) {
+//                        teamRoleMap[conn2PlayerInfo.get(connId).getTeam().team][conn2PlayerInfo.get(connId).getRole().val] = false;
+//                        conn2PlayerInfo.remove(connId);
+//                    }
+//
+//                    conn2PlayerInfo.put(connId, new PlayerInfo(team, role, playerName));
+//
+//                    Map<Integer, PlayerInfo> selectResult = new HashMap<>();
+//                    for (Map.Entry<Integer, PlayerInfo> entry : conn2PlayerInfo.entrySet()) {
+//                        selectResult.put(entry.getKey(), entry.getValue());
+//                    }
+//                    server.confirmSelect(true, selectResult);
+//                    return;
+//                }
+
+                //role not taken
+                if (roleIdx == 0 && teamRoleMap[teamIdx][roleIdx] < 1) {
+                    teamRoleMap[teamIdx][roleIdx]++;
                     if (conn2PlayerInfo.containsKey(connId)) {
-                        teamRoleMap[conn2PlayerInfo.get(connId).getTeam().team][conn2PlayerInfo.get(connId).getRole().val] = false;
+                        teamRoleMap[conn2PlayerInfo.get(connId).getTeam().team][conn2PlayerInfo.get(connId).getRole().val]--;
                         conn2PlayerInfo.remove(connId);
                     }
 
-                    conn2PlayerInfo.put(connId, new PlayerInfo(team, role, playerName));
+                    conn2PlayerInfo.put(connId, new PlayerInfo(team, role, playerName, -1));
 
                     Map<Integer, PlayerInfo> selectResult = new HashMap<>();
                     for (Map.Entry<Integer, PlayerInfo> entry : conn2PlayerInfo.entrySet()) {
@@ -179,16 +203,22 @@ public class LobbyServer implements Lobby { //extends Application {
                     return;
                 }
 
-//                if (conn2PlayerInfo.get(connId).getTeam().team == teamIdx
-//                        && conn2PlayerInfo.get(connId).getRole().val == roleIdx) {
-//
-//                }
+                if (roleIdx == 1 && teamRoleMap[teamIdx][roleIdx] < 3) {
+                    teamRoleMap[teamIdx][roleIdx]++;
+                    if (conn2PlayerInfo.containsKey(connId)) {
+                        teamRoleMap[conn2PlayerInfo.get(connId).getTeam().team][conn2PlayerInfo.get(connId).getRole().val]--;
+                        conn2PlayerInfo.remove(connId);
+                    }
+                    System.out.println("chhose "+ role + " slayerIdx " + slayerIdx);
+                    conn2PlayerInfo.put(connId, new PlayerInfo(team, role, playerName, slayerIdx));
 
-//                conn2TeamAndRole.put(connId, new Pair<>(team, role));
-//                conn2PlayerName.put(connId, playerName);
-//                conn2PlayerInfo.put(connId, new PlayerInfo(team, role, playerName));
-//                System.out.println("Did put team and role in the map: " + conn2PlayerInfo.get(connId).getTeam());
-//                if (conn)
+                    Map<Integer, PlayerInfo> selectResult = new HashMap<>();
+                    for (Map.Entry<Integer, PlayerInfo> entry : conn2PlayerInfo.entrySet()) {
+                        selectResult.put(entry.getKey(), entry.getValue());
+                    }
+                    server.confirmSelect(true, selectResult);
+                    return;
+                }
             }
 
             @Override

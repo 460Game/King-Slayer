@@ -46,6 +46,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
   private EntitySpawner spawner;
   private Entity placingGhost;
+  private boolean pressing = false;
   public boolean upgrading = false;
   public boolean deleting = false;
   private boolean holding = false;
@@ -270,6 +271,11 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     });
 
     world.onKeyPress(kc -> {
+      if (pressing)
+        return;
+
+      pressing = true;
+
       if (model.getLoseControl()) {
         return;
       }
@@ -325,6 +331,7 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     });
 
     world.onKeyRelease(kc -> {
+      pressing = false;
       holding = false;
       if (kc == SHIFT && placingGhost != null) {
         model.remove(placingGhost);

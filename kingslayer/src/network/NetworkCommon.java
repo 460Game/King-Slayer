@@ -306,11 +306,13 @@ public class NetworkCommon {
         Team tryTeam;
         Role tryRole;
         String name;
+        int slayerIdx;
         public SelectRoleMsg() {}
-        public SelectRoleMsg(Team team, Role role, String name) {
+        public SelectRoleMsg(Team team, Role role, String name, int slayerIdx) {
             tryTeam = team;
             tryRole = role;
             this.name = name;
+            this.slayerIdx = slayerIdx;
         }
     }
 

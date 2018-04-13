@@ -121,7 +121,7 @@ public class LobbyClient implements Lobby {//extends Application {
             }
 
             @Override
-            public void serverLobbyTrySetTeamAndRole(Integer connId, Team team, Role role, String playerName) {
+            public void serverLobbyTrySetTeamAndRole(Integer connId, Team team, Role role, String playerName, int slayerIdx) {
                 //client should not call
             }
 
@@ -278,8 +278,8 @@ public class LobbyClient implements Lobby {//extends Application {
         playerName = name;
     }
 
-    public void selectRole(Team team, Role role) {
-        client.trySelectRole(team, role, playerName);
+    public void selectRole(Team team, Role role, int slayIdx) {
+        client.trySelectRole(team, role, playerName, slayIdx);
     }
 
     public InetAddress discoverHost() {
