@@ -84,8 +84,8 @@ public class ClientGameModel extends GameModel {
             server.processMessage(m);
     }
 
-    public void init(Team team, Role role, TeamRoleEntityMap map, Tile[][] gameMap) {
-        this.setLocalPlayer(map.getEntity(team, role));
+    public void init(Team team, Role role, long localid, Tile[][] gameMap) {
+        this.setLocalPlayer(localid);
         for (int x = 0; x < getMapWidth(); x++)
             for (int y = 0; y < getMapHeight(); y++)
                 this.getCell(x, y).setTile(gameMap[x][y], this);

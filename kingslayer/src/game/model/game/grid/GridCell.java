@@ -1,5 +1,6 @@
 package game.model.game.grid;
 
+import com.esotericsoftware.minlog.Log;
 import game.model.game.model.GameModel;
 import game.model.game.map.Tile;
 import game.model.game.model.team.Team;
@@ -140,8 +141,11 @@ public class GridCell {
                 } else {
                     //Make a new ghost and add it to this cell for team i
                     for(Entity e : contents) {
-                        if(e.has(DRAW_STRAT) && e.getCollideType() == CollisionStrat.CollideType.HARD)
-                        losGhosts.add(kryo.copy(e));
+                        Log.info("Copying " + e);
+                        if(e.has(DRAW_STRAT) && e.getCollideType() == CollisionStrat.CollideType.HARD) {
+                            //kryo.reference(e);
+                            losGhosts.add(kryo.copy(e));
+                        }
                     }
                 }
 

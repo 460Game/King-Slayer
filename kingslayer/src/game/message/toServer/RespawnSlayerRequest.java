@@ -23,8 +23,8 @@ public class RespawnSlayerRequest extends ActionRequest {
     @Override
     public void executeServer(ServerGameModel model) {
         Log.info("Respawn " + myTeam + " Slayer");
-        Log.info("Check null: " + model.getEntityIdThroughTeamRoleEntityMap(myTeam, Role.KING));
-        Entity king = model.getEntity(model.getEntityIdThroughTeamRoleEntityMap(myTeam, Role.KING));
+        Log.info("Check null: " + model.getKing(myTeam));
+        Entity king = model.getEntity(model.getKing(myTeam));
         double x = king.get(Entity.EntityProperty.X);
         double y = king.get(Entity.EntityProperty.Y);
         Entity entity = Players.makeSlayer(x, y, myTeam, originalId);

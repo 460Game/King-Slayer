@@ -2,6 +2,7 @@ package util;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.minlog.Log;
+import game.model.game.model.worldObject.entity.Entity;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.transform.*;
@@ -19,9 +20,9 @@ public class Util {
     /**
      * Helper random class to generate random seeds.
      */
-    public static Random random = new Random();
+    public static final Random random = new Random();
 
-    public static Kryo kryo = new Kryo();
+    public static final Kryo kryo = new Kryo();
     static{
         KyroRegister(kryo);
     }

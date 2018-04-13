@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 import static game.model.game.model.worldObject.entity.Entity.EntityProperty.*;
 import static util.Const.*;
+import static util.Util.random;
 
 public class ServerGameModel extends GameModel {
 
@@ -54,18 +55,18 @@ public class ServerGameModel extends GameModel {
 
     private Entity building;
 
-    private Random random;
-
     private final Object lock = new Object();
 
-    TimerTask updateFPS;
-    Timer t2;
+    private TimerTask updateFPS;
+    private Timer t2;
 
     private Map<Team, TeamResourceData> teamData = new HashMap<>();
-    private Thread updateThread;
     private TimerTask updateTimerTask;
 
-    private TeamRoleEntityMap teamRoleEntityMap = new TeamRoleEntityMap(NUM_TEAMS, NUM_ROLES);
+    private Map<Team, Long> kingMap = new HashMap<>();
+
+    private Map<Team, List<Long>> slayerMap = new HashMap<>();
+
 
     public Collection<? extends Model> getClients() {
         return clients;
@@ -79,8 +80,8 @@ public class ServerGameModel extends GameModel {
         return false;
     }
 
-    public long getEntityIdThroughTeamRoleEntityMap(Team team, Role role) {
-        return teamRoleEntityMap.getEntity(team, role);
+    public long getKing(Team team) {
+        return kingMap.get(team);
     }
 
     @Override
@@ -103,36 +104,29 @@ public class ServerGameModel extends GameModel {
     public void init(Collection<? extends Model> clients, Map<? extends Model, PlayerInfo> clientToPlayerInfoMap) {
 
         this.clients = clients;
-//        this.clientToPlayerInfo = new HashMap<? extends GameModel, PlayerInfo>();
-
-//        this.clientToPlayerInfo.putAll((Map<? extends GameModel, ? extends PlayerInfo>) clientToPlayerInfoMap);
-//        for (Map.Entry<? extends Model, PlayerInfo> entry : clientToPlayerInfoMap.entrySet()) {
-//            this.clientToPlayerInfo.put(entry.getKey(), PlayerInfo.copyOf(entry.getValue()));
-//        }
 
         this.clientToPlayerInfo = clientToPlayerInfoMap;
-        System.out.println("check playerInfo! " + clientToPlayerInfoMap);
+
+        for(Team team : Team.values())
+            slayerMap.put(team, new ArrayList<>());
 
         ArrayList<Entity> players = new ArrayList<>();
         for (Entity entity : this.getAllEntities()) {
-            if (entity.has(TEAM)) { //TODO this is TEMPORARY
-                players.add(entity);
-                teamRoleEntityMap.setEntity(entity.getTeam(), entity.getRole(), entity.id); // Only for players
+            if (entity.has(TEAM)) {
+                if(entity.has(ROLE)) {
+                    if(entity.get(ROLE) == Role.KING) {
+                        kingMap.put(entity.getTeam(), entity.id);
+                    } else if(entity.get(ROLE) == Role.SLAYER) {
+                        slayerMap.get(entity.getTeam()).add(entity.id);
+                    }
+                    players.add(entity);
+                }
             }
         }
 
         for (Entity entity : players) {
             entity.setOrAdd(PLAYER_NAME, "");
         }
-
-        clients.forEach(client -> {
-            System.out.println("check client null " + clientToPlayerInfo.get(client));
-            getEntity(teamRoleEntityMap.getEntity(clientToPlayerInfo.get(client).getTeam(),
-                    clientToPlayerInfo.get(client).getRole())).setOrAdd(PLAYER_NAME,
-                    clientToPlayerInfoMap.get(client).getPlayerName());
-//            System.out.println((String)getEntity(teamRoleEntityMap.getEntity(clientToPlayerInfo.get(client).getTeam(),
-//                    clientToPlayerInfo.get(client).getRole())).get(PLAYER_NAME));
-        });
 
         // Send all entities to clients
         for (Entity entity : this.getAllEntities())
@@ -145,7 +139,6 @@ public class ServerGameModel extends GameModel {
             }
         }
 
-        random = new Random();
         cellsToGoTo = new double[NUM_TEAMS][getMapWidth()][getMapHeight()];
         totalProbability = new double[NUM_TEAMS];
         for (int x = 0; x < NUM_TEAMS; x++) {
@@ -164,19 +157,22 @@ public class ServerGameModel extends GameModel {
         teamData.put(Team.RED_TEAM, new TeamResourceData());
         teamData.put(Team.BLUE_TEAM, new TeamResourceData());
 
-        int i = 0;
-        // Send player to client
-        for (Model model : clients) {
-            model.processMessage(new UpdateResourceCommand(teamData.get(players.get(i).getTeam())));
-            i++;
-        }
-
-        // TODO @tian set each client to the role/team the want
         clients.forEach(client -> {
-            Log.info("!!!!!!!client player: " +
-                    clientToPlayerInfo.get(client).getTeam() + clientToPlayerInfo.get(client).getRole());
-            client.processMessage(new InitGameCommand(clientToPlayerInfo.get(client).getTeam(),
-                    clientToPlayerInfo.get(client).getRole(), teamRoleEntityMap, tiles));
+
+
+            Role playerRole = clientToPlayerInfo.get(client).getRole();
+            Team playerTeam = clientToPlayerInfo.get(client).getTeam();
+            long playersid;
+            if(playerRole == Role.KING)
+                playersid = kingMap.get(playerTeam);
+            else
+                playersid = slayerMap.get(playerTeam).remove(0);
+
+            getEntity(playersid).setOrAdd(PLAYER_NAME,
+                    clientToPlayerInfoMap.get(client).getPlayerName());
+
+            client.processMessage(new InitGameCommand(playerTeam,
+                    playerRole, playersid , tiles));
         });
 
         astar = new Astar(this);
@@ -265,7 +261,6 @@ public class ServerGameModel extends GameModel {
             this.clientToPlayerInfo.clear();
             clientToPlayerInfo = null;
             teamData = null;
-            teamRoleEntityMap = null;
             clients.clear();
             clients = null;
             astar = null;

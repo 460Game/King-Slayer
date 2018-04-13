@@ -21,10 +21,7 @@ public class InitGameCommand implements ToClientCommand {
      */
     private Role role;
 
-    /**
-     * Mapping from an entity's role and team to its ID.
-     */
-    private TeamRoleEntityMap map;
+    private long localid;
 
     /**
      * Tiles in the game world.
@@ -36,13 +33,13 @@ public class InitGameCommand implements ToClientCommand {
      * role, and mapping from team and role to ID.
      * @param team team of the client
      * @param role role of the client
-     * @param map mapping from team and role to ID
+     * @param fgdhtghgthdfgh
      * @param gameMap tiles in the game created by the server
      */
-    public InitGameCommand(Team team, Role role, TeamRoleEntityMap map, Tile[][] gameMap) {
+    public InitGameCommand(Team team, Role role, long localid, Tile[][] gameMap) {
         this.team = team;
         this.role = role;
-        this.map = map;
+        this.localid = localid;
         this.gameMap = gameMap;
     }
 
@@ -59,6 +56,6 @@ public class InitGameCommand implements ToClientCommand {
      */
     @Override
     public void executeClient(ClientGameModel model) {
-        model.init(team, role, map, gameMap);
+        model.init(team, role, localid, gameMap);
     }
 }
