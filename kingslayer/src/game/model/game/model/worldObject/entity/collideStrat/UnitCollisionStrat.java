@@ -28,25 +28,14 @@ public class UnitCollisionStrat extends SoftCollisionStrat {
 
     @Override
     public void collisionSoft(GameModel model, Entity a, Entity b) {
-        //TODO should push away from other entity
         double collisionAngle = Util.angle2Points(a.getX(), a.getY(), b.getX(), b.getY());
         a.translateX(-1.5 * Math.cos(collisionAngle) * a.timeDelta);
         a.translateY(-1.5 * Math.sin(collisionAngle) * a.timeDelta);
 
         if (a.has(TEAM) && b.has(TEAM) && a.get(TEAM) != b.get(TEAM)) {
-            if (a.has(ROLE)) {
-                if (a.get(ROLE) == Role.SLAYER) {
-                    if (((SlayerData)a.get(SLAYER_DATA)).meleeLastTime > 0) {
-                        b.decreaseHealthBy(model, SlayerData.meleeDamage * b.timeDelta);
-                    } else {
-                        b.decreaseHealthBy(model, b.timeDelta);
-                    }
-                }
-            } else {
-//                a.decreaseHealthBy(model,  a.timeDelta);
-                b.decreaseHealthBy(model, b.timeDelta);
+            if (a.has(ROLE) && a.get(ROLE) == Role.SLAYER && ((SlayerData)a.get(SLAYER_DATA)).meleeLastTime > 0) {
+                b.decreaseHealthBy(model, SlayerData.meleeDamage * b.timeDelta);
             }
-
         }
     }
 
