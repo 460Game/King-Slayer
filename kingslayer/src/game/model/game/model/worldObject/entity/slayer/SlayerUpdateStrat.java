@@ -22,7 +22,6 @@ public class SlayerUpdateStrat extends MovingStrat {
         // Idk why this doesnt work :(
         // Give slayer .25 extra mana regen rate for every 30 seconds in the game.
         if (time > 0 && time % SECONDS_TO_SLAYER_MANA_REGEN_UP == 0 && slayerData.readyToUpRegen) {
-            System.out.println("increasing slayer regen rate");
             slayerData.regenRate = slayerData.regenRate + AMOUNT_SLAYER_MANA_REGEN_UP;
             slayerData.readyToUpRegen = false;
         } else if ((time - 1) % SECONDS_TO_SLAYER_MANA_REGEN_UP == 0)

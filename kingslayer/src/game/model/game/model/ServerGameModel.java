@@ -4,6 +4,7 @@ import com.esotericsoftware.minlog.Log;
 import game.ai.Astar;
 import game.message.*;
 import game.message.toClient.*;
+import game.message.toServer.RemoveEntityRequest;
 import game.model.game.grid.GridCell;
 import game.model.game.map.ServerMapGenerator;
 import game.model.game.map.Tile;
@@ -175,6 +176,10 @@ public class ServerGameModel extends GameModel {
                     playerRole, playersid , tiles));
         });
 
+        for(List l : slayerMap.values()) {
+            l.forEach(e -> this.processMessage(new RemoveEntityRequest(getEntity((long)e))));
+        }
+
         astar = new Astar(this);
 
         wood = new HashSet<>();
@@ -312,28 +317,30 @@ public class ServerGameModel extends GameModel {
         int locx = 0;
         int locy = 0;
 
+        Entity entity = getEntity(entityID);
+
         // Check if wall/tree/building/hard object is being removed.
         boolean isHard = false;
-        if (getEntity(entityID).getCollideType() == CollisionStrat.CollideType.HARD) {
+        if (entity.getCollideType() == CollisionStrat.CollideType.HARD) {
             isHard = true;
-            locx = (int) (double) getEntity(entityID).getX();
-            locy = (int) (double) getEntity(entityID).getY();
+            locx = (int) (double) entity.getX();
+            locy = (int) (double) entity.getY();
         }
 
         // Check if the entity removed is a tree. If so, remove that cell from the corresponding resource set.
-        if (getEntity(entityID).has(RESOURCE_TYPE)) {
-            if (getEntity(entityID).get(RESOURCE_TYPE) == TeamResourceData.Resource.WOOD)
-                wood.remove(getCell((int) (double) getEntity(entityID).getX(), (int) (double) getEntity(entityID).getY()));
-            else if (getEntity(entityID).get(RESOURCE_TYPE) == TeamResourceData.Resource.STONE)
-                stone.remove(getCell((int) (double) getEntity(entityID).getX(), (int) (double) getEntity(entityID).getY()));
-            else if (getEntity(entityID).get(RESOURCE_TYPE) == TeamResourceData.Resource.METAL)
-                metal.remove(getCell((int) (double) getEntity(entityID).getX(), (int) (double) getEntity(entityID).getY()));
-        } else if (getEntity(entityID).has(BUILDING_TYPE)) {
-            if (getEntity(entityID).get(BUILDING_TYPE) == BuildingSpawnerStrat.BuildingType.COLLECTOR) {
-                if (getEntity(entityID).getTeam() == Team.RED_TEAM)
-                    team1collector.removeAll(getEntity(entityID).containedIn);
+        if (entity.has(RESOURCE_TYPE)) {
+            if (entity.get(RESOURCE_TYPE) == TeamResourceData.Resource.WOOD)
+                wood.remove(getCell((int) (double) entity.getX(), (int) (double) entity.getY()));
+            else if (entity.get(RESOURCE_TYPE) == TeamResourceData.Resource.STONE)
+                stone.remove(getCell((int) (double) entity.getX(), (int) (double) entity.getY()));
+            else if (entity.get(RESOURCE_TYPE) == TeamResourceData.Resource.METAL)
+                metal.remove(getCell((int) (double) entity.getX(), (int) (double) entity.getY()));
+        } else if (entity.has(BUILDING_TYPE)) {
+            if (entity.get(BUILDING_TYPE) == BuildingSpawnerStrat.BuildingType.COLLECTOR) {
+                if (entity.getTeam() == Team.RED_TEAM)
+                    team1collector.removeAll(entity.containedIn);
                 else
-                    team2collector.removeAll(getEntity(entityID).containedIn); // TODO support multiple teams?
+                    team2collector.removeAll(entity.containedIn); // TODO support multiple teams?
             }
         }
 

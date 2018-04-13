@@ -140,7 +140,6 @@ public class GridCell {
                 } else {
                     //Make a new ghost and add it to this cell for team i
                     for(Entity e : contents) {
-                        Log.info("Copying " + e);
                         if(e.has(DRAW_STRAT) && e.getCollideType() == CollisionStrat.CollideType.HARD) {
                             //kryo.reference(e);
                             try {

@@ -1,6 +1,8 @@
 package game.model.game.model.worldObject.entity.aiStrat;
 
+import game.message.toClient.RemoveEntityCommand;
 import game.message.toServer.MakeEntityRequest;
+import game.message.toServer.RemoveEntityRequest;
 import game.model.game.grid.GridCell;
 import game.model.game.model.ServerGameModel;
 import game.model.game.model.team.Team;
@@ -139,12 +141,12 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
 
         @Override
         double timeBetweenSpawns(Entity entity) {
-            return 2.5 - 0.5 * entity.<Integer>get(LEVEL);     // LVL 0: 2.5, LVL 1: 2, LVL 2: 1.5 -> Maybe constant
+            return 2.5 ;//- 0.5 * entity.<Integer>get(LEVEL);     // LVL 0: 2.5, LVL 1: 2, LVL 2: 1.5 -> Maybe constant
         }
 
         @Override
         int maxActive(Entity entity) {
-            return 1 + entity.<Integer>get(LEVEL);      // LVL 0: 1, LVL 1: 2, LVL 2: 3 -> Maybe change
+            return 1 ;//+ entity.<Integer>get(LEVEL);      // LVL 0: 1, LVL 1: 2, LVL 2: 3 -> Maybe change
         }
 
         @Override
@@ -410,5 +412,14 @@ public abstract class BuildingSpawnerStrat extends AIStrat {
                 }
             }
         }
+    }
+
+    public void onDeath(Entity entity, ServerGameModel model) {
+
+        BuildingSpawnerStratAIData data = entity.<BuildingSpawnerStratAIData>get(AI_DATA);
+
+        for (Entity e : data.spawned)
+            model.processMessage(new RemoveEntityRequest(e));
+ //           model.processMessage(new RemoveEntityCommand(e));
     }
 }

@@ -23,7 +23,7 @@ public abstract class Const {
     public static final Background PANEL_BG_BLUE = new Background(new BackgroundFill(PANEL_BG_COLOR_BLUE, new CornerRadii(10), null));
     public static boolean FPSPrint = true;
 
-    public static final int SECONDS_TO_SLAYER_MANA_REGEN_UP = 30;
+    public static final int SECONDS_TO_SLAYER_MANA_REGEN_UP = 45;
     public static final double AMOUNT_SLAYER_MANA_REGEN_UP = 0.25;
 
     /**
@@ -106,8 +106,8 @@ public abstract class Const {
 
     // TODO balancing
     public final static int STARTING_WOOD = 15;
-    public final static int STARTING_STONE = 20;
-    public final static int STARTING_METAL = 30;
+    public final static int STARTING_STONE = 25;
+    public final static int STARTING_METAL = 40;
 
     public static final int FIRST_LEVEL_WOOD_COLLECTED = 3;
     public static final int SECOND_LEVEL_WOOD_COLLECTED = 10;

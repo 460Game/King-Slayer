@@ -262,10 +262,13 @@ public class Entity {
         }
 
         if (!this.invincible() && this.getData().get(ROLE) == Role.KING) {
-            gc.setFill(Color.RED);
-            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, 40, 6);
-            gc.setFill(Color.GREEN);
-            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, (getHealth() / getMaxHealth()) * 40, 6);
+
+            if (this.getHealth() != this.getMaxHealth()) {
+                gc.setFill(Color.RED);
+                gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, 40, 6);
+                gc.setFill(Color.GREEN);
+                gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, (getHealth() / getMaxHealth()) * 40, 6);
+            }
             gc.setStroke(Color.WHITE);
 //            System.out.println((String)get(PLAYER_NAME));
             String name = this.get(PLAYER_NAME);
@@ -276,11 +279,13 @@ public class Entity {
         }
 
         if (!this.invincible() && this.getData().get(ROLE) == Role.SLAYER) {
-            gc.setFill(Color.RED);
-            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, 40, 6);
-            gc.setFill(Color.GREEN);
-            gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, (getHealth() / getMaxHealth()) * 40, 6);
 
+            if (this.getHealth() != this.getMaxHealth()) {
+                gc.setFill(Color.RED);
+                gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, 40, 6);
+                gc.setFill(Color.GREEN);
+                gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 30, (getHealth() / getMaxHealth()) * 40, 6);
+            }
             gc.setFill(Color.GREY);
             gc.fillRect(toDrawCoords(getX()) - 20, toDrawCoords(getY()) - 24, 40, 6);
             gc.setFill(Color.BLUE);
@@ -450,9 +455,12 @@ public class Entity {
 
     public void entityDie(GameModel model) {
         model.execute(
-                serverGameModel ->
-                        serverDeathCallBacks.forEach(
-                                serverCallBack -> serverCallBack.accept(this, serverGameModel)),
+                serverGameModel -> {
+                    serverDeathCallBacks.forEach(
+                            serverCallBack -> serverCallBack.accept(this, serverGameModel));
+
+                    this.<AIStrat>oget(AI_STRAT).ifPresent(strat -> strat.onDeath(this, serverGameModel));
+                },
                 clientGameModel -> {
                 }
         );

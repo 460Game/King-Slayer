@@ -8,4 +8,6 @@ public abstract class AIStrat {
     public abstract void init(Entity entity);
 
     public abstract void updateAI(Entity entity, ServerGameModel model, double seconds);
+
+    public abstract void onDeath(Entity entity, ServerGameModel model);
 }

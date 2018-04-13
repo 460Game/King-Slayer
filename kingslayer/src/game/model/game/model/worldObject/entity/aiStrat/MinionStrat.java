@@ -25,6 +25,11 @@ public abstract class MinionStrat extends AIStrat {
 
     }
 
+    @Override
+    public void onDeath(Entity entity, ServerGameModel model) {
+
+    }
+
     // TODO balance these ranges
 
     public static class KnightMinionStrat extends MinionStrat {
@@ -59,6 +64,7 @@ public abstract class MinionStrat extends AIStrat {
             }
             model.processMessage(new SetEntityCommand(entity));
         }
+
     }
 
     public static class RangedMinionStrat extends MinionStrat {
