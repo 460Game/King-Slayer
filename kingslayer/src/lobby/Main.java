@@ -230,6 +230,7 @@ public class Main extends Application {
         midGC = midCanvas.getGraphicsContext2D();
         playerNumAlreadySet = false;
         playerName = new TextField();
+        connected = false;
     }
 
     public int rematch() {
@@ -280,6 +281,7 @@ public class Main extends Application {
         }, this);
 
         try {
+            System.out.println("lobbyclient started");
             lobbyClient.start();
         } catch (Exception e) {
             e.printStackTrace();
