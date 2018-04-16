@@ -203,7 +203,7 @@ public class LobbyServer implements Lobby { //extends Application {
                     return;
                 }
 
-                if (roleIdx == 1 && teamRoleMap[teamIdx][roleIdx] < 3) {
+                if (roleIdx == 1 && teamRoleMap[teamIdx][roleIdx] < numOnTeam - 1) {
                     teamRoleMap[teamIdx][roleIdx]++;
                     if (conn2PlayerInfo.containsKey(connId)) {
                         teamRoleMap[conn2PlayerInfo.get(connId).getTeam().team][conn2PlayerInfo.get(connId).getRole().val]--;
