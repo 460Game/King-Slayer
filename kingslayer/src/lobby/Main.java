@@ -676,8 +676,8 @@ public class Main extends Application {
             }
 
             @Override
-            public void takeSelectFb(boolean s, Map<Integer, PlayerInfo> map) {
-
+            public void takeSelectFb(boolean s, Map<Integer, PlayerInfo> map, Set<Integer> readySet) {
+                
             }
 
             @Override
