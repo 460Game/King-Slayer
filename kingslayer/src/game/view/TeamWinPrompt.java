@@ -58,7 +58,7 @@ public class TeamWinPrompt extends Region {
 //            Platform.runLater(() -> view.restart());
             Platform.runLater(() -> {
                 text.setText("Waiting for rematch...");
-//                view.rematch();
+                view.rematch();
 //                stop();
             });
 

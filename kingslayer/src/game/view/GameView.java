@@ -238,7 +238,8 @@ public class GameView {
     }
 
     public void rematch() {
-        this.timer.stop();
+        if (this.timer != null)
+            this.timer.stop();
 
 //        Platform.setImplicitExit(false);
 
