@@ -47,6 +47,7 @@ import util.CssSheet;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static images.Images.*;
@@ -54,6 +55,8 @@ import static util.Util.random;
 import static util.Util.sleep;
 
 public class Main extends Application {
+
+
     LobbyClient lobbyClient = null;
     LobbyServer lobbyServer = null;
 
@@ -102,6 +105,7 @@ public class Main extends Application {
     Button selectBlueSl3;
 
     Thread findHostThread;
+    Map<Integer, PlayerInfo> selectRes;
 
     AtomicReference<CustomMenuItem> hostDropDownItem = new AtomicReference(null);
 
@@ -260,8 +264,8 @@ public class Main extends Application {
             }
 
             @Override
-            public void takeSelectFb(boolean s, Map<Integer, PlayerInfo> map) {
-                takeFb(s, map);
+            public void takeSelectFb(boolean s, Map<Integer, PlayerInfo> map, Set<Integer> set) {
+                takeFb(s, map, set);
             }
 
             @Override
@@ -441,8 +445,8 @@ public class Main extends Application {
             }
 
             @Override
-            public void takeSelectFb(boolean s, Map<Integer, PlayerInfo> map) {
-                takeFb(s, map);
+            public void takeSelectFb(boolean s, Map<Integer, PlayerInfo> map, Set<Integer> set) {
+                takeFb(s, map, set);
             }
 
             @Override
@@ -487,7 +491,8 @@ public class Main extends Application {
         }
     }
 
-    private void takeFb(boolean s, Map<Integer, PlayerInfo> map) {
+    private void takeFb(boolean s, Map<Integer, PlayerInfo> map, Set<Integer> readySet) {
+        selectRes = map;
         if (!s) {
             System.out.println("Fail to select role");
         }
@@ -549,6 +554,28 @@ public class Main extends Application {
                         slayerSelect[1][slayerIdx].setText(name);
                     });
 
+                }
+            }
+
+            for (Integer readyId : readySet) {
+                Role curRole = selectRes.get(readyId).getRole();
+                Team curTeam = selectRes.get(readyId).getTeam();
+                int slayerIdx = selectRes.get(readyId).getSlayerIdx();
+                if (curRole == Role.KING) {
+                    if (curTeam == Team.BLUE_TEAM) {
+                        selectBlueKing.setStyle(CssSheet.GREY_SELECT_BUTTON);
+                    } else if (curTeam == Team.RED_TEAM) {
+                        selectRedKing.setStyle(CssSheet.GREY_SELECT_BUTTON);
+                    }
+                } else {
+                    System.out.println("slayerIdx is " + slayerIdx);
+                    if (curTeam == Team.BLUE_TEAM) {
+                        if (slayerSelect[1][slayerIdx]!= null)
+                        slayerSelect[1][slayerIdx].setStyle(CssSheet.GREY_SELECT_BUTTON);
+                    } else if (curTeam == Team.RED_TEAM) {
+                        if (slayerSelect[0][slayerIdx] != null)
+                        slayerSelect[0][slayerIdx].setStyle(CssSheet.GREY_SELECT_BUTTON);
+                    }
                 }
             }
         }
@@ -635,6 +662,7 @@ public class Main extends Application {
     }
 
     public void startMain(Stage window_arg) {
+
 
         MusicPlayer.playIntroMusic();
 
@@ -740,6 +768,121 @@ public class Main extends Application {
         resize.invalidated(null);
         sleep(100);
 
+
+
+
+
+
+
+        selectRedKing = new Button("RED KING: SELECT");
+        selectRedKing.setPrefSize(200, 50);
+
+        selectRedKing.setStyle(CssSheet.RED_SELECT_BUTTON);
+
+        selectRedKing.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                lobbyClient.selectRole(Team.RED_TEAM, Role.KING, -1);
+            }
+        });
+
+
+        selectBlueKing = new Button("BLUE KING: SELECT");
+        selectBlueKing.setPrefSize(200, 50);
+        selectBlueKing.setStyle(CssSheet.BLUE_SELECT_BUTTON);
+        selectBlueKing.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                lobbyClient.selectRole(Team.BLUE_TEAM, Role.KING, -1);
+            }
+        });
+
+
+            slayerSelect[0][1] = new Button("RED SLAYER: SELECT");
+            slayerSelect[0][1].setPrefSize(200, 50);
+            slayerSelect[0][1].setStyle(CssSheet.RED_SELECT_BUTTON);
+            slayerSelect[0][1].setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    lobbyClient.selectRole(Team.RED_TEAM, Role.SLAYER, 1);
+                }
+            });
+
+            ImageView imBlueSl = new ImageView(Images.BLUE_SLAYER_SELECT);
+            imBlueSl.setFitWidth(80);
+            imBlueSl.setFitHeight(80);
+
+            slayerSelect[1][1] = new Button("BLUE SLAYER: SELECT");
+            slayerSelect[1][1].setPrefSize(200, 50);
+            slayerSelect[1][1].setStyle(CssSheet.BLUE_SELECT_BUTTON);
+            slayerSelect[1][1].setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    lobbyClient.selectRole(Team.BLUE_TEAM, Role.SLAYER, 1);
+                }
+            });
+
+            slayerSelect[0][2] = new Button("RED SLAYER: SELECT");
+            slayerSelect[0][2].setPrefSize(200, 50);
+            slayerSelect[0][2].setStyle(CssSheet.RED_SELECT_BUTTON);
+            slayerSelect[0][2].setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    lobbyClient.selectRole(Team.RED_TEAM, Role.SLAYER, 2);
+                }
+            });
+
+
+            slayerSelect[1][2] = new Button("BLUE SLAYER: SELECT");
+            slayerSelect[1][2].setPrefSize(200, 50);
+            slayerSelect[1][2].setStyle(CssSheet.BLUE_SELECT_BUTTON);
+            slayerSelect[1][2].setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    lobbyClient.selectRole(Team.BLUE_TEAM, Role.SLAYER, 2);
+                }
+            });
+
+            slayerSelect[0][3] = new Button("RED SLAYER: SELECT");
+            slayerSelect[0][3].setPrefSize(200, 50);
+            slayerSelect[0][3].setStyle(CssSheet.RED_SELECT_BUTTON);
+            slayerSelect[0][3].setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    lobbyClient.selectRole(Team.RED_TEAM, Role.SLAYER, 3);
+                }
+            });
+
+            slayerSelect[1][3] = new Button("BLUE SLAYER: SELECT");
+            slayerSelect[1][3].setPrefSize(200, 50);
+            slayerSelect[1][3].setStyle(CssSheet.BLUE_SELECT_BUTTON);
+            slayerSelect[1][3].setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    lobbyClient.selectRole(Team.BLUE_TEAM, Role.SLAYER, 3);
+                }
+            });
+
+
+        ready = new Button("Ready");
+        ready.setPrefSize(200, 30);
+        ready.setFont(Font.font(20));
+        ready.setStyle(CssSheet.YELLO_BUTTON_CSS);
+
+        ready.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Log.info("client click ready");
+                ready();
+                //the following would be done in the network part
+
+//                window.setScene(new Scene(choiceTeamAndRoleScene()));
+            }
+
+        });
+
+
+
         window.setScene(mainMenuScene);
 
 //        Platform.setImplicitExit(false);
@@ -766,17 +909,17 @@ public class Main extends Application {
 
         grid.add(redKingSelect, 0, 0, 1, 1);
 
-        selectRedKing = new Button("RED KING: SELECT");
-        selectRedKing.setPrefSize(200, 50);
+//        selectRedKing = new Button("RED KING: SELECT");
+//        selectRedKing.setPrefSize(200, 50);
 
-        selectRedKing.setStyle(CssSheet.RED_SELECT_BUTTON);
+//        selectRedKing.setStyle(CssSheet.RED_SELECT_BUTTON);
 
-        selectRedKing.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                lobbyClient.selectRole(Team.RED_TEAM, Role.KING, -1);
-            }
-        });
+//        selectRedKing.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                lobbyClient.selectRole(Team.RED_TEAM, Role.KING, -1);
+//            }
+//        });
         grid.add(selectRedKing, 1, 0, 1, 1);
 
 
@@ -786,15 +929,15 @@ public class Main extends Application {
 
         grid.add(imBlueKing, 3, 0, 1, 1);
 
-        selectBlueKing = new Button("BLUE KING: SELECT");
-        selectBlueKing.setPrefSize(200, 50);
-        selectBlueKing.setStyle(CssSheet.BLUE_SELECT_BUTTON);
-        selectBlueKing.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                lobbyClient.selectRole(Team.BLUE_TEAM, Role.KING, -1);
-            }
-        });
+//        selectBlueKing = new Button("BLUE KING: SELECT");
+//        selectBlueKing.setPrefSize(200, 50);
+//        selectBlueKing.setStyle(CssSheet.BLUE_SELECT_BUTTON);
+//        selectBlueKing.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                lobbyClient.selectRole(Team.BLUE_TEAM, Role.KING, -1);
+//            }
+//        });
         grid.add(selectBlueKing, 4, 0, 1, 1);
 
         System.out.println("check num in team " + numOnTeam);
@@ -805,15 +948,15 @@ public class Main extends Application {
 
             grid.add(imRedSl, 0, 1, 1, 1);
 
-            slayerSelect[0][1] = new Button("RED SLAYER: SELECT");
-            slayerSelect[0][1].setPrefSize(200, 50);
-            slayerSelect[0][1].setStyle(CssSheet.RED_SELECT_BUTTON);
-            slayerSelect[0][1].setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    lobbyClient.selectRole(Team.RED_TEAM, Role.SLAYER, 1);
-                }
-            });
+//            slayerSelect[0][1] = new Button("RED SLAYER: SELECT");
+//            slayerSelect[0][1].setPrefSize(200, 50);
+//            slayerSelect[0][1].setStyle(CssSheet.RED_SELECT_BUTTON);
+//            slayerSelect[0][1].setOnAction(new EventHandler<ActionEvent>() {
+//                @Override
+//                public void handle(ActionEvent event) {
+//                    lobbyClient.selectRole(Team.RED_TEAM, Role.SLAYER, 1);
+//                }
+//            });
             grid.add(slayerSelect[0][1], 1, 1, 1, 1);
 
             ImageView imBlueSl = new ImageView(Images.BLUE_SLAYER_SELECT);
@@ -821,15 +964,15 @@ public class Main extends Application {
             imBlueSl.setFitHeight(80);
             grid.add(imBlueSl, 3, 1, 1, 1);
 
-            slayerSelect[1][1] = new Button("BLUE SLAYER: SELECT");
-            slayerSelect[1][1].setPrefSize(200, 50);
-            slayerSelect[1][1].setStyle(CssSheet.BLUE_SELECT_BUTTON);
-            slayerSelect[1][1].setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    lobbyClient.selectRole(Team.BLUE_TEAM, Role.SLAYER, 1);
-                }
-            });
+//            slayerSelect[1][1] = new Button("BLUE SLAYER: SELECT");
+//            slayerSelect[1][1].setPrefSize(200, 50);
+//            slayerSelect[1][1].setStyle(CssSheet.BLUE_SELECT_BUTTON);
+//            slayerSelect[1][1].setOnAction(new EventHandler<ActionEvent>() {
+//                @Override
+//                public void handle(ActionEvent event) {
+//                    lobbyClient.selectRole(Team.BLUE_TEAM, Role.SLAYER, 1);
+//                }
+//            });
             grid.add(slayerSelect[1][1], 4, 1, 1, 1);
         }
 
@@ -840,15 +983,15 @@ public class Main extends Application {
 
             grid.add(imRedSl, 0, 2, 1, 1);
 
-            slayerSelect[0][2] = new Button("RED SLAYER: SELECT");
-            slayerSelect[0][2].setPrefSize(200, 50);
-            slayerSelect[0][2].setStyle(CssSheet.RED_SELECT_BUTTON);
-            slayerSelect[0][2].setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    lobbyClient.selectRole(Team.RED_TEAM, Role.SLAYER, 2);
-                }
-            });
+//            slayerSelect[0][2] = new Button("RED SLAYER: SELECT");
+//            slayerSelect[0][2].setPrefSize(200, 50);
+//            slayerSelect[0][2].setStyle(CssSheet.RED_SELECT_BUTTON);
+//            slayerSelect[0][2].setOnAction(new EventHandler<ActionEvent>() {
+//                @Override
+//                public void handle(ActionEvent event) {
+//                    lobbyClient.selectRole(Team.RED_TEAM, Role.SLAYER, 2);
+//                }
+//            });
             grid.add(slayerSelect[0][2], 1, 2, 1, 1);
 
             ImageView imBlueSl = new ImageView(Images.BLUE_SLAYER_SELECT);
@@ -856,15 +999,15 @@ public class Main extends Application {
             imBlueSl.setFitHeight(80);
             grid.add(imBlueSl, 3, 2, 1, 1);
 
-            slayerSelect[1][2] = new Button("BLUE SLAYER: SELECT");
-            slayerSelect[1][2].setPrefSize(200, 50);
-            slayerSelect[1][2].setStyle(CssSheet.BLUE_SELECT_BUTTON);
-            slayerSelect[1][2].setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    lobbyClient.selectRole(Team.BLUE_TEAM, Role.SLAYER, 2);
-                }
-            });
+//            slayerSelect[1][2] = new Button("BLUE SLAYER: SELECT");
+//            slayerSelect[1][2].setPrefSize(200, 50);
+//            slayerSelect[1][2].setStyle(CssSheet.BLUE_SELECT_BUTTON);
+//            slayerSelect[1][2].setOnAction(new EventHandler<ActionEvent>() {
+//                @Override
+//                public void handle(ActionEvent event) {
+//                    lobbyClient.selectRole(Team.BLUE_TEAM, Role.SLAYER, 2);
+//                }
+//            });
             grid.add(slayerSelect[1][2], 4, 2, 1, 1);
         }
 
@@ -875,15 +1018,15 @@ public class Main extends Application {
 
             grid.add(imRedSl, 0, 3, 1, 1);
 
-            slayerSelect[0][3] = new Button("RED SLAYER: SELECT");
-            slayerSelect[0][3].setPrefSize(200, 50);
-            slayerSelect[0][3].setStyle(CssSheet.RED_SELECT_BUTTON);
-            slayerSelect[0][3].setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    lobbyClient.selectRole(Team.RED_TEAM, Role.SLAYER, 3);
-                }
-            });
+//            slayerSelect[0][3] = new Button("RED SLAYER: SELECT");
+//            slayerSelect[0][3].setPrefSize(200, 50);
+//            slayerSelect[0][3].setStyle(CssSheet.RED_SELECT_BUTTON);
+//            slayerSelect[0][3].setOnAction(new EventHandler<ActionEvent>() {
+//                @Override
+//                public void handle(ActionEvent event) {
+//                    lobbyClient.selectRole(Team.RED_TEAM, Role.SLAYER, 3);
+//                }
+//            });
             grid.add(slayerSelect[0][3], 1, 3, 1, 1);
 
             ImageView imBlueSl = new ImageView(Images.BLUE_SLAYER_SELECT);
@@ -891,38 +1034,38 @@ public class Main extends Application {
             imBlueSl.setFitHeight(80);
             grid.add(imBlueSl, 3, 3, 1, 1);
 
-            slayerSelect[1][3] = new Button("BLUE SLAYER: SELECT");
-            slayerSelect[1][3].setPrefSize(200, 50);
-            slayerSelect[1][3].setStyle(CssSheet.BLUE_SELECT_BUTTON);
-            slayerSelect[1][3].setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    lobbyClient.selectRole(Team.BLUE_TEAM, Role.SLAYER, 3);
-                }
-            });
+//            slayerSelect[1][3] = new Button("BLUE SLAYER: SELECT");
+//            slayerSelect[1][3].setPrefSize(200, 50);
+//            slayerSelect[1][3].setStyle(CssSheet.BLUE_SELECT_BUTTON);
+//            slayerSelect[1][3].setOnAction(new EventHandler<ActionEvent>() {
+//                @Override
+//                public void handle(ActionEvent event) {
+//                    lobbyClient.selectRole(Team.BLUE_TEAM, Role.SLAYER, 3);
+//                }
+//            });
             grid.add(slayerSelect[1][3], 4, 3, 1, 1);
         }
 
-        ready = new Button("Ready");
-        ready.setPrefSize(200, 30);
-        ready.setFont(Font.font(20));
-        ready.setStyle(CssSheet.YELLO_BUTTON_CSS);
+//        ready = new Button("Ready");
+//        ready.setPrefSize(200, 30);
+//        ready.setFont(Font.font(20));
+//        ready.setStyle(CssSheet.YELLO_BUTTON_CSS);
 //        GridPane.setConstraints(ready, 3, 0);
         grid.add(ready, 2, 5, 1, 1);
 
 
 
-        ready.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Log.info("client click ready");
-                ready();
-                //the following would be done in the network part
-
-//                window.setScene(new Scene(choiceTeamAndRoleScene()));
-            }
-
-        });
+//        ready.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                Log.info("client click ready");
+//                ready();
+//                //the following would be done in the network part
+//
+////                window.setScene(new Scene(choiceTeamAndRoleScene()));
+//            }
+//
+//        });
 
         InetAddress serverAddr = null;
         try {

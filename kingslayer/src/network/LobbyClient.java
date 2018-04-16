@@ -18,6 +18,7 @@ import lobby.Main;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Map;
+import java.util.Set;
 
 public class LobbyClient implements Lobby {//extends Application {
     static {
@@ -131,8 +132,8 @@ public class LobbyClient implements Lobby {//extends Application {
             }
 
             @Override
-            public void clientTakeSelectFb(boolean s, Map<Integer, PlayerInfo> map) {
-                lobbyAdaptor.takeSelectFb(s, map);
+            public void clientTakeSelectFb(boolean s, Map<Integer, PlayerInfo> map, Set<Integer> readySet) {
+                lobbyAdaptor.takeSelectFb(s, map, readySet);
             }
 
             @Override

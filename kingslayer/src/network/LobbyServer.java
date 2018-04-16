@@ -227,7 +227,7 @@ public class LobbyServer implements Lobby { //extends Application {
             }
 
             @Override
-            public void clientTakeSelectFb(boolean s, Map<Integer, PlayerInfo> map) {
+            public void clientTakeSelectFb(boolean s, Map<Integer, PlayerInfo> map, Set<Integer> set) {
                 //server don't use this
             }
 
