@@ -220,7 +220,8 @@ public class GameView {
         MusicPlayer.playIntroMusic();
 //        Platform.setImplicitExit(false);
 
-        this.timer.stop();
+        if (this.timer != null)
+            this.timer.stop();
 
         int closeStatus = mainApp.closeServer();
 
