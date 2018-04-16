@@ -6,6 +6,7 @@ import game.model.game.model.team.Team;
 import lobby.PlayerInfo;
 
 import java.util.Map;
+import java.util.Set;
 
 public interface NetWork2LobbyAdaptor {
     public void serverInit();
@@ -18,7 +19,7 @@ public interface NetWork2LobbyAdaptor {
     public void serverLobbyTrySetTeamAndRole(Integer connId, Team team, Role role, String playerName, int slayerIdx);
     public void serverStartRematch();
 
-    void clientTakeSelectFb(boolean s, Map<Integer, PlayerInfo> map);
+    void clientTakeSelectFb(boolean s, Map<Integer, PlayerInfo> map, Set<Integer> readySet);
 
     int getNumOnTeam();
 

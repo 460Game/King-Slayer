@@ -87,7 +87,9 @@ public class RemoteConnection {
     }
 
     public void confirmSelect(boolean success, Map<Integer, PlayerInfo> selectResult) {
-        server.sendToAllTCP(new NetworkCommon.SelectFeedBackMsg(success, selectResult));
+        Set<Integer> readySet = new HashSet<>();
+        readySet.addAll(readyClients.keySet());
+        server.sendToAllTCP(new NetworkCommon.SelectFeedBackMsg(success, selectResult, readySet));
     }
 
 
@@ -397,7 +399,7 @@ public class RemoteConnection {
 
                     if (obj instanceof NetworkCommon.SelectFeedBackMsg) {
                         NetworkCommon.SelectFeedBackMsg msg = (NetworkCommon.SelectFeedBackMsg) obj;
-                        adaptor.clientTakeSelectFb(msg.s, msg.map);
+                        adaptor.clientTakeSelectFb(msg.s, msg.map, msg.readyIdSet);
                     }
                     if (obj instanceof NetworkCommon.ClientMakeModelMsg) {
                         adaptor.makeModel(); //make clientModel

@@ -320,10 +320,12 @@ public class NetworkCommon {
     public static class SelectFeedBackMsg {
         Map<Integer, PlayerInfo> map;
         boolean s;
+        Set<Integer> readyIdSet;
         public SelectFeedBackMsg() {}
-        public SelectFeedBackMsg(boolean s, Map<Integer, PlayerInfo> map) {
+        public SelectFeedBackMsg(boolean s, Map<Integer, PlayerInfo> map, Set<Integer> readyIdSet) {
             this.s = s;
             this.map = map;
+            this.readyIdSet = readyIdSet;
         }
     }
 
