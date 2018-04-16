@@ -47,7 +47,7 @@ public class GameView {
     public void stop() {
         model = null;
         window = null;
-        mainApp = null;
+//        mainApp = null;
         if (timer != null)
             timer.stop();
         timer = null;
