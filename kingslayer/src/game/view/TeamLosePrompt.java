@@ -32,33 +32,34 @@ public class TeamLosePrompt extends Region {
         text.setTextAlignment(TextAlignment.CENTER);
         text.setLayoutY(50);
 
-        Button confirm = new Button("Back To Lobby");
+        Button backToLobby = new Button("Back To Lobby");
         Button rematch = new Button("   Rematch   ");
-        confirm.setStyle(CssSheet.YELLO_BUTTON_CSS);
+        backToLobby.setStyle(CssSheet.YELLO_BUTTON_CSS);
         rematch.setStyle(CssSheet.YELLO_BUTTON_CSS);
 //        confirm.setTranslateX(100);
 //        confirm.setTranslateY(100);
 //        rematch.setTranslateX(280);
 //        rematch.setTranslateY(100);
-        confirm.setTranslateX(50);
-        confirm.setTranslateY(220);
+        backToLobby.setTranslateX(50);
+        backToLobby.setTranslateY(220);
         rematch.setTranslateX(350);
         rematch.setTranslateY(220);
 
-        confirm.setOnAction(l -> {
+        backToLobby.setOnAction(l -> {
             MusicPlayer.stopDangerSound();
             view.goBackToMain();
+            stop();
         });
         rematch.setOnAction(l-> {
 //            Platform.runLater(() -> view.restart());
             Platform.runLater(() -> {
                 text.setText("Waiting for rematch...");
                 view.rematch();
-                stop();
+
             });
         });
 
-        this.getChildren().addAll(text, confirm, rematch);
+        this.getChildren().addAll(text, backToLobby, rematch);
     }
 
     public void stop() {

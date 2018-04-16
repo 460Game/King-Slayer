@@ -47,7 +47,7 @@ public class GameView {
     public void stop() {
         model = null;
         window = null;
-        mainApp = null;
+//        mainApp = null;
         if (timer != null)
             timer.stop();
         timer = null;
@@ -220,8 +220,10 @@ public class GameView {
         MusicPlayer.playIntroMusic();
 //        Platform.setImplicitExit(false);
 
-        this.timer.stop();
+        if (this.timer != null)
+            this.timer.stop();
 
+        System.out.println("check mainApp " +mainApp);
         int closeStatus = mainApp.closeServer();
 
 
@@ -237,7 +239,8 @@ public class GameView {
     }
 
     public void rematch() {
-        this.timer.stop();
+        if (this.timer != null)
+            this.timer.stop();
 
 //        Platform.setImplicitExit(false);
 
@@ -277,12 +280,14 @@ public class GameView {
 
         System.out.println("window is null " + window + " " + model);
         int status = mainApp.rematch();
-        mainApp = null;
-        try {
-            finalize();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
+
+//        mainApp = null;
+
+//        try {
+//            finalize();
+//        } catch (Throwable throwable) {
+//            throwable.printStackTrace();
+//        }
     }
 
     //not used anymore
