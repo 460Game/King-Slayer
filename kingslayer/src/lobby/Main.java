@@ -68,6 +68,7 @@ public class Main extends Application {
     private int currentItem = 0;
     private AnimationTimer animator;
     Button ready;
+    Button back;
 
     ChoiceBox<Team> teamChoice;
     ChoiceBox<Role> roleChoice;
@@ -632,6 +633,44 @@ public class Main extends Application {
 
     private void options() {
         Log.info("OPTIONS SELECTED");
+        lobbyServer = new LobbyServer();
+        try {
+            lobbyServer.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        lobbyClient = new LobbyClient(window, new LobbyClient2LobbyAdaptor() {
+            @Override
+            public void showChoiceTeamAndRoleScene() {
+
+            }
+
+            @Override
+            public void takeSelectFb(boolean s, Map<Integer, PlayerInfo> map) {
+
+            }
+
+            @Override
+            public void setNumOnTeam(int numOnTeam) {
+
+            }
+
+            @Override
+            public void roleReadyLock(PlayerInfo info) {
+
+            }
+        }, this);
+
+        try {
+            lobbyClient.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        window.getScene().getRoot().getChildrenUnmodifiable().remove(0, 1);
+
+        Platform.runLater(() -> window.setScene(optionsScene()));
     }
 
     public void startMain(Stage window_arg) {
@@ -1108,5 +1147,75 @@ public class Main extends Application {
         setAnimator(inputPane);
 
         return ret;
+    }
+
+    public Scene optionsScene() {
+        Group newRoot = new Group();
+        newRoot.getChildren().add(bgCanvas);
+        newRoot.getChildren().add(midCanvas);
+        Pane inputPane = optionsPane();
+        newRoot.getChildren().add(inputPane);
+
+        Scene ret = new Scene(newRoot);
+        ret.setCursor(new ImageCursor(CURSOR_IMAGE, 0, 0));
+
+        setAnimator(inputPane);
+
+        return ret;
+    }
+
+    public Pane optionsPane() {
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(window.getHeight()/2 - 180, 200, window.getHeight()/2 + 100, 450));
+        grid.setVgap(5);
+        grid.setHgap(5);
+
+        CheckBox music = new CheckBox("Play music");
+        music.setSelected(true);
+        music.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (MusicPlayer.playMusic) {
+                    MusicPlayer.stopMusic();
+                } else {
+                    MusicPlayer.playIntroMusic();
+                }
+                MusicPlayer.playMusic = !MusicPlayer.playMusic;
+            }
+
+        });
+        grid.add(music, 2, 3, 1, 1);
+
+        CheckBox soundEffects = new CheckBox("Play sound effects");
+        soundEffects.setSelected(true);
+        soundEffects.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                MusicPlayer.playSoundEffects = !MusicPlayer.playSoundEffects;
+            }
+
+        });
+        grid.add(soundEffects, 2, 4, 1, 1);
+
+        back = new Button("Back");
+        back.setPrefSize(200, 30);
+        back.setFont(Font.font(20));
+        back.setStyle(CssSheet.YELLO_BUTTON_CSS);
+//        GridPane.setConstraints(ready, 3, 0);
+        grid.add(back, 2, 5, 1, 1);
+
+
+
+        back.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Log.info("client clicked back");
+                //restartFromMainMenu();
+                window.setScene(mainMenuScene);
+            }
+
+        });
+
+        return grid;
     }
 }
