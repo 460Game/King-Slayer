@@ -47,14 +47,19 @@ public class TeamWinPrompt extends Region {
         back_to_lobby.setOnAction(l -> {
             MusicPlayer.stopDangerSound();
             //TODO: change this to be another class
-            Platform.runLater(() -> view.goBackToMain());
+            Platform.runLater(() -> {
+                view.goBackToMain();
+                stop();
+            }
+
+            );
         });
         rematch.setOnAction(l-> {
 //            Platform.runLater(() -> view.restart());
             Platform.runLater(() -> {
                 text.setText("Waiting for rematch...");
-                view.rematch();
-                stop();
+//                view.rematch();
+//                stop();
             });
 
         });
