@@ -223,6 +223,7 @@ public class GameView {
         if (this.timer != null)
             this.timer.stop();
 
+        System.out.println("check mainApp " +mainApp);
         int closeStatus = mainApp.closeServer();
 
 
@@ -282,11 +283,11 @@ public class GameView {
 
 //        mainApp = null;
 
-        try {
-            finalize();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
+//        try {
+//            finalize();
+//        } catch (Throwable throwable) {
+//            throwable.printStackTrace();
+//        }
     }
 
     //not used anymore
