@@ -279,7 +279,9 @@ public class GameView {
 
         System.out.println("window is null " + window + " " + model);
         int status = mainApp.rematch();
-        mainApp = null;
+
+//        mainApp = null;
+
         try {
             finalize();
         } catch (Throwable throwable) {
