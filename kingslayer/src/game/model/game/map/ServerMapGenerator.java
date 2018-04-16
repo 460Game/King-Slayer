@@ -110,7 +110,6 @@ public class ServerMapGenerator implements MapGenerator {
     public void makeMap() {
 
 
-
         makeMap((new Random()).nextLong());
 
 //        makeMap(Long.parseLong("8375815974471404619")); // Good for path testing, close spawn.
@@ -302,15 +301,23 @@ public class ServerMapGenerator implements MapGenerator {
 
         startingLocations = new ArrayList<>();
 
-
         t = rooms.poll();
+        while(Util.dist(t.x, t.y, mapW/2, mapH/2) < 30) {
+            rooms.add(t);
+            t = rooms.poll();
+        }
         grid[t.x - 1][t.y] = TS.startKingA;
         grid[t.x + 1][t.y] = TS.startSlayerA1;
         grid[t.x][t.y+1] = TS.startSlayerA2;
         grid[t.x][t.y-1] = TS.startSlayerA3;
         startingLocations.add(t);
+        Loc other = t;
 
         t = rooms.poll();
+        while(Util.dist(t.x, t.y, other.x, other.y) < 50) {
+            rooms.add(t);
+            t = rooms.poll();
+        }
         grid[t.x - 1][t.y] = TS.startKingB;
         grid[t.x + 1][t.y] = TS.startSlayerB1;
         grid[t.x][t.y - 1] = TS.startSlayerB2;
