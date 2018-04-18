@@ -18,6 +18,7 @@ import static images.Images.CURSOR_IMAGE;
 public class TeamLosePrompt extends Region {
     private ClientGameModel model;
     private GameView view;
+    private boolean clieckedRematch = false;
     TeamLosePrompt(ClientGameModel gameModel, GameView gameView) {
         this.model = gameModel;
         this.view = gameView;
@@ -53,8 +54,13 @@ public class TeamLosePrompt extends Region {
         rematch.setOnAction(l-> {
 //            Platform.runLater(() -> view.restart());
             Platform.runLater(() -> {
-                text.setText("Waiting for rematch...");
-                view.rematch();
+                if (!clieckedRematch) {
+                    text.setText("Waiting for rematch...");
+                    rematch.setStyle(CssSheet.GREY_SELECT_BUTTON);
+                    clieckedRematch = true;
+                    view.rematch();
+                }
+
 
             });
         });
