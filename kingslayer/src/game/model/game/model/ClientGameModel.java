@@ -41,6 +41,7 @@ public class ClientGameModel extends GameModel {
     private Team losingTeam = null;
     private Team thisTeam;
     private String name;
+    public Entity placingGhost = null;
 
     public ClientGameModel(Model server) {
         super(new ClientMapGenerator());
@@ -142,6 +143,9 @@ public class ClientGameModel extends GameModel {
                 }
             }
         }
+
+        if (placingGhost != null)
+            placingGhost.draw(gc, this);
 
         Stream.concat(visable.stream().flatMap(GridCell::streamContents).filter(entity -> entity.has(DRAW_STRAT)), explored.stream().flatMap(GridCell::exploredContents)).sorted(Comparator.comparingDouble(Entity::getDrawZ)).forEach(a -> a.draw(gc, this));
 

@@ -45,7 +45,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   private ClientGameModel model;
 
   private EntitySpawner spawner;
-  private Entity placingGhost;
+  //private Entity placingGhost;
+  private ReentrantLock lock = new ReentrantLock();
   private boolean pressing = false;
   public boolean upgrading = false;
   public boolean deleting = false;
@@ -94,19 +95,19 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
       double placingX = Math.floor(x) + 0.5;
       double placingY = Math.floor(y) + 0.5;
-      if (spawner != null && placingGhost != null && !model.getEntitiesAt(x.intValue(), y.intValue()).stream()
+      if (spawner != null && model.placingGhost != null && !model.getEntitiesAt(x.intValue(), y.intValue()).stream()
           .anyMatch(e -> e.has(EntityProperty.DRAW_STRAT) && !(e.get(EntityProperty.DRAW_STRAT) instanceof GhostDrawStrat)) &&
-          !placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation &&
+          !model.placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation &&
           Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), placingX, placingY) <= 4) {
         if (model.getResourceData().getResource(spawner.resource) >= spawner.finalCost(model)) {
           MusicPlayer.playConstructionSound();
         }
         model.processMessage(new EntityBuildRequest(spawner,
-            model.getLocalPlayer(), Math.floor(x) + 0.5, Math.floor(y) + 0.5, placingGhost.getHitbox()));
+            model.getLocalPlayer(), Math.floor(x) + 0.5, Math.floor(y) + 0.5, model.placingGhost.getHitbox()));
         if (!holding) {
-          model.remove(placingGhost);
+          model.remove(model.placingGhost);
           spawner = null;
-          placingGhost = null;
+          model.placingGhost = null;
         } else {
           if (model.getResourceData().getResource(spawner.resource) < spawner.finalCost(model)) {
             clearSelection();
@@ -115,9 +116,9 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
             MusicPlayer.playErrorSound();
           }
         }
-      } else if (spawner != null && placingGhost != null && (model.getEntitiesAt(x.intValue(), y.intValue()).stream()
+      } else if (spawner != null && model.placingGhost != null && (model.getEntitiesAt(x.intValue(), y.intValue()).stream()
           .anyMatch(e -> e.has(EntityProperty.DRAW_STRAT) && !(e.get(EntityProperty.DRAW_STRAT) instanceof GhostDrawStrat)) ||
-          placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation ||
+          model.placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation ||
           Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), placingX, placingY) > 4)) {
         MusicPlayer.playErrorSound();
       } else if (upgrading) {
@@ -241,9 +242,8 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
 
       holding = false;
       if (spawner != null) {
-        model.remove(placingGhost);
         spawner = null;
-        placingGhost = null;
+        model.placingGhost = null;
       } else if (upgrading) {
         upgrading = false;
         world.setCursor(new ImageCursor(GAME_CURSOR_IMAGE, GAME_CURSOR_IMAGE.getWidth() / 2, GAME_CURSOR_IMAGE.getHeight() / 2));
@@ -258,14 +258,14 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         double placingX = Math.floor(x) + 0.5;
         double placingY = Math.floor(y) + 0.5;
         if (Util.dist(model.getLocalPlayer().getX(), model.getLocalPlayer().getY(), placingX, placingY) <= 4) {
-          placingGhost.setX(placingX);
-          placingGhost.setY(placingY);
-          placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation =
+          model.placingGhost.setX(placingX);
+          model.placingGhost.setY(placingY);
+          model.placingGhost.<GhostDrawStrat>get(EntityProperty.DRAW_STRAT).invalidLocation =
               model.getEntitiesAt((int) placingX, (int) placingY).stream().skip(1).findFirst().isPresent();
         } else {
-          placingGhost.setX(placingX);
-          placingGhost.setY(placingY);
-          placingGhost.<GhostDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).invalidLocation = true;
+          model.placingGhost.setX(placingX);
+          model.placingGhost.setY(placingY);
+          model.placingGhost.<GhostDrawStrat>get(Entity.EntityProperty.DRAW_STRAT).invalidLocation = true;
         }
       }
     });
@@ -280,11 +280,11 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
         return;
       }
 
-      if (placingGhost != null && kc != W && kc != A && kc != S && kc != D && kc != SHIFT) {
+      /*if (placingGhost != null && kc != W && kc != A && kc != S && kc != D && kc != SHIFT) {
         model.remove(placingGhost);
         placingGhost = null;
         spawner = null;
-      }
+      }*/
 
       if ((upgrading || deleting) && kc != W && kc != A && kc != S && kc != D && kc != SHIFT) {
         upgrading = false;
@@ -333,18 +333,18 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
     world.onKeyRelease(kc -> {
       pressing = false;
       holding = false;
-      if (kc == SHIFT && placingGhost != null) {
-        model.remove(placingGhost);
+      if (kc == SHIFT && model.placingGhost != null) {
+        model.remove(model.placingGhost);
         spawner = null;
-        placingGhost = null;
+        model.placingGhost = null;
       }
     });
   }
 
   public void clearSelection() {
-    if (placingGhost != null)
-      model.remove(placingGhost);
-    placingGhost = null;
+//    if (model.placingGhost != null)
+//      model.remove(model.placingGhost);
+    model.placingGhost = null;
     spawner = null;
     upgrading = false;
     deleting = false;
@@ -352,42 +352,63 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   }
 
   public void selectWall() {
+    lock.lock();
     if (model.getResourceData().getResource(EntitySpawner.WALL_SPAWNER.resource) >= EntitySpawner.WALL_SPAWNER.finalCost(model)) {
-      placingGhost = Entities.makeGhostWall((int) world.screenToGameX(world.mouseX) + 0.5, (int) world.screenToGameY(world.mouseY) + 0.5);
+      if (model.placingGhost != null) {
+//        model.remove(placingGhost);
+        model.placingGhost = null;
+        spawner = null;
+      }
+      model.placingGhost = Entities.makeGhostWall((int) world.screenToGameX(world.mouseX) + 0.5, (int) world.screenToGameY(world.mouseY) + 0.5);
       spawner = EntitySpawner.WALL_SPAWNER;
-      model.processMessage(new NewEntityCommand(placingGhost));
+      //model.processMessage(new NewEntityCommand(model.placingGhost));
     } else {
       showError = true;
 
       MusicPlayer.playErrorSound();
     }
+    lock.unlock();
   }
 
   public void selectResourceCollector() {
+    lock.lock();
     if (model.getResourceData().getResource(EntitySpawner.RESOURCE_COLLETOR_SPAWNER.resource) >= EntitySpawner.RESOURCE_COLLETOR_SPAWNER.finalCost(model)) {
-      placingGhost =
+      if (model.placingGhost != null) {
+//        model.remove(placingGhost);
+        model.placingGhost = null;
+        spawner = null;
+      }
+      model.placingGhost =
           Entities.makeResourceCollectorGhost((int) world.screenToGameX(world.mouseX) + 0.5, (int) world.screenToGameY(world.mouseY) + 0.5,
               model.getTeam());
       spawner = EntitySpawner.RESOURCE_COLLETOR_SPAWNER;
-      model.processMessage(new NewEntityCommand(placingGhost));
+      //model.processMessage(new NewEntityCommand(model.placingGhost));
     } else {
       showError = true;
 
       MusicPlayer.playErrorSound();
     }
+    lock.unlock();
   }
 
   public void selectArrowTower() {
+    lock.lock();
     if (model.getResourceData().getResource(EntitySpawner.ARROW_TOWER_SPAWNER.resource) >= EntitySpawner.ARROW_TOWER_SPAWNER.finalCost(model)) {
-      placingGhost = Entities.makeArrowTowerGhost((int) world.screenToGameX(world.mouseX) + 0.5, (int) world.screenToGameY(world.mouseY) + 0.5,
+      if (model.placingGhost != null) {
+//        model.remove(placingGhost);
+        model.placingGhost = null;
+        spawner = null;
+      }
+      model.placingGhost = Entities.makeArrowTowerGhost((int) world.screenToGameX(world.mouseX) + 0.5, (int) world.screenToGameY(world.mouseY) + 0.5,
           model.getTeam());
       spawner = EntitySpawner.ARROW_TOWER_SPAWNER;
-      model.processMessage(new NewEntityCommand(placingGhost));
+      //model.processMessage(new NewEntityCommand(model.placingGhost));
     } else {
       showError = true;
 
       MusicPlayer.playErrorSound();
     }
+    lock.unlock();
   }
 
   public void selectUpgrade() {
@@ -405,16 +426,23 @@ public class KingGameInteractionLayer extends GameInteractionLayer {
   }
 
   public void selectBarracks() {
+    lock.lock();
     if (model.getResourceData().getResource(EntitySpawner.BARRACKS_SPAWNER.resource) >= EntitySpawner.BARRACKS_SPAWNER.finalCost(model)) {
-      placingGhost = Entities.makeBarracksGhost((int) world.screenToGameX(world.mouseX) + 0.5, (int) world.screenToGameY(world.mouseY) + 0.5,
+      if (model.placingGhost != null) {
+//        model.remove(placingGhost);
+        model.placingGhost = null;
+        spawner = null;
+      }
+      model.placingGhost = Entities.makeBarracksGhost((int) world.screenToGameX(world.mouseX) + 0.5, (int) world.screenToGameY(world.mouseY) + 0.5,
           model.getTeam());
       spawner = EntitySpawner.BARRACKS_SPAWNER;
-      model.processMessage(new NewEntityCommand(placingGhost));
+      //model.processMessage(new NewEntityCommand(model.placingGhost));
     } else {
       showError = true;
 
       MusicPlayer.playErrorSound();
     }
+    lock.unlock();
   }
 
   public void draw() {
