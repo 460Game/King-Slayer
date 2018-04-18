@@ -677,7 +677,7 @@ public class Main extends Application {
 
             @Override
             public void takeSelectFb(boolean s, Map<Integer, PlayerInfo> map, Set<Integer> readySet) {
-                
+
             }
 
             @Override
@@ -1316,7 +1316,7 @@ public class Main extends Application {
         grid.setHgap(5);
 
         CheckBox music = new CheckBox("Play music");
-        music.setSelected(true);
+        music.setSelected(MusicPlayer.playMusic);
         music.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -1332,7 +1332,7 @@ public class Main extends Application {
         grid.add(music, 2, 3, 1, 1);
 
         CheckBox soundEffects = new CheckBox("Play sound effects");
-        soundEffects.setSelected(true);
+        soundEffects.setSelected(MusicPlayer.playSoundEffects);
         soundEffects.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -1356,6 +1356,14 @@ public class Main extends Application {
             public void handle(ActionEvent event) {
                 Log.info("client clicked back");
                 //restartFromMainMenu();
+                if (lobbyClient != null)
+                    lobbyClient.stop();
+                if (lobbyServer != null)
+                    lobbyServer.closeServer();
+
+                cleanup();
+                startMain(window);
+
                 window.setScene(mainMenuScene);
             }
 
