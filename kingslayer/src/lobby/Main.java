@@ -115,11 +115,9 @@ public class Main extends Application {
     boolean isServer = false;
 
     MenuItem[] items = new MenuItem[] {
-        new MenuItem("Join LAN"),
-        new MenuItem("Host LAN"),
-        new MenuItem("Solo Game King"),
-        new MenuItem("Solo Game Slayer"),
-        new MenuItem("Options"),
+        new MenuItem("Join Game"),
+        new MenuItem("Host Game"),
+        new MenuItem("Music Options"),
         new MenuItem("Exit")};
 
 
@@ -731,10 +729,8 @@ public class Main extends Application {
         items[0].setOnActivate(this::connectForm);
         items[0].setActive(true);
         items[1].setOnActivate(this::guiSetNumOfPlayer);
-        items[2].setOnActivate(this::testGameKing);
-        items[3].setOnActivate(this::testGameSlayer);
-        items[4].setOnActivate(this::options);
-        items[5].setOnActivate(this::exit);
+        items[2].setOnActivate(this::options);
+        items[3].setOnActivate(this::exit);
         menuBox = new VBox(10, items);
 
         resize = l -> {

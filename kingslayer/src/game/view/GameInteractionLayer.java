@@ -42,7 +42,8 @@ public class GameInteractionLayer extends Region {
 
         int[] dir = {0, 0};
 
-        world.onKeyPress(CAPS, () -> {
+        world.onKeyPress(COMMA, () -> {
+            model.processMessage(new CheatRequest(clientGameModel.getTeam()));
             Const.DEBUG_DRAW = !Const.DEBUG_DRAW;
         });
 
