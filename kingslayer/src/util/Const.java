@@ -13,6 +13,7 @@ import static java.lang.Math.PI;
  */
 public abstract class Const {
 
+    public static boolean FIXSEED = false;
 
     public static final double SCREEN_DIAG_STD_SIZE = 800;
     public static final double MAX_ZOOM = 2;

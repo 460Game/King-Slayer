@@ -4,6 +4,7 @@ import game.model.game.model.team.Team;
 import game.model.game.model.worldObject.entity.Entity;
 import game.model.game.model.worldObject.entity.entities.Entities;
 import game.model.game.model.worldObject.entity.entities.Players;
+import util.Const;
 import util.Util;
 import util.Loc;
 
@@ -109,7 +110,9 @@ public class ServerMapGenerator implements MapGenerator {
 
     public void makeMap() {
 
-
+    if(Const.FIXSEED)
+        makeMap(5047776780626211919L);
+    else
         makeMap((new Random()).nextLong());
 
 //        makeMap(Long.parseLong("8375815974471404619")); // Good for path testing, close spawn.

@@ -42,6 +42,7 @@ import music.MusicPlayer;
 import network.LobbyClient;
 import network.LobbyClient2LobbyAdaptor;
 import network.LobbyServer;
+import util.Const;
 import util.CssSheet;
 
 import java.net.InetAddress;
@@ -117,6 +118,7 @@ public class Main extends Application {
     MenuItem[] items = new MenuItem[] {
         new MenuItem("Join Game"),
         new MenuItem("Host Game"),
+            new MenuItem("Host Demo Game"),
         new MenuItem("Music Options"),
         new MenuItem("Exit")};
 
@@ -728,9 +730,14 @@ public class Main extends Application {
 
         items[0].setOnActivate(this::connectForm);
         items[0].setActive(true);
-        items[1].setOnActivate(this::guiSetNumOfPlayer);
-        items[2].setOnActivate(this::options);
-        items[3].setOnActivate(this::exit);
+        items[1].setOnActivate(()->{
+            Const.FIXSEED = false;
+            guiSetNumOfPlayer();});
+        items[2].setOnActivate(()->{
+            Const.FIXSEED = true;
+            guiSetNumOfPlayer();});
+        items[3].setOnActivate(this::options);
+        items[4].setOnActivate(this::exit);
         menuBox = new VBox(10, items);
 
         resize = l -> {
